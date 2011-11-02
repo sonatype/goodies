@@ -84,6 +84,19 @@
             </dependency>
 
             <dependency>
+                <groupId>org.sonatype.sisu</groupId>
+                <artifactId>sisu-guice</artifactId>
+                <version>3.1.0</version>
+                <exclusions>
+                    <!-- Exclude sisu-guava, use stock guava 10+ instead -->
+                    <exclusion>
+                        <groupId>org.sonatype.sisu</groupId>
+                        <artifactId>sisu-guava</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
                 <groupId>org.sonatype.sisu.litmus</groupId>
                 <artifactId>litmus-testsupport</artifactId>
                 <version>1.0-SNAPSHOT</version>
@@ -108,6 +121,42 @@
                 <version>1.8-SNAPSHOT</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>1.4.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.jacksbee</groupId>
+                <artifactId>jacksbee-runtime</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>1.8.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>1.8.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-jaxrs</artifactId>
+                <version>1.8.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-xc</artifactId>
+                <version>1.8.5</version>
+            </dependency>
+
             <!-- INTERNAL -->
 
             <dependency>
@@ -130,6 +179,12 @@
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-marshal</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-thread</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
@@ -140,6 +195,7 @@
         <module>common</module>
         <module>i18n</module>
         <module>lifecycle</module>
+        <module>marshal</module>
         <module>thread</module>
     </modules>
 
