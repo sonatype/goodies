@@ -95,6 +95,13 @@
                 <version>9.0.4</version>
             </dependency>
 
+            <dependency>
+                <groupId>net.sf.smc</groupId>
+                <artifactId>statemap</artifactId>
+                <classifier>java</classifier>
+                <version>6.0.1</version>
+            </dependency>
+
             <!-- INTERNAL -->
 
             <dependency>
@@ -108,12 +115,26 @@
                 <artifactId>goodies-i18n</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-lifecycle</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-thread</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <modules>
         <module>common</module>
         <module>i18n</module>
+        <module>lifecycle</module>
+        <module>thread</module>
     </modules>
 
     <build>
@@ -154,6 +175,27 @@
                 </includes>
             </testResource>
         </testResources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>smc-maven-plugin</artifactId>
+                    <version>1.0-alpha-1</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.sf.smc</groupId>
+                            <artifactId>smc</artifactId>
+                            <version>6.0.1</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/generated-sources/smc</outputDirectory>
+                        <verbose>true</verbose>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
         <plugins>
             <plugin>
