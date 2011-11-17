@@ -126,11 +126,19 @@ public class LifecycleSupport
         // empty
     }
 
+    protected boolean isStarted() {
+        return state.getState().equals(MainMap.Started);
+    }
+
     protected void ensureStarted() {
-        checkState(state.getState().equals(MainMap.Started));
+        checkState(isStarted());
+    }
+
+    protected boolean isStopped() {
+        return state.getState().equals(MainMap.Stopped);
     }
 
     protected void ensureStopped() {
-        checkState(state.getState().equals(MainMap.Stopped));
+        checkState(isStopped());
     }
 }
