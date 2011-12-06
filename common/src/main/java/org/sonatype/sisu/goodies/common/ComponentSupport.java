@@ -35,12 +35,4 @@ public class ComponentSupport
     protected Logger createLogger() {
         return LoggerFactory.getLogger(getClass());
     }
-
-    /**
-     * Strips off repo type prefix to get the actual id.
-     */
-    protected String decodeRepositoryId(final String value) {
-        return value.replaceFirst("^repo_", "")
-                    .replaceFirst("^group_", "");
-    }
 }
