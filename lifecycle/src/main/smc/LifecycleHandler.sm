@@ -17,6 +17,9 @@
 
 %start MainMap::Stopped
 
+// TODO: Look at changes in https://github.com/sonatype/sisu-bundle-launcher/blob/develop/src/main/smc/LifecycleHandler.sm
+// TODO: This statemachine does not allow restart after failure, which is problematic
+
 %map MainMap
 %%
 
