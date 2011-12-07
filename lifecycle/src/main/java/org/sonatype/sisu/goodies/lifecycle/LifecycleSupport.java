@@ -32,7 +32,8 @@ public class LifecycleSupport
 
     // FIXME: Sort out how to best use SMC-generated statemachine, this stuff is a bit wonky atm
 
-    private final LifecycleHandlerContext state = new LifecycleHandlerContext(new LifecycleHandler()
+    private final class Handler
+        implements LifecycleHandler
     {
         private Throwable failure;
 
@@ -44,10 +45,7 @@ public class LifecycleSupport
             try {
                 LifecycleSupport.this.doStart();
             }
-            catch (Exception e) {
-                failure = e;
-            }
-            catch (Error e) {
+            catch (Throwable e) {
                 failure = e;
             }
         }
@@ -56,14 +54,13 @@ public class LifecycleSupport
             try {
                 LifecycleSupport.this.doStop();
             }
-            catch (Exception e) {
-                failure = e;
-            }
-            catch (Error e) {
+            catch (Throwable e) {
                 failure = e;
             }
         }
-    });
+    }
+
+    private final LifecycleHandlerContext state = new LifecycleHandlerContext(new Handler());
 
     public Lifecycle getLifecycle() {
         return this;
