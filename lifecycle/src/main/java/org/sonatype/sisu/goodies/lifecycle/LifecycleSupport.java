@@ -30,24 +30,34 @@ public class LifecycleSupport
 {
     private final Mutex lock = new Mutex();
     
-    // FIXME: Sort out how to best use SMC-generated statemachine, this stuff is a bit wonky atm
-
     private final class Handler
         implements LifecycleHandler
     {
+        private final LifecycleSupport owner = LifecycleSupport.this;
+        
         private Throwable failure;
 
-        public Throwable getFailure() {
-            return failure;
+        public void log(final String message) {
+            log.debug(message);
+        }
+
+        public boolean isFailed() {
+            return failure != null;
         }
 
         public boolean isResettable() {
-            return LifecycleSupport.this.isResettable();
+            return owner.isResettable();
+        }
+
+        public void doFailed() {
+            if (failure != null) {
+                owner.doFailed(failure);
+            }
         }
 
         public void doStart() {
             try {
-                LifecycleSupport.this.doStart();
+                owner.doStart();
             }
             catch (Throwable e) {
                 failure = e;
@@ -56,7 +66,7 @@ public class LifecycleSupport
 
         public void doStop() {
             try {
-                LifecycleSupport.this.doStop();
+                owner.doStop();
             }
             catch (Throwable e) {
                 failure = e;
@@ -66,7 +76,7 @@ public class LifecycleSupport
         public void doReset() {
             failure = null;
             try {
-                LifecycleSupport.this.doReset();
+                owner.doReset();
             }
             catch (Throwable e) {
                 failure = e;
@@ -80,31 +90,33 @@ public class LifecycleSupport
         return this;
     }
 
-    protected void onFailure(final Throwable cause) {
+    protected void doFailed(final Throwable cause) {
         log.error("Life-cycle operation failed", cause);
-    }
-
-    private void throwFailureIfFailed() throws Exception {
-        Throwable failure = state.getOwner().getFailure();
-        if (failure != null) {
-            onFailure(failure);
-            state.fail();
-            Throwables.propagateIfInstanceOf(failure, Exception.class);
-            throw Throwables.propagate(failure);
-        }
+        throw Throwables.propagate(cause);
     }
 
     protected boolean isResettable() {
         return false;
     }
-    
+
+    protected void doReset() throws Exception {
+        // empty
+    }
+
+    private void maybeFail() {
+        if (state.getOwner().isFailed()) {
+            state.fail();
+        }
+    }
+
+    // NOTE: We enter a beginning state, then transition to the ending state which is where the callback is
+    // NOTE: invoked (sorta strange, should be sorted out) ... could probably use Entry { doXXX(); } instead?
+
     public final void start() throws Exception {
         synchronized (lock) {
-            log.debug("Starting");
             state.start();
             state.started();
-            throwFailureIfFailed();
-            log.debug("Started");
+            maybeFail();
         }
     }
 
@@ -114,19 +126,13 @@ public class LifecycleSupport
 
     public final void stop() throws Exception {
         synchronized (lock) {
-            log.debug("Stopping");
             state.stop();
             state.stopped();
-            throwFailureIfFailed();
-            log.debug("Stopped");
+            maybeFail();
         }
     }
 
     protected void doStop() throws Exception {
-        // empty
-    }
-
-    protected void doReset() throws Exception {
         // empty
     }
 

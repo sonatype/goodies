@@ -28,14 +28,18 @@ public class LifecycleHandlerTest
     public void simpleTest() {
         LifecycleHandler handler = new LifecycleHandler()
         {
-            public Throwable getFailure() {
-                return null;
+            public void log(final String message) {
+                LifecycleHandlerTest.this.log(message);
+            }
+
+            public boolean isFailed() {
+                return false;
             }
 
             public boolean isResettable() {
                 return false;
             }
-            
+
             public void doStart() {
                 log("DO START");
             }
@@ -46,6 +50,10 @@ public class LifecycleHandlerTest
 
             public void doReset() {
                 log("DO RESET");
+            }
+
+            public void doFailed() {
+                log("DO FAILED");
             }
         };
 

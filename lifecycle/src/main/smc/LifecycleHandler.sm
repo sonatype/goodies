@@ -17,13 +17,14 @@
 
 %start MainMap::Stopped
 
-// TODO: Look at changes in https://github.com/sonatype/sisu-bundle-launcher/blob/develop/src/main/smc/LifecycleHandler.sm
-// TODO: This statemachine does not allow restart after failure, which is problematic
-
 %map MainMap
 %%
 
-Starting {
+Starting
+    Entry {
+        log("Starting");
+    }
+{
     started Started {
         doStart();
     }
@@ -31,13 +32,21 @@ Starting {
     fail Failed {}
 }
 
-Started {
+Started
+    Entry {
+        log("Started");
+    }
+{
     stop Stopping {}
 
     fail Failed {}
 }
 
-Stopping {
+Stopping
+    Entry {
+        log("Stopping");
+    }
+{
     stopped Stopped {
         doStop();
     }
@@ -45,13 +54,22 @@ Stopping {
     fail Failed {}
 }
 
-Stopped {
+Stopped
+    Entry {
+        log("Stopped");
+    }
+{
     start Starting {}
 
     fail Failed {}
 }
 
-Failed {
+Failed
+    Entry {
+        log("Failed");
+        doFailed();
+    }
+{
     start [ctxt.isResettable()] Starting {
         doReset();
     }

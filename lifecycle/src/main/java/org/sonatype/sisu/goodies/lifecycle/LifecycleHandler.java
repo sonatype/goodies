@@ -21,13 +21,17 @@ package org.sonatype.sisu.goodies.lifecycle;
  */
 public interface LifecycleHandler
 {
+    void log(String message);
+
     void doStart();
 
     void doStop();
 
+    boolean isFailed();
+
+    void doFailed();
+
     boolean isResettable();
 
     void doReset();
-
-    Throwable getFailure();
 }
