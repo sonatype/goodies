@@ -70,20 +70,23 @@ public class LifecycleSupport
         log.error("Life-cycle operation failed", cause);
     }
 
+    private void throwFailureIfFailed() throws Exception {
+        Throwable failure = state.getOwner().getFailure();
+        if (failure != null) {
+            onFailure(failure);
+            state.fail();
+            Throwables.propagateIfInstanceOf(failure, Exception.class);
+            throw Throwables.propagate(failure);
+        }
+    }
+    
     public final void start() throws Exception {
         synchronized (lock) {
             log.debug("Starting");
             state.start();
             state.started();
-            Throwable failure = state.getOwner().getFailure();
-            if (failure != null) {
-                onFailure(failure);
-                state.fail();
-                throw Throwables.propagate(failure);
-            }
-            else {
-                log.debug("Started");
-            }
+            throwFailureIfFailed();
+            log.debug("Started");
         }
     }
 
@@ -96,15 +99,8 @@ public class LifecycleSupport
             log.debug("Stopping");
             state.stop();
             state.stopped();
-            Throwable failure = state.getOwner().getFailure();
-            if (failure != null) {
-                onFailure(failure);
-                state.fail();
-                throw Throwables.propagate(failure);
-            }
-            else {
-                log.debug("Stopped");
-            }
+            throwFailureIfFailed();
+            log.debug("Stopped");
         }
     }
 
