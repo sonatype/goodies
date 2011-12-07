@@ -12,6 +12,7 @@
  */
 package org.sonatype.sisu.goodies.lifecycle;
 
+import com.google.common.base.Throwables;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.Mutex;
 import org.sonatype.sisu.goodies.lifecycle.LifecycleHandlerContext.MainMap;
@@ -81,13 +82,7 @@ public class LifecycleSupport
             if (failure != null) {
                 onFailure(failure);
                 state.fail();
-                if (failure instanceof Exception) {
-                    throw (Exception)failure;
-                }
-                if (failure instanceof Error) {
-                    throw (Error)failure;
-                }
-                throw new Error(failure);
+                throw Throwables.propagate(failure);
             }
             else {
                 log.debug("Started");
@@ -108,13 +103,7 @@ public class LifecycleSupport
             if (failure != null) {
                 onFailure(failure);
                 state.fail();
-                if (failure instanceof Exception) {
-                    throw (Exception)failure;
-                }
-                if (failure instanceof Error) {
-                    throw (Error)failure;
-                }
-                throw new Error(failure);
+                throw Throwables.propagate(failure);
             }
             else {
                 log.debug("Stopped");
