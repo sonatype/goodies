@@ -15,6 +15,8 @@ package org.sonatype.sisu.goodies.lifecycle;
 import org.junit.Test;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static org.junit.Assert.fail;
 
 /**
@@ -25,12 +27,8 @@ public class LifecycleSupportTest
 {
     @Test
     public void startStop() throws Exception {
-        LifecycleSupport support = new LifecycleSupport() {
-            @Override
-            protected void onFailure(final Throwable cause) {
-                super.onFailure(cause);
-            }
-
+        LifecycleSupport support = new LifecycleSupport()
+        {
             @Override
             protected void doStart() throws Exception {
                 log("DO START");
@@ -50,12 +48,8 @@ public class LifecycleSupportTest
 
     @Test
     public void startStopFail() throws Exception {
-        LifecycleSupport support = new LifecycleSupport() {
-            @Override
-            protected void onFailure(final Throwable cause) {
-                super.onFailure(cause);
-            }
-
+        LifecycleSupport support = new LifecycleSupport()
+        {
             @Override
             protected void doStart() throws Exception {
                 log("DO START");
@@ -85,5 +79,90 @@ public class LifecycleSupportTest
         catch (Exception e) {
             // expected
         }
+    }
+
+    @Test
+    public void startStopFailResetStart() throws Exception {
+        LifecycleSupport support = new LifecycleSupport()
+        {
+            @Override
+            protected boolean isResettable() {
+                return true;
+            }
+
+            @Override
+            protected void doStart() throws Exception {
+                log("DO START");
+            }
+
+            @Override
+            protected void doStop() throws Exception {
+                log("DO STOP");
+                throw new Exception("FAIL");
+            }
+
+            @Override
+            protected void doReset() throws Exception {
+                log("DO RESET");
+            }
+        };
+
+        support.start();
+
+        try {
+            support.stop();
+            fail();
+        }
+        catch (Exception e) {
+            // expected
+        }
+
+        support.start();
+    }
+    
+    @Test
+    public void startStopFailResetStop() throws Exception {
+        final AtomicBoolean fail = new AtomicBoolean(true);
+
+        LifecycleSupport support = new LifecycleSupport()
+        {
+            @Override
+            protected boolean isResettable() {
+                return true;
+            }
+
+            @Override
+            protected void doStart() throws Exception {
+                log("DO START");
+            }
+
+            @Override
+            protected void doStop() throws Exception {
+                log("DO STOP");
+
+                // Fail the first time, but not the second
+                if (fail.get()) {
+                    fail.set(false);
+                    throw new Exception("FAIL");
+                }
+            }
+
+            @Override
+            protected void doReset() throws Exception {
+                log("DO RESET");
+            }
+        };
+
+        support.start();
+
+        try {
+            support.stop();
+            fail();
+        }
+        catch (Exception e) {
+            // expected
+        }
+
+        support.stop();
     }
 }

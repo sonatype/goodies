@@ -15,6 +15,8 @@ package org.sonatype.sisu.goodies.lifecycle;
 /**
  * Live-cycle state-machine handler.
  *
+ * This is the interface exposed to the generated state-machine for hooking up to custom behavior.
+ *
  * @since 1.0
  */
 public interface LifecycleHandler
@@ -22,6 +24,10 @@ public interface LifecycleHandler
     void doStart();
 
     void doStop();
+
+    boolean isResettable();
+
+    void doReset();
 
     Throwable getFailure();
 }

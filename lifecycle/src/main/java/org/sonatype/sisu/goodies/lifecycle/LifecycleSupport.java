@@ -29,7 +29,7 @@ public class LifecycleSupport
     implements Lifecycle
 {
     private final Mutex lock = new Mutex();
-
+    
     // FIXME: Sort out how to best use SMC-generated statemachine, this stuff is a bit wonky atm
 
     private final class Handler
@@ -39,6 +39,10 @@ public class LifecycleSupport
 
         public Throwable getFailure() {
             return failure;
+        }
+
+        public boolean isResettable() {
+            return LifecycleSupport.this.isResettable();
         }
 
         public void doStart() {
@@ -53,6 +57,16 @@ public class LifecycleSupport
         public void doStop() {
             try {
                 LifecycleSupport.this.doStop();
+            }
+            catch (Throwable e) {
+                failure = e;
+            }
+        }
+
+        public void doReset() {
+            failure = null;
+            try {
+                LifecycleSupport.this.doReset();
             }
             catch (Throwable e) {
                 failure = e;
@@ -78,6 +92,10 @@ public class LifecycleSupport
             Throwables.propagateIfInstanceOf(failure, Exception.class);
             throw Throwables.propagate(failure);
         }
+    }
+
+    protected boolean isResettable() {
+        return false;
     }
     
     public final void start() throws Exception {
@@ -105,6 +123,10 @@ public class LifecycleSupport
     }
 
     protected void doStop() throws Exception {
+        // empty
+    }
+
+    protected void doReset() throws Exception {
         // empty
     }
 

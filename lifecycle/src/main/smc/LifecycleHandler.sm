@@ -24,50 +24,43 @@
 %%
 
 Starting {
-    started
-        Started
-            {
-                doStart();
-            }
+    started Started {
+        doStart();
+    }
 
-    fail
-        Failed
-            {}
+    fail Failed {}
 }
 
 Started {
-    stop
-        Stopping
-            {}
+    stop Stopping {}
 
-    fail
-        Failed
-            {}
+    fail Failed {}
 }
 
 Stopping {
-    stopped
-        Stopped
-            {
-                doStop();
-            }
+    stopped Stopped {
+        doStop();
+    }
 
-    fail
-        Failed
-            {}
+    fail Failed {}
 }
 
 Stopped {
-    start
-        Starting
-            {}
+    start Starting {}
 
-    fail
-        Failed
-            {}
+    fail Failed {}
 }
 
 Failed {
+    start [ctxt.isResettable()] Starting {
+        doReset();
+    }
+
+    stop [ctxt.isResettable()] Stopping {
+        doReset();
+    }
+
+    fail Failed {}
 }
 
 %%

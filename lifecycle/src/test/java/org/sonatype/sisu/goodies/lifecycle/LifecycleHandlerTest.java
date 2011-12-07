@@ -32,12 +32,20 @@ public class LifecycleHandlerTest
                 return null;
             }
 
+            public boolean isResettable() {
+                return false;
+            }
+            
             public void doStart() {
                 log("DO START");
             }
 
             public void doStop() {
                 log("DO STOP");
+            }
+
+            public void doReset() {
+                log("DO RESET");
             }
         };
 
