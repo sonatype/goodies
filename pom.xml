@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.sonatype.forge</groupId>
         <artifactId>forge-parent</artifactId>
-        <version>10</version>
+        <version>11</version>
     </parent>
 
     <groupId>org.sonatype.sisu.goodies</groupId>
@@ -99,7 +99,7 @@
             <dependency>
                 <groupId>org.sonatype.sisu.litmus</groupId>
                 <artifactId>litmus-testsupport</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
 
             <dependency>
@@ -118,7 +118,7 @@
             <dependency>
                 <groupId>org.sonatype.gossip</groupId>
                 <artifactId>gossip-support</artifactId>
-                <version>1.8-SNAPSHOT</version>
+                <version>1.8</version>
             </dependency>
 
             <dependency>
@@ -130,7 +130,7 @@
             <dependency>
                 <groupId>org.sonatype.sisu.jacksbee</groupId>
                 <artifactId>jacksbee-runtime</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
 
             <dependency>
@@ -162,37 +162,37 @@
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-i18n</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-lifecycle</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-marshal</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-thread</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-event</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
