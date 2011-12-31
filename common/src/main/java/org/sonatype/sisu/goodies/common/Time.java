@@ -29,6 +29,17 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Representation of a specific unit of time.
  *
+ * Supports:
+ *
+ * <ul>
+ *     <li>NANOSECONDS</li>
+ *     <li>MICROSECONDS</li>
+ *     <li>MILLISECONDS</li>
+ *     <li>MINUTES</li>
+ *     <li>HOURS</li>
+ *     <li>DAYS</li>
+ * </ul>
+ *
  * @since 1.0
  */
 public class Time
@@ -176,7 +187,7 @@ public class Time
         new ParseConfig(MINUTES, "minutes", "minute", "min", "m"),
         new ParseConfig(HOURS, "hours", "hour", "hr", "h"),
         new ParseConfig(DAYS, "days", "day", "d"),
-        
+
         // These probably used less, so parse last
         new ParseConfig(MILLISECONDS, "milliseconds", "millisecond", "millis", "ms"),
         new ParseConfig(NANOSECONDS, "nanoseconds", "nanosecond", "nanos", "ns"),
@@ -190,7 +201,7 @@ public class Time
                 return t;
             }
         }
-        return null;
+        throw new RuntimeException("Unable to parse: " + value);
     }
 
     private static Time extract(final String value, final TimeUnit unit, final String... suffixes) {
