@@ -15,6 +15,8 @@ package org.sonatype.sisu.goodies.common;
 import org.junit.Test;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -45,5 +47,47 @@ public class TimeTest
         assertEquals(Time.minutes(1 * 24 * 60L).toDays(), oneDay.getValue());
         assertEquals(Time.hours(1 * 24L).toDays(), oneDay.getValue());
         assertEquals(Time.days(1L).toDays(), oneDay.getValue());
+    }
+
+    @Test
+    public void parse_nS() throws Exception {
+        Time time = Time.parse("1s");
+        assertThat(time, equalTo(Time.seconds(1)));
+    }
+
+    @Test
+    public void parse_n_S() throws Exception {
+        Time time = Time.parse("1 s");
+        assertThat(time, equalTo(Time.seconds(1)));
+    }
+
+    @Test
+    public void parse_n_S_() throws Exception {
+        Time time = Time.parse("1 s ");
+        assertThat(time, equalTo(Time.seconds(1)));
+    }
+
+    @Test
+    public void parse__n_S_() throws Exception {
+        Time time = Time.parse(" 1 s ");
+        assertThat(time, equalTo(Time.seconds(1)));
+    }
+
+    @Test
+    public void parse_nSec() throws Exception {
+        Time time = Time.parse("1sec");
+        assertThat(time, equalTo(Time.seconds(1)));
+    }
+
+    @Test
+    public void parse_nM() throws Exception {
+        Time time = Time.parse("1m");
+        assertThat(time, equalTo(Time.minutes(1)));
+    }
+
+    @Test
+    public void parse_nMin() throws Exception {
+        Time time = Time.parse("1min");
+        assertThat(time, equalTo(Time.minutes(1)));
     }
 }

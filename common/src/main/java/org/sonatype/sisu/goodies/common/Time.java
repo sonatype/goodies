@@ -10,7 +10,10 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
+
+import org.jetbrains.annotations.NonNls;
 
 import java.util.concurrent.TimeUnit;
 
@@ -140,5 +143,65 @@ public class Time
 
     public static Time days(final long value) {
         return new Time(value, DAYS);
+    }
+
+    //
+    // Parsing
+    //
+
+    /**
+     * @since 1.1
+     */
+    public static Time parse(final @NonNls String value) {
+        if (value != null) {
+            return doParse(value.trim().toLowerCase());
+        }
+        return null;
+    }
+
+    private static class ParseConfig
+    {
+        final TimeUnit unit;
+
+        final String[] suffixes;
+
+        private ParseConfig(final TimeUnit unit, final @NonNls String... suffixes) {
+            this.unit = unit;
+            this.suffixes = suffixes;
+        }
+    }
+
+    private static final ParseConfig[] PARSE_CONFIGS = {
+        new ParseConfig(SECONDS, "seconds", "second", "sec", "s"),
+        new ParseConfig(MINUTES, "minutes", "minute", "min", "m"),
+        new ParseConfig(HOURS, "hours", "hour", "hr", "h"),
+        new ParseConfig(DAYS, "days", "day", "d"),
+        
+        // These probably used less, so parse last
+        new ParseConfig(MILLISECONDS, "milliseconds", "millis", "ms"),
+        new ParseConfig(NANOSECONDS, "nanoseconds", "nanosecond", "ns"),
+        new ParseConfig(MICROSECONDS, "microseconds", "microsecond", "mu"),
+    };
+
+    private static Time doParse(final @NonNls String value) {
+        for (ParseConfig config : PARSE_CONFIGS) {
+            Time t = extract(value, config.unit, config.suffixes);
+            if (t != null) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    private static Time extract(final String value, final TimeUnit unit, final String... suffixes) {
+        for (String suffix : suffixes) {
+            int i = value.lastIndexOf(suffix);
+            if (i != -1) {
+                String s = value.substring(0, i).trim();
+                long n = Long.parseLong(s);
+                return new Time(n, unit);
+            }
+        }
+        return null;
     }
 }
