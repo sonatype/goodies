@@ -31,12 +31,12 @@ public class NameValue
 
     public final String value;
 
-    private NameValue(final String name, final String value) {
+    private NameValue(final @NonNls String name, final @NonNls String value) {
         this.name = name;
         this.value = value;
     }
 
-    public static NameValue parse(final String input) {
+    public static NameValue parse(final @NonNls String input) {
         checkNotNull(input);
         String name, value;
 
