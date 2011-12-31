@@ -43,12 +43,12 @@ public class TimeTest
         assertEquals(1 * 24L, oneDay.toHours());
         assertEquals(1L, oneDay.toDays());
 
-        assertEquals(Time.micros(1 * 24 * 60 * 60 * 1000 * 1000L).toDays(), oneDay.getValue());
-        assertEquals(Time.millis(1 * 24 * 60 * 60 * 1000L).toDays(), oneDay.getValue());
-        assertEquals(Time.seconds(1 * 24 * 60 * 60L).toDays(), oneDay.getValue());
-        assertEquals(Time.minutes(1 * 24 * 60L).toDays(), oneDay.getValue());
-        assertEquals(Time.hours(1 * 24L).toDays(), oneDay.getValue());
-        assertEquals(Time.days(1L).toDays(), oneDay.getValue());
+        assertEquals(Time.micros(1 * 24 * 60 * 60 * 1000 * 1000L).toDays(), oneDay.value());
+        assertEquals(Time.millis(1 * 24 * 60 * 60 * 1000L).toDays(), oneDay.value());
+        assertEquals(Time.seconds(1 * 24 * 60 * 60L).toDays(), oneDay.value());
+        assertEquals(Time.minutes(1 * 24 * 60L).toDays(), oneDay.value());
+        assertEquals(Time.hours(1 * 24L).toDays(), oneDay.value());
+        assertEquals(Time.days(1L).toDays(), oneDay.value());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class TimeTest
     public void asSeconds() {
         Time time = Time.minutes(2).asSeconds();
         log(time);
-        assertThat(time.getUnit(), equalTo(TimeUnit.SECONDS));
-        assertThat(time.getValue(), equalTo((2 * 60L)));
+        assertThat(time.unit(), equalTo(TimeUnit.SECONDS));
+        assertThat(time.value(), equalTo((2 * 60L)));
     }
 }
