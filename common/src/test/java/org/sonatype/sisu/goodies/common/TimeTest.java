@@ -100,4 +100,10 @@ public class TimeTest
         assertThat(time.unit(), equalTo(TimeUnit.SECONDS));
         assertThat(time.value(), equalTo((2 * 60L)));
     }
+
+    @Test
+    public void toMillisI() throws Exception {
+        int n = Time.seconds(1).toMillisI();
+        assertThat(n, equalTo(1000));
+    }
 }

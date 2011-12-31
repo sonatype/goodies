@@ -84,12 +84,26 @@ public class Time
     /**
      * @since 1.1
      */
+    public int toNanosI() {
+        return (int) toNanos();
+    }
+
+    /**
+     * @since 1.1
+     */
     public Time asNanos() {
         return nanos(toNanos());
     }
 
     public long toMicros() {
         return unit.toMicros(value);
+    }
+
+    /**
+     * @since 1.1
+     */
+    public int toMicrosI() {
+        return (int) toMicros();
     }
 
     /**
@@ -106,12 +120,26 @@ public class Time
     /**
      * @since 1.1
      */
+    public int toMillisI() {
+        return (int) toMillis();
+    }
+
+    /**
+     * @since 1.1
+     */
     public Time asMillis() {
         return millis(toMillis());
     }
 
     public long toSeconds() {
         return unit.toSeconds(value);
+    }
+
+    /**
+     * @since 1.1
+     */
+    public int toSecondsI() {
+        return (int) toSeconds();
     }
 
     /**
@@ -128,6 +156,13 @@ public class Time
     /**
      * @since 1.1
      */
+    public int toMinutesI() {
+        return (int) toMinutes();
+    }
+
+    /**
+     * @since 1.1
+     */
     public Time asMinutes() {
         return minutes(toMinutes());
     }
@@ -139,12 +174,26 @@ public class Time
     /**
      * @since 1.1
      */
+    public int toHoursI() {
+        return (int) toHours();
+    }
+
+    /**
+     * @since 1.1
+     */
     public Time asHours() {
         return hours(toHours());
     }
 
     public long toDays() {
         return unit.toDays(value);
+    }
+
+    /**
+     * @since 1.1
+     */
+    public int toDaysI() {
+        return (int) toDays();
     }
 
     /**
