@@ -219,9 +219,6 @@ public class ByteSize
     // Parsing
     //
 
-    /**
-     * @since 1.1
-     */
     public static ByteSize parse(final @NonNls String value) {
         if (value != null) {
             return doParse(value.trim().toLowerCase());
