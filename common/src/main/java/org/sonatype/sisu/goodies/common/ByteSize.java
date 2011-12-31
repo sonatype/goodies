@@ -206,9 +206,18 @@ public class ByteSize
         return result;
     }
 
+    private String unitName() {
+        // TODO: i18n support?
+        String name = unit.name().toLowerCase();
+        if (value == 1) {
+            name = name.substring(0, name.length() - 1);
+        }
+        return name;
+    }
+
     @Override
     public String toString() {
-        return String.format("%d %s", value, unit.name());
+        return String.format("%d %s", value, unitName());
     }
 
     public static ByteSize size(final long value, final ByteUnit unit) {
