@@ -178,9 +178,9 @@ public class Time
         new ParseConfig(DAYS, "days", "day", "d"),
         
         // These probably used less, so parse last
-        new ParseConfig(MILLISECONDS, "milliseconds", "millis", "ms"),
-        new ParseConfig(NANOSECONDS, "nanoseconds", "nanosecond", "ns"),
-        new ParseConfig(MICROSECONDS, "microseconds", "microsecond", "mu"),
+        new ParseConfig(MILLISECONDS, "milliseconds", "millisecond", "millis", "ms"),
+        new ParseConfig(NANOSECONDS, "nanoseconds", "nanosecond", "nanos", "ns"),
+        new ParseConfig(MICROSECONDS, "microseconds", "microsecond", "micros", "mu"),
     };
 
     private static Time doParse(final @NonNls String value) {
