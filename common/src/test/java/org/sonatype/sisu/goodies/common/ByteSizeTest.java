@@ -14,6 +14,7 @@
 package org.sonatype.sisu.goodies.common;
 
 import org.junit.Test;
+import org.sonatype.sisu.goodies.common.ByteSize.ByteUnit;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,7 +38,7 @@ public class ByteSizeTest
     public void toKilosToBytes() throws Exception {
         ByteSize size = ByteSize.kiloBytes(2);
         log(size);
-        assertThat(size.getValue(), equalTo((long)2));
+        assertThat(size.value(), equalTo((long) 2));
         assertThat(size.toKiloBytes(), equalTo((long)2));
         assertThat(size.toBytes(), equalTo((long)2048));
     }
@@ -95,5 +96,12 @@ public class ByteSizeTest
         log("mb: {}", size.toMegaBytes());
         log("gb: {}", size.toGigaBytes());
         log("tb: {}", size.toTeraBytes());
+    }
+
+    @Test
+    public void asKiloBytes() {
+        ByteSize size = ByteSize.bytes(1024).asKiloBytes();
+        assertThat(size.unit(), equalTo(ByteUnit.KILOBYTES));
+        assertThat(size.value(), equalTo(1L));
     }
 }

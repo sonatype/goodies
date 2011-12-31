@@ -142,11 +142,11 @@ public class ByteSize
         this.unit = checkNotNull(unit);
     }
 
-    public long getValue() {
+    public long value() {
         return value;
     }
 
-    public ByteUnit getUnit() {
+    public ByteUnit unit() {
         return unit;
     }
 
@@ -154,20 +154,40 @@ public class ByteSize
         return unit.asBytes(value);
     }
 
+    public ByteSize asBytes() {
+        return bytes(toBytes());
+    }
+
     public long toKiloBytes() {
         return unit.asKiloBytes(value);
+    }
+
+    public ByteSize asKiloBytes() {
+        return kiloBytes(toKiloBytes());
     }
 
     public long toMegaBytes() {
         return unit.asMegaBytes(value);
     }
 
+    public ByteSize asMegaBytes() {
+        return megaBytes(toMegaBytes());
+    }
+
     public long toGigaBytes() {
         return unit.asGigaBytes(value);
     }
 
+    public ByteSize asGigaBytes() {
+        return gigaBytes(toGigaBytes());
+    }
+
     public long toTeraBytes() {
         return unit.asTeraBytes(value);
+    }
+
+    public ByteSize asTeraBytes() {
+        return teraBytes(toTeraBytes());
     }
 
     @Override
