@@ -53,11 +53,27 @@ public class Time
         this.unit = checkNotNull(unit);
     }
 
+    @Deprecated
     public long getValue() {
         return value;
     }
 
+    /**
+     * @since 1.1
+     */
+    public long value() {
+        return value;
+    }
+
+    @Deprecated
     public TimeUnit getUnit() {
+        return unit;
+    }
+
+    /**
+     * @since 1.1
+     */
+    public TimeUnit unit() {
         return unit;
     }
 
@@ -65,28 +81,77 @@ public class Time
         return unit.toNanos(value);
     }
 
+    /**
+     * @since 1.1
+     */
+    public Time asNanos() {
+        return nanos(toNanos());
+    }
+
     public long toMicros() {
         return unit.toMicros(value);
+    }
+
+    /**
+     * @since 1.1
+     */
+    public Time asMicros() {
+        return micros(toMicros());
     }
 
     public long toMillis() {
         return unit.toMillis(value);
     }
 
+    /**
+     * @since 1.1
+     */
+    public Time asMillis() {
+        return millis(toMillis());
+    }
+
     public long toSeconds() {
         return unit.toSeconds(value);
+    }
+
+    /**
+     * @since 1.1
+     */
+    public Time asSeconds() {
+        return seconds(toSeconds());
     }
 
     public long toMinutes() {
         return unit.toMinutes(value);
     }
 
+    /**
+     * @since 1.1
+     */
+    public Time asMinutes() {
+        return minutes(toMinutes());
+    }
+
     public long toHours() {
         return unit.toHours(value);
     }
 
+    /**
+     * @since 1.1
+     */
+    public Time asHours() {
+        return hours(toHours());
+    }
+
     public long toDays() {
         return unit.toDays(value);
+    }
+
+    /**
+     * @since 1.1
+     */
+    public Time asDays() {
+        return days(toDays());
     }
 
     public void sleep() throws InterruptedException {

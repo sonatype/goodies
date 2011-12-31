@@ -15,6 +15,8 @@ package org.sonatype.sisu.goodies.common;
 import org.junit.Test;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
@@ -89,5 +91,13 @@ public class TimeTest
     public void parse_nMin() throws Exception {
         Time time = Time.parse("1min");
         assertThat(time, equalTo(Time.minutes(1)));
+    }
+
+    @Test
+    public void asSeconds() {
+        Time time = Time.minutes(2).asSeconds();
+        log(time);
+        assertThat(time.getUnit(), equalTo(TimeUnit.SECONDS));
+        assertThat(time.getValue(), equalTo((2 * 60L)));
     }
 }
