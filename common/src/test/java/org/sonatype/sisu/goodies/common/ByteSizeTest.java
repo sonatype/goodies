@@ -30,14 +30,70 @@ public class ByteSizeTest
     public void parse_nM() throws Exception {
         ByteSize size = ByteSize.parse("100m");
         log(size);
-        assertThat(size, equalTo(ByteSize.megabytes(100)));
+        assertThat(size, equalTo(ByteSize.megaBytes(100)));
     }
     
     @Test
     public void toKilosToBytes() throws Exception {
-        ByteSize kilos = ByteSize.kilobytes(2);
-        assertThat(kilos.getValue(), equalTo((long)2));
-        assertThat(kilos.toKiloBytes(), equalTo((long)2));
-        assertThat(kilos.toBytes(), equalTo((long)2048));
+        ByteSize size = ByteSize.kiloBytes(2);
+        log(size);
+        assertThat(size.getValue(), equalTo((long)2));
+        assertThat(size.toKiloBytes(), equalTo((long)2));
+        assertThat(size.toBytes(), equalTo((long)2048));
+    }
+
+    @Test
+    public void bytes() throws Exception {
+        ByteSize size = ByteSize.bytes(1);
+        log(size);
+        log("b: {}", size.toBytes());
+        log("kb: {}", size.toKiloBytes());
+        log("mb: {}", size.toMegaBytes());
+        log("gb: {}", size.toGigaBytes());
+        log("tb: {}", size.toTeraBytes());
+    }
+
+    @Test
+    public void kilo() throws Exception {
+        ByteSize size = ByteSize.kiloBytes(1);
+        log(size);
+        log("b: {}", size.toBytes());
+        log("kb: {}", size.toKiloBytes());
+        log("mb: {}", size.toMegaBytes());
+        log("gb: {}", size.toGigaBytes());
+        log("tb: {}", size.toTeraBytes());
+    }
+
+    @Test
+    public void mega() throws Exception {
+        ByteSize size = ByteSize.megaBytes(1);
+        log(size);
+        log("b: {}", size.toBytes());
+        log("kb: {}", size.toKiloBytes());
+        log("mb: {}", size.toMegaBytes());
+        log("gb: {}", size.toGigaBytes());
+        log("tb: {}", size.toTeraBytes());
+    }
+
+    @Test
+    public void giga() throws Exception {
+        ByteSize size = ByteSize.gigaBytes(1);
+        log(size);
+        log("b: {}", size.toBytes());
+        log("kb: {}", size.toKiloBytes());
+        log("mb: {}", size.toMegaBytes());
+        log("gb: {}", size.toGigaBytes());
+        log("tb: {}", size.toTeraBytes());
+    }
+
+    @Test
+    public void tera() throws Exception {
+        ByteSize size = ByteSize.teraBytes(1);
+        log(size);
+        log("b: {}", size.toBytes());
+        log("kb: {}", size.toKiloBytes());
+        log("mb: {}", size.toMegaBytes());
+        log("gb: {}", size.toGigaBytes());
+        log("tb: {}", size.toTeraBytes());
     }
 }

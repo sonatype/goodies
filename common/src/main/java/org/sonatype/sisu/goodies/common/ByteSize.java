@@ -54,11 +54,11 @@ public class ByteSize
                 case KILOBYTES:
                     return value * 1024;
                 case MEGABYTES:
-                    return value * (1024 ^ 2);
+                    return value * 1024 * 1024;
                 case GIGABYTES:
-                    return value * (1024 ^ 3);
+                    return value * 1024 * 1024 * 1024;
                 case TERABYTES:
-                    return value * (1024 ^ 4);
+                    return value * 1024 * 1024 * 1024 * 1024;
                 default:
                     throw new Error();
             }
@@ -73,9 +73,9 @@ public class ByteSize
                 case MEGABYTES:
                     return value * 1024;
                 case GIGABYTES:
-                    return value * (1024 ^ 2);
+                    return value * 1024 * 1024;
                 case TERABYTES:
-                    return value * (1024 ^ 3);
+                    return value * 1024 * 1024 * 1024;
                 default:
                     throw new Error();
             }
@@ -84,7 +84,7 @@ public class ByteSize
         public long asMegaBytes(final long value) {
             switch (this) {
                 case BYTES:
-                    return value / (1024 ^ 2);
+                    return value / 1024 * 1024;
                 case KILOBYTES:
                     return value / 1024;
                 case MEGABYTES:
@@ -92,7 +92,7 @@ public class ByteSize
                 case GIGABYTES:
                     return value * 1024;
                 case TERABYTES:
-                    return value * (1024 ^ 2);
+                    return value * 1024 * 1024;
                 default:
                     throw new Error();
             }
@@ -101,9 +101,9 @@ public class ByteSize
         public long asGigaBytes(final long value) {
             switch (this) {
                 case BYTES:
-                    return value / (1024 ^ 3);
+                    return value / 1024 * 1024 * 1024;
                 case KILOBYTES:
-                    return value / (1024 ^ 2);
+                    return value / 1024 * 1024;
                 case MEGABYTES:
                     return value / 1024;
                 case GIGABYTES:
@@ -118,11 +118,11 @@ public class ByteSize
         public long asTeraBytes(final long value) {
             switch (this) {
                 case BYTES:
-                    return value / (1024 ^ 4);
+                    return value / 1024 * 1024 * 1024 * 1024;
                 case KILOBYTES:
-                    return value / (1024 ^ 3);
+                    return value / 1024 * 1024 * 1024;
                 case MEGABYTES:
-                    return value / (1024 ^ 2);
+                    return value / 1024 * 1024;
                 case GIGABYTES:
                     return value / 1024;
                 case TERABYTES:
@@ -199,19 +199,19 @@ public class ByteSize
         return new ByteSize(value, BYTES);
     }
 
-    public static ByteSize kilobytes(final long value) {
+    public static ByteSize kiloBytes(final long value) {
         return new ByteSize(value, KILOBYTES);
     }
 
-    public static ByteSize megabytes(final long value) {
+    public static ByteSize megaBytes(final long value) {
         return new ByteSize(value, MEGABYTES);
     }
 
-    public static ByteSize gigabytes(final long value) {
+    public static ByteSize gigaBytes(final long value) {
         return new ByteSize(value, GIGABYTES);
     }
 
-    public static ByteSize terabytes(final long value) {
+    public static ByteSize teraBytes(final long value) {
         return new ByteSize(value, TERABYTES);
     }
 
@@ -243,10 +243,10 @@ public class ByteSize
 
     private static final ParseConfig[] PARSE_CONFIGS = {
         new ParseConfig(BYTES, "bytes", "byte", "b"),
-        new ParseConfig(KILOBYTES, "kilobytes", "kilobyte", "kb", "k"),
-        new ParseConfig(MEGABYTES, "megabytes", "megabyte", "mb", "m"),
-        new ParseConfig(GIGABYTES, "gigabytes", "gigabyte", "gb", "g"),
-        new ParseConfig(TERABYTES, "terabytes", "terebyte", "tb", "t"),
+        new ParseConfig(KILOBYTES, "kilobytes", "kilobyte", "kib", "kb", "k"),
+        new ParseConfig(MEGABYTES, "megabytes", "megabyte", "mib", "mb", "m"),
+        new ParseConfig(GIGABYTES, "gigabytes", "gigabyte", "gib", "gb", "g"),
+        new ParseConfig(TERABYTES, "terabytes", "terabyte", "tib", "tb", "t"),
     };
 
     private static ByteSize doParse(final @NonNls String value) {
