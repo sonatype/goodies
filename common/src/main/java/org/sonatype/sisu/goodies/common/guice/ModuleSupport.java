@@ -43,4 +43,16 @@ public class ModuleSupport
     protected void configure() {
         // empty
     }
+
+    //protected <T,F> void bindFactory(final Class<T> typeClass, final Class<F> factoryClass) {
+    //    install(new FactoryModuleBuilder()
+    //        .implement(typeClass, typeClass)
+    //        .build(factoryClass));
+    //}
+
+    //protected <T,F> void bindFactory(final Class<T> typeClass, final Class<? extends T> implClass, final Class<F> factoryClass) {
+    //    install(new FactoryModuleBuilder()
+    //        .implement(typeClass, implClass)
+    //        .build(factoryClass));
+    //}
 }
