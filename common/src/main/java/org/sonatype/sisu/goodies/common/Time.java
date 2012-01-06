@@ -314,7 +314,7 @@ public class Time
         // These probably used less, so parse last
         new ParseConfig(MILLISECONDS, "milliseconds", "millisecond", "millis", "ms"),
         new ParseConfig(NANOSECONDS, "nanoseconds", "nanosecond", "nanos", "ns"),
-        new ParseConfig(MICROSECONDS, "microseconds", "microsecond", "micros", "mu"),
+        new ParseConfig(MICROSECONDS, "microseconds", "microsecond", "micros", "us"),
     };
 
     private static Time doParse(final @NonNls String value) {
