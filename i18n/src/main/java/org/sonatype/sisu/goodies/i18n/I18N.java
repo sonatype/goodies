@@ -43,6 +43,8 @@ public class I18N
         super();
     }
 
+    // TODO: Need to hook up dynamic access to locale so this stuff can be useful in reality
+
     /**
      * Returns a {@link MessageSource} for the given types.
      *
