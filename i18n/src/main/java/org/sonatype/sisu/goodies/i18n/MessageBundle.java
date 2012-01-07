@@ -19,14 +19,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ???
+ * Marker interface for proxy-based I18n message bundles.
  *
  * @since 1.0
  */
 public interface MessageBundle
 {
     /**
-     * ???
+     * Message key.
      *
      * @since 1.0
      */
@@ -39,7 +39,7 @@ public interface MessageBundle
     }
 
     /**
-     * ???
+     * Default message.
      *
      * @since 1.0
      */
