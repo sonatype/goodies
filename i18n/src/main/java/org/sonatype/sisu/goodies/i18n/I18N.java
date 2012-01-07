@@ -44,6 +44,8 @@ public class I18N
     }
 
     // TODO: Need to hook up dynamic access to locale so this stuff can be useful in reality
+    // TODO: Need to abstract access to the current threads Locale (could be gotten from servlet api, or from local jvm etc)
+    // TODO: Need to dynamically build/cache/whatever the resource bundles, not sure how expensive it is to look it up each time
 
     /**
      * Returns a {@link MessageSource} for the given types.
