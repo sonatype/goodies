@@ -55,4 +55,22 @@ public class NameValueTest
         assertEquals("bar", have.get("foo"));
         assertEquals("ick", have.get("baz"));
     }
+
+    @Test
+    public void decodeWithSpacesAndValueTrim() {
+        String input = "foo=bar   ,\n   baz=ick";
+        Map<String,String> have = NameValue.decode(input, true);
+        assertEquals(2, have.size());
+        assertEquals("bar", have.get("foo"));
+        assertEquals("ick", have.get("baz"));
+    }
+
+    @Test
+    public void decodeWithSpacesAndNoValueTrim() {
+        String input = "foo=bar   ,\n   baz=ick";
+        Map<String,String> have = NameValue.decode(input, false);
+        assertEquals(2, have.size());
+        assertEquals("bar   ", have.get("foo"));
+        assertEquals("ick", have.get("baz"));
+    }
 }

@@ -57,15 +57,27 @@ public class NameValue
         return String.format("%s%s'%s'", name, SEPARATOR, value);
     }
 
-    public static Map<String,String> decode(final String input) {
+    //
+    // Decoding
+    //
+
+    public static Map<String,String> decode(final String pattern, final String input, final boolean trimValue) {
         checkNotNull(input);
 
         Map<String,String> parameters = Maps.newLinkedHashMap();
-        // split input based on "," or "/"
-        for (String item : input.split(",|/")) {
+        for (String item : input.split(pattern)) {
             NameValue nv = NameValue.parse(item);
-            parameters.put(nv.name, nv.value);
+            parameters.put(nv.name, trimValue ? nv.value.trim() : nv.value);
         }
         return parameters;
+    }
+
+
+    public static Map<String,String> decode(final String input, final boolean trimValue) {
+        return decode(",|/", input, trimValue);
+    }
+
+    public static Map<String,String> decode(final String input) {
+        return decode(input, true);
     }
 }
