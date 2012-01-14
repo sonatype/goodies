@@ -46,6 +46,8 @@ public class Time
 {
     private final long value;
 
+    // TODO: May want to duplicate TimeUnit so we can add support for > DAYS ?
+
     private final TimeUnit unit;
 
     public Time(final long value, final TimeUnit unit) {
