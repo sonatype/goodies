@@ -77,6 +77,8 @@ public class Time
         return unit;
     }
 
+    // TODO: May want to use getNanos() here so that Groovy DSL use ends up like Time.seconds(1).nanos instead of Time.seconds(1).toNanos() ?
+
     public long toNanos() {
         return unit.toNanos(value);
     }
