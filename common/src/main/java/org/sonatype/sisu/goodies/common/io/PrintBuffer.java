@@ -13,6 +13,7 @@
 package org.sonatype.sisu.goodies.common.io;
 
 import java.io.PrintWriter;
+import java.lang.Object;
 
 /**
  * String-based {@link PrintWriter} backed by {@link StringBuilderWriter}.
@@ -28,6 +29,15 @@ public class PrintBuffer
 
     public StringBuilder getBuffer() {
         return ((StringBuilderWriter)out).getBuffer();
+    }
+
+    /**
+     * @since 1.1
+     */
+    public PrintBuffer formatln(final String format, final Object... args) {
+        format(format, args);
+        println();
+        return this;
     }
 
     public void reset() {
