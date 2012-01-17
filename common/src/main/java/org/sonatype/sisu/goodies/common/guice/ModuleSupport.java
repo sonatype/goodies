@@ -45,12 +45,18 @@ public class ModuleSupport
         // empty
     }
 
+    /**
+     * @since 1.2
+     */
     protected <T,F> void bindFactory(final Class<T> typeClass, final Class<F> factoryClass) {
         install(new FactoryModuleBuilder()
             .implement(typeClass, typeClass)
             .build(factoryClass));
     }
 
+    /**
+     * @since 1.2
+     */
     protected <T,F> void bindFactory(final Class<T> typeClass, final Class<? extends T> implClass, final Class<F> factoryClass) {
         install(new FactoryModuleBuilder()
             .implement(typeClass, implClass)
