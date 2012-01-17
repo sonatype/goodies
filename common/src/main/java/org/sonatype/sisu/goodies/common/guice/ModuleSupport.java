@@ -14,6 +14,7 @@ package org.sonatype.sisu.goodies.common.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,15 +45,15 @@ public class ModuleSupport
         // empty
     }
 
-    //protected <T,F> void bindFactory(final Class<T> typeClass, final Class<F> factoryClass) {
-    //    install(new FactoryModuleBuilder()
-    //        .implement(typeClass, typeClass)
-    //        .build(factoryClass));
-    //}
+    protected <T,F> void bindFactory(final Class<T> typeClass, final Class<F> factoryClass) {
+        install(new FactoryModuleBuilder()
+            .implement(typeClass, typeClass)
+            .build(factoryClass));
+    }
 
-    //protected <T,F> void bindFactory(final Class<T> typeClass, final Class<? extends T> implClass, final Class<F> factoryClass) {
-    //    install(new FactoryModuleBuilder()
-    //        .implement(typeClass, implClass)
-    //        .build(factoryClass));
-    //}
+    protected <T,F> void bindFactory(final Class<T> typeClass, final Class<? extends T> implClass, final Class<F> factoryClass) {
+        install(new FactoryModuleBuilder()
+            .implement(typeClass, implClass)
+            .build(factoryClass));
+    }
 }
