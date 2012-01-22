@@ -146,12 +146,26 @@ public class ByteSize
         return value;
     }
 
+    /**
+     * @since 1.2
+     */
+    public int valueI() {
+        return (int)value();
+    }
+
     public ByteUnit unit() {
         return unit;
     }
 
     public long toBytes() {
         return unit.asBytes(value);
+    }
+
+    /**
+     * @since 1.2
+     */
+    public int toBytesI() {
+        return (int) toBytes();
     }
 
     public ByteSize asBytes() {
@@ -162,12 +176,26 @@ public class ByteSize
         return unit.asKiloBytes(value);
     }
 
+    /**
+     * @since 1.2
+     */
+    public int toKiloBytesI() {
+        return (int) toKiloBytes();
+    }
+
     public ByteSize asKiloBytes() {
         return kiloBytes(toKiloBytes());
     }
 
     public long toMegaBytes() {
         return unit.asMegaBytes(value);
+    }
+
+    /**
+     * @since 1.2
+     */
+    public int toMegaBytesI() {
+        return (int)toMegaBytes();
     }
 
     public ByteSize asMegaBytes() {
@@ -178,6 +206,13 @@ public class ByteSize
         return unit.asGigaBytes(value);
     }
 
+    /**
+     * @since 1.2
+     */
+    public int toGigaBytesI() {
+        return (int)toGigaBytes();
+    }
+
     public ByteSize asGigaBytes() {
         return gigaBytes(toGigaBytes());
     }
@@ -186,6 +221,13 @@ public class ByteSize
         return unit.asTeraBytes(value);
     }
 
+    /**
+     * @since 1.2
+     */
+    public int toTeraBytesI() {
+        return (int)toTeraBytes();
+    }
+    
     public ByteSize asTeraBytes() {
         return teraBytes(toTeraBytes());
     }
