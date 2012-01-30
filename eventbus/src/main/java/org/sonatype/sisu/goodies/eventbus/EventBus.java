@@ -73,7 +73,7 @@ package org.sonatype.sisu.goodies.eventbus;
  * <p/>
  * <p>This class is safe for concurrent use.
  *
- * @since 2.0
+ * @since 1.2
  */
 public interface EventBus
 {
