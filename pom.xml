@@ -162,42 +162,42 @@
                 <version>1.8.5</version>
             </dependency>
 
-            <!-- INTERNAL -->
+            <!-- INTERNAL (DO NOT USE ${project.version}) -->
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-common</artifactId>
-                <version>${project.version}</version>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-i18n</artifactId>
-                <version>${project.version}</version>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-lifecycle</artifactId>
-                <version>${project.version}</version>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-marshal</artifactId>
-                <version>${project.version}</version>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-thread</artifactId>
-                <version>${project.version}</version>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-event</artifactId>
-                <version>${project.version}</version>
+                <artifactId>goodies-eventbus</artifactId>
+                <version>1.2-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -208,7 +208,6 @@
         <module>lifecycle</module>
         <module>marshal</module>
         <module>thread</module>
-        <module>event</module>
         <module>eventbus</module>
     </modules>
 
