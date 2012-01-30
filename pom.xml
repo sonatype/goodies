@@ -209,6 +209,7 @@
         <module>marshal</module>
         <module>thread</module>
         <module>event</module>
+        <module>eventbus</module>
     </modules>
 
     <build>
