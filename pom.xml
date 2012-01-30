@@ -141,25 +141,25 @@
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-core-asl</artifactId>
-                <version>1.8.5</version>
+                <version>1.8.8</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-mapper-asl</artifactId>
-                <version>1.8.5</version>
+                <version>1.8.8</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-jaxrs</artifactId>
-                <version>1.8.5</version>
+                <version>1.8.8</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-xc</artifactId>
-                <version>1.8.5</version>
+                <version>1.8.8</version>
             </dependency>
 
             <!-- INTERNAL (DO NOT USE ${project.version}) -->
