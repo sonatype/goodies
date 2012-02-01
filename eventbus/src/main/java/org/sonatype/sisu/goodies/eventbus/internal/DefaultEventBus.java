@@ -33,7 +33,7 @@ import com.google.common.collect.Lists;
  */
 @Named
 @Singleton
-class DefaultEventBus
+public class DefaultEventBus
     implements EventBus
 {
 
@@ -42,7 +42,7 @@ class DefaultEventBus
     private org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
 
     @Inject
-    DefaultEventBus()
+    public DefaultEventBus()
     {
         eventBus = new org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus( "nexus" )
         {
