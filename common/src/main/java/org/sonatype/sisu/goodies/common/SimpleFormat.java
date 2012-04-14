@@ -17,7 +17,7 @@ import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Simple printf-like format which only deals with {@code %s} placeholders.
+ * Simple substituting format which only deals with {@code %s} placeholders.
  *
  * This is duplicated from Guava's {@link Preconditions#format} and promoted to public access.
  *
