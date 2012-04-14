@@ -10,10 +10,11 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto;
+package org.sonatype.sisu.goodies.crypto.internal;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
+import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;

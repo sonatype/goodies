@@ -14,6 +14,7 @@ package org.sonatype.sisu.goodies.crypto;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sonatype.sisu.goodies.crypto.internal.CryptoHelperImpl;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 /**
