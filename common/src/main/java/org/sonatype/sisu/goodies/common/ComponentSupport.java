@@ -25,14 +25,45 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ComponentSupport
 {
+
+    /**
+     * The protected member is very bad idea, the use of #getLogger() method is encouraged. This member
+     * should be private, but it would break backward compatibility, code that already assumes log is
+     * protected, and hence, directly accessible.
+     *
+     * @deprecated Do not use the inherited protected {@code log} member, but the #getLogger() method instead.
+     */
     @NonNls
+    @Deprecated
     protected final Logger log;
 
-    protected ComponentSupport() {
-        this.log = checkNotNull(createLogger());
+    /**
+     * Default constructor that creates logger for component upon instantiation.
+     */
+    protected ComponentSupport()
+    {
+        this.log = checkNotNull( createLogger() );
     }
 
-    protected Logger createLogger() {
-        return LoggerFactory.getLogger(getClass());
+    /**
+     * Creates logger instance to be used with component instance. It might be overridden by subclasses to implement
+     * alternative logger naming strategy. By default, this method does the "usual" fluff: {@code LoggerFactory.getLogger(getClass())}.
+     *
+     * @return The Logger instance to be used by component for logging.
+     */
+    protected Logger createLogger()
+    {
+        return LoggerFactory.getLogger( getClass() );
     }
+
+    /**
+     * Returns the Logger instance of this component. Never returns {@code null}.
+     *
+     * @return
+     */
+    protected Logger getLogger()
+    {
+        return log;
+    }
+
 }
