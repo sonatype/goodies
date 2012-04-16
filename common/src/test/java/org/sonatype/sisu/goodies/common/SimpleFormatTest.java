@@ -15,10 +15,7 @@ package org.sonatype.sisu.goodies.common;
 import org.junit.Test;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link SimpleFormat}.
