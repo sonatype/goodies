@@ -71,4 +71,14 @@ public class SimpleFormat
 
         return builder.toString();
     }
+
+    public static FormatTemplate template(final String format, final Object... args) {
+        return new FormatTemplate(format, args)
+        {
+            @Override
+            protected String render() {
+                return SimpleFormat.format(getFormat(), getArgs());
+            }
+        };
+    }
 }

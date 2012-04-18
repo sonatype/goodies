@@ -37,7 +37,7 @@ public class SimpleFormatTest
         assertEquals("foo %i [bar]", value);
     }
 
-    @SuppressWarnings("NullArgumentToVariableArgMethod")
+    @SuppressWarnings({"NullableProblems", "NullArgumentToVariableArgMethod"})
     @Test
     public void formatWithNullArgs() throws Exception {
         String value = SimpleFormat.format("foo %s", null);
@@ -53,10 +53,32 @@ public class SimpleFormatTest
         assertEquals("foo %s", value);
     }
 
+    @SuppressWarnings("NullableProblems")
     @Test
     public void formatWithNullTemplate() throws Exception {
         String value = SimpleFormat.format(null, "foo");
         log(value);
         assertEquals("null [foo]", value);
+    }
+
+    @Test
+    public void templateUse() {
+        FormatTemplate t = SimpleFormat.template("foo %s", "bar");
+        assertEquals("foo %s", t.getFormat());
+        assertEquals(1, t.getArgs().length);
+        assertEquals("foo bar", t.evaluate());
+    }
+
+    @Test
+    public void templateUseWithDynamic() {
+        StringBuilder buff = new StringBuilder("bar");
+        FormatTemplate t = SimpleFormat.template("foo %s", buff);
+        t.setDynamic(true);
+        assertEquals("foo %s", t.getFormat());
+        assertEquals(1, t.getArgs().length);
+        assertEquals("foo bar", t.evaluate());
+
+        buff.append(" baz");
+        assertEquals("foo bar baz", t.evaluate());
     }
 }
