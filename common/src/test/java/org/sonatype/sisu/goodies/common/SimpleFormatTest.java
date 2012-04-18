@@ -36,4 +36,27 @@ public class SimpleFormatTest
         log(value);
         assertEquals("foo %i [bar]", value);
     }
+
+    @SuppressWarnings("NullArgumentToVariableArgMethod")
+    @Test
+    public void formatWithNullArgs() throws Exception {
+        String value = SimpleFormat.format("foo %s", null);
+        log(value);
+        assertEquals("foo %s", value);
+    }
+
+    @SuppressWarnings("RedundantArrayCreation")
+    @Test
+    public void formatWithEmptyArgs() throws Exception {
+        String value = SimpleFormat.format("foo %s", new Object[0]);
+        log(value);
+        assertEquals("foo %s", value);
+    }
+
+    @Test
+    public void formatWithNullTemplate() throws Exception {
+        String value = SimpleFormat.format(null, "foo");
+        log(value);
+        assertEquals("null [foo]", value);
+    }
 }
