@@ -25,6 +25,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SimpleFormat
 {
+    static final String PLACEHOLDER = "%s";
+
     /**
      * Substitutes each {@code %s} in {@code template} with an argument. These are matched by position - the first {@code %s} gets {@code args[0]},
      * etc. If there are more arguments than placeholders, the unmatched arguments will be appended to the end of the formatted message in square
@@ -43,7 +45,7 @@ public class SimpleFormat
         int templateStart = 0;
         int i = 0;
         while (i < args.length) {
-            int placeholderStart = template.indexOf("%s", templateStart);
+            int placeholderStart = template.indexOf(PLACEHOLDER, templateStart);
             if (placeholderStart == -1) {
                 break;
             }
