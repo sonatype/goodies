@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.sonatype.sisu.goodies</groupId>
         <artifactId>goodies</artifactId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.3</version>
     </parent>
 
     <artifactId>goodies-i18n</artifactId>
