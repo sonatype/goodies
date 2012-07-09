@@ -104,6 +104,7 @@ public class LifecycleSupport
     }
 
     private void maybeFail() {
+        //  Called from start or stop, in a synchronized block already
         if (state.getOwner().isFailed()) {
             state.fail();
         }
@@ -136,8 +137,14 @@ public class LifecycleSupport
         // empty
     }
 
+    // FIXME: Need to sort out the synchronization locks here...
+    // FIXME: Some parts of 'state' are sync, some aren't like getState()
+    // FIXME: For now use our lock & pretend that 'state' is not sync'd at all
+
     protected boolean isStarted() {
-        return state.getState().equals(MainMap.Started);
+        synchronized (lock) {
+            return state.getState().equals(MainMap.Started);
+        }
     }
 
     protected void ensureStarted() {
@@ -145,7 +152,9 @@ public class LifecycleSupport
     }
 
     protected boolean isStopped() {
-        return state.getState().equals(MainMap.Stopped);
+        synchronized (lock) {
+            return state.getState().equals(MainMap.Stopped);
+        }
     }
 
     protected void ensureStopped() {
