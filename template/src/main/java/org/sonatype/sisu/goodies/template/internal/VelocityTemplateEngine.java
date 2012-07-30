@@ -5,7 +5,7 @@
  * Sonatype and Sonatype Nexus are trademarks of Sonatype, Inc. Apache Maven is a trademark of the Apache Foundation.
  * M2Eclipse is a trademark of the Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
-package org.sonatype.sisu.goodies.templateengine.internal;
+package org.sonatype.sisu.goodies.template.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,8 +24,8 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.io.Closer;
-import org.sonatype.sisu.goodies.templateengine.TemplateEngine;
-import org.sonatype.sisu.goodies.templateengine.TemplateParameters;
+import org.sonatype.sisu.goodies.template.TemplateEngine;
+import org.sonatype.sisu.goodies.template.TemplateParameters;
 import org.sonatype.sisu.velocity.Velocity;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
