@@ -50,10 +50,6 @@ public class VelocityTemplateEngine
         this.velocity = checkNotNull( velocity );
     }
 
-    // FIXME: Sort out how we can use a better style-sheet for these templates so they can use normal-ish markup and not ugly verbose stuff we have to do now due to extjs style being messed up.
-
-    // FIXME: Sort out how to use Velocity template mechanism properly in NX
-
     public String render( final Object owner, final @NonNls URL template, @Nullable Map<String, Object> params )
     {
         checkNotNull( template );
