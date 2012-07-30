@@ -19,7 +19,7 @@ import org.sonatype.sisu.goodies.common.ScriptAccessible;
 /**
  * Helper to deal with {@link Throwable} instances in a template.
  *
- * @since 1.0
+ * @since 1.4
  */
 public class TemplateThrowableAdapter
 {
