@@ -169,6 +169,13 @@
                 <version>1.9.4</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.sonatype.sisu</groupId>
+                <artifactId>sisu-velocity</artifactId>
+                <version>1.1</version>
+                <optional>true</optional>
+            </dependency>
+
             <!-- INTERNAL (DO NOT USE ${project.version}) -->
 
             <dependency>
@@ -212,6 +219,12 @@
                 <artifactId>goodies-crypto</artifactId>
                 <version>1.4-SNAPSHOT</version>
             </dependency>
+
+          <dependency>
+            <groupId>org.sonatype.sisu.goodies</groupId>
+            <artifactId>goodies-template-engine</artifactId>
+            <version>1.4-SNAPSHOT</version>
+          </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -223,6 +236,7 @@
         <module>thread</module>
         <module>eventbus</module>
         <module>crypto</module>
+        <module>template-engine</module>
     </modules>
 
     <build>
