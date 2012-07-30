@@ -220,11 +220,11 @@
                 <version>1.4-SNAPSHOT</version>
             </dependency>
 
-          <dependency>
-            <groupId>org.sonatype.sisu.goodies</groupId>
-            <artifactId>goodies-template-engine</artifactId>
-            <version>1.4-SNAPSHOT</version>
-          </dependency>
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-template-engine</artifactId>
+                <version>1.4-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
