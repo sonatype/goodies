@@ -23,7 +23,7 @@
     </parent>
 
     <artifactId>goodies-thread</artifactId>
-    <name>Goodies Thread</name>
+    <name>${project.artifactId}</name>
 
     <dependencies>
         <dependency>

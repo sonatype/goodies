@@ -24,7 +24,7 @@
     </parent>
 
     <artifactId>goodies-template-engine</artifactId>
-    <name>Goodies Template Engine</name>
+    <name>${project.artifactId}</name>
 
     <dependencies>
         <dependency>
