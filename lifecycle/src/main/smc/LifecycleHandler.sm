@@ -29,6 +29,8 @@ Starting
         doStart();
     }
 
+    // FIXME: When start fails logs show "Started" then "Failed" which is confusing
+
     fail Failed {}
 }
 
