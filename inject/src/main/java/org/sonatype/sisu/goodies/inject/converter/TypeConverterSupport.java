@@ -6,7 +6,7 @@
  * M2Eclipse is a trademark of the Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
 
-package org.sonatype.sisu.goodies.inject;
+package org.sonatype.sisu.goodies.inject.converter;
 
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
