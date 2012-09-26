@@ -58,6 +58,8 @@ public class PropertiesModule
         return this;
     }
 
+    // TODO: Look at using the style in pluginkits ConfigurationPropertiesModule to allow for early binding
+
     @Override
     protected void configure() {
         checkState(getSources().size() != 0, "At least one source is required");
