@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.common.guice;
+package org.sonatype.sisu.goodies.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
@@ -24,11 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Support for Guice {@link Module} implementations.
  *
- * @since 1.0
- *
- * @deprecated Use org.sonatype.sisu.goodies.inject.ModuleSupport instead.
+ * @since 1.5
  */
-@Deprecated
 public class ModuleSupport
     extends AbstractModule
 {
@@ -48,18 +45,12 @@ public class ModuleSupport
         // empty
     }
 
-    /**
-     * @since 1.2
-     */
     protected <T,F> void bindFactory(final Class<T> typeClass, final Class<F> factoryClass) {
         install(new FactoryModuleBuilder()
             .implement(typeClass, typeClass)
             .build(factoryClass));
     }
 
-    /**
-     * @since 1.2
-     */
     protected <T,F> void bindFactory(final Class<T> typeClass, final Class<? extends T> implClass, final Class<F> factoryClass) {
         install(new FactoryModuleBuilder()
             .implement(typeClass, implClass)

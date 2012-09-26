@@ -13,7 +13,8 @@
     See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -26,7 +27,7 @@
     <artifactId>goodies</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
-    <version>1.4.1-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
 
     <url>https://github.com/sonatype/sisu-goodies</url>
 
@@ -64,7 +65,7 @@
 
         <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
         <build.timestamp>${maven.build.timestamp}</build.timestamp>
-        <build.number />
+        <build.number/>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     </properties>
@@ -181,49 +182,55 @@
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-common</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-i18n</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-lifecycle</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-marshal</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-thread</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-eventbus</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-crypto</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.goodies</groupId>
                 <artifactId>goodies-template</artifactId>
-                <version>1.4.1-SNAPSHOT</version>
+                <version>1.5-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-inject</artifactId>
+                <version>1.5-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -237,6 +244,7 @@
         <module>eventbus</module>
         <module>crypto</module>
         <module>template</module>
+        <module>inject</module>
     </modules>
 
     <build>
@@ -465,7 +473,7 @@
                                             </goals>
                                         </pluginExecutionFilter>
                                         <action>
-                                            <execute />
+                                            <execute/>
                                         </action>
                                     </pluginExecution>
                                     <pluginExecution>
@@ -478,7 +486,7 @@
                                             </goals>
                                         </pluginExecutionFilter>
                                         <action>
-                                            <execute />
+                                            <execute/>
                                         </action>
                                     </pluginExecution>
                                 </pluginExecutions>
