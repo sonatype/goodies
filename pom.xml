@@ -110,6 +110,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.sonatype.sisu.inject</groupId>
+                <artifactId>guice-servlet</artifactId>
+                <version>3.1.1</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.sonatype.sisu.litmus</groupId>
                 <artifactId>litmus-testsupport</artifactId>
                 <version>1.2</version>
@@ -232,6 +238,12 @@
                 <artifactId>goodies-inject</artifactId>
                 <version>1.5-SNAPSHOT</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-servlet</artifactId>
+                <version>1.5-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -245,6 +257,7 @@
         <module>crypto</module>
         <module>template</module>
         <module>inject</module>
+        <module>servlet</module>
     </modules>
 
     <build>

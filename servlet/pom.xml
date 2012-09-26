@@ -23,29 +23,24 @@
         <version>1.5-SNAPSHOT</version>
     </parent>
 
-    <artifactId>goodies-inject</artifactId>
+    <artifactId>goodies-servlet</artifactId>
     <name>${project.artifactId}</name>
 
     <dependencies>
         <dependency>
             <groupId>org.sonatype.sisu.goodies</groupId>
-            <artifactId>goodies-common</artifactId>
+            <artifactId>goodies-inject</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.sonatype.sisu</groupId>
-            <artifactId>sisu-inject-bean</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.sonatype.sisu</groupId>
-            <artifactId>sisu-guice</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
         </dependency>
 
         <dependency>
             <groupId>org.sonatype.sisu.inject</groupId>
-            <artifactId>guice-assistedinject</artifactId>
-            <optional>true</optional>
+            <artifactId>guice-servlet</artifactId>
         </dependency>
 
         <dependency>
