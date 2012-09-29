@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.servlet.sisu;
 
 import com.google.common.collect.Lists;
@@ -20,7 +21,10 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonatype.guice.bean.binders.SpaceModule;
 import org.sonatype.guice.bean.binders.WireModule;
+import org.sonatype.guice.bean.reflect.URLClassSpace;
+import org.sonatype.inject.BeanScanning;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -88,6 +92,6 @@ public class SisuServletContextListener
     }
 
     protected void configureModules(final List<Module> modules) {
-        // empty
+        modules.add(new SpaceModule(new URLClassSpace(getClass().getClassLoader()), BeanScanning.CACHE));
     }
 }
