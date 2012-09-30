@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.servlet;
 
 import com.google.common.collect.Maps;
@@ -17,7 +18,6 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Query-string helpers.
@@ -26,14 +26,32 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class QueryStrings
 {
+    public static final String FIELD_SEPARATOR = "&";
+
+    public static final String VALUE_SEPARATOR = "=";
+
+    /**
+     * Parses a query-string into a map.
+     *
+     * @param input Query-string input ot parse; never null
+     * @return  Ordered map of parsed query string parameters.
+     */
     public static Map<String, String> parse(final String input) {
         checkNotNull(input);
-        Map<String, String> params = Maps.newHashMap();
-        String[] parts = input.split("&");
+        Map<String, String> params = Maps.newLinkedHashMap();
+        String[] parts = input.split(FIELD_SEPARATOR);
         for (String part : parts) {
-            String[] kv = part.split("=");
-            checkState(kv.length == 2, "Malformed parameter");
-            params.put(kv[0], kv[1]);
+            String key, value;
+            int i = part.indexOf(VALUE_SEPARATOR);
+            if (i == -1) {
+                key = part;
+                value = null;
+            }
+            else {
+                key = part.substring(0, i);
+                value = part.substring(i + 1, part.length());
+            }
+            params.put(key, value);
         }
         return params;
     }

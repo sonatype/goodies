@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class ParametersBuilder
 {
-    private final Map<String, String> params = Maps.newHashMap();
+    private final Map<String, String> params = Maps.newLinkedHashMap();
 
     public ParametersBuilder set(final @NonNls String key, final @Nullable Object value) {
         params.put(key, value != null ? String.valueOf(value) : null);
@@ -34,5 +34,12 @@ public class ParametersBuilder
 
     public Map<String, String> get() {
         return params;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+            "params=" + params +
+            '}';
     }
 }
