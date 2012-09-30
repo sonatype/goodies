@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.crypto.internal;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -50,11 +51,23 @@ public class CryptoHelperImpl
     private final Provider provider;
 
     public CryptoHelperImpl() {
-        this.provider = new BouncyCastleProvider();
-        Security.addProvider(provider);
-        if (log.isDebugEnabled()) {
-            log.debug("Installed provider: {}", provider.getInfo());
+        this.provider = configureProvider();
+    }
+
+    /**
+     * Configures the {@link BouncyCastleProvider} if its has not already been added.
+     *
+     * @return The {@link BouncyCastleProvider} instance.
+     *
+     * @since 1.5
+     */
+    public static Provider configureProvider() {
+        Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
+        if (provider == null) {
+            provider = new BouncyCastleProvider();
+            Security.addProvider(provider);
         }
+        return provider;
     }
 
     public Provider getProvider() {
@@ -62,7 +75,7 @@ public class CryptoHelperImpl
     }
 
     private void logFallback(final Throwable cause) {
-        log.trace("Falling back to system selection due to: " + cause);
+        log.trace("Falling back to system selection due to: " + cause); // omit stack-trace
     }
 
     @Override
