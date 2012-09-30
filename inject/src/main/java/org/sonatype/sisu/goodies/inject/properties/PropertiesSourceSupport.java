@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.properties;
 
 import com.google.common.base.Throwables;
@@ -17,9 +18,11 @@ import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.io.Closer;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Properties;
 
@@ -32,17 +35,6 @@ public abstract class PropertiesSourceSupport
     extends ComponentSupport
     implements PropertiesSource
 {
-    protected Properties loadFromStream(final InputStream input) throws Exception {
-        Properties props = new Properties();
-        try {
-            props.load(new BufferedInputStream(input));
-            return props;
-        }
-        finally {
-            Closer.close(input);
-        }
-    }
-
     @Override
     public Properties properties() {
         try {
@@ -55,12 +47,34 @@ public abstract class PropertiesSourceSupport
 
     protected abstract Properties loadProperties() throws Exception;
 
+    protected Properties loadProperties(final InputStream input) throws Exception {
+        Properties props = new Properties();
+        try {
+            props.load(new BufferedInputStream(input));
+            return props;
+        }
+        finally {
+            Closer.close(input);
+        }
+    }
+
+    protected Properties loadProperties(final Reader reader) throws Exception {
+        Properties props = new Properties();
+        try {
+            props.load(new BufferedReader(reader));
+            return props;
+        }
+        finally {
+            Closer.close(reader);
+        }
+    }
+
     protected Properties loadProperties(final File file) throws Exception {
         Properties props = new Properties();
         log.info("Loading properties from: {}", file);
 
         if (file.exists()) {
-            return loadFromStream(new FileInputStream(file));
+            return loadProperties(new FileReader(file));
         }
         else {
             log.warn("Missing properties file: {}", file);
@@ -72,6 +86,6 @@ public abstract class PropertiesSourceSupport
     protected Properties loadProperties(final URL resource) throws Exception {
         log.debug("Loading properties from: {}", resource);
 
-        return loadFromStream(resource.openStream());
+        return loadProperties(resource.openStream());
     }
 }
