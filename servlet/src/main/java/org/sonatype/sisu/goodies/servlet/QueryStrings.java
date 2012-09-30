@@ -38,21 +38,21 @@ public class QueryStrings
      */
     public static Map<String, String> parse(final String input) {
         checkNotNull(input);
-        Map<String, String> params = Maps.newLinkedHashMap();
-        String[] parts = input.split(FIELD_SEPARATOR);
-        for (String part : parts) {
+        Map<String, String> result = Maps.newLinkedHashMap();
+        String[] fields = input.split(FIELD_SEPARATOR);
+        for (String field : fields) {
             String key, value;
-            int i = part.indexOf(VALUE_SEPARATOR);
+            int i = field.indexOf(VALUE_SEPARATOR);
             if (i == -1) {
-                key = part;
+                key = field;
                 value = null;
             }
             else {
-                key = part.substring(0, i);
-                value = part.substring(i + 1, part.length());
+                key = field.substring(0, i);
+                value = field.substring(i + 1, field.length());
             }
-            params.put(key, value);
+            result.put(key, value);
         }
-        return params;
+        return result;
     }
 }
