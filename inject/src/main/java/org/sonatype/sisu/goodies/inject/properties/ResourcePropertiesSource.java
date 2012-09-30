@@ -10,7 +10,10 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.properties;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.net.URL;
 import java.util.Properties;
@@ -25,17 +28,31 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ResourcePropertiesSource
     extends PropertiesSourceSupport
 {
+    private final Class owner;
+
     private final String resourceName;
 
-    public ResourcePropertiesSource(final String resourceName) {
+    // TODO: Probably should expose better control over the CL used to find the resource
+
+    public ResourcePropertiesSource(final @Nullable Class owner, final String resourceName) {
+        if (owner == null) {
+            this.owner = getClass();
+        }
+        else {
+            this.owner = owner;
+        }
         this.resourceName = checkNotNull(resourceName);
+    }
+
+    public ResourcePropertiesSource(final String resourceName) {
+        this(null, resourceName);
     }
 
     @Override
     protected Properties loadProperties() throws Exception {
         Properties props = new Properties();
 
-        URL resource = getClass().getResource(resourceName);
+        URL resource = owner.getResource(resourceName);
         if (resource != null) {
             props.putAll(loadProperties(resource));
         }
@@ -49,7 +66,8 @@ public class ResourcePropertiesSource
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-            "resourceName='" + resourceName + '\'' +
+            "owner=" + owner +
+            ", resourceName='" + resourceName + '\'' +
             '}';
     }
 }

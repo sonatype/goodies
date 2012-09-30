@@ -16,7 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.sonatype.guice.bean.binders.ParameterKeys;
 import org.sonatype.sisu.goodies.common.Properties2;
-import org.sonatype.sisu.goodies.common.guice.ModuleSupport;
+import org.sonatype.sisu.goodies.inject.ModuleSupport;
 
 import java.util.List;
 import java.util.Properties;
