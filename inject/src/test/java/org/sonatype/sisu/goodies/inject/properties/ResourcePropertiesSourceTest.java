@@ -30,12 +30,23 @@ public class ResourcePropertiesSourceTest
 {
     @Test
     public void loadExisting() {
-        ResourcePropertiesSource source = new ResourcePropertiesSource("test1.properties");
+        ResourcePropertiesSource source = new ResourcePropertiesSource(getClass(), "test1.properties");
         Properties props = source.properties();
         log(props);
         assertNotNull(props);
         assertThat(props.size(), is(2));
         assertThat(props.getProperty("a"), is("1"));
         assertThat(props.getProperty("b"), is("2"));
+    }
+
+    @Test
+    public void loadExistingRoot() {
+        ResourcePropertiesSource source = new ResourcePropertiesSource("/test2.properties");
+        Properties props = source.properties();
+        log(props);
+        assertNotNull(props);
+        assertThat(props.size(), is(2));
+        assertThat(props.getProperty("c"), is("3"));
+        assertThat(props.getProperty("d"), is("4"));
     }
 }
