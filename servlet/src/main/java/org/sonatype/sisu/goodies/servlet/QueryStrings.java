@@ -30,6 +30,8 @@ public class QueryStrings
 
     public static final String VALUE_SEPARATOR = "=";
 
+    // FIXME: Probably should be a Multimap
+
     /**
      * Parses a query-string into a map.
      *
