@@ -13,9 +13,8 @@
 
 package org.sonatype.sisu.goodies.servlet;
 
-import com.google.common.collect.Maps;
-
-import java.util.Map;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,17 +29,15 @@ public class QueryStrings
 
     public static final String VALUE_SEPARATOR = "=";
 
-    // FIXME: Probably should be a Multimap
-
     /**
-     * Parses a query-string into a map.
+     * Parses a query-string into a multimap.
      *
      * @param input Query-string input ot parse; never null
-     * @return  Ordered map of parsed query string parameters.
+     * @return  Ordered multimap of parsed query string parameters.
      */
-    public static Map<String, String> parse(final String input) {
+    public static Multimap<String, String> parse(final String input) {
         checkNotNull(input);
-        Map<String, String> result = Maps.newLinkedHashMap();
+        Multimap<String, String> result = LinkedHashMultimap.create();
         String[] fields = input.split(FIELD_SEPARATOR);
         for (String field : fields) {
             String key, value;
