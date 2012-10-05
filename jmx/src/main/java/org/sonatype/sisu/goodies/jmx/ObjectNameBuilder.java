@@ -52,8 +52,7 @@ public class ObjectNameBuilder
     }
 
     public ObjectNameBuilder domain() {
-        this.domain = STAR;
-        return this;
+        return domain(STAR);
     }
 
     public ObjectNameBuilder property(final String key, final String value) {
