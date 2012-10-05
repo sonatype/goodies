@@ -57,6 +57,19 @@ public class ObjectNameBuilderTest
     }
 
     @Test
+    public void singlePropertyFormat() throws Exception {
+        ObjectName name = new ObjectNameBuilder()
+            .domain("a")
+            .property("b", "%s", 1)
+            .build();
+        log(name);
+
+        assertThat(name.getDomain(), is("a"));
+        assertThat(name.getKeyPropertyList().size(), is(1));
+        assertThat(name.getKeyProperty("b"), is("1"));
+    }
+
+    @Test
     public void manyProperties() throws Exception {
         ObjectName name = new ObjectNameBuilder()
             .domain("a")
@@ -69,6 +82,17 @@ public class ObjectNameBuilderTest
         assertThat(name.getKeyPropertyList().size(), is(2));
         assertThat(name.getKeyProperty("b"), is("1"));
         assertThat(name.getKeyProperty("c"), is("2"));
+    }
+
+    @Test
+    public void domainFormat() throws Exception {
+        ObjectName name = new ObjectNameBuilder()
+            .domain("%s", "a")
+            .property("b", "1")
+            .build();
+        log(name);
+
+        assertThat(name.getDomain(), is("a"));
     }
 
     @Test
