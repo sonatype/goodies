@@ -244,6 +244,12 @@
                 <artifactId>goodies-servlet</artifactId>
                 <version>1.5-SNAPSHOT</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-jmx</artifactId>
+                <version>1.5-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -258,6 +264,7 @@
         <module>template</module>
         <module>inject</module>
         <module>servlet</module>
+        <module>jmx</module>
     </modules>
 
     <build>
