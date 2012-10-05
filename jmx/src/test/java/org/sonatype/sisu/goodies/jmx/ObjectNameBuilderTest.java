@@ -62,6 +62,7 @@ public class ObjectNameBuilderTest
         assertThat(name.getDomain(), is("a"));
         assertThat(name.getKeyPropertyList().size(), is(1));
         assertThat(name.getKeyProperty("b"), is("1"));
+        assertThat(name.isPattern(), is(false));
     }
 
     @Test(expected = NullPointerException.class)
@@ -92,6 +93,7 @@ public class ObjectNameBuilderTest
         assertThat(name.getDomain(), is("a"));
         assertThat(name.getKeyPropertyList().size(), is(1));
         assertThat(name.getKeyProperty("b"), is("1"));
+        assertThat(name.isPattern(), is(false));
     }
 
     @Test
@@ -107,6 +109,7 @@ public class ObjectNameBuilderTest
         assertThat(name.getKeyPropertyList().size(), is(2));
         assertThat(name.getKeyProperty("b"), is("1"));
         assertThat(name.getKeyProperty("c"), is("2"));
+        assertThat(name.isPattern(), is(false));
     }
 
     @Test
@@ -118,6 +121,7 @@ public class ObjectNameBuilderTest
         log(name);
 
         assertThat(name.getDomain(), is("a"));
+        assertThat(name.isPattern(), is(false));
     }
 
     @Test
