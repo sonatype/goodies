@@ -43,6 +43,14 @@ public class ObjectNameBuilderTest
         new ObjectNameBuilder().property("a", "b").build();
     }
 
+    @Test(expected = NullPointerException.class)
+    public void domainNotNull() throws Exception {
+        new ObjectNameBuilder()
+            .domain(null)
+            .property("b", "1")
+            .build();
+    }
+
     @Test
     public void singleProperty() throws Exception {
         ObjectName name = new ObjectNameBuilder()
@@ -54,6 +62,23 @@ public class ObjectNameBuilderTest
         assertThat(name.getDomain(), is("a"));
         assertThat(name.getKeyPropertyList().size(), is(1));
         assertThat(name.getKeyProperty("b"), is("1"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void propertyNameNotNull() throws Exception {
+        new ObjectNameBuilder()
+            .domain("a")
+            .property(null, "1")
+            .build();
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void propertyValueNotNull() throws Exception {
+        new ObjectNameBuilder()
+            .domain("a")
+            .property("b", null)
+            .build();
     }
 
     @Test

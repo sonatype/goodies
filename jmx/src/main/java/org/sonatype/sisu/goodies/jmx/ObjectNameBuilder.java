@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -43,11 +44,12 @@ public class ObjectNameBuilder
     private final Map<String, String> properties = Maps.newLinkedHashMap();
 
     public ObjectNameBuilder domain(final String domain) {
-        this.domain = domain;
+        this.domain = checkNotNull(domain);
         return this;
     }
 
     public ObjectNameBuilder domain(final String format, final Object... args) {
+        checkNotNull(format);
         return domain(String.format(format, args));
     }
 
@@ -56,11 +58,14 @@ public class ObjectNameBuilder
     }
 
     public ObjectNameBuilder property(final String key, final String value) {
+        checkNotNull(key);
+        checkNotNull(value);
         properties.put(key, value);
         return this;
     }
 
     public ObjectNameBuilder property(final String key, final String format, final Object... args) {
+        checkNotNull(format);
         return property(key, String.format(format, args));
     }
 
