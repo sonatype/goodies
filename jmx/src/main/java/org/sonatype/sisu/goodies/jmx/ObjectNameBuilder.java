@@ -30,6 +30,10 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class ObjectNameBuilder
 {
+    public static final String DOMAIN_SEPARATOR = ":";
+
+    public static final String VALUE_SEPARATOR = "=";
+
     public static final String STAR = "*";
 
     public static final String QUESTION = "?";
@@ -74,7 +78,7 @@ public class ObjectNameBuilder
         checkState(!properties.isEmpty(), "Missing properties");
 
         StringBuilder buff = new StringBuilder();
-        buff.append(domain).append(":");
+        buff.append(domain).append(DOMAIN_SEPARATOR);
 
         Iterator<Entry<String, String>> iter = properties.entrySet().iterator();
         while (iter.hasNext()) {
@@ -83,7 +87,7 @@ public class ObjectNameBuilder
                 buff.append(STAR);
             }
             else {
-                buff.append(entry.getKey()).append("=").append(entry.getValue());
+                buff.append(entry.getKey()).append(VALUE_SEPARATOR).append(entry.getValue());
             }
             if (iter.hasNext()) {
                 buff.append(",");
