@@ -13,23 +13,42 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
+import com.google.common.collect.Maps;
+
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
- * ???
+ * Helper to build {@link ObjectName} instances.
  *
  * @since 1.5
  */
 public class ObjectNameBuilder
 {
+    public static final String STAR = "*";
+
+    public static final String QUESTION = "?";
+
     private String domain;
 
-    private Hashtable<String,String> properties = new Hashtable<String, String>();
+    private final Map<String, String> properties = Maps.newLinkedHashMap();
 
     public ObjectNameBuilder domain(final String domain) {
         this.domain = domain;
+        return this;
+    }
+
+    public ObjectNameBuilder domain(final String format, final Object... args) {
+        return domain(String.format(format, args));
+    }
+
+    public ObjectNameBuilder domain() {
+        this.domain = STAR;
         return this;
     }
 
@@ -38,8 +57,40 @@ public class ObjectNameBuilder
         return this;
     }
 
+    public ObjectNameBuilder property(final String key, final String format, final Object... args) {
+        return property(key, String.format(format, args));
+    }
+
+    public ObjectNameBuilder property(final String key) {
+        return property(key, STAR);
+    }
+
+    public ObjectNameBuilder property() {
+        return property(STAR, STAR);
+    }
+
     public ObjectName build() throws MalformedObjectNameException {
-        return ObjectName.getInstance(domain, properties);
+        checkState(domain != null, "Missing domain");
+        checkState(!properties.isEmpty(), "Missing properties");
+
+        StringBuilder buff = new StringBuilder();
+        buff.append(domain).append(":");
+
+        Iterator<Entry<String, String>> iter = properties.entrySet().iterator();
+        while (iter.hasNext()) {
+            Entry<String, String> entry = iter.next();
+            if (STAR.equals(entry.getKey())) {
+                buff.append(STAR);
+            }
+            else {
+                buff.append(entry.getKey()).append("=").append(entry.getValue());
+            }
+            if (iter.hasNext()) {
+                buff.append(",");
+            }
+        }
+
+        return ObjectName.getInstance(buff.toString());
     }
 
     @Override
