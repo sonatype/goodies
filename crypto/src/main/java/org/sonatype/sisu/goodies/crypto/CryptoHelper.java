@@ -35,6 +35,8 @@ public interface CryptoHelper
 {
     Cipher createCipher(String transformation) throws NoSuchAlgorithmException, NoSuchPaddingException;
 
+    int getCipherMaxAllowedKeyLength(String transformation) throws NoSuchAlgorithmException;
+
     Signature createSignature(String algorithm) throws NoSuchAlgorithmException;
 
     SecureRandom createSecureRandom(String algorithm) throws NoSuchAlgorithmException;

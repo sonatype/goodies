@@ -96,6 +96,11 @@ public class CryptoHelperImpl
     }
 
     @Override
+    public int getCipherMaxAllowedKeyLength(final String transformation) throws NoSuchAlgorithmException {
+        return Cipher.getMaxAllowedKeyLength(transformation);
+    }
+
+    @Override
     public Signature createSignature(final String algorithm) throws NoSuchAlgorithmException {
         checkNotNull(algorithm);
         Signature obj;
