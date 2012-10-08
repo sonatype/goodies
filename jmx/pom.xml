@@ -39,6 +39,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.weakref</groupId>
+            <artifactId>jmxutils</artifactId>
+            <version>1.12</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.sonatype.sisu.litmus</groupId>
             <artifactId>litmus-testsupport</artifactId>
             <scope>test</scope>
