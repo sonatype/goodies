@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.management.MBeanServer;
+import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 
@@ -35,19 +36,53 @@ public class MBeans
         return ManagementFactory.getPlatformMBeanServer();
     }
 
-    public static void register(final ObjectName objectName, final Object object) {
+    public static MBeanRegistrationReceipt register(final ObjectName objectName, final Object object) {
         checkNotNull(objectName);
         checkNotNull(object);
 
         log.debug("Register mbean: {}", objectName);
 
+        ObjectInstance instance = null;
         try {
             MBeanServer server = getServer();
-            server.registerMBean(object, objectName);
+
+            if (server.isRegistered(objectName)) {
+                log.warn("MBean already registerd with name: {}", objectName);
+            }
+
+            instance = server.registerMBean(object, objectName);
         }
         catch (Exception e) {
             log.warn("Failed to register mbean: {}", objectName, e);
         }
+
+        // promote to final
+        final ObjectInstance _instance = instance;
+
+        return new MBeanRegistrationReceipt()
+        {
+            @Override
+            public ObjectName getName() {
+                return objectName;
+            }
+
+            @Override
+            public ObjectInstance getInstance() {
+                return _instance;
+            }
+
+            @Override
+            public void unregister() {
+                MBeans.unregister(objectName);
+            }
+
+            @Override
+            public String toString() {
+                return getClass().getSimpleName() + "{" +
+                    "name=" + getName() +
+                    '}';
+            }
+        };
     }
 
     public static void unregister(final ObjectName objectName) {
