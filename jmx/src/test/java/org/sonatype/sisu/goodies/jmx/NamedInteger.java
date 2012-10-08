@@ -12,6 +12,8 @@
  */
 package org.sonatype.sisu.goodies.jmx;
 
+import org.weakref.jmx.Managed;
+
 import java.beans.ConstructorProperties;
 
 /**
@@ -29,10 +31,12 @@ public class NamedInteger
         this.value = value;
     }
 
+    @Managed
     public String getName() {
         return name;
     }
 
+    @Managed
     public long getValue() {
         return value;
     }

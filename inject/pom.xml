@@ -49,6 +49,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.sonatype.sisu.inject</groupId>
+            <artifactId>guice-multibindings</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>org.sonatype.sisu.litmus</groupId>
             <artifactId>litmus-testsupport</artifactId>
             <scope>test</scope>
