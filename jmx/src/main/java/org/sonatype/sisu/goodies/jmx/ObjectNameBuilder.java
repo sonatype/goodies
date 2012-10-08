@@ -131,6 +131,8 @@ public class ObjectNameBuilder
         return property(NAME, value);
     }
 
+    // FIXME: Order of keys is meaningless...
+
     // TODO: Sort out build() vs. buildQuiet() the later is a bit misleading, as an exception is rethrown not eatten, as one might normally think of as "quiet"
 
     public ObjectName build() throws MalformedObjectNameException {
