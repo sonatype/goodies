@@ -31,7 +31,7 @@ public class VisualVmHelper
         final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
         final int index = jvmName.indexOf('@');
         if (index < 1) {
-            throw new RuntimeException();
+            throw new RuntimeException("Unable to parse PID from: " + jvmName);
         }
         return Integer.parseInt(jvmName.substring(0, index));
     }
