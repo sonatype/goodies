@@ -240,4 +240,11 @@ public class SimpleObject
     public int getDescribedInt() {
         return 1;
     }
+
+    // NOTE: The name here does not propagate, jmxutils does not appear to support param names :-(
+
+    @Managed
+    public void doSomething(final @Named("VALUE_GOES_HERE") String value) {
+        //nop
+    }
 }
