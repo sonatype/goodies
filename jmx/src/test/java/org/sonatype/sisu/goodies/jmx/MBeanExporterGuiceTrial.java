@@ -40,9 +40,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * JmxUtils MBeanExporter trials.
+ * JmxUtils MBeanExporter guice trials.
  */
-public class MBeanExporterTrial
+public class MBeanExporterGuiceTrial
     extends TestSupport
     implements Module
 {
