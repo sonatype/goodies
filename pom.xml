@@ -74,12 +74,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--
+            FIXME: Update to latest, 1.7.1 ATM
+            -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.6.4</version>
             </dependency>
 
+            <!--
+            FIXME: Upgrade, 10.x is very OLD
+            -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
