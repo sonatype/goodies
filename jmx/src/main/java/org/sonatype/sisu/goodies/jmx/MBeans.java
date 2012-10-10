@@ -43,6 +43,11 @@ public class MBeans
 
         try {
             MBeanServer server = getServer();
+
+            if (server.isRegistered(objectName)) {
+                log.warn("MBean already registerd with name: {}", objectName);
+            }
+
             server.registerMBean(object, objectName);
         }
         catch (Exception e) {

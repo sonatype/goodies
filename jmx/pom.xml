@@ -33,6 +33,27 @@
         </dependency>
 
         <dependency>
+            <groupId>org.weakref</groupId>
+            <artifactId>jmxutils</artifactId>
+            <version>1.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.sonatype.sisu.goodies</groupId>
+            <artifactId>goodies-inject</artifactId>
+        </dependency>
+
+        <!--
+        NOTE: Leaving this here for *Trial reference.
+        -->
+        <dependency>
+            <groupId>org.softee</groupId>
+            <artifactId>pojo-mbean</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.sonatype.sisu.litmus</groupId>
             <artifactId>litmus-testsupport</artifactId>
             <scope>test</scope>

@@ -20,7 +20,7 @@ import javax.management.ObjectName;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.sonatype.sisu.goodies.jmx.ObjectNameBuilder.STAR;
+//import static org.sonatype.sisu.goodies.jmx.ObjectNameBuilder.STAR;
 
 /**
  * Test for {@link ObjectNameBuilder}.
@@ -46,7 +46,7 @@ public class ObjectNameBuilderTest
     @Test(expected = NullPointerException.class)
     public void domainNotNull() throws Exception {
         new ObjectNameBuilder()
-            .domain(null)
+            .domain((String)null)
             .property("b", "1")
             .build();
     }
@@ -56,6 +56,20 @@ public class ObjectNameBuilderTest
         ObjectName name = new ObjectNameBuilder()
             .domain("a")
             .property("b", "1")
+            .build();
+        log(name);
+
+        assertThat(name.getDomain(), is("a"));
+        assertThat(name.getKeyPropertyList().size(), is(1));
+        assertThat(name.getKeyProperty("b"), is("1"));
+        assertThat(name.isPattern(), is(false));
+    }
+
+    @Test
+    public void nonStringPropertyValue() throws Exception {
+        ObjectName name = new ObjectNameBuilder()
+            .domain("a")
+            .property("b", 1)
             .build();
         log(name);
 
@@ -83,20 +97,6 @@ public class ObjectNameBuilderTest
     }
 
     @Test
-    public void singlePropertyFormat() throws Exception {
-        ObjectName name = new ObjectNameBuilder()
-            .domain("a")
-            .property("b", "%s", 1)
-            .build();
-        log(name);
-
-        assertThat(name.getDomain(), is("a"));
-        assertThat(name.getKeyPropertyList().size(), is(1));
-        assertThat(name.getKeyProperty("b"), is("1"));
-        assertThat(name.isPattern(), is(false));
-    }
-
-    @Test
     public void manyProperties() throws Exception {
         ObjectName name = new ObjectNameBuilder()
             .domain("a")
@@ -112,93 +112,81 @@ public class ObjectNameBuilderTest
         assertThat(name.isPattern(), is(false));
     }
 
-    @Test
-    public void domainFormat() throws Exception {
-        ObjectName name = new ObjectNameBuilder()
-            .domain("%s", "a")
-            .property("b", "1")
-            .build();
-        log(name);
+    //@Test
+    //public void domainWildcard() throws Exception {
+    //    ObjectName name = new ObjectNameBuilder()
+    //        .domain()
+    //        .property("b", "1")
+    //        .build();
+    //    log(name);
+    //
+    //    assertThat(name.getDomain(), is(STAR));
+    //    assertThat(name.getKeyPropertyList().size(), is(1));
+    //    assertThat(name.getKeyProperty("b"), is("1"));
+    //    assertThat(name.isPattern(), is(true));
+    //    assertThat(name.isDomainPattern(), is(true));
+    //    assertThat(name.isPropertyPattern(), is(false));
+    //    assertThat(name.isPropertyListPattern(), is(false));
+    //    assertThat(name.isPropertyValuePattern(), is(false));
+    //}
 
-        assertThat(name.getDomain(), is("a"));
-        assertThat(name.isPattern(), is(false));
-    }
+    //@Test
+    //public void wildcardProperties() throws Exception {
+    //    ObjectName name = new ObjectNameBuilder()
+    //        .domain("a")
+    //        .property("b", "1")
+    //        .property()
+    //        .build();
+    //    log(name);
+    //
+    //    assertThat(name.getDomain(), is("a"));
+    //    assertThat(name.getKeyPropertyList().size(), is(1));
+    //    assertThat(name.getKeyProperty("b"), is("1"));
+    //    assertThat(name.isPattern(), is(true));
+    //    assertThat(name.isDomainPattern(), is(false));
+    //    assertThat(name.isPropertyPattern(), is(true));
+    //    assertThat(name.isPropertyListPattern(), is(true));
+    //    assertThat(name.isPropertyValuePattern(), is(false));
+    //}
 
-    @Test
-    public void domainWildcard() throws Exception {
-        ObjectName name = new ObjectNameBuilder()
-            .domain()
-            .property("b", "1")
-            .build();
-        log(name);
+    //@Test
+    //public void wildcardValueProperties() throws Exception {
+    //    ObjectName name = new ObjectNameBuilder()
+    //        .domain("a")
+    //        .property("b", "1")
+    //        .property("c")
+    //        .build();
+    //    log(name);
+    //
+    //    assertThat(name.getDomain(), is("a"));
+    //    assertThat(name.getKeyPropertyList().size(), is(2));
+    //    assertThat(name.getKeyProperty("b"), is("1"));
+    //    assertThat(name.getKeyProperty("c"), is(STAR));
+    //    assertThat(name.isPattern(), is(true));
+    //    assertThat(name.isDomainPattern(), is(false));
+    //    assertThat(name.isPropertyPattern(), is(true));
+    //    assertThat(name.isPropertyListPattern(), is(false));
+    //    assertThat(name.isPropertyValuePattern(), is(true));
+    //}
 
-        assertThat(name.getDomain(), is(STAR));
-        assertThat(name.getKeyPropertyList().size(), is(1));
-        assertThat(name.getKeyProperty("b"), is("1"));
-        assertThat(name.isPattern(), is(true));
-        assertThat(name.isDomainPattern(), is(true));
-        assertThat(name.isPropertyPattern(), is(false));
-        assertThat(name.isPropertyListPattern(), is(false));
-        assertThat(name.isPropertyValuePattern(), is(false));
-    }
-
-    @Test
-    public void wildcardProperties() throws Exception {
-        ObjectName name = new ObjectNameBuilder()
-            .domain("a")
-            .property("b", "1")
-            .property()
-            .build();
-        log(name);
-
-        assertThat(name.getDomain(), is("a"));
-        assertThat(name.getKeyPropertyList().size(), is(1));
-        assertThat(name.getKeyProperty("b"), is("1"));
-        assertThat(name.isPattern(), is(true));
-        assertThat(name.isDomainPattern(), is(false));
-        assertThat(name.isPropertyPattern(), is(true));
-        assertThat(name.isPropertyListPattern(), is(true));
-        assertThat(name.isPropertyValuePattern(), is(false));
-    }
-
-    @Test
-    public void wildcardValueProperties() throws Exception {
-        ObjectName name = new ObjectNameBuilder()
-            .domain("a")
-            .property("b", "1")
-            .property("c")
-            .build();
-        log(name);
-
-        assertThat(name.getDomain(), is("a"));
-        assertThat(name.getKeyPropertyList().size(), is(2));
-        assertThat(name.getKeyProperty("b"), is("1"));
-        assertThat(name.getKeyProperty("c"), is(STAR));
-        assertThat(name.isPattern(), is(true));
-        assertThat(name.isDomainPattern(), is(false));
-        assertThat(name.isPropertyPattern(), is(true));
-        assertThat(name.isPropertyListPattern(), is(false));
-        assertThat(name.isPropertyValuePattern(), is(true));
-    }
-
-    @Test
-    public void allWildcards() throws Exception {
-        ObjectName name = new ObjectNameBuilder()
-            .domain()
-            .property("b", "1")
-            .property("c")
-            .property()
-            .build();
-        log(name);
-
-        assertThat(name.getDomain(), is(STAR));
-        assertThat(name.getKeyPropertyList().size(), is(2));
-        assertThat(name.getKeyProperty("b"), is("1"));
-        assertThat(name.getKeyProperty("c"), is(STAR));
-        assertThat(name.isPattern(), is(true));
-        assertThat(name.isDomainPattern(), is(true));
-        assertThat(name.isPropertyPattern(), is(true));
-        assertThat(name.isPropertyListPattern(), is(true));
-        assertThat(name.isPropertyValuePattern(), is(true));
-    }
+    //@Test
+    //public void allWildcards() throws Exception {
+    //    ObjectName name = new ObjectNameBuilder()
+    //        .domain()
+    //        .property("b", "1")
+    //        .property("c")
+    //        .property()
+    //        .build();
+    //    log(name);
+    //
+    //    assertThat(name.getDomain(), is(STAR));
+    //    assertThat(name.getKeyPropertyList().size(), is(2));
+    //    assertThat(name.getKeyProperty("b"), is("1"));
+    //    assertThat(name.getKeyProperty("c"), is(STAR));
+    //    assertThat(name.isPattern(), is(true));
+    //    assertThat(name.isDomainPattern(), is(true));
+    //    assertThat(name.isPropertyPattern(), is(true));
+    //    assertThat(name.isPropertyListPattern(), is(true));
+    //    assertThat(name.isPropertyValuePattern(), is(true));
+    //}
 }

@@ -68,6 +68,8 @@
         <build.number/>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+
+        <guiceVersion>3.1.1</guiceVersion>
     </properties>
 
     <dependencyManagement>
@@ -99,7 +101,7 @@
             <dependency>
                 <groupId>org.sonatype.sisu</groupId>
                 <artifactId>sisu-guice</artifactId>
-                <version>3.1.1</version>
+                <version>${guiceVersion}</version>
                 <exclusions>
                     <!-- Exclude sisu-guava, use stock guava 10+ instead -->
                     <exclusion>
@@ -112,7 +114,7 @@
             <dependency>
                 <groupId>org.sonatype.sisu.inject</groupId>
                 <artifactId>guice-assistedinject</artifactId>
-                <version>3.1.1</version>
+                <version>${guiceVersion}</version>
             </dependency>
 
             <dependency>
@@ -124,7 +126,13 @@
             <dependency>
                 <groupId>org.sonatype.sisu.inject</groupId>
                 <artifactId>guice-servlet</artifactId>
-                <version>3.1.1</version>
+                <version>${guiceVersion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.inject</groupId>
+                <artifactId>guice-multibindings</artifactId>
+                <version>${guiceVersion}</version>
             </dependency>
 
             <dependency>

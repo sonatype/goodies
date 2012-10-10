@@ -13,14 +13,12 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import java.util.Iterator;
+import java.util.Hashtable;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -31,14 +29,19 @@ import static com.google.common.base.Preconditions.checkState;
  * @since 1.5
  */
 public class ObjectNameBuilder
+    implements Cloneable
 {
-    public static final String DOMAIN_SEPARATOR = ":";
+    //public static final String DOMAIN_SEPARATOR = ":";
 
-    public static final String VALUE_SEPARATOR = "=";
+    //public static final String VALUE_SEPARATOR = "=";
 
-    public static final String STAR = "*";
+    //public static final String STAR = "*";
 
-    public static final String QUESTION = "?";
+    //public static final String QUESTION = "?";
+
+    public static final String TYPE = "type";
+
+    public static final String NAME = "name";
 
     private String domain;
 
@@ -49,65 +52,98 @@ public class ObjectNameBuilder
         return this;
     }
 
-    public ObjectNameBuilder domain(final String format, final Object... args) {
-        checkNotNull(format);
-        return domain(String.format(format, args));
+    /**
+     * Set the domain to the given package name.
+     */
+    public ObjectNameBuilder domain(final Package pkg) {
+        checkNotNull(pkg);
+        return domain(pkg.getName());
     }
 
-    public ObjectNameBuilder domain() {
-        return domain(STAR);
+    /**
+     * Set the domain to the package name of the given type.
+     */
+    public ObjectNameBuilder domainOf(final Class type) {
+        checkNotNull(type);
+        return domain(type.getPackage());
     }
 
-    public ObjectNameBuilder property(final String key, final String value) {
+    public ObjectNameBuilder property(final String key, final Object value) {
         checkNotNull(key);
         checkNotNull(value);
-        properties.put(key, value);
+        properties.put(key, String.valueOf(value));
         return this;
     }
 
-    public ObjectNameBuilder property(final String key, final String format, final Object... args) {
-        checkNotNull(format);
-        return property(key, String.format(format, args));
+    /**
+     * Set the {@link #TYPE} property to the given value.
+     */
+    public ObjectNameBuilder type(final Object value) {
+        checkNotNull(value);
+        property(TYPE, String.valueOf(value));
+        return this;
     }
 
-    public ObjectNameBuilder property(final String key) {
-        return property(key, STAR);
+    /**
+     * Set the {@link #TYPE} property to the simple-name of the given class.
+     */
+    public ObjectNameBuilder type(final Class type) {
+        checkNotNull(type);
+        return type(type.getSimpleName());
     }
 
-    public ObjectNameBuilder property() {
-        return property(STAR, STAR);
+    /**
+     * Set the {@link #NAME} property to the given value.
+     */
+    public ObjectNameBuilder name(final Object value) {
+        checkNotNull(value);
+        return property(NAME, value);
     }
+
+    // NOTE: Keeping this around for reference if we ever want to make a ON query builder
+
+    //public ObjectName build() throws MalformedObjectNameException {
+    //    checkState(domain != null, "Missing domain");
+    //    checkState(!properties.isEmpty(), "Missing properties");
+    //
+    //    StringBuilder buff = new StringBuilder();
+    //    buff.append(domain).append(DOMAIN_SEPARATOR);
+    //
+    //    Iterator<Entry<String, String>> iter = properties.entrySet().iterator();
+    //    while (iter.hasNext()) {
+    //        Entry<String, String> entry = iter.next();
+    //        if (STAR.equals(entry.getKey())) {
+    //            buff.append(STAR);
+    //        }
+    //        else {
+    //            buff.append(entry.getKey()).append(VALUE_SEPARATOR).append(entry.getValue());
+    //        }
+    //        if (iter.hasNext()) {
+    //            buff.append(",");
+    //        }
+    //    }
+    //
+    //    return ObjectName.getInstance(buff.toString());
+    //}
 
     public ObjectName build() throws MalformedObjectNameException {
         checkState(domain != null, "Missing domain");
         checkState(!properties.isEmpty(), "Missing properties");
 
-        StringBuilder buff = new StringBuilder();
-        buff.append(domain).append(DOMAIN_SEPARATOR);
-
-        Iterator<Entry<String, String>> iter = properties.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<String, String> entry = iter.next();
-            if (STAR.equals(entry.getKey())) {
-                buff.append(STAR);
-            }
-            else {
-                buff.append(entry.getKey()).append(VALUE_SEPARATOR).append(entry.getValue());
-            }
-            if (iter.hasNext()) {
-                buff.append(",");
-            }
-        }
-
-        return ObjectName.getInstance(buff.toString());
+        return ObjectName.getInstance(domain, new Hashtable<String,String>(properties));
     }
 
-    public ObjectName buildQuiet() {
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public ObjectNameBuilder copy() {
         try {
-            return build();
+            return (ObjectNameBuilder) clone();
         }
-        catch (MalformedObjectNameException e) {
-            throw Throwables.propagate(e);
+        catch (CloneNotSupportedException e) {
+            throw new InternalError();
         }
     }
 
@@ -117,5 +153,10 @@ public class ObjectNameBuilder
             "domain='" + domain + '\'' +
             ", properties=" + properties +
             '}';
+    }
+
+    public static String quote(final Object value) {
+        checkNotNull(value);
+        return ObjectName.quote(String.valueOf(value));
     }
 }
