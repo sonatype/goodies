@@ -34,12 +34,12 @@ import static com.google.common.base.Preconditions.checkState;
 public class ObjectNameBuilder
     implements Cloneable
 {
-    public static final String DOMAIN_SEPARATOR = ":";
+    //public static final String DOMAIN_SEPARATOR = ":";
 
-    public static final String VALUE_SEPARATOR = "=";
+    //public static final String VALUE_SEPARATOR = "=";
 
     //public static final String STAR = "*";
-    //
+
     //public static final String QUESTION = "?";
 
     public static final String TYPE = "type";
@@ -49,13 +49,6 @@ public class ObjectNameBuilder
     private String domain;
 
     private final Map<String, String> properties = Maps.newLinkedHashMap();
-
-    // FIXME: Sort out how to best use domain...
-    // FIXME: Should an application have a single domain, and use properties to add hierarchy?
-    // FIXME: Or should the domain be used for hierarchy?
-    // FIXME: For ref, apache camel and activemq use properties and a single domain
-    // FIXME: activemq at least doesn't use standard "type" "name" values, uses "Type" and customer attributes for names
-    // FIXME: Really need to sort out the magic used to build the tree in visualvm
 
     public ObjectNameBuilder domain(final String domain) {
         this.domain = checkNotNull(domain);
@@ -78,33 +71,12 @@ public class ObjectNameBuilder
         return domain(type.getPackage());
     }
 
-    ///**
-    // * Set the domain to {@link #STAR} for queries.
-    // */
-    //public ObjectNameBuilder domain() {
-    //    return domain(STAR);
-    //}
-
     public ObjectNameBuilder property(final String key, final Object value) {
         checkNotNull(key);
         checkNotNull(value);
         properties.put(key, String.valueOf(value));
         return this;
     }
-
-    ///**
-    // * Set property to {@link #STAR} for value-pattern queries.
-    // */
-    //public ObjectNameBuilder property(final String key) {
-    //    return property(key, STAR);
-    //}
-    //
-    ///**
-    // * Set property to {@link #STAR} for list-pattern queries.
-    // */
-    //public ObjectNameBuilder property() {
-    //    return property(STAR, STAR);
-    //}
 
     /**
      * Set the {@link #TYPE} property to the given value.
@@ -131,49 +103,37 @@ public class ObjectNameBuilder
         return property(NAME, value);
     }
 
-    // FIXME: Order of keys is meaningless...
-
-    // TODO: Sort out build() vs. buildQuiet() the later is a bit misleading, as an exception is rethrown not eatten, as one might normally think of as "quiet"
-
-    public ObjectName build() throws MalformedObjectNameException {
-        checkState(domain != null, "Missing domain");
-        checkState(!properties.isEmpty(), "Missing properties");
-
-        StringBuilder buff = new StringBuilder();
-        buff.append(domain).append(DOMAIN_SEPARATOR);
-
-        Iterator<Entry<String, String>> iter = properties.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<String, String> entry = iter.next();
-            //if (STAR.equals(entry.getKey())) {
-            //    buff.append(STAR);
-            //}
-            //else {
-            //    buff.append(entry.getKey()).append(VALUE_SEPARATOR).append(entry.getValue());
-            //}
-            buff.append(entry.getKey()).append(VALUE_SEPARATOR).append(entry.getValue());
-            if (iter.hasNext()) {
-                buff.append(",");
-            }
-        }
-
-        return ObjectName.getInstance(buff.toString());
-    }
+    // NOTE: Keeping this around for reference if we ever want to make a ON query builder
 
     //public ObjectName build() throws MalformedObjectNameException {
     //    checkState(domain != null, "Missing domain");
     //    checkState(!properties.isEmpty(), "Missing properties");
     //
-    //    return ObjectName.getInstance(domain, new Hashtable<String,String>(properties));
+    //    StringBuilder buff = new StringBuilder();
+    //    buff.append(domain).append(DOMAIN_SEPARATOR);
+    //
+    //    Iterator<Entry<String, String>> iter = properties.entrySet().iterator();
+    //    while (iter.hasNext()) {
+    //        Entry<String, String> entry = iter.next();
+    //        if (STAR.equals(entry.getKey())) {
+    //            buff.append(STAR);
+    //        }
+    //        else {
+    //            buff.append(entry.getKey()).append(VALUE_SEPARATOR).append(entry.getValue());
+    //        }
+    //        if (iter.hasNext()) {
+    //            buff.append(",");
+    //        }
+    //    }
+    //
+    //    return ObjectName.getInstance(buff.toString());
     //}
 
-    public ObjectName buildQuiet() {
-        try {
-            return build();
-        }
-        catch (MalformedObjectNameException e) {
-            throw Throwables.propagate(e);
-        }
+    public ObjectName build() throws MalformedObjectNameException {
+        checkState(domain != null, "Missing domain");
+        checkState(!properties.isEmpty(), "Missing properties");
+
+        return ObjectName.getInstance(domain, new Hashtable<String,String>(properties));
     }
 
     @Override

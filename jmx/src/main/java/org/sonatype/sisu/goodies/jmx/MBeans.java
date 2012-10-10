@@ -36,13 +36,12 @@ public class MBeans
         return ManagementFactory.getPlatformMBeanServer();
     }
 
-    public static MBeanRegistrationReceipt register(final ObjectName objectName, final Object object) {
+    public static void register(final ObjectName objectName, final Object object) {
         checkNotNull(objectName);
         checkNotNull(object);
 
         log.debug("Register mbean: {}", objectName);
 
-        ObjectInstance instance = null;
         try {
             MBeanServer server = getServer();
 
@@ -50,39 +49,11 @@ public class MBeans
                 log.warn("MBean already registerd with name: {}", objectName);
             }
 
-            instance = server.registerMBean(object, objectName);
+            server.registerMBean(object, objectName);
         }
         catch (Exception e) {
             log.warn("Failed to register mbean: {}", objectName, e);
         }
-
-        // promote to final
-        final ObjectInstance _instance = instance;
-
-        return new MBeanRegistrationReceipt()
-        {
-            @Override
-            public ObjectName getName() {
-                return objectName;
-            }
-
-            @Override
-            public ObjectInstance getInstance() {
-                return _instance;
-            }
-
-            @Override
-            public void unregister() {
-                MBeans.unregister(objectName);
-            }
-
-            @Override
-            public String toString() {
-                return getClass().getSimpleName() + "{" +
-                    "name=" + getName() +
-                    '}';
-            }
-        };
     }
 
     public static void unregister(final ObjectName objectName) {

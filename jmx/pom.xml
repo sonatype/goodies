@@ -33,12 +33,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.softee</groupId>
-            <artifactId>pojo-mbean</artifactId>
-            <version>1.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.weakref</groupId>
             <artifactId>jmxutils</artifactId>
             <version>1.12</version>
@@ -49,9 +43,14 @@
             <artifactId>goodies-inject</artifactId>
         </dependency>
 
+        <!--
+        NOTE: Leaving this here for *Trial reference.
+        -->
         <dependency>
-            <groupId>org.sonatype.sisu.inject</groupId>
-            <artifactId>guice-multibindings</artifactId>
+            <groupId>org.softee</groupId>
+            <artifactId>pojo-mbean</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
