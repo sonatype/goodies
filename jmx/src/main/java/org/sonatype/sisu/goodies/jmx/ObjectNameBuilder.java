@@ -13,15 +13,12 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;

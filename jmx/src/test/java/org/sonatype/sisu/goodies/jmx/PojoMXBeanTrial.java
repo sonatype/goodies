@@ -19,7 +19,6 @@ import org.softee.management.annotation.ManagedAttribute;
 import org.softee.management.helper.MBeanRegistration;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import javax.management.MXBean;
 import java.util.Date;
 
 /**

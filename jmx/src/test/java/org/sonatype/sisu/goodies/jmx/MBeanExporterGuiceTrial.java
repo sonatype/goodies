@@ -25,7 +25,6 @@ import org.sonatype.guice.bean.binders.WireModule;
 import org.sonatype.guice.bean.reflect.URLClassSpace;
 import org.sonatype.inject.BeanScanning;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
-
 import org.weakref.jmx.Flatten;
 import org.weakref.jmx.MBeanExporter;
 import org.weakref.jmx.Managed;
@@ -34,7 +33,6 @@ import org.weakref.jmx.guice.ExportBuilder;
 import org.weakref.jmx.guice.MBeanModule;
 
 import javax.inject.Named;
-import javax.inject.Singleton;
 import javax.management.MBeanServer;
 import java.util.Date;
 import java.util.List;

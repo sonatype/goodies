@@ -16,7 +16,6 @@ package org.sonatype.sisu.goodies.jmx;
 import org.junit.Test;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.beans.ConstructorProperties;
 import java.util.Date;
 
 /**
