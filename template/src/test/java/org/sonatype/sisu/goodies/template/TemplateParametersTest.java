@@ -13,6 +13,7 @@
 
 package org.sonatype.sisu.goodies.template;
 
+import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
@@ -47,7 +48,24 @@ public class TemplateParametersTest
 
         assertNotNull(params);
         assertThat(params.size(), is(2));
-        assertThat(params.get("a"), is((Object)"1"));
-        assertThat(params.get("b"), is((Object)2));
+        assertThat(params.get("a"), is((Object) "1"));
+        assertThat(params.get("b"), is((Object) 2));
+    }
+
+    @Test
+    public void setAll() {
+        Map<String, Object> other = Maps.newHashMap();
+        other.put("a", "1");
+        other.put("b", 2);
+
+        Map<String, Object> params = new TemplateParameters()
+            .setAll(other)
+            .get();
+        log(params);
+
+        assertNotNull(params);
+        assertThat(params.size(), is(2));
+        assertThat(params.get("a"), is((Object) "1"));
+        assertThat(params.get("b"), is((Object) 2));
     }
 }

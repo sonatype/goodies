@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.template;
 
 import java.util.Map;
@@ -24,18 +25,29 @@ import com.google.common.collect.Maps;
  */
 public class TemplateParameters
 {
-
     private final Map<String, Object> params = Maps.newHashMap();
 
-    public TemplateParameters set( final @NonNls String key, final Object value )
-    {
-        params.put( key, value );
+    public TemplateParameters set(final @NonNls String key, final Object value) {
+        params.put(key, value);
         return this;
     }
 
-    public Map<String, Object> get()
-    {
+    /**
+     * @since 1.5
+     */
+    public TemplateParameters setAll(final Map<String, Object> entries) {
+        params.putAll(entries);
+        return this;
+    }
+
+    public Map<String, Object> get() {
         return params;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+            "params=" + params +
+            '}';
+    }
 }
