@@ -19,7 +19,7 @@ import org.sonatype.sisu.litmus.testsupport.TestSupport;
 import javax.management.InstanceAlreadyExistsException;
 
 /**
- * ???
+ * Tests what happens on duplicate registration of mbeans.
  */
 public class DuplicateRegisterTrial
     extends TestSupport
