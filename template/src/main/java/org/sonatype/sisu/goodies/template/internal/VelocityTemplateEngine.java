@@ -21,7 +21,6 @@ import java.net.URL;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -41,7 +40,6 @@ import com.google.common.collect.Maps;
  * @since 1.4
  */
 @Named
-@Singleton
 public class VelocityTemplateEngine
     extends ComponentSupport
     implements TemplateEngine
