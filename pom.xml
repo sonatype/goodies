@@ -119,12 +119,6 @@
 
             <dependency>
                 <groupId>org.sonatype.sisu.inject</groupId>
-                <artifactId>guice-multibindings</artifactId>
-                <version>3.1.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.inject</groupId>
                 <artifactId>guice-servlet</artifactId>
                 <version>${guiceVersion}</version>
             </dependency>
