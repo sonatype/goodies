@@ -117,6 +117,12 @@
 
             <dependency>
                 <groupId>org.sonatype.sisu.inject</groupId>
+                <artifactId>guice-multibindings</artifactId>
+                <version>3.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.inject</groupId>
                 <artifactId>guice-servlet</artifactId>
                 <version>3.1.1</version>
             </dependency>
@@ -124,7 +130,7 @@
             <dependency>
                 <groupId>org.sonatype.sisu.litmus</groupId>
                 <artifactId>litmus-testsupport</artifactId>
-                <version>1.2</version>
+                <version>1.4</version>
             </dependency>
 
             <dependency>
