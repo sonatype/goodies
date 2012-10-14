@@ -74,7 +74,6 @@
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
         <guiceVersion>3.1.2</guiceVersion>
-        <jacksonVersion>1.9.10</jacksonVersion>
     </properties>
 
     <dependencyManagement>
@@ -85,10 +84,13 @@
                 <version>1.7.2</version>
             </dependency>
 
+            <!--
+            FIXME: We can not use >11.0.1 presently due to changes related goodies-eventbus
+            -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>12.0.1</version>
+                <version>11.0.1</version>
             </dependency>
 
             <dependency>
@@ -135,59 +137,9 @@
             </dependency>
 
             <dependency>
-                <groupId>net.sf.smc</groupId>
-                <artifactId>statemap</artifactId>
-                <classifier>java</classifier>
-                <version>6.0.1</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.sonatype.gossip</groupId>
                 <artifactId>gossip-support</artifactId>
                 <version>1.8</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.thoughtworks.xstream</groupId>
-                <artifactId>xstream</artifactId>
-                <version>1.4.3</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.jacksbee</groupId>
-                <artifactId>jacksbee-runtime</artifactId>
-                <version>1.1.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-core-asl</artifactId>
-                <version>${jacksonVersion}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-mapper-asl</artifactId>
-                <version>${jacksonVersion}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-jaxrs</artifactId>
-                <version>${jacksonVersion}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-xc</artifactId>
-                <version>${jacksonVersion}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu</groupId>
-                <artifactId>sisu-velocity</artifactId>
-                <version>1.1</version>
-                <optional>true</optional>
             </dependency>
 
             <!-- INTERNAL (DO NOT USE ${project.version}) -->
@@ -315,6 +267,12 @@
 
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.7</version>
+                </plugin>
+
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>smc-maven-plugin</artifactId>

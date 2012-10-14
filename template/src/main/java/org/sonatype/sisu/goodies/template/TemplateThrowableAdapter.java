@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.jetbrains.annotations.NonNls;
-import org.sonatype.sisu.goodies.common.ScriptAccessible;
 
 /**
  * Helper to deal with {@link Throwable} instances in a template.
@@ -38,31 +37,31 @@ public class TemplateThrowableAdapter
         this.cause = checkNotNull( cause );
     }
 
-    @ScriptAccessible
+    @TemplateAccessible
     public Throwable getCause()
     {
         return cause;
     }
 
-    @ScriptAccessible
+    @TemplateAccessible
     public String getType()
     {
         return cause.getClass().getName();
     }
 
-    @ScriptAccessible
+    @TemplateAccessible
     public String getSimpleType()
     {
         return cause.getClass().getSimpleName();
     }
 
-    @ScriptAccessible
+    @TemplateAccessible
     public String getMessage()
     {
         return cause.getMessage();
     }
 
-    @ScriptAccessible
+    @TemplateAccessible
     public String getTrace()
     {
         StringWriter buff = new StringWriter();
