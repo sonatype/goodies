@@ -69,18 +69,16 @@
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
-        <guiceVersion>3.1.1</guiceVersion>
+        <guiceVersion>3.1.2</guiceVersion>
+        <jacksonVersion>1.9.10</jacksonVersion>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!--
-            FIXME: Update to latest, 1.7.1 ATM
-            -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.6.4</version>
+                <version>1.7.2</version>
             </dependency>
 
             <!--
@@ -95,7 +93,7 @@
             <dependency>
                 <groupId>org.sonatype.sisu</groupId>
                 <artifactId>sisu-inject-bean</artifactId>
-                <version>2.3.0</version>
+                <version>2.3.1</version>
             </dependency>
 
             <dependency>
@@ -157,7 +155,7 @@
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>1.4.2</version>
+                <version>1.4.3</version>
             </dependency>
 
             <dependency>
@@ -169,25 +167,25 @@
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-core-asl</artifactId>
-                <version>1.9.4</version>
+                <version>${jacksonVersion}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-mapper-asl</artifactId>
-                <version>1.9.4</version>
+                <version>${jacksonVersion}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-jaxrs</artifactId>
-                <version>1.9.4</version>
+                <version>${jacksonVersion}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-xc</artifactId>
-                <version>1.9.4</version>
+                <version>${jacksonVersion}</version>
             </dependency>
 
             <dependency>
