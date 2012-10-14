@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @since 1.0
  *
- * @deprecated Use org.sonatype.sisu.goodies.inject.ModuleSupport instead.
+ * @deprecated Use org.sonatype.sisu.goodies.inject.ModuleSupport instead;  To be removed in 1.6
  */
 @Deprecated
 public class ModuleSupport
