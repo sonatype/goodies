@@ -32,6 +32,11 @@
             <artifactId>goodies-common</artifactId>
         </dependency>
 
+        <!--
+        FIXME: Sort out how to not use this dependency (or use it better)
+        FIXME: ... as it is shaded version of dependencies that will get included by other bits unless we add mass exclusions.
+        -->
+
         <dependency>
             <groupId>org.sonatype.sisu</groupId>
             <artifactId>sisu-inject-bean</artifactId>
