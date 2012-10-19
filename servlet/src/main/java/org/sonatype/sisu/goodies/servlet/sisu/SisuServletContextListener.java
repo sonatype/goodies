@@ -41,7 +41,7 @@ public class SisuServletContextListener
     extends GuiceServletContextListener
 {
     @NonNls
-    public static final String INJECTOR_KEY = "@INJECTOR";
+    public static final String INJECTOR_KEY = "@INJECTOR"; // NOTE: GuiceServletContextListener binds this into Injector.class.getName()
 
     @NonNls
     protected final Logger log = LoggerFactory.getLogger(getClass());
