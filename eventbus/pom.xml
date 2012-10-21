@@ -41,6 +41,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+
+        <dependency>
+          <groupId>org.sonatype.sisu.litmus</groupId>
+          <artifactId>litmus-testsupport</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
