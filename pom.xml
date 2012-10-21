@@ -84,13 +84,10 @@
                 <version>1.7.2</version>
             </dependency>
 
-            <!--
-            FIXME: We can not use >11.0.1 presently due to changes related goodies-eventbus
-            -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>11.0.1</version>
+                <version>12.0.1</version>
             </dependency>
 
             <dependency>
