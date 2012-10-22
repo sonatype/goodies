@@ -185,6 +185,8 @@ public class FilePreferences
     {
         final File file = FilePreferencesFactory.getPreferencesFile();
 
+        // FIXME: text or xml format?
+
         synchronized (file) {
             Properties p = new Properties();
             try {
@@ -234,7 +236,7 @@ public class FilePreferences
                 // FIXME: Buffer
                 final FileOutputStream out = new FileOutputStream(file);
                 try {
-                    p.store(out, "FilePreferences");
+                    p.store(out, "FilePreferences"); // FIXME: Better header
                 }
                 finally {
                     close(out);
