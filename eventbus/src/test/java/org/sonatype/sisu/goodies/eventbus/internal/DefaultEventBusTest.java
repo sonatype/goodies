@@ -16,16 +16,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 import com.google.common.eventbus.Subscribe;
 
 /**
- * TODO
- *
- * @since 1.5
+ * Tests for {@link DefaultEventBus}.
  */
 public class DefaultEventBusTest
     extends TestSupport
@@ -43,7 +39,6 @@ public class DefaultEventBusTest
 
     private class Handler
     {
-
         private final EventBus eventBus;
 
         private String firstCalled = null;
