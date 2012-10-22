@@ -21,13 +21,13 @@ public class MemoryPreferences
 
     public static final String ROOT_NAME = "";
 
-    private final Map<String, String> root;
+    private final Map<String, String> entries;
 
     private final Map<String, MemoryPreferences> children;
 
     public MemoryPreferences(final AbstractPreferences parent, final String name) {
         super(parent, name);
-        root = new TreeMap<String, String>();
+        entries = new TreeMap<String, String>();
         children = new TreeMap<String, MemoryPreferences>();
     }
 
@@ -38,19 +38,19 @@ public class MemoryPreferences
     @Override
     protected void putSpi(final String key, final String value) {
         log.trace("Put: {}={}", key, value);
-        root.put(key, value);
+        entries.put(key, value);
     }
 
     @Override
     protected String getSpi(final String key) {
         log.trace("Get: {}", key);
-        return root.get(key);
+        return entries.get(key);
     }
 
     @Override
     protected void removeSpi(final String key) {
         log.trace("Remove: {}", key);
-        root.remove(key);
+        entries.remove(key);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MemoryPreferences
 
     @Override
     protected String[] keysSpi() throws BackingStoreException {
-        return root.keySet().toArray(new String[root.keySet().size()]);
+        return entries.keySet().toArray(new String[entries.keySet().size()]);
     }
 
     @Override
