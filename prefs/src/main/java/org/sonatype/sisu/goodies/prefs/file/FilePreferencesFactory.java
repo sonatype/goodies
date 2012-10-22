@@ -7,13 +7,15 @@ import java.io.File;
 import java.util.prefs.Preferences;
 import java.util.prefs.PreferencesFactory;
 
+// FIXME: Update configuration property muck
+
 /**
- * PreferencesFactory implementation that stores the preferences in a user-defined file. To use it, set the system
- * property <tt>java.util.prefs.PreferencesFactory</tt> to <tt>net.infotrek.util.prefs.FilePreferencesFactory</tt>
- * <p/>
+ * PreferencesFactory implementation that stores the preferences in a user-defined file.
+ *
+ * To use it, set the system property <tt>java.util.prefs.PreferencesFactory</tt> to <tt>net.infotrek.util.prefs.FilePreferencesFactory</tt>.
+ *
  * The file defaults to [user.home]/.fileprefs, but may be overridden with the system property
- * <tt>net.infotrek.util.prefs.FilePreferencesFactory.file</tt>. Modified by cstamas, switched to SLF4J logging, and
- * exposed preferences file property.
+ * <tt>net.infotrek.util.prefs.FilePreferencesFactory.file</tt>.
  *
  * Based on <a href="http://www.davidc.net/programming/java/java-preferences-using-file-backing-store">
  * Java Preferences using a file as the backing store</a>.
@@ -23,11 +25,11 @@ import java.util.prefs.PreferencesFactory;
 public class FilePreferencesFactory
     implements PreferencesFactory
 {
-    private static final Logger log = LoggerFactory.getLogger(FilePreferencesFactory.class.getName());
-
-    Preferences rootPreferences;
-
     public static final String SYSTEM_PROPERTY_FILE = "net.infotrek.util.prefs.FilePreferencesFactory.file";
+
+    private static final Logger log = LoggerFactory.getLogger(FilePreferencesFactory.class);
+
+    private Preferences rootPreferences;
 
     public Preferences systemRoot() {
         return userRoot();

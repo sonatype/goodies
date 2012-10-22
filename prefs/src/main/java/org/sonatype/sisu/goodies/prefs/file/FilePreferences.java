@@ -18,22 +18,23 @@ import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
 /**
- * Preferences implementation that stores to a user-defined file. See FilePreferencesFactory. Modified by cstamas,
- * switched to SLF4J logging, and exposed preferences file property.
+ * Preferences implementation that stores to a user-defined file.
  *
  * Based on <a href="http://www.davidc.net/programming/java/java-preferences-using-file-backing-store">
  * Java Preferences using a file as the backing store</a>.
  *
  * @author David Croft (<a href="http://www.davidc.net">www.davidc.net</a>)
+ *
+ * @see FilePreferencesFactory
  */
 public class FilePreferences
     extends AbstractPreferences
 {
-    private static final Logger log = LoggerFactory.getLogger(FilePreferences.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(FilePreferences.class);
 
-    private Map<String, String> root;
+    private final Map<String, String> root;
 
-    private Map<String, FilePreferences> children;
+    private final Map<String, FilePreferences> children;
 
     private boolean isRemoved = false;
 
