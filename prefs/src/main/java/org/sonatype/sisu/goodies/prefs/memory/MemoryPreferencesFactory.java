@@ -27,6 +27,7 @@ public class MemoryPreferencesFactory
     public synchronized Preferences systemRoot() {
         if (system == null) {
             system = new MemoryPreferences();
+            log.debug("Created system root: {}", system);
         }
         return system;
     }
@@ -34,6 +35,7 @@ public class MemoryPreferencesFactory
     public synchronized Preferences userRoot() {
         if (user == null) {
             user = new MemoryPreferences();
+            log.debug("Created user root: {}", user);
         }
         return user;
     }
