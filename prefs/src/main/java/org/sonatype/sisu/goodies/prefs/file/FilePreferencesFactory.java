@@ -21,6 +21,8 @@ import java.util.prefs.PreferencesFactory;
  * Java Preferences using a file as the backing store</a>.
  *
  * @author David Croft (<a href="http://www.davidc.net">www.davidc.net</a>)
+ *
+ * @since 1.5
  */
 public class FilePreferencesFactory
     implements PreferencesFactory

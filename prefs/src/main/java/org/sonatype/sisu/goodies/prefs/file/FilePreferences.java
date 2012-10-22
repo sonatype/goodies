@@ -18,7 +18,7 @@ import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
 /**
- * Preferences implementation that stores to a user-defined file.
+ * Preferences implementation that stores to a user-defined properties file.
  *
  * Based on <a href="http://www.davidc.net/programming/java/java-preferences-using-file-backing-store">
  * Java Preferences using a file as the backing store</a>.
@@ -26,6 +26,8 @@ import java.util.prefs.BackingStoreException;
  * @author David Croft (<a href="http://www.davidc.net">www.davidc.net</a>)
  *
  * @see FilePreferencesFactory
+ *
+ * @since 1.5
  */
 public class FilePreferences
     extends AbstractPreferences
@@ -82,24 +84,18 @@ public class FilePreferences
     }
 
     @Override
-    protected void removeNodeSpi()
-        throws BackingStoreException
-    {
+    protected void removeNodeSpi() throws BackingStoreException {
         isRemoved = true;
         flush();
     }
 
     @Override
-    protected String[] keysSpi()
-        throws BackingStoreException
-    {
+    protected String[] keysSpi() throws BackingStoreException {
         return root.keySet().toArray(new String[root.keySet().size()]);
     }
 
     @Override
-    protected String[] childrenNamesSpi()
-        throws BackingStoreException
-    {
+    protected String[] childrenNamesSpi() throws BackingStoreException {
         return children.keySet().toArray(new String[children.keySet().size()]);
     }
 
@@ -123,9 +119,7 @@ public class FilePreferences
     }
 
     @Override
-    protected void syncSpi()
-        throws BackingStoreException
-    {
+    protected void syncSpi() throws BackingStoreException {
         if (isRemoved()) {
             return;
         }
@@ -180,9 +174,7 @@ public class FilePreferences
     }
 
     @Override
-    protected void flushSpi()
-        throws BackingStoreException
-    {
+    protected void flushSpi() throws BackingStoreException {
         final File file = FilePreferencesFactory.getPreferencesFile();
 
         // FIXME: text or xml format?
