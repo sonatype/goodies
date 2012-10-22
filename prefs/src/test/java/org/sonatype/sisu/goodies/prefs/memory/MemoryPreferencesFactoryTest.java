@@ -40,6 +40,9 @@ public class MemoryPreferencesFactoryTest
         Preferences pref = factory.systemRoot();
         assertThat(pref, notNullValue());
         assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
+
+        // should return same instance
+        assertThat(pref, is(factory.systemRoot()));
     }
 
     @Test
@@ -47,5 +50,8 @@ public class MemoryPreferencesFactoryTest
         Preferences pref = factory.userRoot();
         assertThat(pref, notNullValue());
         assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
+
+        // should return same instance
+        assertThat(pref, is(factory.userRoot()));
     }
 }
