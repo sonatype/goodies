@@ -52,6 +52,15 @@
             <optional>true</optional>
         </dependency>
 
+        <!--
+        TODO: ^^^^^
+        -->
+
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>annotations</artifactId>
