@@ -30,10 +30,8 @@ public class Iso8601Date
     //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ";
     //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
 
-    public static final SimpleDateFormat FORMAT = new SimpleDateFormat(PATTERN);
-
     private static DateFormat getFormat() {
-        return (DateFormat) FORMAT.clone();
+        return new SimpleDateFormat(PATTERN);
     }
 
     public static Date parse(final String value) throws ParseException {
