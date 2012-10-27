@@ -47,10 +47,17 @@ public abstract class PropertiesSourceSupport
 
     protected abstract Properties loadProperties() throws Exception;
 
-    protected Properties loadProperties(final InputStream input) throws Exception {
+    private boolean isBuffered(final InputStream input) {
+        return input instanceof BufferedInputStream;
+    }
+
+    protected Properties loadProperties(InputStream input) throws Exception {
         Properties props = new Properties();
+        if (!isBuffered(input)) {
+            input = new BufferedInputStream(input);
+        }
         try {
-            props.load(new BufferedInputStream(input));
+            props.load(input);
             return props;
         }
         finally {
@@ -58,10 +65,17 @@ public abstract class PropertiesSourceSupport
         }
     }
 
-    protected Properties loadProperties(final Reader reader) throws Exception {
+    private boolean isBuffered(final Reader reader) {
+        return reader instanceof BufferedReader;
+    }
+
+    protected Properties loadProperties(Reader reader) throws Exception {
         Properties props = new Properties();
+        if (!isBuffered(reader)) {
+            reader = new BufferedReader(reader);
+        }
         try {
-            props.load(new BufferedReader(reader));
+            props.load(reader);
             return props;
         }
         finally {
@@ -70,7 +84,6 @@ public abstract class PropertiesSourceSupport
     }
 
     protected Properties loadProperties(final File file) throws Exception {
-        Properties props = new Properties();
         log.info("Loading properties from: {}", file);
 
         if (file.exists()) {
@@ -80,7 +93,7 @@ public abstract class PropertiesSourceSupport
             log.warn("Missing properties file: {}", file);
         }
 
-        return props;
+        return new Properties();
     }
 
     protected Properties loadProperties(final URL resource) throws Exception {
