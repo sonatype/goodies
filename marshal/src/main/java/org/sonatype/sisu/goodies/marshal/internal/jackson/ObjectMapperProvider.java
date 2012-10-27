@@ -39,6 +39,10 @@ public class ObjectMapperProvider
 {
     private final ObjectMapper mapper;
 
+    //
+    // FIXME: Sort out how to properly configure ObjectMapper, the fluent api here appears to build new instances with configuration
+    //
+
     public ObjectMapperProvider() {
         final ObjectMapper mapper = new ObjectMapper();
 
