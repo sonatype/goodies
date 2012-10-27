@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
@@ -60,7 +61,12 @@ public class OIDTest
     @Test
     public void testRender() {
         Object obj = new Object();
-        assertThat(OID.render(obj), is(equalTo(obj.toString())));
+        String repr = OID.render(obj);
+        log(repr);
+        assertThat(repr, is(equalTo(obj.toString())));
+        String prefix = Object.class.getName() + OID.SEPARATOR;
+        assertThat(repr.startsWith(prefix), is(true));
+        assertThat(repr.length(), greaterThan(prefix.length()));
     }
 
     @Test

@@ -32,6 +32,8 @@ public class OID
 {
     public static final OID NULL = new OID();
 
+    public static final String SEPARATOR = "@";
+
     private final String type;
 
     private final int hash;
@@ -78,7 +80,7 @@ public class OID
         if (this == NULL) {
             return "null";
         }
-        return String.format("%s@%x", type, hash);
+        return String.format("%s%s%x", type, SEPARATOR, hash);
     }
 
     public static OID get(final Object obj) {
@@ -98,7 +100,7 @@ public class OID
 
     public static OID parse(final String spec) {
         assert spec != null;
-        String[] items = spec.split("@");
+        String[] items = spec.split(SEPARATOR);
         if (items.length != 2) {
             throw new IllegalArgumentException();
         }
