@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.sonatype.sisu.inject</groupId>
             <artifactId>guice-servlet</artifactId>
-            <version>${guiceVersion}</version>
+            <version>${sisuGuiceVersion}</version>
         </dependency>
 
         <dependency>

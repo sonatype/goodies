@@ -73,7 +73,7 @@
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
-        <guiceVersion>3.1.2</guiceVersion>
+        <sisuGuiceVersion>3.1.2</sisuGuiceVersion>
     </properties>
 
     <dependencyManagement>
@@ -105,7 +105,7 @@
             <dependency>
                 <groupId>org.sonatype.sisu</groupId>
                 <artifactId>sisu-guice</artifactId>
-                <version>${guiceVersion}</version>
+                <version>${sisuGuiceVersion}</version>
                 <exclusions>
                     <!-- Exclude sisu-guava, use stock guava 10+ instead -->
                     <exclusion>
@@ -118,13 +118,13 @@
             <dependency>
                 <groupId>org.sonatype.sisu.inject</groupId>
                 <artifactId>guice-assistedinject</artifactId>
-                <version>${guiceVersion}</version>
+                <version>${sisuGuiceVersion}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.sisu.inject</groupId>
                 <artifactId>guice-multibindings</artifactId>
-                <version>${guiceVersion}</version>
+                <version>${sisuGuiceVersion}</version>
             </dependency>
 
             <dependency>
@@ -466,6 +466,52 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>it</id>
+            <activation>
+                <property>
+                    <name>it</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>findbugs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <version>2.5.2</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <id>m2e</id>
             <activation>
