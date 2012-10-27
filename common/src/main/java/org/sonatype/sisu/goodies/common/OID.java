@@ -76,7 +76,7 @@ public class OID
     @Override
     public String toString() {
         if (this == NULL) {
-            return null;
+            return "null";
         }
         return String.format("%s@%x", type, hash);
     }
