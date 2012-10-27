@@ -21,6 +21,8 @@ import java.util.prefs.PreferencesFactory;
 
 // FIXME: Update configuration property muck
 
+// FIXME: Avoid usage of this class, until is ready for use...
+
 /**
  * PreferencesFactory implementation that stores the preferences in a user-defined file.
  *
@@ -36,6 +38,7 @@ import java.util.prefs.PreferencesFactory;
  *
  * @since 1.5
  */
+//@Beta
 public class FilePreferencesFactory
     implements PreferencesFactory
 {

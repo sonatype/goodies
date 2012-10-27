@@ -29,6 +29,8 @@ import java.util.TreeMap;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
+// FIXME: Avoid usage of this class, until is ready for use...
+
 /**
  * Preferences implementation that stores to a user-defined properties file.
  *
@@ -41,6 +43,7 @@ import java.util.prefs.BackingStoreException;
  *
  * @since 1.5
  */
+//@Beta
 public class FilePreferences
     extends AbstractPreferences
 {
