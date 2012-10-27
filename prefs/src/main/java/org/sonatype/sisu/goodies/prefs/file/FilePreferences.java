@@ -42,8 +42,11 @@ import java.util.prefs.BackingStoreException;
  * @see FilePreferencesFactory
  *
  * @since 1.5
+ *
+ * @deprecated Marked as deprecated to help avoid folks using until is been updated/test/etc
  */
 //@Beta
+@Deprecated
 public class FilePreferences
     extends AbstractPreferences
 {

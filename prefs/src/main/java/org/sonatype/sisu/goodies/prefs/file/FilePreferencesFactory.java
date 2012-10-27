@@ -37,8 +37,11 @@ import java.util.prefs.PreferencesFactory;
  * @author David Croft (<a href="http://www.davidc.net">www.davidc.net</a>)
  *
  * @since 1.5
+ *
+ * @deprecated Marked as deprecated to help avoid folks using until is been updated/test/etc
  */
 //@Beta
+@Deprecated
 public class FilePreferencesFactory
     implements PreferencesFactory
 {
