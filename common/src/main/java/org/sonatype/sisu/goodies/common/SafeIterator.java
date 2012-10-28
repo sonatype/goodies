@@ -58,4 +58,12 @@ public final class SafeIterator<T>
     public void remove() {
         throw new UnsupportedOperationException();
     }
+
+    public static <T> SafeIterator<T> create(final Iterator<T> iterator) {
+        return new SafeIterator<T>(iterator);
+    }
+
+    public static <T> SafeIterator<T> create(final Iterable<T> iterable) {
+        return new SafeIterator<T>(iterable.iterator());
+    }
 }
