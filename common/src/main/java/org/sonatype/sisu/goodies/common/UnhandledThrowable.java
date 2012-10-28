@@ -33,9 +33,6 @@ public final class UnhandledThrowable
     @NonNls
     private static final Logger log = LoggerFactory.getLogger(UnhandledThrowable.class);
 
-    /**
-     * @since 1.5
-     */
     private UnhandledThrowable() {}
 
     private static Level getFailureLevel() {
