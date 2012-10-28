@@ -36,26 +36,6 @@
             <artifactId>guava</artifactId>
         </dependency>
 
-        <!--
-        TODO: Remove these sisu/guice deps once bits here which are moved to goodies-inject are removed (likely in 1.6)
-        -->
-
-        <dependency>
-            <groupId>org.sonatype.sisu</groupId>
-            <artifactId>sisu-guice</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.sonatype.sisu.inject</groupId>
-            <artifactId>guice-assistedinject</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!--
-        TODO: ^^^^^
-        -->
-
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
