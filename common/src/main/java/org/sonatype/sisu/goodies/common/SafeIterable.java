@@ -33,10 +33,10 @@ public final class SafeIterable<T>
     }
 
     public Iterator<T> iterator() {
-        return SafeIterator.create(delegate);
+        return SafeIterator.of(delegate);
     }
 
-    public static <T> SafeIterable<T> create(final Iterable<T> iterable) {
+    public static <T> SafeIterable<T> of(final Iterable<T> iterable) {
         return new SafeIterable<T>(iterable);
     }
 }
