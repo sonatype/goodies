@@ -12,6 +12,9 @@
  */
 package org.sonatype.sisu.goodies.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -27,6 +30,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class SafeIterator<T>
     implements Iterator<T>
 {
+    private static final Logger log = LoggerFactory.getLogger(SafeIterator.class);
+
     private final Iterator<T> delegate;
 
     private T next;
@@ -42,7 +47,9 @@ public final class SafeIterator<T>
                 return true;
             }
             catch (final Exception e) {
-                continue; // skip bad element
+                // skip bad element
+                log.trace("Skipping bad element", e);
+                continue;
             }
         }
         return false;
