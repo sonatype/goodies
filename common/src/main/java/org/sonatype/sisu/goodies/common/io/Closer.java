@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.gossip.Level;
 import org.sonatype.sisu.goodies.common.Properties2;
+import org.sonatype.sisu.goodies.common.UnhandledThrowable;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -36,26 +37,6 @@ public final class Closer
      */
     private Closer() {}
 
-    private static Level getFailureLevel() {
-        Level level = Level.TRACE;
-        String value = Properties2.getSystemProperty(Closer.class, "failureLevel", level);
-        try {
-            return Level.valueOf(value.toUpperCase());
-        }
-        catch (Throwable e) {
-            log.error("Invalid level: {}", value, e);
-            return level;
-        }
-    }
-
-    private static final Level level = getFailureLevel();
-
-    private static void onFailure(final Throwable cause) {
-        if (level.isEnabled(log)) {
-            level.log(log, cause.toString(), cause);
-        }
-    }
-
     public static void close(final Closeable... targets) {
         if (targets == null) return;
 
@@ -66,7 +47,7 @@ public final class Closer
                     target.close();
                 }
                 catch (IOException e) {
-                    onFailure(e);
+                    UnhandledThrowable.onFailure(log, e);
                 }
             }
         }
