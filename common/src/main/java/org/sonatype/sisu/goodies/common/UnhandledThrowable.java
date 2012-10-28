@@ -58,6 +58,7 @@ public final class UnhandledThrowable
 
     public static void onFailure(final Logger logger, final Throwable cause) {
         checkNotNull(logger);
+        //noinspection ThrowableResultOfMethodCallIgnored
         checkNotNull(cause);
         if (level.isEnabled(logger)) {
             level.log(logger, cause.toString(), cause);
