@@ -27,6 +27,11 @@ public class SimpleFormat
     public static final String PLACEHOLDER = "%s";
 
     /**
+     * @since 1.5
+     */
+    private SimpleFormat() {}
+
+    /**
      * Substitutes each {@code %s} in {@code template} with an argument. These are matched by position - the first {@code %s} gets {@code args[0]},
      * etc. If there are more arguments than placeholders, the unmatched arguments will be appended to the end of the formatted message in square
      * braces.

@@ -21,6 +21,10 @@ import javax.annotation.Nullable;
  */
 public abstract class Preconditions
 {
+    /**
+     * @since 1.5
+     */
+    private Preconditions() {}
 
     /**
      * Ensures that elements of an {@link Iterable} are not null. If reference is null by itself, no validation is
@@ -113,5 +117,4 @@ public abstract class Preconditions
         }
         return reference;
     }
-
 }

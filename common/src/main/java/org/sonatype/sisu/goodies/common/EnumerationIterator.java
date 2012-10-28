@@ -24,6 +24,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class EnumerationIterator
 {
+    /**
+     * @since 1.5
+     */
+    private EnumerationIterator() {}
+
     public static <T> Iterator<T> of(final Enumeration<T> n) {
         checkNotNull(n);
         return new Iterator<T>()

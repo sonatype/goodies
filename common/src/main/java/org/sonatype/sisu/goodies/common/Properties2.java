@@ -39,6 +39,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Properties2
 {
+    /**
+     * @since 1.5
+     */
+    private Properties2() {}
+
     public static Properties load(final File file) throws IOException {
         checkNotNull(file);
 

@@ -19,6 +19,11 @@ package org.sonatype.sisu.goodies.common;
  */
 public class Varargs
 {
+    /**
+     * @since 1.5
+     */
+    private Varargs() {}
+
     public static <T> T[] va(final T... args) {
         return args;
     }

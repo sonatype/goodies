@@ -30,6 +30,11 @@ public class Iso8601Date
     //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ";
     //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
 
+    /**
+     * @since 1.5
+     */
+    private Iso8601Date() {}
+
     private static DateFormat getFormat() {
         return new SimpleDateFormat(PATTERN);
     }
