@@ -26,10 +26,15 @@ import java.io.IOException;
  *
  * @since 1.0
  */
-public class Closer
+public final class Closer
 {
     @NonNls
     private static final Logger log = LoggerFactory.getLogger(Closer.class);
+
+    /**
+     * @since 1.5
+     */
+    private Closer() {}
 
     private static Level getFailureLevel() {
         Level level = Level.TRACE;

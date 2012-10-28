@@ -26,10 +26,15 @@ import java.io.IOException;
  *
  * @since 1.0
  */
-public class Flusher
+public final class Flusher
 {
     @NonNls
     private static final Logger log = LoggerFactory.getLogger(Flusher.class);
+
+    /**
+     * @since 1.5
+     */
+    private Flusher() {}
 
     private static Level getFailureLevel() {
         Level level = Level.TRACE;
