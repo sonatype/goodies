@@ -41,7 +41,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  *
  * @since 1.0
  */
-public class Time
+public final class Time
 {
     private final long value;
 
