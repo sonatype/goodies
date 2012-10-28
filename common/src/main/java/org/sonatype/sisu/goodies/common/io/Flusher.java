@@ -15,8 +15,6 @@ package org.sonatype.sisu.goodies.common.io;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonatype.gossip.Level;
-import org.sonatype.sisu.goodies.common.Properties2;
 import org.sonatype.sisu.goodies.common.UnhandledThrowable;
 
 import java.io.Flushable;
@@ -47,7 +45,7 @@ public final class Flusher
                     target.flush();
                 }
                 catch (IOException e) {
-                    UnhandledThrowable.onFailure(log, e);
+                    UnhandledThrowable.onFailure(e);
                 }
             }
         }

@@ -18,9 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.gossip.Level;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -50,15 +47,10 @@ public final class UnhandledThrowable
     private static final Level level = getFailureLevel();
 
     public static void onFailure(final Throwable cause) {
-        onFailure(log, cause);
-    }
-
-    public static void onFailure(final Logger logger, final Throwable cause) {
-        checkNotNull(logger);
         //noinspection ThrowableResultOfMethodCallIgnored
         checkNotNull(cause);
-        if (level.isEnabled(logger)) {
-            level.log(logger, cause.toString(), cause);
+        if (level.isEnabled(log)) {
+            level.log(log, cause.toString(), cause);
         }
     }
 }
