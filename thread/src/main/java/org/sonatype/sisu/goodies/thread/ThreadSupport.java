@@ -136,7 +136,7 @@ public abstract class ThreadSupport
      *
      * @since 1.5
      */
-    public static String nameOf(final Class type, String suffix) {
+    public static String nameOf(final Class type, final String suffix) {
         checkNotNull(suffix);
         return nameOf(type) + suffix;
     }
