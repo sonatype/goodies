@@ -119,6 +119,7 @@ public abstract class ThreadSupport
     /**
      * Helper to build thread name.
      *
+     * @param type The class to use as thread-name, must not be null or anonymous.
      * @return The simple-name of the given class.
      *
      * @since 1.5
@@ -134,6 +135,7 @@ public abstract class ThreadSupport
      *
      * @return The simple-name of hte given class with given suffix.
      *
+     * @see #nameOf(Class)
      * @since 1.5
      */
     public static String nameOf(final Class type, final String suffix) {
