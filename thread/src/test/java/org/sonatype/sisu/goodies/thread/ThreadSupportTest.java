@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Tests for {@link ThreadSupport}.
@@ -125,5 +126,28 @@ public class ThreadSupportTest
         ts.run();
 
         assertThat(failure.get(), equalTo(true));
+    }
+
+    private static class Foo
+    {
+        // empty;
+    }
+
+    @Test
+    public void nameOf() {
+        String name = ThreadSupport.nameOf(Foo.class);
+        assertThat(name, is("Foo"));
+    }
+
+    @Test
+    public void nameOfWithSuffix() {
+        String name = ThreadSupport.nameOf(Foo.class, "-Bar");
+        assertThat(name, is("Foo-Bar"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nameOfAnonymousClass() {
+        Object object = new Object() {};
+        ThreadSupport.nameOf(object.getClass());
     }
 }
