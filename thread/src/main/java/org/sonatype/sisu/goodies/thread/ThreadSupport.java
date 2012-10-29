@@ -114,4 +114,28 @@ public abstract class ThreadSupport
     public String toString() {
         return getClass().getSimpleName() + "{name='" + getName() + "'}";
     }
+
+    /**
+     * Helper to build thread name.
+     *
+     * @return The simple-name of the given class.
+     *
+     * @since 1.5
+     */
+    public static String nameOf(final Class type) {
+        checkNotNull(type);
+        return type.getSimpleName();
+    }
+
+    /**
+     * Helper to build thread name.
+     *
+     * @return The simple-name of hte given class with given suffix.
+     *
+     * @since 1.5
+     */
+    public static String nameOf(final Class type, String suffix) {
+        checkNotNull(suffix);
+        return nameOf(type) + suffix;
+    }
 }
