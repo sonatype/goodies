@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.sisu.goodies.common.Mutex;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -124,6 +125,7 @@ public abstract class ThreadSupport
      */
     public static String nameOf(final Class type) {
         checkNotNull(type);
+        checkArgument(!type.isAnonymousClass());
         return type.getSimpleName();
     }
 
