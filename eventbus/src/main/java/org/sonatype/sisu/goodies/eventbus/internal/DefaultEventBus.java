@@ -69,6 +69,10 @@ public class DefaultEventBus
                     eventsToDispatch.remove();
                     for ( final EventWithHandler eventWithHandler : eventWithHandlers )
                     {
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( "Dispatching '{}' to {}", eventWithHandler.event, eventWithHandler.handler );
+                        }
                         dispatch( eventWithHandler.event, eventWithHandler.handler );
                     }
                 }
