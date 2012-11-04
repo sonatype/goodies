@@ -12,6 +12,13 @@
  */
 package org.sonatype.sisu.goodies.eventbus;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Dispatches events to listeners, and provides ways for listeners to register
  * themselves.
@@ -107,6 +114,19 @@ public interface EventBus
      * created.
      */
     public interface LoadOnStart
+    {
+
+    }
+
+    /**
+     * Marker interface for all handlers that should be automatically registered with event bus when event bus is
+     * created.
+     */
+    @Target( value = { ElementType.TYPE } )
+    @Retention( RetentionPolicy.RUNTIME )
+    @Documented
+    @Inherited
+    public @interface Managed
     {
 
     }

@@ -16,6 +16,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.sonatype.guice.bean.locators.BeanLocator;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 import com.google.common.eventbus.Subscribe;
@@ -30,7 +32,7 @@ public class DefaultEventBusTest
     @Test
     public void dispatchOrder()
     {
-        final EventBus underTest = new DefaultEventBus();
+        final EventBus underTest = new DefaultEventBus( Mockito.mock( BeanLocator.class ) );
         final Handler handler = new Handler( underTest );
         underTest.register( handler );
         underTest.post( "a string" );
@@ -39,6 +41,7 @@ public class DefaultEventBusTest
 
     private class Handler
     {
+
         private final EventBus eventBus;
 
         private String firstCalled = null;

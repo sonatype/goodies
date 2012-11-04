@@ -12,16 +12,24 @@
  */
 package org.sonatype.sisu.goodies.eventbus.internal;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonatype.guice.bean.locators.BeanLocator;
+import org.sonatype.inject.BeanEntry;
+import org.sonatype.inject.Mediator;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
 import org.sonatype.sisu.goodies.eventbus.internal.guava.EventHandler;
 import com.google.common.collect.Lists;
+import com.google.inject.Key;
 
 /**
  * {@link org.sonatype.sisu.goodies.eventbus.EventBus} implementation using guava event bus.
@@ -39,12 +47,51 @@ public class DefaultEventBus
 
     private static final Logger LOG = LoggerFactory.getLogger( DefaultEventBus.class );
 
-    private org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
+    private final org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
+
+    private final BeanLocator beanLocator;
+
+    private final AtomicBoolean handlersLoaded;
 
     @Inject
-    public DefaultEventBus()
+    public DefaultEventBus( final BeanLocator beanLocator )
     {
-        eventBus = new org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus( "nexus" )
+        this.beanLocator = checkNotNull( beanLocator );
+        eventBus = createEventBus();
+        handlersLoaded = new AtomicBoolean( false );
+    }
+
+    @Override
+    public EventBus register( final Object handler )
+    {
+        eventBus.register( handler );
+        LOG.info( "Registered handler '{}'", handler );
+        return this;
+    }
+
+    @Override
+    public EventBus unregister( final Object handler )
+    {
+        eventBus.unregister( handler );
+        LOG.debug( "Unregistered handler '{}'", handler );
+        return this;
+    }
+
+    @Override
+    public EventBus post( final Object event )
+    {
+        if ( handlersLoaded.compareAndSet( false, true ) )
+        {
+            registerHandlers( beanLocator );
+        }
+        LOG.debug( "Event '{}' fired", event );
+        eventBus.post( event );
+        return this;
+    }
+
+    private org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus createEventBus()
+    {
+        return new org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus( "default" )
         {
             /** List of events for the current thread to dispatch */
             private final ThreadLocal<List<EventWithHandler>> eventsToDispatch =
@@ -80,28 +127,36 @@ public class DefaultEventBus
         };
     }
 
-    @Override
-    public EventBus register( final Object handler )
+    private void registerHandlers( final BeanLocator beanLocator )
     {
-        eventBus.register( handler );
-        LOG.debug( "Registered handler '{}'", handler );
-        return this;
-    }
+        LOG.info( "Loading automatically registrable handlers" );
+        beanLocator.watch(
+            Key.get( Object.class ),
+            new Mediator<Annotation, Object, DefaultEventBus>()
+            {
 
-    @Override
-    public EventBus unregister( final Object handler )
-    {
-        eventBus.unregister( handler );
-        LOG.debug( "Unregistered handler '{}'", handler );
-        return this;
-    }
+                @Override
+                public void add( final BeanEntry<Annotation, Object> entry, final DefaultEventBus watcher )
+                    throws Exception
+                {
+                    if ( entry.getImplementationClass().isAnnotationPresent( EventBus.Managed.class ) )
+                    {
+                        register( entry.getValue() );
+                    }
+                }
 
-    @Override
-    public EventBus post( final Object event )
-    {
-        LOG.debug( "Event '{}' fired", event );
-        eventBus.post( event );
-        return this;
+                @Override
+                public void remove( final BeanEntry<Annotation, Object> entry, final DefaultEventBus watcher )
+                    throws Exception
+                {
+                    if ( entry.getImplementationClass().isAnnotationPresent( EventBus.Managed.class ) )
+                    {
+                        unregister( entry.getValue() );
+                    }
+                }
+            },
+            this
+        );
     }
 
 }
