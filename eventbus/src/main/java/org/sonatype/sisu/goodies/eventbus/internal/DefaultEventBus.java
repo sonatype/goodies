@@ -45,7 +45,13 @@ public class DefaultEventBus
     implements EventBus
 {
 
-    private static final Logger LOG = LoggerFactory.getLogger( DefaultEventBus.class );
+    static final String LOGGER_PREFIX = EventBus.class.getPackage().getName();
+
+    private static final Logger LOG_REG = LoggerFactory.getLogger( LOGGER_PREFIX + ".registration" );
+
+    private static final Logger LOG_EVT = LoggerFactory.getLogger( LOGGER_PREFIX + ".events" );
+
+    private static final Logger LOG_HDL = LoggerFactory.getLogger( LOGGER_PREFIX + ".handling" );
 
     private final org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
 
@@ -65,7 +71,7 @@ public class DefaultEventBus
     public EventBus register( final Object handler )
     {
         eventBus.register( handler );
-        LOG.info( "Registered handler '{}'", handler );
+        LOG_REG.debug( "Registered handler '{}'", handler );
         return this;
     }
 
@@ -73,7 +79,7 @@ public class DefaultEventBus
     public EventBus unregister( final Object handler )
     {
         eventBus.unregister( handler );
-        LOG.debug( "Unregistered handler '{}'", handler );
+        LOG_REG.debug( "Unregistered handler '{}'", handler );
         return this;
     }
 
@@ -84,7 +90,7 @@ public class DefaultEventBus
         {
             registerHandlers( beanLocator );
         }
-        LOG.debug( "Event '{}' fired", event );
+        LOG_EVT.debug( "Event '{}' fired", event );
         eventBus.post( event );
         return this;
     }
@@ -116,9 +122,9 @@ public class DefaultEventBus
                     eventsToDispatch.remove();
                     for ( final EventWithHandler eventWithHandler : eventWithHandlers )
                     {
-                        if ( LOG.isDebugEnabled() )
+                        if ( LOG_HDL.isDebugEnabled() )
                         {
-                            LOG.debug( "Dispatching '{}' to {}", eventWithHandler.event, eventWithHandler.handler );
+                            LOG_HDL.debug( "Dispatching '{}' to {}", eventWithHandler.event, eventWithHandler.handler );
                         }
                         dispatch( eventWithHandler.event, eventWithHandler.handler );
                     }
@@ -129,7 +135,7 @@ public class DefaultEventBus
 
     private void registerHandlers( final BeanLocator beanLocator )
     {
-        LOG.info( "Loading automatically registrable handlers" );
+        LOG_REG.debug( "Loading automatically registrable handlers" );
         beanLocator.watch(
             Key.get( Object.class ),
             new Mediator<Annotation, Object, DefaultEventBus>()
