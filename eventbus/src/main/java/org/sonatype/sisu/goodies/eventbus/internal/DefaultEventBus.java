@@ -23,6 +23,8 @@ import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.sonatype.guice.bean.locators.BeanLocator;
 import org.sonatype.inject.BeanEntry;
 import org.sonatype.inject.Mediator;
@@ -45,13 +47,13 @@ public class DefaultEventBus
     implements EventBus
 {
 
-    static final String LOGGER_PREFIX = EventBus.class.getPackage().getName();
+    private static final Logger LOG = LoggerFactory.getLogger( DefaultEventBus.class );
 
-    private static final Logger LOG_REG = LoggerFactory.getLogger( LOGGER_PREFIX + ".registration" );
+    private static final Marker REGISTRATION = MarkerFactory.getMarker( "registration" );
 
-    private static final Logger LOG_EVT = LoggerFactory.getLogger( LOGGER_PREFIX + ".events" );
+    private static final Marker EVENTS = MarkerFactory.getMarker( "events" );
 
-    private static final Logger LOG_HDL = LoggerFactory.getLogger( LOGGER_PREFIX + ".handling" );
+    private static final Marker DISPATCHING = MarkerFactory.getMarker( "dispatching" );
 
     private final org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
 
@@ -71,7 +73,7 @@ public class DefaultEventBus
     public EventBus register( final Object handler )
     {
         eventBus.register( handler );
-        LOG_REG.debug( "Registered handler '{}'", handler );
+        LOG.debug( REGISTRATION, "Registered handler '{}'", handler );
         return this;
     }
 
@@ -79,7 +81,7 @@ public class DefaultEventBus
     public EventBus unregister( final Object handler )
     {
         eventBus.unregister( handler );
-        LOG_REG.debug( "Unregistered handler '{}'", handler );
+        LOG.debug( REGISTRATION, "Unregistered handler '{}'", handler );
         return this;
     }
 
@@ -90,9 +92,9 @@ public class DefaultEventBus
         {
             registerHandlers( beanLocator );
         }
-        if ( LOG_EVT.isDebugEnabled() )
+        if ( LOG.isDebugEnabled( EVENTS ) )
         {
-            LOG_EVT.debug( "Event '{}' fired", event );
+            LOG.debug( "Event '{}' fired", event );
         }
         eventBus.post( event );
         return this;
@@ -125,9 +127,11 @@ public class DefaultEventBus
                     eventsToDispatch.remove();
                     for ( final EventWithHandler eventWithHandler : eventWithHandlers )
                     {
-                        if ( LOG_HDL.isDebugEnabled() )
+                        if ( LOG.isDebugEnabled( DISPATCHING ) )
                         {
-                            LOG_HDL.debug( "Dispatching '{}' to {}", eventWithHandler.event, eventWithHandler.handler );
+                            LOG.debug(
+                                DISPATCHING, "Dispatching '{}' to {}", eventWithHandler.event, eventWithHandler.handler
+                            );
                         }
                         dispatch( eventWithHandler.event, eventWithHandler.handler );
                     }
@@ -138,7 +142,7 @@ public class DefaultEventBus
 
     private void registerHandlers( final BeanLocator beanLocator )
     {
-        LOG_REG.debug( "Loading automatically registrable handlers" );
+        LOG.debug( REGISTRATION, "Loading automatically registrable handlers" );
         beanLocator.watch(
             Key.get( Object.class ),
             new Mediator<Annotation, Object, DefaultEventBus>()
