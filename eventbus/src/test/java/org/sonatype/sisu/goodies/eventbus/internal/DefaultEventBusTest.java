@@ -32,7 +32,9 @@ public class DefaultEventBusTest
     @Test
     public void dispatchOrder()
     {
-        final EventBus underTest = new DefaultEventBus( Mockito.mock( BeanLocator.class ) );
+        final EventBus underTest = new DefaultEventBus(
+            new ReentrantGuavaEventBus(), Mockito.mock( BeanLocator.class )
+        );
         final Handler handler = new Handler( underTest );
         underTest.register( handler );
         underTest.post( "a string" );

@@ -15,7 +15,6 @@ package org.sonatype.sisu.goodies.eventbus.internal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,8 +28,6 @@ import org.sonatype.guice.bean.locators.BeanLocator;
 import org.sonatype.inject.BeanEntry;
 import org.sonatype.inject.Mediator;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
-import org.sonatype.sisu.goodies.eventbus.internal.guava.EventHandler;
-import com.google.common.collect.Lists;
 import com.google.inject.Key;
 
 /**
@@ -47,13 +44,13 @@ public class DefaultEventBus
     implements EventBus
 {
 
-    private static final Logger LOG = LoggerFactory.getLogger( DefaultEventBus.class );
+    static final Logger LOG = LoggerFactory.getLogger( DefaultEventBus.class );
 
     private static final Marker REGISTRATION = MarkerFactory.getMarker( "registration" );
 
     private static final Marker EVENTS = MarkerFactory.getMarker( "events" );
 
-    private static final Marker DISPATCHING = MarkerFactory.getMarker( "dispatching" );
+    static final Marker DISPATCHING = MarkerFactory.getMarker( "dispatching" );
 
     private final org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
 
@@ -62,11 +59,14 @@ public class DefaultEventBus
     private final AtomicBoolean handlersLoaded;
 
     @Inject
-    public DefaultEventBus( final BeanLocator beanLocator )
+    public DefaultEventBus( final @Named( "${guava.eventBus:-reentrant}" )
+                            org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus,
+                            final BeanLocator beanLocator )
     {
         this.beanLocator = checkNotNull( beanLocator );
-        eventBus = createEventBus();
+        this.eventBus = checkNotNull( eventBus );
         handlersLoaded = new AtomicBoolean( false );
+        LOG.info( "Using {}", eventBus );
     }
 
     @Override
@@ -98,46 +98,6 @@ public class DefaultEventBus
         }
         eventBus.post( event );
         return this;
-    }
-
-    private org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus createEventBus()
-    {
-        return new org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus( "default" )
-        {
-            /** List of events for the current thread to dispatch */
-            private final ThreadLocal<List<EventWithHandler>> eventsToDispatch =
-                new ThreadLocal<List<EventWithHandler>>();
-
-            @Override
-            protected void enqueueEvent( final Object event, final EventHandler handler )
-            {
-                if ( eventsToDispatch.get() == null )
-                {
-                    eventsToDispatch.set( Lists.<EventWithHandler>newArrayList() );
-                }
-                eventsToDispatch.get().add( new EventWithHandler( event, handler ) );
-            }
-
-            @Override
-            protected void dispatchQueuedEvents()
-            {
-                final List<EventWithHandler> eventWithHandlers = eventsToDispatch.get();
-                if ( eventWithHandlers != null )
-                {
-                    eventsToDispatch.remove();
-                    for ( final EventWithHandler eventWithHandler : eventWithHandlers )
-                    {
-                        if ( LOG.isDebugEnabled( DISPATCHING ) )
-                        {
-                            LOG.debug(
-                                DISPATCHING, "Dispatching '{}' to {}", eventWithHandler.event, eventWithHandler.handler
-                            );
-                        }
-                        dispatch( eventWithHandler.event, eventWithHandler.handler );
-                    }
-                }
-            }
-        };
     }
 
     private void registerHandlers( final BeanLocator beanLocator )
