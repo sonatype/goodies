@@ -92,10 +92,7 @@ public class DefaultEventBus
         {
             registerHandlers( beanLocator );
         }
-        if ( LOG.isDebugEnabled( EVENTS ) )
-        {
-            LOG.debug( "Event '{}' fired", event );
-        }
+        LOG.debug( "Event '{}' fired", event );
         eventBus.post( event );
         return this;
     }

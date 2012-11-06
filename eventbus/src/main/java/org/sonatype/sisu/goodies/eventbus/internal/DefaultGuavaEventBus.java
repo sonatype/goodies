@@ -30,10 +30,7 @@ public class DefaultGuavaEventBus
     @Override
     protected void dispatch( final Object event, final EventHandler wrapper )
     {
-        if ( DefaultEventBus.LOG.isDebugEnabled( DefaultEventBus.DISPATCHING ) )
-        {
-            DefaultEventBus.LOG.debug( DefaultEventBus.DISPATCHING, "Dispatching '{}' to {}", event, wrapper );
-        }
+        DefaultEventBus.LOG.debug( DefaultEventBus.DISPATCHING, "Dispatching '{}' to {}", event, wrapper );
         super.dispatch( event, wrapper );
     }
 
