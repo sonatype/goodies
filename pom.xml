@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.sonatype.forge</groupId>
         <artifactId>forge-parent</artifactId>
-        <version>11</version>
+        <version>18</version>
     </parent>
 
     <groupId>org.sonatype.sisu.goodies</groupId>
@@ -60,19 +60,13 @@
     <!--</issueManagement>-->
 
     <prerequisites>
-        <maven>3.0.3</maven>
+        <maven>3.0.4</maven>
     </prerequisites>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
         <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
         <build.timestamp>${maven.build.timestamp}</build.timestamp>
         <build.number/>
-
-        <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
-
         <sisuGuiceVersion>3.1.2</sisuGuiceVersion>
     </properties>
 
@@ -309,13 +303,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.2.1</version>
                     <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <goals>deploy</goals>
-                        <arguments>${arguments}</arguments>
-                        <releaseProfiles>release</releaseProfiles>
                         <tagNameFormat>@{artifactId}-@{version}</tagNameFormat>
                     </configuration>
                 </plugin>
@@ -414,52 +402,13 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--
-            mvn license:format -N
-            If its a new year, update the year range in the header.txt file
-            -->
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
-                <version>1.9.0</version>
                 <configuration>
-                    <aggregate>true</aggregate>
-                    <strictCheck>true</strictCheck>
-                    <header>${project.basedir}/header.txt</header>
-                    <useDefaultExcludes>false</useDefaultExcludes>
-                    <includes>
-                        <include>**/pom.xml</include>
-                        <include>**/*.xml</include>
-                        <include>**/*.xsd</include>
-                        <include>**/*.xjb</include>
-                        <include>**/*.properties</include>
-                        <include>**/*.ini</include>
-                        <include>**/*.java</include>
-                        <include>**/*.groovy</include>
-                        <include>**/*.scala</include>
-                        <include>**/*.aj</include>
-                        <include>**/*.js</include>
-                        <include>**/*.css</include>
-                        <include>**/*.help</include>
-                        <include>**/*.proto</include>
-                        <include>**/*.sm</include>
-                        <include>**/*.bat</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/target/**</exclude>
-                        <exclude>**/.*/**</exclude>
+                    <excludes combine.children="append">
                         <exclude>eventbus/src/main/java/org/sonatype/sisu/goodies/eventbus/internal/guava/**</exclude>
                     </excludes>
-                    <mapping>
-                        <scala>SLASHSTAR_STYLE</scala>
-                        <java>SLASHSTAR_STYLE</java>
-                        <xjb>XML_STYLE</xjb>
-                        <proto>DOUBLESLASH_STYLE</proto>
-                        <sm>DOUBLESLASH_STYLE</sm>
-                        <help>SCRIPT_STYLE</help>
-                        <ini>SCRIPT_STYLE</ini>
-                    </mapping>
                 </configuration>
             </plugin>
         </plugins>
