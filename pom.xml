@@ -36,13 +36,6 @@
         <url>http://www.sonatype.com/</url>
     </organization>
 
-    <licenses>
-        <license>
-            <name>ASLv2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
-
     <scm>
         <connection>scm:git:git://github.com/sonatype/sisu-goodies.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/sonatype/sisu-goodies.git</developerConnection>
