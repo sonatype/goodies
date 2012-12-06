@@ -20,47 +20,55 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.reflect.TypeToken;
 
 import java.lang.reflect.Method;
+import java.util.Set;
 
 /**
- * A {@link HandlerFindingStrategy} for collecting all event handler methods
- * that are marked with the {@link Subscribe} annotation.
+ * A {@link HandlerFindingStrategy} for collecting all event handler methods that are marked with
+ * the {@link Subscribe} annotation.
  *
  * @author Cliff Biffle
+ * @author Louis Wasserman
  */
 class AnnotatedHandlerFinder implements HandlerFindingStrategy {
-
   /**
    * {@inheritDoc}
    *
-   * This implementation finds all methods marked with a {@link Subscribe}
-   * annotation.
+   * This implementation finds all methods marked with a {@link Subscribe} annotation.
    */
   @Override
   public Multimap<Class<?>, EventHandler> findAllHandlers(Object listener) {
-    Multimap<Class<?>, EventHandler> methodsInListener =
-        HashMultimap.create();
-    Class clazz = listener.getClass();
-    while (clazz != null) {
-      for (Method method : clazz.getMethods()) {
-        Subscribe annotation = method.getAnnotation(Subscribe.class);
+    Multimap<Class<?>, EventHandler> methodsInListener = HashMultimap.create();
+    Class<?> clazz = listener.getClass();
+    Set<? extends Class<?>> supers = TypeToken.of(clazz).getTypes().rawTypes();
 
-        if (annotation != null) {
-          Class<?>[] parameterTypes = method.getParameterTypes();
-          if (parameterTypes.length != 1) {
-            throw new IllegalArgumentException(
-                "Method " + method + " has @Subscribe annotation, but requires " +
-                parameterTypes.length + " arguments.  Event handler methods " +
-                "must require a single argument.");
+    for (Method method : clazz.getMethods()) {
+      /*
+       * Iterate over each distinct method of {@code clazz}, checking if it is annotated with
+       * @Subscribe by any of the superclasses or superinterfaces that declare it.
+       */
+      for (Class<?> c : supers) {
+        try {
+          Method m = c.getMethod(method.getName(), method.getParameterTypes());
+          if (m.isAnnotationPresent(Subscribe.class)) {
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            if (parameterTypes.length != 1) {
+              throw new IllegalArgumentException("Method " + method
+                  + " has @Subscribe annotation, but requires " + parameterTypes.length
+                  + " arguments.  Event handler methods must require a single argument.");
+            }
+            Class<?> eventType = parameterTypes[0];
+            EventHandler handler = makeHandler(listener, method);
+
+            methodsInListener.put( eventType, handler );
+            break;
           }
-          Class<?> eventType = parameterTypes[0];
-          EventHandler handler = makeHandler(listener, method);
-
-          methodsInListener.put(eventType, handler);
+        } catch (NoSuchMethodException ignored) {
+          // Move on.
         }
       }
-      clazz = clazz.getSuperclass();
     }
     return methodsInListener;
   }

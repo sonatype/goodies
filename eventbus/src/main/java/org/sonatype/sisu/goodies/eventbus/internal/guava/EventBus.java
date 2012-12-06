@@ -20,20 +20,16 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Supplier;
 import com.google.common.base.Throwables;
-import com.google.common.cache.LoadingCache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
-import com.google.common.collect.Lists;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.AllowConcurrentEvents;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.reflect.TypeToken;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -103,6 +99,10 @@ import java.util.logging.Logger;
  * receive any Object will never receive a DeadEvent.
  *
  * <p>This class is safe for concurrent use.
+ * 
+ * <p>See the Guava User Guide article on <a href=
+ * "http://code.google.com/p/guava-libraries/wiki/EventBusExplained">
+ * {@code EventBus}</a>.
  *
  * @author Cliff Biffle
  * @since 10.0
@@ -114,13 +114,15 @@ public class EventBus {
    * All registered event handlers, indexed by event type.
    */
   private final SetMultimap<Class<?>, EventHandler> handlersByType =
-      Multimaps.newSetMultimap(new ConcurrentHashMap<Class<?>, Collection<EventHandler>>(),
-          new Supplier<Set<EventHandler>>() {
-            @Override
-            public Set<EventHandler> get() {
-              return new CopyOnWriteArraySet<EventHandler>();
-            }
-          });
+      Multimaps.newSetMultimap( new ConcurrentHashMap<Class<?>, Collection<EventHandler>>(),
+                                new Supplier<Set<EventHandler>>()
+                                {
+                                    @Override
+                                    public Set<EventHandler> get()
+                                    {
+                                        return newHandlerSet();
+                                    }
+                                } );
 
   /**
    * Logger for event dispatch failures.  Named by the fully-qualified name of
@@ -153,34 +155,16 @@ public class EventBus {
   };
 
   /**
-   * A thread-safe cache for flattenHierarch(). The Class class is immutable.
+   * A thread-safe cache for flattenHierarchy(). The Class class is immutable.
    */
-  private LoadingCache<Class<?>, Set<Class<?>>> flattenHierarchyCache =
+  private final LoadingCache<Class<?>, Set<Class<?>>> flattenHierarchyCache =
       CacheBuilder.newBuilder()
           .weakKeys()
           .build(new CacheLoader<Class<?>, Set<Class<?>>>() {
+            @SuppressWarnings({"unchecked", "rawtypes"}) // safe cast
             @Override
             public Set<Class<?>> load(Class<?> concreteClass) throws Exception {
-              List<Class<?>> parents = Lists.newLinkedList();
-              Set<Class<?>> classes = Sets.newHashSet();
-
-              parents.add(concreteClass);
-
-              while (!parents.isEmpty()) {
-                Class<?> clazz = parents.remove(0);
-                classes.add(clazz);
-
-                Class<?> parent = clazz.getSuperclass();
-                if (parent != null) {
-                  parents.add(parent);
-                }
-
-                for (Class<?> iface : clazz.getInterfaces()) {
-                  parents.add(iface);
-                }
-              }
-
-              return classes;
+              return (Set) TypeToken.of(concreteClass).getTypes().rawTypes();
             }
           });
 
@@ -210,7 +194,7 @@ public class EventBus {
    * @param object  object whose handler methods should be registered.
    */
   public void register(Object object) {
-    handlersByType.putAll(finder.findAllHandlers(object));
+    handlersByType.putAll( finder.findAllHandlers( object ) );
   }
 
   /**
@@ -244,8 +228,9 @@ public class EventBus {
    *
    * @param event  event to post.
    */
+  @SuppressWarnings("deprecation") // only deprecated for external subclasses
   public void post(Object event) {
-    Set<Class<?>> dispatchTypes = flattenHierarchy(event.getClass());
+    Set<Class<?>> dispatchTypes = flattenHierarchy( event.getClass() );
 
     boolean dispatched = false;
     for (Class<?> eventType : dispatchTypes) {
@@ -278,7 +263,11 @@ public class EventBus {
   /**
    * Drain the queue of events to be dispatched. As the queue is being drained,
    * new events may be posted to the end of the queue.
+   *
+   * @deprecated This method should not be overridden outside of the eventbus package. It is
+   *     scheduled for removal in Guava 14.0.
    */
+  @Deprecated
   protected void dispatchQueuedEvents() {
     // don't dispatch if we're already dispatching, that would allow reentrancy
     // and out-of-order events. Instead, leave the events to be dispatched
@@ -287,7 +276,7 @@ public class EventBus {
       return;
     }
 
-    isDispatching.set(true);
+    isDispatching.set( true );
     try {
       while (true) {
         EventWithHandler eventWithHandler = eventsToDispatch.get().poll();
@@ -310,7 +299,7 @@ public class EventBus {
    * @param event  event to dispatch.
    * @param wrapper  wrapper that will call the handler.
    */
-  protected void dispatch(Object event, EventHandler wrapper) {
+  protected void dispatch( Object event, EventHandler wrapper ) {
     try {
       wrapper.handleEvent(event);
     } catch (InvocationTargetException e) {
@@ -338,7 +327,7 @@ public class EventBus {
    *
    * @return a new, mutable set for handlers.
    */
-  protected Set<EventHandler> newHandlerSet() {
+  Set<EventHandler> newHandlerSet() {
     return new CopyOnWriteArraySet<EventHandler>();
   }
 
@@ -353,7 +342,7 @@ public class EventBus {
   @VisibleForTesting
   Set<Class<?>> flattenHierarchy(Class<?> concreteClass) {
     try {
-      return flattenHierarchyCache.get(concreteClass);
+      return flattenHierarchyCache.get( concreteClass );
     } catch (ExecutionException e) {
       throw Throwables.propagate(e.getCause());
     }

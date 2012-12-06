@@ -17,6 +17,7 @@
 package org.sonatype.sisu.goodies.eventbus.internal.guava;
 
 import com.google.common.base.Preconditions;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
