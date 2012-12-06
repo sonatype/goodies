@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.sonatype.forge</groupId>
         <artifactId>forge-parent</artifactId>
-        <version>21</version>
+        <version>27</version>
     </parent>
 
     <groupId>org.sonatype.sisu.goodies</groupId>
@@ -29,11 +29,6 @@
     <version>1.5.1-SNAPSHOT</version>
 
     <url>https://github.com/sonatype/sisu-goodies</url>
-
-    <organization>
-        <name>Sonatype, Inc.</name>
-        <url>http://www.sonatype.com/</url>
-    </organization>
 
     <scm>
         <connection>scm:git:git://github.com/sonatype/sisu-goodies.git</connection>
@@ -46,10 +41,10 @@
         <url>https://builds.sonatype.org/job/sisu-goodies</url>
     </ciManagement>
 
-    <!--<issueManagement>-->
-    <!--<system>Jira</system>-->
-    <!--<url>https://issues.sonatype.org/browse/???</url>-->
-    <!--</issueManagement>-->
+    <issueManagement>
+      <system>Github</system>
+      <url>https://github.com/sonatype/sisu-goodies/issues</url>
+    </issueManagement>
 
     <prerequisites>
         <maven>3.0.4</maven>
@@ -229,43 +224,6 @@
     </modules>
 
     <build>
-        <defaultGoal>install</defaultGoal>
-
-        <resources>
-            <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </resource>
-
-            <resource>
-                <directory>${project.basedir}/src/main/filtered-resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </resource>
-        </resources>
-
-        <testResources>
-            <testResource>
-                <directory>${project.basedir}/src/test/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </testResource>
-
-            <testResource>
-                <directory>${project.basedir}/src/test/filtered-resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </testResource>
-        </testResources>
 
         <pluginManagement>
             <plugins>
@@ -373,20 +331,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                        <configuration>
-                            <includePom>true</includePom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
