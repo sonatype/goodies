@@ -221,6 +221,7 @@
         <module>servlet</module>
         <module>jmx</module>
         <module>prefs</module>
+        <module>ssl</module>
     </modules>
 
     <build>
@@ -337,6 +338,8 @@
                 <configuration>
                     <excludes combine.children="append">
                         <exclude>eventbus/src/main/java/org/sonatype/sisu/goodies/eventbus/internal/guava/**</exclude>
+                        <exclude>ssl/**/src/main/java/org/sonatype/sisu/goodies/ssl/keystore/geronimo/**</exclude>
+                      <exclude>ssl/**/src/main/java/org/sonatype/sisu/goodies/ssl/keystore/internal/geronimo/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
