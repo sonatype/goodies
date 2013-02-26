@@ -322,7 +322,9 @@ public class KeyStoreManagerImpl
             // FIXME: Work around some strange case not clear why, but alias is reported for non-existent/removed certs
             if ( cert == null )
             {
-                log.warn( "Trust-store reports it contains certificate for alias '{}' but certificate is null" );
+                log.warn(
+                    "Trust-store reports it contains certificate for alias '{}' but certificate is null", alias
+                );
                 continue;
             }
             certificates.add( cert );
