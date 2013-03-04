@@ -132,6 +132,18 @@
                 <version>1.8</version>
             </dependency>
 
+            <dependency>
+              <groupId>javax.validation</groupId>
+              <artifactId>validation-api</artifactId>
+              <version>1.1.0.Beta3</version>
+            </dependency>
+
+            <dependency>
+              <groupId>org.hibernate</groupId>
+              <artifactId>hibernate-validator</artifactId>
+              <version>5.0.0.Beta1</version>
+            </dependency>
+
             <!-- INTERNAL (DO NOT USE ${project.version}) -->
 
             <dependency>
@@ -205,6 +217,12 @@
                 <artifactId>goodies-prefs</artifactId>
                 <version>1.6-SNAPSHOT</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.sonatype.sisu.goodies</groupId>
+                <artifactId>goodies-validation</artifactId>
+                <version>1.6-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -222,6 +240,7 @@
         <module>jmx</module>
         <module>prefs</module>
         <module>ssl</module>
+        <module>validation</module>
     </modules>
 
     <build>
