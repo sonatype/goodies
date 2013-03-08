@@ -87,8 +87,21 @@ public class KeyStoreManagerImpl
         File dir = config.getBaseDir();
         dir.mkdirs();
 
-        this.privateKeyStore = initializePrivateKeyStore( new File( dir, PRIVATE_KEY_STORE_NAME ) );
-        this.trustedKeyStore = initializeTrustedKeyStore( new File( dir, TRUSTED_KEY_STORE_NAME ) );
+        this.privateKeyStore = initializePrivateKeyStore(
+            new File( dir, getFileNamesPrefix( config ) + PRIVATE_KEY_STORE_NAME )
+        );
+        this.trustedKeyStore = initializeTrustedKeyStore(
+            new File( dir, getFileNamesPrefix( config ) + TRUSTED_KEY_STORE_NAME )
+        );
+    }
+
+    private String getFileNamesPrefix( final KeyStoreManagerConfiguration config )
+    {
+        if ( config.getFileNamesPrefix() == null || config.getFileNamesPrefix().trim().isEmpty() )
+        {
+            return "";
+        }
+        return config.getFileNamesPrefix().trim() + "-";
     }
 
     /**

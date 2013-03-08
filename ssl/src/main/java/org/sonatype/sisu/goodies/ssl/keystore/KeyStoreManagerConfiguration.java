@@ -27,6 +27,8 @@ public interface KeyStoreManagerConfiguration
 
     File getBaseDir();
 
+    String getFileNamesPrefix();
+
     String getKeyStoreType();
 
     String getKeyAlgorithm();

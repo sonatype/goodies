@@ -36,6 +36,8 @@ public class KeyStoreManagerConfigurationSupport
 
     private File baseDir;
 
+    private String fileNamesPrefix;
+
     private String keyStoreType = "JKS";
 
     private String keyAlgorithm = "RSA";
@@ -66,6 +68,17 @@ public class KeyStoreManagerConfigurationSupport
     public File getBaseDir()
     {
         return baseDir;
+    }
+
+    public void setFileNamesPrefix( final String fileNamesPrefix )
+    {
+        this.fileNamesPrefix = fileNamesPrefix;
+    }
+
+    @Override
+    public String getFileNamesPrefix()
+    {
+        return fileNamesPrefix;
     }
 
     public void setKeyStoreType( final String keyStoreType )
