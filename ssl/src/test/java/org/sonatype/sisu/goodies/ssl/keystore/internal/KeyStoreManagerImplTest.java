@@ -69,6 +69,7 @@ import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManager;
 import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManagerConfiguration;
 import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeyNotFoundException;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.litmus.testsupport.hamcrest.FileMatchers;
 
 /**
  * Tests for {@link org.sonatype.sisu.goodies.ssl.keystore.internal.KeyStoreManagerImpl}.
@@ -97,9 +98,15 @@ public class KeyStoreManagerImplTest
 
     private KeyStoreManager createKeyStoreManager( final File dir )
     {
+        return createKeyStoreManager( dir, null );
+    }
+
+    private KeyStoreManager createKeyStoreManager( final File dir, final String prefix )
+    {
         KeyStoreManagerConfiguration config = mock( KeyStoreManagerConfiguration.class );
         // use lower strength for faster test execution
         when( config.getBaseDir() ).thenReturn( dir );
+        when( config.getFileNamesPrefix() ).thenReturn( prefix );
         when( config.getKeyStoreType() ).thenReturn( "JKS" );
         when( config.getKeyAlgorithm() ).thenReturn( "RSA" );
         when( config.getKeyAlgorithmSize() ).thenReturn( 512 );
@@ -111,6 +118,19 @@ public class KeyStoreManagerImplTest
         when( config.getTrustedKeyStorePassword() ).thenReturn( "pwd" );
         when( config.getPrivateKeyPassword() ).thenReturn( "pwd" );
         return new KeyStoreManagerImpl( crypto, config );
+    }
+
+    @Test
+    public void testPrefixes()
+        throws Exception
+    {
+        assertThat( new File( keyStoreDir, "private.ks" ), FileMatchers.exists() );
+        assertThat( new File( keyStoreDir, "trusted.ks" ), FileMatchers.exists() );
+
+        createKeyStoreManager( keyStoreDir, "test" );
+
+        assertThat( new File( keyStoreDir, "test-private.ks" ), FileMatchers.exists() );
+        assertThat( new File( keyStoreDir, "trusted.ks" ), FileMatchers.exists() );
     }
 
     /**
@@ -700,4 +720,5 @@ public class KeyStoreManagerImplTest
             }
         }
     }
+
 }
