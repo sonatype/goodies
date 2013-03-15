@@ -32,7 +32,7 @@ import org.sonatype.sisu.goodies.ssl.keystore.CertificateUtil;
 import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManager;
 import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManagerConfiguration;
 import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.FileKeystoreInstance;
-import org.sonatype.sisu.goodies.ssl.keystore.geronimo.KeystoreException;
+import org.sonatype.sisu.goodies.ssl.keystore.KeystoreException;
 import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeystoreInstance;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;

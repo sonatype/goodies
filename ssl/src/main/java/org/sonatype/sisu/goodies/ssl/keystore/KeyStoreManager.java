@@ -21,7 +21,6 @@ import javax.net.ssl.TrustManager;
 
 import org.jetbrains.annotations.NonNls;
 import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeyNotFoundException;
-import org.sonatype.sisu.goodies.ssl.keystore.geronimo.KeystoreException;
 
 /**
  * Provides access to identity and trust stores.

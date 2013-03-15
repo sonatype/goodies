@@ -69,7 +69,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.ssl.keystore.CertificateUtil;
-import org.sonatype.sisu.goodies.ssl.keystore.geronimo.KeystoreException;
+import org.sonatype.sisu.goodies.ssl.keystore.KeystoreException;
 
 /**
  * Implementation of KeystoreInstance that accesses a keystore file on the

@@ -22,7 +22,7 @@ import java.security.cert.Certificate;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
-import org.sonatype.sisu.goodies.ssl.keystore.geronimo.KeystoreException;
+import org.sonatype.sisu.goodies.ssl.keystore.KeystoreException;
 
 /**
  * Management interface for dealing with a specific Keystore

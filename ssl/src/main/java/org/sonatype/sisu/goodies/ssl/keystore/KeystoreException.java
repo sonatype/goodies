@@ -15,17 +15,16 @@
  *  limitations under the License.
  */
 
-package org.sonatype.sisu.goodies.ssl.keystore.geronimo;
+package org.sonatype.sisu.goodies.ssl.keystore;
 
 /**
  * Exception indicating that a problem occurred accessing the keystore.
  *
- * @version $Rev$ $Date$
+ * @since 1.6.1
  */
 public class KeystoreException
     extends Exception
 {
-
     public KeystoreException( String message )
     {
         super( message );

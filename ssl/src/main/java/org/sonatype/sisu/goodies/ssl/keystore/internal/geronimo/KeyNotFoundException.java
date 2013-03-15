@@ -17,7 +17,7 @@
 
 package org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo;
 
-import org.sonatype.sisu.goodies.ssl.keystore.geronimo.KeystoreException;
+import org.sonatype.sisu.goodies.ssl.keystore.KeystoreException;
 
 /**
  * Exception indicating that the private key you tried to retrieve does not exist.
