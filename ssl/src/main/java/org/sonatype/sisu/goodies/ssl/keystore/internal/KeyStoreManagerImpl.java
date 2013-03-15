@@ -21,8 +21,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateParsingException;
 import java.util.Collection;
 import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
@@ -77,7 +75,6 @@ public class KeyStoreManagerImpl
 
     private ReloadableX509KeyManager reloadableX509KeyManager;
 
-    @Inject
     public KeyStoreManagerImpl( final CryptoHelper crypto,
                                 final KeyStoreManagerConfiguration config )
     {

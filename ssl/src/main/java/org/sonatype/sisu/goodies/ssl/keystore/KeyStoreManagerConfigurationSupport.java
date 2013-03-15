@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.ssl.keystore.support;
+package org.sonatype.sisu.goodies.ssl.keystore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -20,7 +20,6 @@ import javax.net.ssl.TrustManagerFactory;
 
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.Time;
-import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManagerConfiguration;
 
 /**
  * Mutable {@link KeyStoreManagerConfiguration}.
