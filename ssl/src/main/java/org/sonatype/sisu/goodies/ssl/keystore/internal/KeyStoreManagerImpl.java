@@ -43,7 +43,7 @@ import com.google.common.collect.Lists;
  * <p/>
  * Current key-store implementation appears to NOT to have case-sensitive alias support (ie. "myKey" = "mykey").
  *
- * @since 1.5.2
+ * @since 1.6
  */
 public class KeyStoreManagerImpl
     extends ComponentSupport

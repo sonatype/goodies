@@ -25,7 +25,7 @@ import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeyNotFoundExcep
 /**
  * Provides access to identity and trust stores.
  *
- * @since 1.5.2
+ * @since 1.6
  */
 public interface KeyStoreManager
 {

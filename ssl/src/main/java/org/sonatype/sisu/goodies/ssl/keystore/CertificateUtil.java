@@ -54,7 +54,7 @@ import org.sonatype.sisu.goodies.ssl.keystore.internal.DigesterUtils;
  * </code>
  * </pre>
  *
- * @since 1.5.2
+ * @since 1.6
  */
 public final class CertificateUtil
 {

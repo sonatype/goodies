@@ -19,7 +19,7 @@ import org.sonatype.sisu.goodies.common.Time;
 /**
  * {@link KeyStoreManager} configuration.
  *
- * @since 1.5.2
+ * @since 1.6
  */
 public interface KeyStoreManagerConfiguration
 

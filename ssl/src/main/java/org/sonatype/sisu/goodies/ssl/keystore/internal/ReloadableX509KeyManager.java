@@ -24,7 +24,7 @@ import javax.net.ssl.X509KeyManager;
  * A X509KeyManager that will can be updated.  The default implementation is not updated when changes made to a keystore.
  *
  * @see ReloadableX509TrustManager
- * @since 1.5.2
+ * @since 1.6
  */
 public class ReloadableX509KeyManager
     implements X509KeyManager

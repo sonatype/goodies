@@ -23,7 +23,7 @@ import javax.net.ssl.X509TrustManager;
  * <p/>
  * Based on work from: http://jcalcote.wordpress.com/2010/06/22/managing-a-dynamic-java-trust-store/
  *
- * @since 1.5.2
+ * @since 1.6
  */
 public class ReloadableX509TrustManager
     implements X509TrustManager
