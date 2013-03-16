@@ -117,7 +117,7 @@ public class KeyStoreManagerImpl
             PRIVATE_KEY_STORE_NAME,
             config.getPrivateKeyStorePassword(),
             config.getKeyStoreType(),
-            PRIVATE_KEY_ALIAS + "=" + config.getPrivateKeyStorePassword() );
+            PRIVATE_KEY_ALIAS + "=" + config.getPrivateKeyPassword() );
 
         if ( !isKeyPairInstalled( ks, DEFAULT00_KEY_ALIAS ) )
         {
