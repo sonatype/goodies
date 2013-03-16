@@ -142,6 +142,14 @@ public class FileKeystoreInstance
         initializeKeystoreIfNotExist();
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+            "keystoreFile=" + keystoreFile +
+            ", keystoreType='" + keystoreType + '\'' +
+            '}';
+    }
+
     private void initializeKeystoreIfNotExist()
     {
 
