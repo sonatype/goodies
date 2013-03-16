@@ -22,9 +22,7 @@ import org.sonatype.sisu.goodies.common.Time;
  * @since 1.6
  */
 public interface KeyStoreManagerConfiguration
-
 {
-
     File getBaseDir();
 
     String getFileNamesPrefix();
@@ -43,10 +41,9 @@ public interface KeyStoreManagerConfiguration
 
     String getTrustManagerAlgorithm();
 
-    String getPrivateKeyStorePassword();
+    char[] getPrivateKeyStorePassword();
 
-    String getTrustedKeyStorePassword();
+    char[] getTrustedKeyStorePassword();
 
-    String getPrivateKeyPassword();
-
+    char[] getPrivateKeyPassword();
 }

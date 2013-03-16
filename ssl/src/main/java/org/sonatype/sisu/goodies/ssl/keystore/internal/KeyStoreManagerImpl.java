@@ -24,6 +24,7 @@ import java.util.List;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
+import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NonNls;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.TestAccessible;
@@ -117,7 +118,8 @@ public class KeyStoreManagerImpl
             PRIVATE_KEY_STORE_NAME,
             config.getPrivateKeyStorePassword(),
             config.getKeyStoreType(),
-            PRIVATE_KEY_ALIAS + "=" + config.getPrivateKeyPassword() );
+            ImmutableMap.of(PRIVATE_KEY_ALIAS, config.getPrivateKeyPassword())
+        );
 
         if ( !isKeyPairInstalled( ks, DEFAULT00_KEY_ALIAS ) )
         {
@@ -127,8 +129,8 @@ public class KeyStoreManagerImpl
 
                 ks.generateKeyPair(
                     DEFAULT00_KEY_ALIAS,
-                    config.getPrivateKeyStorePassword().toCharArray(),
-                    config.getPrivateKeyPassword().toCharArray(),
+                    config.getPrivateKeyStorePassword(),
+                    config.getPrivateKeyPassword(),
                     config.getKeyAlgorithm(),
                     config.getKeyAlgorithmSize(),
                     config.getSignatureAlgorithm(),
@@ -142,7 +144,7 @@ public class KeyStoreManagerImpl
                 );
 
                 Certificate cert =
-                    ks.getCertificate( DEFAULT00_KEY_ALIAS, config.getPrivateKeyStorePassword().toCharArray() );
+                    ks.getCertificate( DEFAULT00_KEY_ALIAS, config.getPrivateKeyStorePassword() );
                 log.trace( "Generated default certificate:\n{}", cert );
             }
             catch ( KeystoreException e )
@@ -157,7 +159,7 @@ public class KeyStoreManagerImpl
         {
             try
             {
-                String[] aliases = ks.listPrivateKeys( config.getPrivateKeyStorePassword().toCharArray() );
+                String[] aliases = ks.listPrivateKeys( config.getPrivateKeyStorePassword() );
                 if ( aliases != null && aliases.length != 0 )
                 {
                     log.trace( "Private key aliases:" );
@@ -183,14 +185,14 @@ public class KeyStoreManagerImpl
     {
         log.debug( "Initializing trusted key-store: {}", file );
 
-        FileKeystoreInstance ks =
-            new FileKeystoreInstance(
-                crypto,
-                file,
-                TRUSTED_KEY_STORE_NAME,
-                config.getTrustedKeyStorePassword(),
-                config.getKeyStoreType(),
-                TRUSTED_KEY_STORE_NAME + "=" + config.getTrustedKeyStorePassword() );
+        FileKeystoreInstance ks = new FileKeystoreInstance(
+            crypto,
+            file,
+            TRUSTED_KEY_STORE_NAME,
+            config.getTrustedKeyStorePassword(),
+            config.getKeyStoreType(),
+            ImmutableMap.of(TRUSTED_KEY_STORE_NAME, config.getTrustedKeyStorePassword())
+        );
 
         logTrustedCertificateAliases( ks );
 
@@ -198,7 +200,7 @@ public class KeyStoreManagerImpl
         // FIXME: ... probably some bugs related to be fixed
         try
         {
-            if ( ks.listTrustCertificates( config.getTrustedKeyStorePassword().toCharArray() ).length != 0 )
+            if ( ks.listTrustCertificates( config.getTrustedKeyStorePassword() ).length != 0 )
             {
                 log.warn( "Trusted key-store should have been empty when initialized but was not" );
             }
@@ -220,7 +222,7 @@ public class KeyStoreManagerImpl
         {
             try
             {
-                String[] aliases = ks.listTrustCertificates( config.getTrustedKeyStorePassword().toCharArray() );
+                String[] aliases = ks.listTrustCertificates( config.getTrustedKeyStorePassword() );
                 if ( aliases != null && aliases.length != 0 )
                 {
                     log.trace( "Trusted certificate aliases:" );
@@ -243,7 +245,7 @@ public class KeyStoreManagerImpl
         throws KeystoreException
     {
         TrustManager[] trustManagers = trustedKeyStore.getTrustManager( config.getTrustManagerAlgorithm(),
-                                                                        config.getTrustedKeyStorePassword().toCharArray() );
+                                                                        config.getTrustedKeyStorePassword() );
 
         // important! any time we get the array of trust managers we need to replace the X509TrustManager with the
         // ReloadableX509TrustManager so that changes to the keystore are updated in the TrustManager
@@ -264,7 +266,7 @@ public class KeyStoreManagerImpl
         throws KeystoreException
     {
         KeyManager[] keyManagers = privateKeyStore.getKeyManager( config.getKeyManagerAlgorithm(), PRIVATE_KEY_ALIAS,
-                                                                  config.getPrivateKeyStorePassword().toCharArray() );
+                                                                  config.getPrivateKeyStorePassword() );
 
         // important! any time we get the array of key managers we need to replace the X509KeyManager with the
         // ReloadableX509KeyManager so that changes to the keystore are updated in the KeyManager
@@ -289,10 +291,10 @@ public class KeyStoreManagerImpl
         if ( trustedKeyStore.getCertificate( alias ) != null )
         {
             log.warn( "Certificate already exists in trust-store w/alias: {}; replacing certificate", alias );
-            trustedKeyStore.deleteEntry( alias, config.getTrustedKeyStorePassword().toCharArray() );
+            trustedKeyStore.deleteEntry( alias, config.getTrustedKeyStorePassword() );
         }
 
-        trustedKeyStore.importTrustCertificate( certificate, alias, config.getTrustedKeyStorePassword().toCharArray() );
+        trustedKeyStore.importTrustCertificate( certificate, alias, config.getTrustedKeyStorePassword() );
 
         logTrustedCertificateAliases( trustedKeyStore );
 
@@ -317,14 +319,14 @@ public class KeyStoreManagerImpl
     {
         return trustedKeyStore.getCertificate(
             checkNotNull( alias, "'alias' cannot be null when looking up a trusted Certificate." ), //NON-NLS
-            config.getTrustedKeyStorePassword().toCharArray() );
+            config.getTrustedKeyStorePassword() );
     }
 
     @Override
     public Collection<Certificate> getTrustedCertificates()
         throws KeystoreException
     {
-        String[] aliases = trustedKeyStore.listTrustCertificates( config.getTrustedKeyStorePassword().toCharArray() );
+        String[] aliases = trustedKeyStore.listTrustCertificates( config.getTrustedKeyStorePassword() );
         List<Certificate> certificates = Lists.newArrayListWithCapacity( aliases.length );
         for ( String alias : aliases )
         {
@@ -349,7 +351,7 @@ public class KeyStoreManagerImpl
     {
         log.debug( "Removing trust certificate w/alias: {}", alias );
 
-        trustedKeyStore.deleteEntry( alias, config.getTrustedKeyStorePassword().toCharArray() );
+        trustedKeyStore.deleteEntry( alias, config.getTrustedKeyStorePassword() );
 
         logTrustedCertificateAliases( trustedKeyStore );
 
@@ -363,8 +365,8 @@ public class KeyStoreManagerImpl
         throws KeystoreException
     {
         privateKeyStore.generateKeyPair( PRIVATE_KEY_ALIAS,
-                                         config.getPrivateKeyStorePassword().toCharArray(),
-                                         config.getPrivateKeyPassword().toCharArray(),
+                                         config.getPrivateKeyStorePassword(),
+                                         config.getPrivateKeyPassword(),
                                          config.getKeyAlgorithm(),
                                          config.getKeyAlgorithmSize(),
                                          config.getSignatureAlgorithm(),
@@ -384,7 +386,7 @@ public class KeyStoreManagerImpl
     {
         try
         {
-            ks.getCertificate( alias, config.getPrivateKeyStorePassword().toCharArray() );
+            ks.getCertificate( alias, config.getPrivateKeyStorePassword() );
             return true;
         }
         catch ( KeystoreException e )
@@ -404,22 +406,22 @@ public class KeyStoreManagerImpl
     public Certificate getCertificate()
         throws KeystoreException
     {
-        return privateKeyStore.getCertificate( PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword().toCharArray() );
+        return privateKeyStore.getCertificate( PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword() );
     }
 
     @Override
     public PrivateKey getPrivateKey()
         throws KeystoreException
     {
-        return privateKeyStore.getPrivateKey( PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword().toCharArray(),
-                                              config.getPrivateKeyPassword().toCharArray() );
+        return privateKeyStore.getPrivateKey( PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword(),
+                                              config.getPrivateKeyPassword() );
     }
 
     @Override
     public void removePrivateKey()
         throws KeystoreException
     {
-        privateKeyStore.deleteEntry( PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword().toCharArray() );
+        privateKeyStore.deleteEntry( PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword() );
     }
 
 }

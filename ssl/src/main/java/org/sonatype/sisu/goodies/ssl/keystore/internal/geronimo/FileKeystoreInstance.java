@@ -112,31 +112,31 @@ public class FileKeystoreInstance
 
     private long keystoreReadDate = Long.MIN_VALUE;
 
-    public FileKeystoreInstance( CryptoHelper crypto, File keystorePath, String keystoreName, String keystorePassword,
-                                 String keystoreType, String keyPasswords )
+    public FileKeystoreInstance( CryptoHelper crypto,
+                                 File keystorePath,
+                                 String keystoreName,
+                                 char[] keystorePassword,
+                                 String keystoreType,
+                                 Map<String,char[]> keyPasswords )
     {
         this( crypto, keystorePath.getAbsolutePath(), keystoreName, keystorePassword, keystoreType, keyPasswords );
     }
 
-    // FIXME: Expose Map<String,char[]> for keypasswords instead of decoding here?
-
-    public FileKeystoreInstance( CryptoHelper crypto, String keystorePath, String keystoreName, String keystorePassword,
-                                 String keystoreType, String keyPasswords )
+    public FileKeystoreInstance( CryptoHelper crypto,
+                                 String keystorePath,
+                                 String keystoreName,
+                                 char[] keystorePassword,
+                                 String keystoreType,
+                                 Map<String,char[]> keyPasswords )
     {
         this.crypto = crypto;
         this.keystorePath = keystorePath;
         this.keystoreName = keystoreName;
         this.keystoreType = keystoreType;
-        this.keystorePassword = keystorePassword == null ? null : keystorePassword.toCharArray();
+        this.keystorePassword = keystorePassword;
         if ( keyPasswords != null )
         {
-            String[] keys = keyPasswords.split( "\\]\\!\\[" );
-            for ( int i = 0; i < keys.length; i++ )
-            {
-                String key = keys[i];
-                int pos = key.indexOf( '=' );
-                this.keyPasswords.put( key.substring( 0, pos ), key.substring( pos + 1 ).toCharArray() );
-            }
+            this.keyPasswords.putAll(keyPasswords);
         }
 
         initializeKeystoreIfNotExist();
@@ -275,6 +275,8 @@ public class FileKeystoreInstance
         keyPasswords.remove( alias );
         storePasswords();
     }
+
+    // FIXME: This apparently does nothing... why does this exist?
 
     private void storePasswords()
         throws KeystoreException

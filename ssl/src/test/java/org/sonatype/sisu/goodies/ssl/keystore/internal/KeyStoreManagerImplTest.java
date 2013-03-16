@@ -114,9 +114,9 @@ public class KeyStoreManagerImplTest
         when( config.getCertificateValidity() ).thenReturn( Time.days( 36500 ) );
         when( config.getKeyManagerAlgorithm() ).thenReturn( KeyManagerFactory.getDefaultAlgorithm() );
         when( config.getTrustManagerAlgorithm() ).thenReturn( TrustManagerFactory.getDefaultAlgorithm() );
-        when( config.getPrivateKeyStorePassword() ).thenReturn( "pwd" );
-        when( config.getTrustedKeyStorePassword() ).thenReturn( "pwd" );
-        when( config.getPrivateKeyPassword() ).thenReturn( "pwd" );
+        when( config.getPrivateKeyStorePassword() ).thenReturn( "pwd".toCharArray() );
+        when( config.getTrustedKeyStorePassword() ).thenReturn( "pwd".toCharArray() );
+        when( config.getPrivateKeyPassword() ).thenReturn( "pwd".toCharArray() );
         return new KeyStoreManagerImpl( crypto, config );
     }
 

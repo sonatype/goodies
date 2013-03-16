@@ -51,11 +51,11 @@ public class KeyStoreManagerConfigurationSupport
 
     private String trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
 
-    private String privateKeyStorePassword;
+    private char[] privateKeyStorePassword;
 
-    private String trustedKeyStorePassword;
+    private char[] trustedKeyStorePassword;
 
-    private String privateKeyPassword;
+    private char[] privateKeyPassword;
 
     public void setBaseDir( final File baseDir )
     {
@@ -182,33 +182,33 @@ public class KeyStoreManagerConfigurationSupport
 
     public void setPrivateKeyStorePassword( final String password )
     {
-        this.privateKeyStorePassword = password;
+        this.privateKeyStorePassword = password != null ? password.toCharArray() : null;
     }
 
     @Override
-    public String getPrivateKeyStorePassword()
+    public char[] getPrivateKeyStorePassword()
     {
         return privateKeyStorePassword;
     }
 
     public void setTrustedKeyStorePassword( final String password )
     {
-        this.trustedKeyStorePassword = password;
+        this.trustedKeyStorePassword = password != null ? password.toCharArray() : null;
     }
 
     @Override
-    public String getTrustedKeyStorePassword()
+    public char[] getTrustedKeyStorePassword()
     {
         return trustedKeyStorePassword;
     }
 
     public void setPrivateKeyPassword( final String password )
     {
-        this.privateKeyPassword = password;
+        this.privateKeyPassword = password != null ? password.toCharArray() : null;
     }
 
     @Override
-    public String getPrivateKeyPassword()
+    public char[] getPrivateKeyPassword()
     {
         return privateKeyPassword;
     }
