@@ -180,9 +180,9 @@ public class KeyStoreManagerConfigurationSupport
         return trustManagerAlgorithm;
     }
 
-    public void setPrivateKeyStorePassword( final String password )
+    public void setPrivateKeyStorePassword( final char[] password )
     {
-        this.privateKeyStorePassword = password != null ? password.toCharArray() : null;
+        this.privateKeyStorePassword = password;
     }
 
     @Override
@@ -191,9 +191,9 @@ public class KeyStoreManagerConfigurationSupport
         return privateKeyStorePassword;
     }
 
-    public void setTrustedKeyStorePassword( final String password )
+    public void setTrustedKeyStorePassword( final char[] password )
     {
-        this.trustedKeyStorePassword = password != null ? password.toCharArray() : null;
+        this.trustedKeyStorePassword = password;
     }
 
     @Override
@@ -202,9 +202,9 @@ public class KeyStoreManagerConfigurationSupport
         return trustedKeyStorePassword;
     }
 
-    public void setPrivateKeyPassword( final String password )
+    public void setPrivateKeyPassword( final char[] password )
     {
-        this.privateKeyPassword = password != null ? password.toCharArray() : null;
+        this.privateKeyPassword = password;
     }
 
     @Override
