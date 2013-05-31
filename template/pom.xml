@@ -41,7 +41,7 @@
     <dependency>
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-velocity</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
       <optional>true</optional>
     </dependency>
 
