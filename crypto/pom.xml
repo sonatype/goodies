@@ -26,6 +26,10 @@
   <artifactId>goodies-crypto</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
 
+  <properties>
+    <bouncycastle.version>1.47</bouncycastle.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.sonatype.sisu.goodies</groupId>
@@ -41,19 +45,19 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.47</version>
+      <version>${bouncycastle.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpg-jdk15on</artifactId>
-      <version>1.47</version>
+      <version>${bouncycastle.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-jdk15on</artifactId>
-      <version>1.47</version>
+      <version>${bouncycastle.version}</version>
     </dependency>
 
     <dependency>

@@ -27,8 +27,8 @@
   <name>${project.groupId}:${project.artifactId}</name>
 
   <properties>
-    <jacksonVersion>1.9.10</jacksonVersion>
-    <jackson2Version>2.1.3</jackson2Version>
+    <jackson.version>1.9.10</jackson.version>
+    <jackson2.version>2.2.2</jackson2.version>
   </properties>
 
   <dependencies>
@@ -46,21 +46,21 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson2Version}</version>
+      <version>${jackson2.version}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>${jackson2Version}</version>
+      <version>${jackson2.version}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.1.2</version>
+      <version>${jackson2.version}</version>
       <optional>true</optional>
     </dependency>
 
@@ -68,42 +68,42 @@
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-core-asl</artifactId>
-      <version>${jacksonVersion}</version>
+      <version>${jackson.version}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-asl</artifactId>
-      <version>${jacksonVersion}</version>
+      <version>${jackson.version}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-jaxrs</artifactId>
-      <version>${jacksonVersion}</version>
+      <version>${jackson.version}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-xc</artifactId>
-      <version>${jacksonVersion}</version>
+      <version>${jackson.version}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.sonatype.sisu.jacksbee</groupId>
       <artifactId>jacksbee-runtime</artifactId>
-      <version>1.1.1</version>
+      <version>1.2-SNAPSHOT</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
-      <version>1.4.3</version>
+      <version>1.4.4</version>
       <optional>true</optional>
     </dependency>
 

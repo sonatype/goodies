@@ -32,6 +32,9 @@
       <artifactId>goodies-common</artifactId>
     </dependency>
 
+    <!--
+    TODO: Investigate 6.1.0 version update. http://smc.sourceforge.net/
+    -->
     <dependency>
       <groupId>net.sf.smc</groupId>
       <artifactId>statemap</artifactId>

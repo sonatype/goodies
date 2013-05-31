@@ -58,7 +58,6 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonatype.sisu.goodies.common.Time;
@@ -92,7 +91,6 @@ public class KeyStoreManagerImplTest
     public void setUp()
         throws Exception
     {
-        FileUtils.deleteQuietly( keyStoreDir );
         keyStoreManager = createKeyStoreManager( keyStoreDir );
     }
 

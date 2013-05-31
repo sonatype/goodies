@@ -55,7 +55,7 @@
     <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
     <build.number/>
-    <sisuGuiceVersion>3.1.2</sisuGuiceVersion>
+    <sisu-guice.version>3.1.4</sisu-guice.version>
   </properties>
 
   <dependencyManagement>
@@ -63,13 +63,13 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.7.2</version>
+        <version>1.7.5</version>
       </dependency>
 
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>13.0.1</version>
+        <version>14.0.1</version>
       </dependency>
 
       <dependency>
@@ -81,13 +81,13 @@
       <dependency>
         <groupId>org.sonatype.sisu</groupId>
         <artifactId>sisu-inject-bean</artifactId>
-        <version>2.3.1</version>
+        <version>2.3.4</version>
       </dependency>
 
       <dependency>
         <groupId>org.sonatype.sisu</groupId>
         <artifactId>sisu-guice</artifactId>
-        <version>${sisuGuiceVersion}</version>
+        <version>${sisu-guice.version}</version>
         <exclusions>
           <!-- Exclude sisu-guava, use stock guava 10+ instead -->
           <exclusion>
@@ -100,19 +100,25 @@
       <dependency>
         <groupId>org.sonatype.sisu.inject</groupId>
         <artifactId>guice-assistedinject</artifactId>
-        <version>${sisuGuiceVersion}</version>
+        <version>${sisu-guice.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.sonatype.sisu.inject</groupId>
         <artifactId>guice-multibindings</artifactId>
-        <version>${sisuGuiceVersion}</version>
+        <version>${sisu-guice.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.inject</groupId>
+        <artifactId>guice-servlet</artifactId>
+        <version>${sisu-guice.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.sonatype.sisu.litmus</groupId>
         <artifactId>litmus-testsupport</artifactId>
-        <version>1.5</version>
+        <version>1.6</version>
       </dependency>
 
       <dependency>
@@ -124,7 +130,7 @@
       <dependency>
         <groupId>com.intellij</groupId>
         <artifactId>annotations</artifactId>
-        <version>9.0.4</version>
+        <version>12.0</version>
       </dependency>
 
       <dependency>
@@ -136,13 +142,13 @@
       <dependency>
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
-        <version>1.1.0.Beta3</version>
+        <version>1.1.0.Final</version>
       </dependency>
 
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-validator</artifactId>
-        <version>5.0.0.Beta1</version>
+        <version>5.0.1.Final</version>
       </dependency>
 
       <!-- INTERNAL (DO NOT USE ${project.version}) -->
