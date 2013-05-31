@@ -13,88 +13,89 @@
     See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.sonatype.sisu.goodies</groupId>
-        <artifactId>goodies</artifactId>
-        <version>1.7-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <groupId>org.sonatype.sisu.goodies</groupId>
+    <artifactId>goodies</artifactId>
+    <version>1.7-SNAPSHOT</version>
+  </parent>
 
-    <artifactId>goodies-lifecycle</artifactId>
-    <name>${project.artifactId}</name>
+  <artifactId>goodies-lifecycle</artifactId>
+  <name>${project.groupId}:${project.artifactId}</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.sonatype.sisu.goodies</groupId>
-            <artifactId>goodies-common</artifactId>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.sonatype.sisu.goodies</groupId>
+      <artifactId>goodies-common</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>net.sf.smc</groupId>
-            <artifactId>statemap</artifactId>
-            <classifier>java</classifier>
-            <version>6.0.1</version>
-        </dependency>
+    <dependency>
+      <groupId>net.sf.smc</groupId>
+      <artifactId>statemap</artifactId>
+      <classifier>java</classifier>
+      <version>6.0.1</version>
+    </dependency>
 
-        <dependency>
-            <groupId>org.sonatype.sisu.litmus</groupId>
-            <artifactId>litmus-testsupport</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>org.sonatype.sisu.litmus</groupId>
+      <artifactId>litmus-testsupport</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-    <build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>smc-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>smc</goal>
+            </goals>
+            <configuration>
+              <sync>true</sync>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>m2e</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>smc-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>smc</goal>
-                        </goals>
-                        <configuration>
-                            <sync>true</sync>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>add-smc-generated-sources</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>target/generated-sources/smc</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>m2e</id>
-            <activation>
-                <property>
-                    <name>m2e.version</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>build-helper-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>add-smc-generated-sources</id>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>add-source</goal>
-                                </goals>
-                                <configuration>
-                                    <sources>
-                                        <source>target/generated-sources/smc</source>
-                                    </sources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

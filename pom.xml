@@ -13,455 +13,456 @@
     See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.sonatype.forge</groupId>
-        <artifactId>forge-parent</artifactId>
-        <version>32</version>
-    </parent>
+  <parent>
+    <groupId>org.sonatype.forge</groupId>
+    <artifactId>forge-parent</artifactId>
+    <version>32</version>
+  </parent>
 
-    <groupId>org.sonatype.sisu.goodies</groupId>
-    <artifactId>goodies</artifactId>
-    <name>${project.artifactId}</name>
-    <packaging>pom</packaging>
-    <version>1.7-SNAPSHOT</version>
+  <groupId>org.sonatype.sisu.goodies</groupId>
+  <artifactId>goodies</artifactId>
+  <name>${project.groupId}:${project.artifactId}</name>
+  <packaging>pom</packaging>
+  <version>1.7-SNAPSHOT</version>
 
+  <url>https://github.com/sonatype/sisu-goodies</url>
+
+  <scm>
+    <connection>scm:git:git://github.com/sonatype/sisu-goodies.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/sonatype/sisu-goodies.git</developerConnection>
     <url>https://github.com/sonatype/sisu-goodies</url>
+  </scm>
 
-    <scm>
-        <connection>scm:git:git://github.com/sonatype/sisu-goodies.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/sonatype/sisu-goodies.git</developerConnection>
-        <url>https://github.com/sonatype/sisu-goodies</url>
-    </scm>
+  <ciManagement>
+    <system>Hudson</system>
+    <url>https://builds.sonatype.org/job/sisu-goodies</url>
+  </ciManagement>
 
-    <ciManagement>
-        <system>Hudson</system>
-        <url>https://builds.sonatype.org/job/sisu-goodies</url>
-    </ciManagement>
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/sonatype/sisu-goodies/issues</url>
+  </issueManagement>
 
-    <issueManagement>
-      <system>Github</system>
-      <url>https://github.com/sonatype/sisu-goodies/issues</url>
-    </issueManagement>
+  <prerequisites>
+    <maven>3.0.4</maven>
+  </prerequisites>
 
-    <prerequisites>
-        <maven>3.0.4</maven>
-    </prerequisites>
+  <properties>
+    <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+    <build.timestamp>${maven.build.timestamp}</build.timestamp>
+    <build.number/>
+    <sisuGuiceVersion>3.1.2</sisuGuiceVersion>
+  </properties>
 
-    <properties>
-        <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
-        <build.timestamp>${maven.build.timestamp}</build.timestamp>
-        <build.number />
-        <sisuGuiceVersion>3.1.2</sisuGuiceVersion>
-    </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.2</version>
+      </dependency>
 
-    <dependencyManagement>
-        <dependencies>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>13.0.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu</groupId>
+        <artifactId>sisu-inject-bean</artifactId>
+        <version>2.3.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu</groupId>
+        <artifactId>sisu-guice</artifactId>
+        <version>${sisuGuiceVersion}</version>
+        <exclusions>
+          <!-- Exclude sisu-guava, use stock guava 10+ instead -->
+          <exclusion>
+            <groupId>org.sonatype.sisu</groupId>
+            <artifactId>sisu-guava</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.inject</groupId>
+        <artifactId>guice-assistedinject</artifactId>
+        <version>${sisuGuiceVersion}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.inject</groupId>
+        <artifactId>guice-multibindings</artifactId>
+        <version>${sisuGuiceVersion}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.litmus</groupId>
+        <artifactId>litmus-testsupport</artifactId>
+        <version>1.5</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>2.0.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.intellij</groupId>
+        <artifactId>annotations</artifactId>
+        <version>9.0.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.gossip</groupId>
+        <artifactId>gossip-support</artifactId>
+        <version>1.8</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>1.1.0.Beta3</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>5.0.0.Beta1</version>
+      </dependency>
+
+      <!-- INTERNAL (DO NOT USE ${project.version}) -->
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-common</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-i18n</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-lifecycle</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-marshal</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-thread</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-eventbus</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-crypto</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-template</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-inject</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-servlet</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-jmx</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-prefs</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.sonatype.sisu.goodies</groupId>
+        <artifactId>goodies-validation</artifactId>
+        <version>1.7-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <modules>
+    <module>common</module>
+    <module>i18n</module>
+    <module>lifecycle</module>
+    <module>marshal</module>
+    <module>thread</module>
+    <module>eventbus</module>
+    <module>crypto</module>
+    <module>template</module>
+    <module>inject</module>
+    <module>servlet</module>
+    <module>jmx</module>
+    <module>prefs</module>
+    <module>ssl</module>
+    <module>validation</module>
+  </modules>
+
+  <build>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>smc-maven-plugin</artifactId>
+          <version>1.0-alpha-1</version>
+          <dependencies>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.2</version>
+              <groupId>net.sf.smc</groupId>
+              <artifactId>smc</artifactId>
+              <version>6.0.1</version>
             </dependency>
+          </dependencies>
+          <configuration>
+            <outputDirectory>${project.build.directory}/generated-sources/smc</outputDirectory>
+            <verbose>true</verbose>
+          </configuration>
+        </plugin>
 
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>13.0.1</version>
-            </dependency>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <tagNameFormat>@{artifactId}-@{version}</tagNameFormat>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
-            <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <version>1</version>
-            </dependency>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>checks</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>[3.0,)</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>[1.6,)</version>
+                </requireJavaVersion>
+                <bannedDependencies>
+                  <searchTransitive>true</searchTransitive>
+                  <excludes>
+                    <!-- Keep junit out, use junit-dep instead -->
+                    <exclude>junit:junit</exclude>
+                    <!-- Keep all JCL out, use jcl-over-slf4j instead -->
+                    <exclude>commons-logging:commons-logging</exclude>
+                    <exclude>commons-logging:commons-logging-api</exclude>
+                  </excludes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-            <dependency>
-                <groupId>org.sonatype.sisu</groupId>
-                <artifactId>sisu-inject-bean</artifactId>
-                <version>2.3.1</version>
-            </dependency>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
 
-            <dependency>
-                <groupId>org.sonatype.sisu</groupId>
-                <artifactId>sisu-guice</artifactId>
-                <version>${sisuGuiceVersion}</version>
-                <exclusions>
-                    <!-- Exclude sisu-guava, use stock guava 10+ instead -->
-                    <exclusion>
-                        <groupId>org.sonatype.sisu</groupId>
-                        <artifactId>sisu-guava</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <signature>
+                <groupId>org.codehaus.mojo.signature</groupId>
+                <artifactId>java16</artifactId>
+                <version>1.0</version>
+              </signature>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-            <dependency>
-                <groupId>org.sonatype.sisu.inject</groupId>
-                <artifactId>guice-assistedinject</artifactId>
-                <version>${sisuGuiceVersion}</version>
-            </dependency>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>main-index</goal>
+              <goal>test-index</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
-            <dependency>
-                <groupId>org.sonatype.sisu.inject</groupId>
-                <artifactId>guice-multibindings</artifactId>
-                <version>${sisuGuiceVersion}</version>
-            </dependency>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <excludes combine.children="append">
+            <exclude>eventbus/src/main/java/org/sonatype/sisu/goodies/eventbus/internal/guava/**</exclude>
+            <exclude>ssl/**/src/main/java/org/sonatype/sisu/goodies/ssl/keystore/geronimo/**</exclude>
+            <exclude>ssl/**/src/main/java/org/sonatype/sisu/goodies/ssl/keystore/internal/geronimo/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
-            <dependency>
-                <groupId>org.sonatype.sisu.litmus</groupId>
-                <artifactId>litmus-testsupport</artifactId>
-                <version>1.5</version>
-            </dependency>
+  <profiles>
+    <profile>
+      <id>it</id>
+      <activation>
+        <property>
+          <name>it</name>
+        </property>
+      </activation>
 
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>2.0.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.intellij</groupId>
-                <artifactId>annotations</artifactId>
-                <version>9.0.4</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.gossip</groupId>
-                <artifactId>gossip-support</artifactId>
-                <version>1.8</version>
-            </dependency>
-
-            <dependency>
-              <groupId>javax.validation</groupId>
-              <artifactId>validation-api</artifactId>
-              <version>1.1.0.Beta3</version>
-            </dependency>
-
-            <dependency>
-              <groupId>org.hibernate</groupId>
-              <artifactId>hibernate-validator</artifactId>
-              <version>5.0.0.Beta1</version>
-            </dependency>
-
-            <!-- INTERNAL (DO NOT USE ${project.version}) -->
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-common</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-i18n</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-lifecycle</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-marshal</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-thread</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-eventbus</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-crypto</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-template</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-inject</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-servlet</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-jmx</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-prefs</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.sisu.goodies</groupId>
-                <artifactId>goodies-validation</artifactId>
-                <version>1.7-SNAPSHOT</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <modules>
-        <module>common</module>
-        <module>i18n</module>
-        <module>lifecycle</module>
-        <module>marshal</module>
-        <module>thread</module>
-        <module>eventbus</module>
-        <module>crypto</module>
-        <module>template</module>
-        <module>inject</module>
-        <module>servlet</module>
-        <module>jmx</module>
-        <module>prefs</module>
-        <module>ssl</module>
-        <module>validation</module>
-    </modules>
-
-    <build>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>smc-maven-plugin</artifactId>
-                    <version>1.0-alpha-1</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>net.sf.smc</groupId>
-                            <artifactId>smc</artifactId>
-                            <version>6.0.1</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <outputDirectory>${project.build.directory}/generated-sources/smc</outputDirectory>
-                        <verbose>true</verbose>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <configuration>
-                        <tagNameFormat>@{artifactId}-@{version}</tagNameFormat>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>checks</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>[3.0,)</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <version>[1.6,)</version>
-                                </requireJavaVersion>
-                                <bannedDependencies>
-                                    <searchTransitive>true</searchTransitive>
-                                    <excludes>
-                                        <!-- Keep junit out, use junit-dep instead -->
-                                        <exclude>junit:junit</exclude>
-                                        <!-- Keep all JCL out, use jcl-over-slf4j instead -->
-                                        <exclude>commons-logging:commons-logging</exclude>
-                                        <exclude>commons-logging:commons-logging-api</exclude>
-                                    </excludes>
-                                </bannedDependencies>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <signature>
-                                <groupId>org.codehaus.mojo.signature</groupId>
-                                <artifactId>java16</artifactId>
-                                <version>1.0</version>
-                            </signature>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>sisu-maven-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>main-index</goal>
-                            <goal>test-index</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <configuration>
-                    <excludes combine.children="append">
-                        <exclude>eventbus/src/main/java/org/sonatype/sisu/goodies/eventbus/internal/guava/**</exclude>
-                        <exclude>ssl/**/src/main/java/org/sonatype/sisu/goodies/ssl/keystore/geronimo/**</exclude>
-                      <exclude>ssl/**/src/main/java/org/sonatype/sisu/goodies/ssl/keystore/internal/geronimo/**</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
+      </build>
+    </profile>
 
-    <profiles>
-        <profile>
-            <id>it</id>
-            <activation>
-                <property>
-                    <name>it</name>
-                </property>
-            </activation>
+    <profile>
+      <id>findbugs</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <version>2.5.2</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>findbugs</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                        <version>2.5.2</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>m2e</id>
-            <activation>
-                <property>
-                    <name>m2e.version</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.eclipse.m2e</groupId>
-                        <artifactId>lifecycle-mapping</artifactId>
-                        <version>1.0.0</version>
-                        <configuration>
-                            <lifecycleMappingMetadata>
-                                <pluginExecutions>
-                                    <pluginExecution>
-                                        <pluginExecutionFilter>
-                                            <groupId>org.sonatype.plugins</groupId>
-                                            <artifactId>sisu-maven-plugin</artifactId>
-                                            <versionRange>[1.1,)</versionRange>
-                                            <goals>
-                                                <goal>main-index</goal>
-                                                <goal>test-index</goal>
-                                            </goals>
-                                        </pluginExecutionFilter>
-                                        <action>
-                                            <execute />
-                                        </action>
-                                    </pluginExecution>
-                                    <pluginExecution>
-                                        <pluginExecutionFilter>
-                                            <groupId>org.codehaus.mojo</groupId>
-                                            <artifactId>smc-maven-plugin</artifactId>
-                                            <versionRange>[1.0-alpha-1,)</versionRange>
-                                            <goals>
-                                                <goal>smc</goal>
-                                            </goals>
-                                        </pluginExecutionFilter>
-                                        <action>
-                                            <execute />
-                                        </action>
-                                    </pluginExecution>
-                                </pluginExecutions>
-                            </lifecycleMappingMetadata>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <profile>
+      <id>m2e</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.m2e</groupId>
+            <artifactId>lifecycle-mapping</artifactId>
+            <version>1.0.0</version>
+            <configuration>
+              <lifecycleMappingMetadata>
+                <pluginExecutions>
+                  <pluginExecution>
+                    <pluginExecutionFilter>
+                      <groupId>org.sonatype.plugins</groupId>
+                      <artifactId>sisu-maven-plugin</artifactId>
+                      <versionRange>[1.1,)</versionRange>
+                      <goals>
+                        <goal>main-index</goal>
+                        <goal>test-index</goal>
+                      </goals>
+                    </pluginExecutionFilter>
+                    <action>
+                      <execute/>
+                    </action>
+                  </pluginExecution>
+                  <pluginExecution>
+                    <pluginExecutionFilter>
+                      <groupId>org.codehaus.mojo</groupId>
+                      <artifactId>smc-maven-plugin</artifactId>
+                      <versionRange>[1.0-alpha-1,)</versionRange>
+                      <goals>
+                        <goal>smc</goal>
+                      </goals>
+                    </pluginExecutionFilter>
+                    <action>
+                      <execute/>
+                    </action>
+                  </pluginExecution>
+                </pluginExecutions>
+              </lifecycleMappingMetadata>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
