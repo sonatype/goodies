@@ -106,16 +106,13 @@ public class ValidationMethodInterceptor
             final BeanDescriptor descriptor = validatorFactory.getValidator().getConstraintsForClass(
                 method.getDeclaringClass()
             );
-            if ( descriptor.isBeanConstrained() )
+            final MethodDescriptor constraints = descriptor.getConstraintsForMethod(
+                method.getName(), method.getParameterTypes()
+            );
+            if ( constraints != null )
             {
-                final MethodDescriptor constraints = descriptor.getConstraintsForMethod(
-                    method.getName(), method.getParameterTypes()
-                );
-                if ( constraints != null )
-                {
-                    LOG.debug( "Intercepting (for validation purposes) {}", method );
-                    return true;
-                }
+                LOG.debug( "Intercepting (for validation purposes) {}", method );
+                return true;
             }
             return false;
         }
