@@ -13,6 +13,7 @@
 package org.sonatype.sisu.goodies.lifecycle;
 
 import com.google.common.base.Throwables;
+import org.sonatype.gossip.Level;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.Mutex;
 import org.sonatype.sisu.goodies.lifecycle.LifecycleHandlerContext.MainMap;
@@ -29,7 +30,14 @@ public class LifecycleSupport
     implements Lifecycle
 {
     private final Mutex lock = new Mutex();
-    
+
+    /**
+     * @since 1.7
+     */
+    protected Level getLifecycleLogLevel() {
+        return Level.DEBUG;
+    }
+
     private final class Handler
         implements LifecycleHandler
     {
@@ -38,7 +46,7 @@ public class LifecycleSupport
         private Throwable failure;
 
         public void log(final String message) {
-            log.debug(message);
+            getLifecycleLogLevel().log(log, message);
         }
 
         public boolean isFailed() {
@@ -148,7 +156,7 @@ public class LifecycleSupport
     }
 
     protected void ensureStarted() {
-        checkState(isStarted());
+        checkState(isStarted(), "Not started");
     }
 
     protected boolean isStopped() {
@@ -158,6 +166,6 @@ public class LifecycleSupport
     }
 
     protected void ensureStopped() {
-        checkState(isStopped());
+        checkState(isStopped(), "Not stopped");
     }
 }
