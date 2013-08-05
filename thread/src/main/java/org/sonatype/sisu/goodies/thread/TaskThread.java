@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.thread;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -22,23 +23,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class TaskThread
     extends ThreadSupport
 {
-    private final Runnable task;
+  private final Runnable task;
 
-    public TaskThread(final Runnable task) {
-        this.task = checkNotNull(task);
-    }
+  public TaskThread(final Runnable task) {
+    this.task = checkNotNull(task);
+  }
 
-    public TaskThread(final Runnable task, final String name) {
-        super(name);
-        this.task = checkNotNull(task);
-    }
+  public TaskThread(final Runnable task, final String name) {
+    super(name);
+    this.task = checkNotNull(task);
+  }
 
-    public TaskThread(final ThreadGroup group, final Runnable task, final String name) {
-        super(group, name);
-        this.task = checkNotNull(task);
-    }
+  public TaskThread(final ThreadGroup group, final Runnable task, final String name) {
+    super(group, name);
+    this.task = checkNotNull(task);
+  }
 
-    protected void doRun() throws Exception {
-        task.run();
-    }
+  protected void doRun() throws Exception {
+    task.run();
+  }
 }

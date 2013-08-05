@@ -29,13 +29,11 @@ public class KeystoreIsLocked
     extends KeystoreException
 {
 
-    public KeystoreIsLocked( String message )
-    {
-        super( message );
-    }
+  public KeystoreIsLocked(String message) {
+    super(message);
+  }
 
-    public KeystoreIsLocked( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
+  public KeystoreIsLocked(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

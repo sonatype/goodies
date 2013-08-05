@@ -13,10 +13,11 @@
 
 package org.sonatype.sisu.goodies.inject.properties;
 
-import org.junit.Test;
+import java.util.Properties;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.util.Properties;
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -28,25 +29,25 @@ import static org.junit.Assert.assertThat;
 public class ResourcePropertiesSourceTest
     extends TestSupport
 {
-    @Test
-    public void loadExisting() {
-        ResourcePropertiesSource source = new ResourcePropertiesSource(getClass(), "test1.properties");
-        Properties props = source.properties();
-        log(props);
-        assertNotNull(props);
-        assertThat(props.size(), is(2));
-        assertThat(props.getProperty("a"), is("1"));
-        assertThat(props.getProperty("b"), is("2"));
-    }
+  @Test
+  public void loadExisting() {
+    ResourcePropertiesSource source = new ResourcePropertiesSource(getClass(), "test1.properties");
+    Properties props = source.properties();
+    log(props);
+    assertNotNull(props);
+    assertThat(props.size(), is(2));
+    assertThat(props.getProperty("a"), is("1"));
+    assertThat(props.getProperty("b"), is("2"));
+  }
 
-    @Test
-    public void loadExistingRoot() {
-        ResourcePropertiesSource source = new ResourcePropertiesSource("/test2.properties");
-        Properties props = source.properties();
-        log(props);
-        assertNotNull(props);
-        assertThat(props.size(), is(2));
-        assertThat(props.getProperty("c"), is("3"));
-        assertThat(props.getProperty("d"), is("4"));
-    }
+  @Test
+  public void loadExistingRoot() {
+    ResourcePropertiesSource source = new ResourcePropertiesSource("/test2.properties");
+    Properties props = source.properties();
+    log(props);
+    assertNotNull(props);
+    assertThat(props.size(), is(2));
+    assertThat(props.getProperty("c"), is("3"));
+    assertThat(props.getProperty("d"), is("4"));
+  }
 }

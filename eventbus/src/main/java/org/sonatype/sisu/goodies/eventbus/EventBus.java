@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.eventbus;
 
 import java.lang.annotation.Documented;
@@ -85,50 +86,50 @@ import java.lang.annotation.Target;
 public interface EventBus
 {
 
-    /**
-     * Registers an event handler with this event bus.
-     *
-     * @param handler to be registered
-     * @return itself, for fluent api usage
-     */
-    EventBus register( Object handler );
+  /**
+   * Registers an event handler with this event bus.
+   *
+   * @param handler to be registered
+   * @return itself, for fluent api usage
+   */
+  EventBus register(Object handler);
 
-    /**
-     * Unregisters an event handler from this event bus.
-     *
-     * @param handler to be registered
-     * @return itself, for fluent api usage
-     */
-    EventBus unregister( Object handler );
+  /**
+   * Unregisters an event handler from this event bus.
+   *
+   * @param handler to be registered
+   * @return itself, for fluent api usage
+   */
+  EventBus unregister(Object handler);
 
-    /**
-     * Posts an event. Event bus will notify all previously registered handlers about this event.
-     *
-     * @param event an event
-     * @return itself, for fluent api usage
-     */
-    EventBus post( Object event );
+  /**
+   * Posts an event. Event bus will notify all previously registered handlers about this event.
+   *
+   * @param event an event
+   * @return itself, for fluent api usage
+   */
+  EventBus post(Object event);
 
-    /**
-     * Marker interface for all handlers that should be automatically registered with event bus when event bus is
-     * created.
-     */
-    public interface LoadOnStart
-    {
+  /**
+   * Marker interface for all handlers that should be automatically registered with event bus when event bus is
+   * created.
+   */
+  public interface LoadOnStart
+  {
 
-    }
+  }
 
-    /**
-     * Marker interface for all handlers that should be automatically registered with event bus when event bus is
-     * created.
-     */
-    @Target( value = { ElementType.TYPE } )
-    @Retention( RetentionPolicy.RUNTIME )
-    @Documented
-    @Inherited
-    public @interface Managed
-    {
+  /**
+   * Marker interface for all handlers that should be automatically registered with event bus when event bus is
+   * created.
+   */
+  @Target(value = {ElementType.TYPE})
+  @Retention(RetentionPolicy.RUNTIME)
+  @Documented
+  @Inherited
+  public @interface Managed
+  {
 
-    }
+  }
 
 }

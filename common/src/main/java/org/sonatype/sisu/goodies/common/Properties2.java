@@ -10,12 +10,8 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.common;
 
-import com.google.common.collect.Lists;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
-import org.sonatype.sisu.goodies.common.io.Closer;
+package org.sonatype.sisu.goodies.common;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,6 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.sonatype.sisu.goodies.common.io.Closer;
+
+import com.google.common.collect.Lists;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -39,64 +41,66 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Properties2
 {
-    /**
-     * @since 1.5
-     */
-    private Properties2() {}
+  /**
+   * @since 1.5
+   */
+  private Properties2() {}
 
-    public static Properties load(final File file) throws IOException {
-        checkNotNull(file);
+  public static Properties load(final File file) throws IOException {
+    checkNotNull(file);
 
-        if (file.exists()) {
-            return load(file.toURI().toURL());
-        }
-        else {
-            throw new FileNotFoundException("Could not find file: " + file.getAbsolutePath());
-        }
+    if (file.exists()) {
+      return load(file.toURI().toURL());
     }
-
-    public static Properties load(final URL url) throws IOException {
-        checkNotNull(url);
-
-        Properties result = new Properties();
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            result.load(reader);
-        }
-        finally {
-            Closer.close(reader);
-        }
-        return result;
+    else {
+      throw new FileNotFoundException("Could not find file: " + file.getAbsolutePath());
     }
+  }
 
-    public static String getSystemProperty(final Class<?> type, final @NonNls String name, final @Nullable Object defaultValue) {
-        checkNotNull(type);
-        checkNotNull(name);
-        if (defaultValue == null) {
-            return System.getProperty(type.getName() + "." + name);
-        }
-        else {
-            return System.getProperty(type.getName() + "." + name, String.valueOf(defaultValue));
-        }
-    }
+  public static Properties load(final URL url) throws IOException {
+    checkNotNull(url);
 
-    public static String getSystemProperty(final Class<?> type, final @NonNls String name) {
-        return getSystemProperty(type, name, null);
+    Properties result = new Properties();
+    Reader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(url.openStream()));
+      result.load(reader);
     }
+    finally {
+      Closer.close(reader);
+    }
+    return result;
+  }
 
-    @SuppressWarnings({"unchecked"})
-    public static Collection<String> sortKeys(final Properties source) {
-        checkNotNull(source);
-        List keys = Lists.newArrayList(source.keySet());
-        Collections.sort(keys);
-        return keys;
+  public static String getSystemProperty(final Class<?> type, final @NonNls String name,
+                                         final @Nullable Object defaultValue)
+  {
+    checkNotNull(type);
+    checkNotNull(name);
+    if (defaultValue == null) {
+      return System.getProperty(type.getName() + "." + name);
     }
+    else {
+      return System.getProperty(type.getName() + "." + name, String.valueOf(defaultValue));
+    }
+  }
 
-    public static Collection<String> sortKeys(final Map<String, String> source) {
-        checkNotNull(source);
-        List<String> keys = Lists.newArrayList(source.keySet());
-        Collections.sort(keys);
-        return keys;
-    }
+  public static String getSystemProperty(final Class<?> type, final @NonNls String name) {
+    return getSystemProperty(type, name, null);
+  }
+
+  @SuppressWarnings({"unchecked"})
+  public static Collection<String> sortKeys(final Properties source) {
+    checkNotNull(source);
+    List keys = Lists.newArrayList(source.keySet());
+    Collections.sort(keys);
+    return keys;
+  }
+
+  public static Collection<String> sortKeys(final Map<String, String> source) {
+    checkNotNull(source);
+    List<String> keys = Lists.newArrayList(source.keySet());
+    Collections.sort(keys);
+    return keys;
+  }
 }

@@ -10,67 +10,67 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.sonatype.sisu.goodies.common;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Exception-safe {@link Iterator} wrapper.
-  *
-  * @param <T> Element type.
  *
+ * @param <T> Element type.
  * @since 1.5
  */
 public final class SafeIterator<T>
     implements Iterator<T>
 {
-    private static final Logger log = LoggerFactory.getLogger(SafeIterator.class);
+  private static final Logger log = LoggerFactory.getLogger(SafeIterator.class);
 
-    private final Iterator<T> delegate;
+  private final Iterator<T> delegate;
 
-    private T next;
+  private T next;
 
-    public SafeIterator(final Iterator<T> delegate) {
-        this.delegate = checkNotNull(delegate);
+  public SafeIterator(final Iterator<T> delegate) {
+    this.delegate = checkNotNull(delegate);
+  }
+
+  public boolean hasNext() {
+    while (delegate.hasNext()) {
+      try {
+        next = delegate.next();
+        return true;
+      }
+      catch (final Exception e) {
+        // skip bad element
+        log.trace("Skipping bad element", e);
+        continue;
+      }
     }
+    return false;
+  }
 
-    public boolean hasNext() {
-        while (delegate.hasNext()) {
-            try {
-                next = delegate.next();
-                return true;
-            }
-            catch (final Exception e) {
-                // skip bad element
-                log.trace("Skipping bad element", e);
-                continue;
-            }
-        }
-        return false;
+  public T next() {
+    if (hasNext()) {
+      return next;
     }
+    throw new NoSuchElementException();
+  }
 
-    public T next() {
-        if (hasNext()) {
-            return next;
-        }
-        throw new NoSuchElementException();
-    }
+  public void remove() {
+    throw new UnsupportedOperationException();
+  }
 
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
+  public static <T> SafeIterator<T> of(final Iterator<T> iterator) {
+    return new SafeIterator<T>(iterator);
+  }
 
-    public static <T> SafeIterator<T> of(final Iterator<T> iterator) {
-        return new SafeIterator<T>(iterator);
-    }
-
-    public static <T> SafeIterator<T> of(final Iterable<T> iterable) {
-        return new SafeIterator<T>(iterable.iterator());
-    }
+  public static <T> SafeIterator<T> of(final Iterable<T> iterable) {
+    return new SafeIterator<T>(iterable.iterator());
+  }
 }

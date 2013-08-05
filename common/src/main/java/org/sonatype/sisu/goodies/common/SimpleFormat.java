@@ -13,8 +13,6 @@
 
 package org.sonatype.sisu.goodies.common;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Simple substituting format which only deals with {@code %s} placeholders.
  *
@@ -24,66 +22,68 @@ import com.google.common.base.Preconditions;
  */
 public class SimpleFormat
 {
-    public static final String PLACEHOLDER = "%s";
+  public static final String PLACEHOLDER = "%s";
 
-    /**
-     * @since 1.5
-     */
-    private SimpleFormat() {}
+  /**
+   * @since 1.5
+   */
+  private SimpleFormat() {}
 
-    /**
-     * Substitutes each {@code %s} in {@code template} with an argument. These are matched by position - the first {@code %s} gets {@code args[0]},
-     * etc. If there are more arguments than placeholders, the unmatched arguments will be appended to the end of the formatted message in square
-     * braces.
-     *
-     * @param template string containing 0 or more {@code %s} placeholders.
-     * @param args     the arguments to be substituted into the message template.
-     *                 Arguments are converted to strings using {@link String#valueOf(Object)}.
-     *                 Arguments can be null.
-     */
-    public static String format(String template, final Object... args) {
-        // While using a format with null template or args doesn't make much sense, allow nulls and avoid throwing exceptions
-        template = String.valueOf(template); // null -> "null"
-        if (args == null || args.length == 0) {
-            return template;
-        }
-
-        // start substituting the arguments into the '%s' placeholders
-        StringBuilder builder = new StringBuilder(template.length() + 16 * args.length);
-        int templateStart = 0;
-        int i = 0;
-        while (i < args.length) {
-            int placeholderStart = template.indexOf(PLACEHOLDER, templateStart);
-            if (placeholderStart == -1) {
-                break;
-            }
-            builder.append(template.substring(templateStart, placeholderStart));
-            builder.append(args[i++]);
-            templateStart = placeholderStart + 2;
-        }
-        builder.append(template.substring(templateStart));
-
-        // if we run out of placeholders, append the extra args in square braces
-        if (i < args.length) {
-            builder.append(" [");
-            builder.append(args[i++]);
-            while (i < args.length) {
-                builder.append(", ");
-                builder.append(args[i++]);
-            }
-            builder.append(']');
-        }
-
-        return builder.toString();
+  /**
+   * Substitutes each {@code %s} in {@code template} with an argument. These are matched by position - the first
+   * {@code %s} gets {@code args[0]},
+   * etc. If there are more arguments than placeholders, the unmatched arguments will be appended to the end of the
+   * formatted message in square
+   * braces.
+   *
+   * @param template string containing 0 or more {@code %s} placeholders.
+   * @param args     the arguments to be substituted into the message template.
+   *                 Arguments are converted to strings using {@link String#valueOf(Object)}.
+   *                 Arguments can be null.
+   */
+  public static String format(String template, final Object... args) {
+    // While using a format with null template or args doesn't make much sense, allow nulls and avoid throwing exceptions
+    template = String.valueOf(template); // null -> "null"
+    if (args == null || args.length == 0) {
+      return template;
     }
 
-    public static FormatTemplate template(final String format, final Object... args) {
-        return new FormatTemplate(format, args)
-        {
-            @Override
-            protected String render() {
-                return SimpleFormat.format(getFormat(), getArgs());
-            }
-        };
+    // start substituting the arguments into the '%s' placeholders
+    StringBuilder builder = new StringBuilder(template.length() + 16 * args.length);
+    int templateStart = 0;
+    int i = 0;
+    while (i < args.length) {
+      int placeholderStart = template.indexOf(PLACEHOLDER, templateStart);
+      if (placeholderStart == -1) {
+        break;
+      }
+      builder.append(template.substring(templateStart, placeholderStart));
+      builder.append(args[i++]);
+      templateStart = placeholderStart + 2;
     }
+    builder.append(template.substring(templateStart));
+
+    // if we run out of placeholders, append the extra args in square braces
+    if (i < args.length) {
+      builder.append(" [");
+      builder.append(args[i++]);
+      while (i < args.length) {
+        builder.append(", ");
+        builder.append(args[i++]);
+      }
+      builder.append(']');
+    }
+
+    return builder.toString();
+  }
+
+  public static FormatTemplate template(final String format, final Object... args) {
+    return new FormatTemplate(format, args)
+    {
+      @Override
+      protected String render() {
+        return SimpleFormat.format(getFormat(), getArgs());
+      }
+    };
+  }
 }

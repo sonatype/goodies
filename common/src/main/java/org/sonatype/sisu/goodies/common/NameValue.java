@@ -10,12 +10,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
+
+import java.util.Map;
 
 import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NonNls;
-
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,62 +27,62 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class NameValue
 {
-    @NonNls
-    public static final String SEPARATOR = "=";
-    
-    public static final String TRUE = Boolean.TRUE.toString();
+  @NonNls
+  public static final String SEPARATOR = "=";
 
-    public final String name;
+  public static final String TRUE = Boolean.TRUE.toString();
 
-    public final String value;
+  public final String name;
 
-    private NameValue(final @NonNls String name, final @NonNls String value) {
-        this.name = name;
-        this.value = value;
+  public final String value;
+
+  private NameValue(final @NonNls String name, final @NonNls String value) {
+    this.name = name;
+    this.value = value;
+  }
+
+  public static NameValue parse(final @NonNls String input) {
+    checkNotNull(input);
+    String name, value;
+
+    int i = input.indexOf(SEPARATOR);
+    if (i == -1) {
+      name = input;
+      value = TRUE;
+    }
+    else {
+      name = input.substring(0, i);
+      value = input.substring(i + 1, input.length());
     }
 
-    public static NameValue parse(final @NonNls String input) {
-        checkNotNull(input);
-        String name, value;
+    return new NameValue(name.trim(), value);
+  }
 
-        int i = input.indexOf(SEPARATOR);
-        if (i == -1) {
-            name = input;
-            value = TRUE;
-        }
-        else {
-            name = input.substring(0, i);
-            value = input.substring(i + 1, input.length());
-        }
+  public String toString() {
+    return String.format("%s%s'%s'", name, SEPARATOR, value);
+  }
 
-        return new NameValue(name.trim(), value);
+  //
+  // Decoding
+  //
+
+  public static Map<String, String> decode(final String pattern, final String input, final boolean trimValue) {
+    checkNotNull(input);
+
+    Map<String, String> parameters = Maps.newLinkedHashMap();
+    for (String item : input.split(pattern)) {
+      NameValue nv = NameValue.parse(item);
+      parameters.put(nv.name, trimValue ? nv.value.trim() : nv.value);
     }
-
-    public String toString() {
-        return String.format("%s%s'%s'", name, SEPARATOR, value);
-    }
-
-    //
-    // Decoding
-    //
-
-    public static Map<String,String> decode(final String pattern, final String input, final boolean trimValue) {
-        checkNotNull(input);
-
-        Map<String,String> parameters = Maps.newLinkedHashMap();
-        for (String item : input.split(pattern)) {
-            NameValue nv = NameValue.parse(item);
-            parameters.put(nv.name, trimValue ? nv.value.trim() : nv.value);
-        }
-        return parameters;
-    }
+    return parameters;
+  }
 
 
-    public static Map<String,String> decode(final String input, final boolean trimValue) {
-        return decode(",|/", input, trimValue);
-    }
+  public static Map<String, String> decode(final String input, final boolean trimValue) {
+    return decode(",|/", input, trimValue);
+  }
 
-    public static Map<String,String> decode(final String input) {
-        return decode(input, true);
-    }
+  public static Map<String, String> decode(final String input) {
+    return decode(input, true);
+  }
 }

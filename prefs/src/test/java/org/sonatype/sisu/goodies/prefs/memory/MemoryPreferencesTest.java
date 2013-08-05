@@ -10,11 +10,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.prefs.memory;
+
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -26,23 +28,23 @@ import static org.junit.Assert.assertThat;
 public class MemoryPreferencesTest
     extends TestSupport
 {
-    private MemoryPreferences root;
+  private MemoryPreferences root;
 
-    @Before
-    public void setUp() throws Exception {
-        root = new MemoryPreferences();
-    }
+  @Before
+  public void setUp() throws Exception {
+    root = new MemoryPreferences();
+  }
 
-    @Test
-    public void getSetRemoveValue() {
-        String key = "foo";
-        String value = root.get(key, null);
-        assertThat(value, nullValue());
-        root.put(key, "bar");
-        value = root.get(key, null);
-        assertThat(value, is("bar"));
-        root.remove(key);
-        value = root.get(key, null);
-        assertThat(value, nullValue());
-    }
+  @Test
+  public void getSetRemoveValue() {
+    String key = "foo";
+    String value = root.get(key, null);
+    assertThat(value, nullValue());
+    root.put(key, "bar");
+    value = root.get(key, null);
+    assertThat(value, is("bar"));
+    root.remove(key);
+    value = root.get(key, null);
+    assertThat(value, nullValue());
+  }
 }

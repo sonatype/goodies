@@ -10,9 +10,11 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.xstream;
 
 import org.sonatype.sisu.goodies.marshal.internal.MarshallerTestSupport;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.junit.Before;
 
@@ -22,20 +24,20 @@ import org.junit.Before;
 public class XstreamMarshallerTest
     extends MarshallerTestSupport
 {
-    @Before
-    public void setUp() throws Exception {
-        marshaller = new XstreamMarshaller();
-    }
+  @Before
+  public void setUp() throws Exception {
+    marshaller = new XstreamMarshaller();
+  }
 
-    @XStreamAlias("text-value")
-    public static class TextValueImpl
-        extends TextValue
-    {
-        // empty
-    }
+  @XStreamAlias("text-value")
+  public static class TextValueImpl
+      extends TextValue
+  {
+    // empty
+  }
 
-    @Override
-    protected TextValue createTextValue() {
-        return new TextValueImpl();
-    }
+  @Override
+  protected TextValue createTextValue() {
+    return new TextValueImpl();
+  }
 }

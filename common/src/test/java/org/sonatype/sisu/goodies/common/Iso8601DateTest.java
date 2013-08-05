@@ -10,12 +10,14 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
 
-import org.junit.Test;
+import java.util.Date;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.util.Date;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,16 +28,16 @@ import static org.junit.Assert.assertNotNull;
 public class Iso8601DateTest
     extends TestSupport
 {
-    @Test
-    public void testFormatParse() throws Exception {
-        Date date1 = new Date();
+  @Test
+  public void testFormatParse() throws Exception {
+    Date date1 = new Date();
 
-        String formatted = Iso8601Date.format(date1);
-        assertNotNull(formatted);
+    String formatted = Iso8601Date.format(date1);
+    assertNotNull(formatted);
 
-        Date date2 = Iso8601Date.parse(formatted);
-        assertNotNull(date2);
+    Date date2 = Iso8601Date.parse(formatted);
+    assertNotNull(date2);
 
-        assertEquals(date1.getTime(), date2.getTime());
-    }
+    assertEquals(date1.getTime(), date2.getTime());
+  }
 }

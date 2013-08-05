@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.eventbus.internal;
 
 import javax.inject.Named;
@@ -21,23 +22,21 @@ import org.sonatype.sisu.goodies.eventbus.internal.guava.EventHandler;
 /**
  * @since 1.5
  */
-@Named( "default" )
+@Named("default")
 @Singleton
 public class DefaultGuavaEventBus
     extends EventBus
 {
 
-    @Override
-    protected void dispatch( final Object event, final EventHandler wrapper )
-    {
-        DefaultEventBus.LOG.trace( DefaultEventBus.DISPATCHING, "Dispatching '{}' to {}", event, wrapper );
-        super.dispatch( event, wrapper );
-    }
+  @Override
+  protected void dispatch(final Object event, final EventHandler wrapper) {
+    DefaultEventBus.LOG.trace(DefaultEventBus.DISPATCHING, "Dispatching '{}' to {}", event, wrapper);
+    super.dispatch(event, wrapper);
+  }
 
-    @Override
-    public String toString()
-    {
-        return "Default Guava EventBus";
-    }
+  @Override
+  public String toString() {
+    return "Default Guava EventBus";
+  }
 
 }

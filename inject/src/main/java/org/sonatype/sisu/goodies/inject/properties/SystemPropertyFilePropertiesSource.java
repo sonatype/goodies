@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.properties;
 
 import java.io.File;
@@ -25,31 +26,31 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class SystemPropertyFilePropertiesSource
     extends PropertiesSourceSupport
 {
-    private final String propertyName;
+  private final String propertyName;
 
-    public SystemPropertyFilePropertiesSource(final String propertyName) {
-        this.propertyName = checkNotNull(propertyName);
+  public SystemPropertyFilePropertiesSource(final String propertyName) {
+    this.propertyName = checkNotNull(propertyName);
+  }
+
+  @Override
+  protected Properties loadProperties() throws Exception {
+    Properties props = new Properties();
+
+    String location = System.getProperty(propertyName);
+    if (location != null) {
+      props.putAll(loadProperties(new File(location)));
+    }
+    else {
+      log.warn("Missing system property: {}", propertyName);
     }
 
-    @Override
-    protected Properties loadProperties() throws Exception {
-        Properties props = new Properties();
+    return props;
+  }
 
-        String location = System.getProperty(propertyName);
-        if (location != null) {
-            props.putAll(loadProperties(new File(location)));
-        }
-        else {
-            log.warn("Missing system property: {}", propertyName);
-        }
-
-        return props;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-            "propertyName='" + propertyName + '\'' +
-            '}';
-    }
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "{" +
+        "propertyName='" + propertyName + '\'' +
+        '}';
+  }
 }

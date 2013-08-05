@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.properties;
 
 import java.util.Properties;
@@ -24,14 +25,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DirectPropertiesSource
     extends PropertiesSourceSupport
 {
-    private final Properties properties;
+  private final Properties properties;
 
-    public DirectPropertiesSource(final Properties properties) {
-        this.properties = checkNotNull(properties);
-    }
+  public DirectPropertiesSource(final Properties properties) {
+    this.properties = checkNotNull(properties);
+  }
 
-    @Override
-    protected Properties loadProperties() throws Exception {
-        return properties;
-    }
+  @Override
+  protected Properties loadProperties() throws Exception {
+    return properties;
+  }
 }

@@ -10,13 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.jackson;
 
-import com.google.inject.AbstractModule;
-import org.sonatype.sisu.goodies.marshal.Marshaller;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import javax.inject.Singleton;
+
+import org.sonatype.sisu.goodies.marshal.Marshaller;
+
+import com.google.inject.AbstractModule;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * <a href="http://jackson.codehaus.org">Jackson</a> marshaling Guice module.
@@ -26,10 +28,10 @@ import javax.inject.Singleton;
 public class JacksonMarshalModule
     extends AbstractModule
 {
-    @Override
-    protected void configure() {
-        bind(ObjectMapper.class).toProvider(ObjectMapperProvider.class).in(Singleton.class);
-        bind(Marshaller.class).to(JacksonMarshaller.class).in(Singleton.class);
-        //bind(Marshaller.class).annotatedWith(named("jackson")).to(JacksonMarshaller.class).in(Singleton.class);
-    }
+  @Override
+  protected void configure() {
+    bind(ObjectMapper.class).toProvider(ObjectMapperProvider.class).in(Singleton.class);
+    bind(Marshaller.class).to(JacksonMarshaller.class).in(Singleton.class);
+    //bind(Marshaller.class).annotatedWith(named("jackson")).to(JacksonMarshaller.class).in(Singleton.class);
+  }
 }

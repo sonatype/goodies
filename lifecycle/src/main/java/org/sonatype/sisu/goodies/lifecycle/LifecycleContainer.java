@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.lifecycle;
 
 /**
@@ -19,13 +20,13 @@ package org.sonatype.sisu.goodies.lifecycle;
  */
 public interface LifecycleContainer
 {
-    <T extends LifecycleAware> T add(T component);
+  <T extends LifecycleAware> T add(T component);
 
-    LifecycleContainer add(LifecycleAware... components);
+  LifecycleContainer add(LifecycleAware... components);
 
-    <T extends LifecycleAware> T remove(T component);
+  <T extends LifecycleAware> T remove(T component);
 
-    LifecycleContainer remove(LifecycleAware... components);
+  LifecycleContainer remove(LifecycleAware... components);
 
-    void clear();
+  void clear();
 }

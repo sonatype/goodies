@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.thread;
 
 import org.sonatype.sisu.goodies.common.Time;
@@ -25,65 +26,65 @@ public abstract class PeriodicThreadSupport
     extends ThreadSupport
     implements LifecycleAware
 {
-    protected PeriodicThreadSupport() {
-        super();
-    }
+  protected PeriodicThreadSupport() {
+    super();
+  }
 
-    protected PeriodicThreadSupport(final String name) {
-        super(name);
-    }
+  protected PeriodicThreadSupport(final String name) {
+    super(name);
+  }
 
-    protected PeriodicThreadSupport(final ThreadGroup group, final String name) {
-        super(group, name);
-    }
+  protected PeriodicThreadSupport(final ThreadGroup group, final String name) {
+    super(group, name);
+  }
 
-    @Override
-    protected final void doRun() throws Exception {
-        while (true) {
-            doTask();
+  @Override
+  protected final void doRun() throws Exception {
+    while (true) {
+      doTask();
 
-            synchronized (getLock()) {
-                if (!isCanceled()) {
-                    doContinue();
-                }
-
-                if (isCanceled()) {
-                    break;
-                }
-            }
-
-            log.trace("Continuing");
+      synchronized (getLock()) {
+        if (!isCanceled()) {
+          doContinue();
         }
-    }
 
-    protected abstract void doTask() throws Exception;
-
-    protected void doContinue() throws Exception {
-        // empty
-    }
-
-    protected void pause(final Time time) throws InterruptedException {
-        synchronized (getLock()) {
-            log.trace("Pausing for: {}", time);
-            time.wait(getLock());
+        if (isCanceled()) {
+          break;
         }
+      }
+
+      log.trace("Continuing");
     }
+  }
 
-    public Lifecycle getLifecycle() {
-        return new Lifecycle()
-        {
-            public void start() throws Exception {
-                PeriodicThreadSupport.this.start();
-            }
+  protected abstract void doTask() throws Exception;
 
-            public void stop() throws Exception {
-                cancel();
-                join();
-            }
+  protected void doContinue() throws Exception {
+    // empty
+  }
 
-            public Lifecycle getLifecycle() {
-                return this;
-            }
-        };
+  protected void pause(final Time time) throws InterruptedException {
+    synchronized (getLock()) {
+      log.trace("Pausing for: {}", time);
+      time.wait(getLock());
     }
+  }
+
+  public Lifecycle getLifecycle() {
+    return new Lifecycle()
+    {
+      public void start() throws Exception {
+        PeriodicThreadSupport.this.start();
+      }
+
+      public void stop() throws Exception {
+        cancel();
+        join();
+      }
+
+      public Lifecycle getLifecycle() {
+        return this;
+      }
+    };
+  }
 }

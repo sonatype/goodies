@@ -10,12 +10,9 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.crypto;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -26,6 +23,11 @@ import java.security.Signature;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
+
 /**
  * Provides access to cryptology components.
  *
@@ -33,29 +35,29 @@ import java.security.cert.CertificateFactory;
  */
 public interface CryptoHelper
 {
-    Cipher createCipher(String transformation) throws NoSuchAlgorithmException, NoSuchPaddingException;
+  Cipher createCipher(String transformation) throws NoSuchAlgorithmException, NoSuchPaddingException;
 
-    /**
-     * @since 1.5
-     */
-    int getCipherMaxAllowedKeyLength(String transformation) throws NoSuchAlgorithmException;
+  /**
+   * @since 1.5
+   */
+  int getCipherMaxAllowedKeyLength(String transformation) throws NoSuchAlgorithmException;
 
-    Signature createSignature(String algorithm) throws NoSuchAlgorithmException;
+  Signature createSignature(String algorithm) throws NoSuchAlgorithmException;
 
-    SecureRandom createSecureRandom(String algorithm) throws NoSuchAlgorithmException;
+  SecureRandom createSecureRandom(String algorithm) throws NoSuchAlgorithmException;
 
-    SecureRandom createSecureRandom();
+  SecureRandom createSecureRandom();
 
-    KeyStore createKeyStore(String type) throws KeyStoreException;
+  KeyStore createKeyStore(String type) throws KeyStoreException;
 
-    KeyPairGenerator createKeyPairGenerator(String algorithm) throws NoSuchAlgorithmException;
+  KeyPairGenerator createKeyPairGenerator(String algorithm) throws NoSuchAlgorithmException;
 
-    CertificateFactory createCertificateFactory(String type) throws CertificateException;
+  CertificateFactory createCertificateFactory(String type) throws CertificateException;
 
-    KeyManagerFactory createKeyManagerFactory(String algorithm) throws NoSuchAlgorithmException;
+  KeyManagerFactory createKeyManagerFactory(String algorithm) throws NoSuchAlgorithmException;
 
-    TrustManagerFactory createTrustManagerFactory(String algorithm) throws NoSuchAlgorithmException;
+  TrustManagerFactory createTrustManagerFactory(String algorithm) throws NoSuchAlgorithmException;
 
-    MessageDigest createDigest(String algorithm) throws NoSuchAlgorithmException;
+  MessageDigest createDigest(String algorithm) throws NoSuchAlgorithmException;
 }
 

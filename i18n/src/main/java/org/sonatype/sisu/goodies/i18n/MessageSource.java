@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.i18n;
 
 import org.jetbrains.annotations.NonNls;
@@ -22,15 +23,15 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface MessageSource
 {
-    /**
-     * @throws ResourceNotFoundException
-     */
-    String getMessage(@NonNls String code);
+  /**
+   * @throws ResourceNotFoundException
+   */
+  String getMessage(@NonNls String code);
 
-    String getMessage(@NonNls String code, @Nullable String defaultValue);
+  String getMessage(@NonNls String code, @Nullable String defaultValue);
 
-    /**
-     * @throws ResourceNotFoundException
-     */
-    String format(@NonNls String code, Object... args);
+  /**
+   * @throws ResourceNotFoundException
+   */
+  String format(@NonNls String code, Object... args);
 }

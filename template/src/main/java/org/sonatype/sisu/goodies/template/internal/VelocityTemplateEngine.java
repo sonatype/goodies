@@ -10,29 +10,32 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.template.internal;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+package org.sonatype.sisu.goodies.template.internal;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Map;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.io.Closer;
 import org.sonatype.sisu.goodies.template.TemplateEngine;
 import org.sonatype.sisu.goodies.template.TemplateParameters;
 import org.sonatype.sisu.velocity.Velocity;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Velocity based implementation of {@link TemplateEngine}.
@@ -45,79 +48,69 @@ public class VelocityTemplateEngine
     implements TemplateEngine
 {
 
-    private final Velocity velocity;
+  private final Velocity velocity;
 
-    @Inject
-    public VelocityTemplateEngine( final Velocity velocity )
-    {
-        this.velocity = checkNotNull( velocity );
+  @Inject
+  public VelocityTemplateEngine(final Velocity velocity) {
+    this.velocity = checkNotNull(velocity);
+  }
+
+  public String render(final Object owner, final @NonNls URL template, @Nullable Map<String, Object> params) {
+    checkNotNull(template);
+    // params can be null
+
+    log.trace("Rendering template: {} w/params: {}", template, params);
+
+    if (params == null) {
+      params = Maps.newHashMap();
     }
 
-    public String render( final Object owner, final @NonNls URL template, @Nullable Map<String, Object> params )
-    {
-        checkNotNull( template );
-        // params can be null
+    Reader input = null;
+    try {
+      input = new InputStreamReader(template.openStream());
 
-        log.trace( "Rendering template: {} w/params: {}", template, params );
+      VelocityEngine engine = velocity.getEngine();
+      params.put("owner", owner); //NON-NLS
 
-        if ( params == null )
-        {
-            params = Maps.newHashMap();
-        }
+      StringWriter buff = new StringWriter();
+      engine.evaluate(new VelocityContext(params), buff, template.getFile(), input); //NON-NLS
 
-        Reader input = null;
-        try
-        {
-            input = new InputStreamReader( template.openStream() );
+      String result = buff.toString();
+      log.trace("Result: {}", result);
 
-            VelocityEngine engine = velocity.getEngine();
-            params.put( "owner", owner ); //NON-NLS
+      return result;
+    }
+    catch (Exception e) {
+      throw Throwables.propagate(e);
+    }
+    finally {
+      Closer.close(input);
+    }
+  }
 
-            StringWriter buff = new StringWriter();
-            engine.evaluate( new VelocityContext( params ), buff, template.getFile(), input ); //NON-NLS
+  public String render(final Object owner, final URL template, TemplateParameters params) {
+    checkNotNull(params);
+    return render(owner, template, params.get());
+  }
 
-            String result = buff.toString();
-            log.trace( "Result: {}", result );
+  public String render(final Object owner, final @NonNls String template, @Nullable Map<String, Object> params) {
+    checkNotNull(template);
+    // params can be null
 
-            return result;
-        }
-        catch ( Exception e )
-        {
-            throw Throwables.propagate( e );
-        }
-        finally
-        {
-            Closer.close( input );
-        }
+    log.trace("Rendering template: {} w/params: {}", template, params);
+
+    URL resource = owner.getClass().getResource(template);
+    if (resource == null) {
+      log.warn("Missing resource for template: {}; for owner: {}", template, owner.getClass().getName());
+      return null;
     }
 
-    public String render( final Object owner, final URL template, TemplateParameters params )
-    {
-        checkNotNull( params );
-        return render( owner, template, params.get() );
-    }
+    return render(owner, resource, params);
+  }
 
-    public String render( final Object owner, final @NonNls String template, @Nullable Map<String, Object> params )
-    {
-        checkNotNull( template );
-        // params can be null
-
-        log.trace( "Rendering template: {} w/params: {}", template, params );
-
-        URL resource = owner.getClass().getResource( template );
-        if ( resource == null )
-        {
-            log.warn( "Missing resource for template: {}; for owner: {}", template, owner.getClass().getName() );
-            return null;
-        }
-
-        return render( owner, resource, params );
-    }
-
-    public String render( final Object owner, final @NonNls String template, TemplateParameters params )
-    {
-        checkNotNull( params );
-        return render( owner, template, params.get() );
-    }
+  public String render(final Object owner, final @NonNls String template, TemplateParameters params) {
+    checkNotNull(params);
+    return render(owner, template, params.get());
+  }
 
 }

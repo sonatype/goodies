@@ -13,10 +13,10 @@
 
 package org.sonatype.sisu.goodies.inject.properties;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.net.URL;
 import java.util.Properties;
+
+import org.jetbrains.annotations.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,46 +28,46 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ResourcePropertiesSource
     extends PropertiesSourceSupport
 {
-    private final Class owner;
+  private final Class owner;
 
-    private final String resourceName;
+  private final String resourceName;
 
-    // TODO: Probably should expose better control over the CL used to find the resource
+  // TODO: Probably should expose better control over the CL used to find the resource
 
-    public ResourcePropertiesSource(final @Nullable Class owner, final String resourceName) {
-        if (owner == null) {
-            this.owner = getClass();
-        }
-        else {
-            this.owner = owner;
-        }
-        this.resourceName = checkNotNull(resourceName);
+  public ResourcePropertiesSource(final @Nullable Class owner, final String resourceName) {
+    if (owner == null) {
+      this.owner = getClass();
+    }
+    else {
+      this.owner = owner;
+    }
+    this.resourceName = checkNotNull(resourceName);
+  }
+
+  public ResourcePropertiesSource(final String resourceName) {
+    this(null, resourceName);
+  }
+
+  @Override
+  protected Properties loadProperties() throws Exception {
+    Properties props = new Properties();
+
+    URL resource = owner.getResource(resourceName);
+    if (resource != null) {
+      props.putAll(loadProperties(resource));
+    }
+    else {
+      log.warn("Missing resource: {}", resourceName);
     }
 
-    public ResourcePropertiesSource(final String resourceName) {
-        this(null, resourceName);
-    }
+    return props;
+  }
 
-    @Override
-    protected Properties loadProperties() throws Exception {
-        Properties props = new Properties();
-
-        URL resource = owner.getResource(resourceName);
-        if (resource != null) {
-            props.putAll(loadProperties(resource));
-        }
-        else {
-            log.warn("Missing resource: {}", resourceName);
-        }
-
-        return props;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-            "owner=" + owner +
-            ", resourceName='" + resourceName + '\'' +
-            '}';
-    }
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "{" +
+        "owner=" + owner +
+        ", resourceName='" + resourceName + '\'' +
+        '}';
+  }
 }

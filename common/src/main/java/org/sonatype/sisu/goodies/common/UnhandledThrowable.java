@@ -13,10 +13,11 @@
 
 package org.sonatype.sisu.goodies.common;
 
+import org.sonatype.gossip.Level;
+
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonatype.gossip.Level;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,30 +28,30 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class UnhandledThrowable
 {
-    @NonNls
-    private static final Logger log = LoggerFactory.getLogger(UnhandledThrowable.class);
+  @NonNls
+  private static final Logger log = LoggerFactory.getLogger(UnhandledThrowable.class);
 
-    private UnhandledThrowable() {}
+  private UnhandledThrowable() {}
 
-    private static Level getFailureLevel() {
-        Level level = Level.TRACE;
-        String value = Properties2.getSystemProperty(UnhandledThrowable.class, "failureLevel", level);
-        try {
-            return Level.valueOf(value.toUpperCase());
-        }
-        catch (Throwable e) {
-            log.error("Invalid level: {}", value, e);
-            return level;
-        }
+  private static Level getFailureLevel() {
+    Level level = Level.TRACE;
+    String value = Properties2.getSystemProperty(UnhandledThrowable.class, "failureLevel", level);
+    try {
+      return Level.valueOf(value.toUpperCase());
     }
-
-    private static final Level level = getFailureLevel();
-
-    public static void onFailure(final Throwable cause) {
-        //noinspection ThrowableResultOfMethodCallIgnored
-        checkNotNull(cause);
-        if (level.isEnabled(log)) {
-            level.log(log, cause.toString(), cause);
-        }
+    catch (Throwable e) {
+      log.error("Invalid level: {}", value, e);
+      return level;
     }
+  }
+
+  private static final Level level = getFailureLevel();
+
+  public static void onFailure(final Throwable cause) {
+    //noinspection ThrowableResultOfMethodCallIgnored
+    checkNotNull(cause);
+    if (level.isEnabled(log)) {
+      level.log(log, cause.toString(), cause);
+    }
+  }
 }

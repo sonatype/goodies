@@ -10,16 +10,19 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.jackson;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.sonatype.sisu.goodies.common.TestAccessible;
 import org.sonatype.sisu.goodies.marshal.Marshaller;
 import org.sonatype.sisu.goodies.marshal.internal.MarshallerSupport;
-import org.codehaus.jackson.map.ObjectMapper;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.IOException;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,23 +35,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class JacksonMarshaller
     extends MarshallerSupport
 {
-    private final ObjectMapper mapper;
+  private final ObjectMapper mapper;
 
-    @Inject
-    public JacksonMarshaller(final ObjectMapper mapper) {
-        this.mapper = checkNotNull(mapper);
-    }
+  @Inject
+  public JacksonMarshaller(final ObjectMapper mapper) {
+    this.mapper = checkNotNull(mapper);
+  }
 
-    @TestAccessible
-    public JacksonMarshaller() {
-        this(new ObjectMapperProvider().get());
-    }
+  @TestAccessible
+  public JacksonMarshaller() {
+    this(new ObjectMapperProvider().get());
+  }
 
-    protected String doMarshal(final Object body) throws IOException {
-        return mapper.writeValueAsString(body);
-    }
+  protected String doMarshal(final Object body) throws IOException {
+    return mapper.writeValueAsString(body);
+  }
 
-    protected <T> T doUnmarshal(final String marshaled, final Class<T> type) throws IOException {
-        return mapper.readValue(marshaled, type);
-    }
+  protected <T> T doUnmarshal(final String marshaled, final Class<T> type) throws IOException {
+    return mapper.readValue(marshaled, type);
+  }
 }

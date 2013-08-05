@@ -25,33 +25,33 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class QueryStrings
 {
-    public static final String FIELD_SEPARATOR = "&";
+  public static final String FIELD_SEPARATOR = "&";
 
-    public static final String VALUE_SEPARATOR = "=";
+  public static final String VALUE_SEPARATOR = "=";
 
-    /**
-     * Parses a query-string into a multimap.
-     *
-     * @param input Query-string input ot parse; never null
-     * @return  Ordered multimap of parsed query string parameters.
-     */
-    public static Multimap<String, String> parse(final String input) {
-        checkNotNull(input);
-        Multimap<String, String> result = LinkedHashMultimap.create();
-        String[] fields = input.split(FIELD_SEPARATOR);
-        for (String field : fields) {
-            String key, value;
-            int i = field.indexOf(VALUE_SEPARATOR);
-            if (i == -1) {
-                key = field;
-                value = null;
-            }
-            else {
-                key = field.substring(0, i);
-                value = field.substring(i + 1, field.length());
-            }
-            result.put(key, value);
-        }
-        return result;
+  /**
+   * Parses a query-string into a multimap.
+   *
+   * @param input Query-string input ot parse; never null
+   * @return Ordered multimap of parsed query string parameters.
+   */
+  public static Multimap<String, String> parse(final String input) {
+    checkNotNull(input);
+    Multimap<String, String> result = LinkedHashMultimap.create();
+    String[] fields = input.split(FIELD_SEPARATOR);
+    for (String field : fields) {
+      String key, value;
+      int i = field.indexOf(VALUE_SEPARATOR);
+      if (i == -1) {
+        key = field;
+        value = null;
+      }
+      else {
+        key = field.substring(0, i);
+        value = field.substring(i + 1, field.length());
+      }
+      result.put(key, value);
     }
+    return result;
+  }
 }

@@ -13,10 +13,11 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
-import org.junit.Test;
+import java.util.Date;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.util.Date;
+import org.junit.Test;
 
 /**
  * MXBean trials.
@@ -24,72 +25,72 @@ import java.util.Date;
 public class MXBeanTrial
     extends TestSupport
 {
-    public static interface TestObjectMXBean
-    {
-        NamedInteger getData();
+  public static interface TestObjectMXBean
+  {
+    NamedInteger getData();
+  }
+
+  public static class TestObject
+      extends StandardMBeanSupport
+      implements TestObjectMXBean
+  {
+    private TestObject() {
+      super(TestObjectMXBean.class, true);
     }
 
-    public static class TestObject
-        extends StandardMBeanSupport
-        implements TestObjectMXBean
-    {
-        private TestObject() {
-            super(TestObjectMXBean.class, true);
-        }
-
-        @Override
-        public NamedInteger getData() {
-            Date date = new Date();
-            return new NamedInteger(date.toString(), date.getTime());
-        }
+    @Override
+    public NamedInteger getData() {
+      Date date = new Date();
+      return new NamedInteger(date.toString(), date.getTime());
     }
+  }
 
-    // NOTE: For this to render as desired, the mbean inspector needs to order keys when rendering the tree:
-    // NOTE: type,Server,Application,Module,name
+  // NOTE: For this to render as desired, the mbean inspector needs to order keys when rendering the tree:
+  // NOTE: type,Server,Application,Module,name
 
-    @Test
-    public void buildSimpleTree() throws Exception {
-        ObjectNameBuilder builder = new ObjectNameBuilder().domain("test");
+  @Test
+  public void buildSimpleTree() throws Exception {
+    ObjectNameBuilder builder = new ObjectNameBuilder().domain("test");
 
-        MBeans.register(builder.copy()
-            .type("Server")
-            .name("server1")
-            .build(),
-            new TestObject());
+    MBeans.register(builder.copy()
+        .type("Server")
+        .name("server1")
+        .build(),
+        new TestObject());
 
-        MBeans.register(builder.copy()
-            .property("Server", "server1")
-            .type("Server.Application")
-            .name("app1")
-            .build(),
-            new TestObject());
+    MBeans.register(builder.copy()
+        .property("Server", "server1")
+        .type("Server.Application")
+        .name("app1")
+        .build(),
+        new TestObject());
 
-        MBeans.register(builder.copy()
-            .property("Server", "server1")
-            .property("Application", "app1")
-            .type("Server.Application.Module")
-            .name("module1")
-            .build(),
-            new TestObject());
+    MBeans.register(builder.copy()
+        .property("Server", "server1")
+        .property("Application", "app1")
+        .type("Server.Application.Module")
+        .name("module1")
+        .build(),
+        new TestObject());
 
-        MBeans.register(builder.copy()
-            .property("Server", "server1")
-            .property("Application", "app1")
-            .property("Module", "module1")
-            .type("Server.Application.Module.Component")
-            .name("component1")
-            .build(),
-            new TestObject());
+    MBeans.register(builder.copy()
+        .property("Server", "server1")
+        .property("Application", "app1")
+        .property("Module", "module1")
+        .type("Server.Application.Module.Component")
+        .name("component1")
+        .build(),
+        new TestObject());
 
-        MBeans.register(builder.copy()
-            .property("Server", "server1")
-            .property("Application", "app1")
-            .property("Module", "module1")
-            .type("Server.Application.Module.Component")
-            .name("component2")
-            .build(),
-            new TestObject());
+    MBeans.register(builder.copy()
+        .property("Server", "server1")
+        .property("Application", "app1")
+        .property("Module", "module1")
+        .type("Server.Application.Module.Component")
+        .name("component2")
+        .build(),
+        new TestObject());
 
-        VisualVmHelper.openCurrentPid().waitFor();
-    }
+    VisualVmHelper.openCurrentPid().waitFor();
+  }
 }

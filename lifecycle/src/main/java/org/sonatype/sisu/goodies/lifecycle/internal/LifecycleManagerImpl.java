@@ -10,16 +10,18 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.lifecycle.internal;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.sonatype.sisu.goodies.lifecycle.Lifecycle;
 import org.sonatype.sisu.goodies.lifecycle.LifecycleAware;
 import org.sonatype.sisu.goodies.lifecycle.LifecycleManager;
 import org.sonatype.sisu.goodies.lifecycle.LifecycleSupport;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import com.google.common.collect.Lists;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,89 +34,89 @@ public class LifecycleManagerImpl
     extends LifecycleSupport
     implements LifecycleManager
 {
-    private final List<Lifecycle> components = new CopyOnWriteArrayList<Lifecycle>();
+  private final List<Lifecycle> components = new CopyOnWriteArrayList<Lifecycle>();
 
-    public <T extends Lifecycle> T add(final T component) {
-        checkNotNull(component);
-        if (!components.contains(component)) {
-            components.add(component);
-        }
-        return component;
+  public <T extends Lifecycle> T add(final T component) {
+    checkNotNull(component);
+    if (!components.contains(component)) {
+      components.add(component);
     }
+    return component;
+  }
 
-    public <T extends LifecycleAware> T add(final T component) {
-        checkNotNull(component);
-        add(component.getLifecycle());
-        return component;
+  public <T extends LifecycleAware> T add(final T component) {
+    checkNotNull(component);
+    add(component.getLifecycle());
+    return component;
+  }
+
+  public LifecycleManager add(final LifecycleAware... components) {
+    checkNotNull(components);
+    for (LifecycleAware component : components) {
+      add(component);
     }
+    return this;
+  }
 
-    public LifecycleManager add(final LifecycleAware... components) {
-        checkNotNull(components);
-        for (LifecycleAware component : components) {
-            add(component);
-        }
-        return this;
+  public <T extends Lifecycle> T remove(final T component) {
+    checkNotNull(component);
+    components.remove(component);
+    return component;
+  }
+
+  public <T extends LifecycleAware> T remove(final T component) {
+    checkNotNull(component);
+    remove(component.getLifecycle());
+    return component;
+  }
+
+  public LifecycleManager remove(final LifecycleAware... components) {
+    checkNotNull(components);
+    for (LifecycleAware component : components) {
+      remove(component);
     }
+    return this;
+  }
 
-    public <T extends Lifecycle> T remove(final T component) {
-        checkNotNull(component);
-        components.remove(component);
-        return component;
+  public void clear() {
+    components.clear();
+  }
+
+  @Override
+  protected void doStart() throws Exception {
+    log.debug("Starting {} components", components.size());
+
+    int failed = 0;
+    for (Lifecycle component : components) {
+      try {
+        component.start();
+      }
+      catch (Exception e) {
+        failed++;
+        log.error("Failed to start component: {}", component);
+      }
     }
-
-    public <T extends LifecycleAware> T remove(final T component) {
-        checkNotNull(component);
-        remove(component.getLifecycle());
-        return component;
+    if (failed != 0) {
+      throw new Exception("Failed to start " + failed + " components");
     }
+  }
 
-    public LifecycleManager remove(final LifecycleAware... components) {
-        checkNotNull(components);
-        for (LifecycleAware component : components) {
-            remove(component);
-        }
-        return this;
+  @Override
+  protected void doStop() throws Exception {
+    log.debug("Stopping {} components", components.size());
+
+    int failed = 0;
+    for (Lifecycle component : Lists.reverse(components)) {
+      try {
+        component.stop();
+      }
+      catch (Exception e) {
+        failed++;
+        log.error("Failed to stop component: {}", component);
+      }
     }
-
-    public void clear() {
-        components.clear();
+    if (failed != 0) {
+      throw new Exception("Failed to stop " + failed + " components");
     }
-
-    @Override
-    protected void doStart() throws Exception {
-        log.debug("Starting {} components", components.size());
-
-        int failed = 0;
-        for (Lifecycle component : components) {
-            try {
-                component.start();
-            }
-            catch (Exception e) {
-                failed++;
-                log.error("Failed to start component: {}", component);
-            }
-        }
-        if (failed != 0) {
-            throw new Exception("Failed to start " + failed + " components");
-        }
-    }
-
-    @Override
-    protected void doStop() throws Exception {
-        log.debug("Stopping {} components", components.size());
-
-        int failed = 0;
-        for (Lifecycle component : Lists.reverse(components)) {
-            try {
-                component.stop();
-            }
-            catch (Exception e) {
-                failed++;
-                log.error("Failed to stop component: {}", component);
-            }
-        }
-        if (failed != 0) {
-            throw new Exception("Failed to stop " + failed + " components");
-        }
-    }
+  }
 }

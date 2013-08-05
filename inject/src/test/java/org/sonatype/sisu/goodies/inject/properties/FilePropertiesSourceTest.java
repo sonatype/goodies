@@ -13,11 +13,12 @@
 
 package org.sonatype.sisu.goodies.inject.properties;
 
-import org.junit.Test;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
-
 import java.io.File;
 import java.util.Properties;
+
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
+
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -29,28 +30,29 @@ import static org.junit.Assert.assertThat;
 public class FilePropertiesSourceTest
     extends TestSupport
 {
-    @Test
-    public void loadExisting() {
-        File file = util.resolveFile("src/test/resources/" + getClass().getPackage().getName().replace(".", "/") + "/test1.properties"); // a=1 b=2
-        log(file);
-        assertThat(file.exists(), is(true));
+  @Test
+  public void loadExisting() {
+    File file = util.resolveFile(
+        "src/test/resources/" + getClass().getPackage().getName().replace(".", "/") + "/test1.properties"); // a=1 b=2
+    log(file);
+    assertThat(file.exists(), is(true));
 
-        FilePropertiesSource source = new FilePropertiesSource(file);
-        Properties props = source.properties();
-        log(props);
-        assertNotNull(props);
-        assertThat(props.size(), is(2));
-        assertThat(props.getProperty("a"), is("1"));
-        assertThat(props.getProperty("b"), is("2"));
-    }
+    FilePropertiesSource source = new FilePropertiesSource(file);
+    Properties props = source.properties();
+    log(props);
+    assertNotNull(props);
+    assertThat(props.size(), is(2));
+    assertThat(props.getProperty("a"), is("1"));
+    assertThat(props.getProperty("b"), is("2"));
+  }
 
-    @Test
-    public void loadMissing() {
-        File file = util.resolveFile("target/no-such-file");
-        FilePropertiesSource source = new FilePropertiesSource(file);
-        Properties props = source.properties();
-        log(props);
-        assertNotNull(props);
-        assertThat(props.size(), is(0));
-    }
+  @Test
+  public void loadMissing() {
+    File file = util.resolveFile("target/no-such-file");
+    FilePropertiesSource source = new FilePropertiesSource(file);
+    Properties props = source.properties();
+    log(props);
+    assertNotNull(props);
+    assertThat(props.size(), is(0));
+  }
 }

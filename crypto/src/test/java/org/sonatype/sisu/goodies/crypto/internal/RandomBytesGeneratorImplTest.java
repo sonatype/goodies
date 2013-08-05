@@ -10,11 +10,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.crypto.internal;
+
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 /**
  * Tests for {@link RandomBytesGeneratorImpl}.
@@ -22,20 +24,20 @@ import org.sonatype.sisu.litmus.testsupport.TestSupport;
 public class RandomBytesGeneratorImplTest
     extends TestSupport
 {
-    private RandomBytesGeneratorImpl generator;
+  private RandomBytesGeneratorImpl generator;
 
-    @Before
-    public void setUp() throws Exception {
-        this.generator = new RandomBytesGeneratorImpl(new CryptoHelperImpl());
-    }
+  @Before
+  public void setUp() throws Exception {
+    this.generator = new RandomBytesGeneratorImpl(new CryptoHelperImpl());
+  }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void sizeZero() {
-        generator.generate(0);
-    }
+  @Test(expected = IllegalArgumentException.class)
+  public void sizeZero() {
+    generator.generate(0);
+  }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void sizeNegative() {
-        generator.generate(-1);
-    }
+  @Test(expected = IllegalArgumentException.class)
+  public void sizeNegative() {
+    generator.generate(-1);
+  }
 }

@@ -10,15 +10,17 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common.io;
+
+import java.io.Closeable;
+import java.io.IOException;
+
+import org.sonatype.sisu.goodies.common.UnhandledThrowable;
 
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonatype.sisu.goodies.common.UnhandledThrowable;
-
-import java.io.Closeable;
-import java.io.IOException;
 
 /**
  * Quietly closes {@link Closeable} objects.
@@ -27,27 +29,29 @@ import java.io.IOException;
  */
 public final class Closer
 {
-    @NonNls
-    private static final Logger log = LoggerFactory.getLogger(Closer.class);
+  @NonNls
+  private static final Logger log = LoggerFactory.getLogger(Closer.class);
 
-    /**
-     * @since 1.5
-     */
-    private Closer() {}
+  /**
+   * @since 1.5
+   */
+  private Closer() {}
 
-    public static void close(final Closeable... targets) {
-        if (targets == null) return;
-
-        for (Closeable target : targets) {
-            if (target != null) {
-                log.trace("Closing: {}", target);
-                try {
-                    target.close();
-                }
-                catch (IOException e) {
-                    UnhandledThrowable.onFailure(e);
-                }
-            }
-        }
+  public static void close(final Closeable... targets) {
+    if (targets == null) {
+      return;
     }
+
+    for (Closeable target : targets) {
+      if (target != null) {
+        log.trace("Closing: {}", target);
+        try {
+          target.close();
+        }
+        catch (IOException e) {
+          UnhandledThrowable.onFailure(e);
+        }
+      }
+    }
+  }
 }

@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
 
 /**
@@ -19,16 +20,16 @@ package org.sonatype.sisu.goodies.common;
  */
 public class Varargs
 {
-    /**
-     * @since 1.5
-     */
-    private Varargs() {}
+  /**
+   * @since 1.5
+   */
+  private Varargs() {}
 
-    public static <T> T[] va(final T... args) {
-        return args;
-    }
+  public static <T> T[] va(final T... args) {
+    return args;
+  }
 
-    public static <T> T[] $(final T... args) {
-        return args;
-    }
+  public static <T> T[] $(final T... args) {
+    return args;
+  }
 }

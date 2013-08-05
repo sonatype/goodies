@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.properties;
 
 import java.net.URL;
@@ -25,21 +26,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class UrlPropertiesSource
     extends PropertiesSourceSupport
 {
-    private final URL url;
+  private final URL url;
 
-    public UrlPropertiesSource(final URL url) {
-        this.url = checkNotNull(url);
-    }
+  public UrlPropertiesSource(final URL url) {
+    this.url = checkNotNull(url);
+  }
 
-    @Override
-    protected Properties loadProperties() throws Exception {
-        return loadProperties(url);
-    }
+  @Override
+  protected Properties loadProperties() throws Exception {
+    return loadProperties(url);
+  }
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-            "url=" + url +
-            '}';
-    }
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "{" +
+        "url=" + url +
+        '}';
+  }
 }

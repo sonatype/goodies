@@ -10,12 +10,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.marshal.internal.xstream;
 
-import com.thoughtworks.xstream.XStream;
+package org.sonatype.sisu.goodies.marshal.internal.xstream;
 
 import javax.inject.Named;
 import javax.inject.Provider;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * <a href="http://xstream.codehaus.org">XStream</a> provider.
@@ -26,7 +27,7 @@ import javax.inject.Provider;
 public class XstreamProvider
     implements Provider<XStream>
 {
-    public XStream get() {
-        return new XStream();
-    }
+  public XStream get() {
+    return new XStream();
+  }
 }

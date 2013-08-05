@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
 
 import java.text.DateFormat;
@@ -26,26 +27,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Iso8601Date
 {
-    public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; //NON-NLS
-    //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ";
-    //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+  public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; //NON-NLS
+  //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ";
+  //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
 
-    /**
-     * @since 1.5
-     */
-    private Iso8601Date() {}
+  /**
+   * @since 1.5
+   */
+  private Iso8601Date() {}
 
-    private static DateFormat getFormat() {
-        return new SimpleDateFormat(PATTERN);
-    }
+  private static DateFormat getFormat() {
+    return new SimpleDateFormat(PATTERN);
+  }
 
-    public static Date parse(final String value) throws ParseException {
-        checkNotNull(value);
-        return getFormat().parse(value);
-    }
+  public static Date parse(final String value) throws ParseException {
+    checkNotNull(value);
+    return getFormat().parse(value);
+  }
 
-    public static String format(final Date date) {
-        checkNotNull(date);
-        return getFormat().format(date);
-    }
+  public static String format(final Date date) {
+    checkNotNull(date);
+    return getFormat().format(date);
+  }
 }

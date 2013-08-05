@@ -10,13 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.prefs.memory;
+
+import java.util.prefs.Preferences;
+
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
-
-import java.util.prefs.Preferences;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -28,30 +30,30 @@ import static org.junit.Assert.assertThat;
 public class MemoryPreferencesFactoryTest
     extends TestSupport
 {
-    private MemoryPreferencesFactory factory;
+  private MemoryPreferencesFactory factory;
 
-    @Before
-    public void setUp() throws Exception {
-        factory = new MemoryPreferencesFactory();
-    }
+  @Before
+  public void setUp() throws Exception {
+    factory = new MemoryPreferencesFactory();
+  }
 
-    @Test
-    public void getSystemRoot() {
-        Preferences pref = factory.systemRoot();
-        assertThat(pref, notNullValue());
-        assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
+  @Test
+  public void getSystemRoot() {
+    Preferences pref = factory.systemRoot();
+    assertThat(pref, notNullValue());
+    assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
 
-        // should return same instance
-        assertThat(pref, is(factory.systemRoot()));
-    }
+    // should return same instance
+    assertThat(pref, is(factory.systemRoot()));
+  }
 
-    @Test
-    public void getUserRoot() {
-        Preferences pref = factory.userRoot();
-        assertThat(pref, notNullValue());
-        assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
+  @Test
+  public void getUserRoot() {
+    Preferences pref = factory.userRoot();
+    assertThat(pref, notNullValue());
+    assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
 
-        // should return same instance
-        assertThat(pref, is(factory.userRoot()));
-    }
+    // should return same instance
+    assertThat(pref, is(factory.userRoot()));
+  }
 }

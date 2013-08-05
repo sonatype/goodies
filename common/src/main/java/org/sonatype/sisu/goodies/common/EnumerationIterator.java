@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
 
 import java.util.Enumeration;
@@ -24,26 +25,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class EnumerationIterator
 {
-    /**
-     * @since 1.5
-     */
-    private EnumerationIterator() {}
+  /**
+   * @since 1.5
+   */
+  private EnumerationIterator() {}
 
-    public static <T> Iterator<T> of(final Enumeration<T> n) {
-        checkNotNull(n);
-        return new Iterator<T>()
-        {
-            public boolean hasNext() {
-                return n.hasMoreElements();
-            }
+  public static <T> Iterator<T> of(final Enumeration<T> n) {
+    checkNotNull(n);
+    return new Iterator<T>()
+    {
+      public boolean hasNext() {
+        return n.hasMoreElements();
+      }
 
-            public T next() {
-                return n.nextElement();
-            }
+      public T next() {
+        return n.nextElement();
+      }
 
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-        };
-    }
+      public void remove() {
+        throw new UnsupportedOperationException();
+      }
+    };
+  }
 }

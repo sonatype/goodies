@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.validation.internal;
 
 import javax.inject.Named;
@@ -25,34 +26,27 @@ import javax.validation.constraints.NotNull;
 public class Service
 {
 
-    public void method1()
-    {
-    }
+  public void method1() {
+  }
 
-    public void method2( final Foo foo )
-    {
-    }
+  public void method2(final Foo foo) {
+  }
 
-    public void method3( final @Valid Foo foo )
-    {
-    }
+  public void method3(final @Valid Foo foo) {
+  }
 
-    @NotNull
-    public String method4( final @Valid Foo foo )
-    {
-        return null;
-    }
+  @NotNull
+  public String method4(final @Valid Foo foo) {
+    return null;
+  }
 
-    public void method5( final @NotNull String value )
-    {
-    }
+  public void method5(final @NotNull String value) {
+  }
 
-    public void method6( final @NotNull String value, final @Valid Foo foo )
-    {
-    }
+  public void method6(final @NotNull String value, final @Valid Foo foo) {
+  }
 
-    public void method7( final @NotNull String value, final @NotNull @Valid Foo foo )
-    {
-    }
+  public void method7(final @NotNull String value, final @NotNull @Valid Foo foo) {
+  }
 
 }

@@ -10,34 +10,35 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.jmx;
 
-import org.weakref.jmx.Managed;
-
 import java.beans.ConstructorProperties;
+
+import org.weakref.jmx.Managed;
 
 /**
  * Named integer.
  */
 public class NamedInteger
 {
-    private String name;
+  private String name;
 
-    private long value;
+  private long value;
 
-    @ConstructorProperties({"name", "value"})
-    public NamedInteger(final String name, final long value) {
-        this.name = name;
-        this.value = value;
-    }
+  @ConstructorProperties({"name", "value"})
+  public NamedInteger(final String name, final long value) {
+    this.name = name;
+    this.value = value;
+  }
 
-    @Managed
-    public String getName() {
-        return name;
-    }
+  @Managed
+  public String getName() {
+    return name;
+  }
 
-    @Managed
-    public long getValue() {
-        return value;
-    }
+  @Managed
+  public long getValue() {
+    return value;
+  }
 }

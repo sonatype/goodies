@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.validation.internal;
 
 import javax.validation.constraints.NotNull;
@@ -20,13 +21,12 @@ import javax.validation.constraints.NotNull;
 public class Foo
 {
 
-    @NotNull
-    private String aString;
+  @NotNull
+  private String aString;
 
-    public Foo withAString( final String aString )
-    {
-        this.aString = aString;
-        return this;
-    }
+  public Foo withAString(final String aString) {
+    this.aString = aString;
+    return this;
+  }
 
 }

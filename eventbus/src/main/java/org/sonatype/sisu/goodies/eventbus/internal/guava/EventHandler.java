@@ -16,14 +16,14 @@
 
 package org.sonatype.sisu.goodies.eventbus.internal.guava;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.Preconditions;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.annotation.Nullable;
+
+import com.google.common.base.Preconditions;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Wraps a single-argument 'handler' method on a specific object.
@@ -37,18 +37,24 @@ import javax.annotation.Nullable;
  *
  * @author Cliff Biffle
  */
-public class EventHandler {
+public class EventHandler
+{
 
-  /** Object sporting the handler method. */
+  /**
+   * Object sporting the handler method.
+   */
   private final Object target;
-  /** Handler method. */
+
+  /**
+   * Handler method.
+   */
   private final Method method;
 
   /**
    * Creates a new EventHandler to wrap {@code method} on @{code target}.
    *
-   * @param target  object to which the method applies.
-   * @param method  handler method.
+   * @param target object to which the method applies.
+   * @param method handler method.
    */
   EventHandler(Object target, Method method) {
     Preconditions.checkNotNull(target,
@@ -63,20 +69,23 @@ public class EventHandler {
   /**
    * Invokes the wrapped handler method to handle {@code event}.
    *
-   * @param event  event to handle
-   * @throws InvocationTargetException  if the wrapped method throws any
-   *     {@link Throwable} that is not an {@link Error} ({@code Error} instances are
-   *     propagated as-is).
+   * @param event event to handle
+   * @throws InvocationTargetException if the wrapped method throws any
+   *                                   {@link Throwable} that is not an {@link Error} ({@code Error} instances are
+   *                                   propagated as-is).
    */
   public void handleEvent(Object event) throws InvocationTargetException {
     checkNotNull(event);
     try {
-      method.invoke(target, new Object[] { event });
-    } catch (IllegalArgumentException e) {
+      method.invoke(target, new Object[]{event});
+    }
+    catch (IllegalArgumentException e) {
       throw new Error("Method rejected target/argument: " + event, e);
-    } catch (IllegalAccessException e) {
+    }
+    catch (IllegalAccessException e) {
       throw new Error("Method became inaccessible: " + event, e);
-    } catch (InvocationTargetException e) {
+    }
+    catch (InvocationTargetException e) {
       if (e.getCause() instanceof Error) {
         throw (Error) e.getCause();
       }
@@ -84,17 +93,20 @@ public class EventHandler {
     }
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return "[wrapper " + method + "]";
   }
 
-  @Override public int hashCode() {
+  @Override
+  public int hashCode() {
     final int PRIME = 31;
     return (PRIME + method.hashCode()) * PRIME
         + System.identityHashCode(target);
   }
 
-  @Override public boolean equals(@Nullable Object obj) {
+  @Override
+  public boolean equals(@Nullable Object obj) {
     if (obj instanceof EventHandler) {
       EventHandler that = (EventHandler) obj;
       // Use == so that different equal instances will still receive events.

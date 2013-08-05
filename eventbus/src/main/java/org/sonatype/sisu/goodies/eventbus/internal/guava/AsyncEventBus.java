@@ -16,12 +16,12 @@
 
 package org.sonatype.sisu.goodies.eventbus.internal.guava;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executor;
 
 import com.google.common.annotations.Beta;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * An {@link EventBus} that takes the Executor of your choice and uses it to
@@ -31,10 +31,14 @@ import java.util.concurrent.Executor;
  * @since 10.0
  */
 @Beta
-public class AsyncEventBus extends EventBus {
+public class AsyncEventBus
+    extends EventBus
+{
   private final Executor executor;
 
-  /** the queue of events is shared across all threads */
+  /**
+   * the queue of events is shared across all threads
+   */
   private final ConcurrentLinkedQueue<EventWithHandler> eventsToDispatch =
       new ConcurrentLinkedQueue<EventWithHandler>();
 
@@ -44,8 +48,8 @@ public class AsyncEventBus extends EventBus {
    *
    * @param identifier short name for the bus, for logging purposes.
    * @param executor   Executor to use to dispatch events. It is the caller's
-   *        responsibility to shut down the executor after the last event has
-   *        been posted to this event bus.
+   *                   responsibility to shut down the executor after the last event has
+   *                   been posted to this event bus.
    */
   public AsyncEventBus(String identifier, Executor executor) {
     super(identifier);
@@ -57,8 +61,8 @@ public class AsyncEventBus extends EventBus {
    * events.
    *
    * @param executor Executor to use to dispatch events. It is the caller's
-   *        responsibility to shut down the executor after the last event has
-   *        been posted to this event bus.
+   *                 responsibility to shut down the executor after the last event has
+   *                 been posted to this event bus.
    */
   public AsyncEventBus(Executor executor) {
     this.executor = checkNotNull(executor);
@@ -94,7 +98,8 @@ public class AsyncEventBus extends EventBus {
     checkNotNull(event);
     checkNotNull(handler);
     executor.execute(
-        new Runnable() {
+        new Runnable()
+        {
           @Override
           public void run() {
             AsyncEventBus.super.dispatch(event, handler);

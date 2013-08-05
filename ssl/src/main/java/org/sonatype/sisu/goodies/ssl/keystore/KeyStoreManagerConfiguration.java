@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.ssl.keystore;
 
 import java.io.File;
@@ -23,27 +24,27 @@ import org.sonatype.sisu.goodies.common.Time;
  */
 public interface KeyStoreManagerConfiguration
 {
-    File getBaseDir();
+  File getBaseDir();
 
-    String getFileNamesPrefix();
+  String getFileNamesPrefix();
 
-    String getKeyStoreType();
+  String getKeyStoreType();
 
-    String getKeyAlgorithm();
+  String getKeyAlgorithm();
 
-    int getKeyAlgorithmSize();
+  int getKeyAlgorithmSize();
 
-    Time getCertificateValidity();
+  Time getCertificateValidity();
 
-    String getSignatureAlgorithm();
+  String getSignatureAlgorithm();
 
-    String getKeyManagerAlgorithm();
+  String getKeyManagerAlgorithm();
 
-    String getTrustManagerAlgorithm();
+  String getTrustManagerAlgorithm();
 
-    char[] getPrivateKeyStorePassword();
+  char[] getPrivateKeyStorePassword();
 
-    char[] getTrustedKeyStorePassword();
+  char[] getTrustedKeyStorePassword();
 
-    char[] getPrivateKeyPassword();
+  char[] getPrivateKeyPassword();
 }

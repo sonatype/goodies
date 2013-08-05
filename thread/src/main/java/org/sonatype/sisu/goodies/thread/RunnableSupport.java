@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.thread;
 
 import org.sonatype.sisu.goodies.common.ComponentSupport;
@@ -23,27 +24,27 @@ public abstract class RunnableSupport
     extends ComponentSupport
     implements Runnable
 {
-    public void run() {
-        log.debug("Running");
+  public void run() {
+    log.debug("Running");
 
-        try {
-            doRun();
-        }
-        catch (InterruptedException e) {
-            log.warn("Interrupted", e);
-            onFailure(e);
-        }
-        catch (Exception e) {
-            log.error("Failed", e);
-            onFailure(e);
-        }
-
-        log.debug("Stopped");
+    try {
+      doRun();
+    }
+    catch (InterruptedException e) {
+      log.warn("Interrupted", e);
+      onFailure(e);
+    }
+    catch (Exception e) {
+      log.error("Failed", e);
+      onFailure(e);
     }
 
-    protected void onFailure(final Throwable cause) {
-        // nop, logged above
-    }
+    log.debug("Stopped");
+  }
 
-    protected abstract void doRun() throws Exception;
+  protected void onFailure(final Throwable cause) {
+    // nop, logged above
+  }
+
+  protected abstract void doRun() throws Exception;
 }

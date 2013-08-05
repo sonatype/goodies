@@ -16,55 +16,54 @@ package org.sonatype.sisu.goodies.common;
 /**
  * Support for format templates.
  *
- * @since 1.3
- *
  * @see SimpleFormat#template(String, Object...)
+ * @since 1.3
  */
 public abstract class FormatTemplate
 {
-    private final String format;
+  private final String format;
 
-    private final Object[] args;
+  private final Object[] args;
 
-    private boolean dynamic = false;
+  private boolean dynamic = false;
 
-    private String result;
+  private String result;
 
-    public FormatTemplate(final String format, final Object[] args) {
-        this.format = format;
-        this.args = args;
+  public FormatTemplate(final String format, final Object[] args) {
+    this.format = format;
+    this.args = args;
+  }
+
+  public String getFormat() {
+    return format;
+  }
+
+  public Object[] getArgs() {
+    return args;
+  }
+
+  public boolean isDynamic() {
+    return dynamic;
+  }
+
+  public void setDynamic(final boolean dynamic) {
+    this.dynamic = dynamic;
+  }
+
+  protected abstract String render();
+
+  public String evaluate() {
+    if (isDynamic()) {
+      return render();
     }
-
-    public String getFormat() {
-        return format;
+    if (result == null) {
+      result = render();
     }
+    return result;
+  }
 
-    public Object[] getArgs() {
-        return args;
-    }
-
-    public boolean isDynamic() {
-        return dynamic;
-    }
-
-    public void setDynamic(final boolean dynamic) {
-        this.dynamic = dynamic;
-    }
-
-    protected abstract String render();
-
-    public String evaluate() {
-        if (isDynamic()) {
-            return render();
-        }
-        if (result == null) {
-            result = render();
-        }
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return evaluate();
-    }
+  @Override
+  public String toString() {
+    return evaluate();
+  }
 }

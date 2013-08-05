@@ -10,11 +10,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal;
 
-import com.google.inject.TypeLiteral;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.marshal.Marshaller;
+
+import com.google.inject.TypeLiteral;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,50 +29,50 @@ public abstract class MarshallerSupport
     extends ComponentSupport
     implements Marshaller
 {
-    public String marshal(final Object body) throws Exception {
-        checkNotNull(body);
+  public String marshal(final Object body) throws Exception {
+    checkNotNull(body);
 
-        log.trace("Marshalling: {}", body);
+    log.trace("Marshalling: {}", body);
 
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(body.getClass().getClassLoader());
-        try {
-            String value = doMarshal(body);
-            log.trace("Value: {}", value);
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(body.getClass().getClassLoader());
+    try {
+      String value = doMarshal(body);
+      log.trace("Value: {}", value);
 
-            return value;
-        }
-        finally {
-            Thread.currentThread().setContextClassLoader(cl);
-        }
+      return value;
     }
-
-    protected abstract String doMarshal(Object body) throws Exception;
-
-    public <T> T unmarshal(final String marshaled, final Class<T> type) throws Exception {
-        checkNotNull(marshaled);
-        checkNotNull(type);
-
-        log.trace("Unmarshalling {}: {}", type, marshaled);
-
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(type.getClassLoader());
-        try {
-            T value = doUnmarshal(marshaled, type);
-            log.trace("Value: {}", value);
-
-            return value;
-        }
-        finally {
-            Thread.currentThread().setContextClassLoader(cl);
-        }
+    finally {
+      Thread.currentThread().setContextClassLoader(cl);
     }
+  }
 
-    @SuppressWarnings({"unchecked"})
-    public <T> T unmarshal(final String marshaled, final TypeLiteral<T> type) throws Exception {
-        checkNotNull(type);
-        return (T) unmarshal(marshaled, type.getRawType());
+  protected abstract String doMarshal(Object body) throws Exception;
+
+  public <T> T unmarshal(final String marshaled, final Class<T> type) throws Exception {
+    checkNotNull(marshaled);
+    checkNotNull(type);
+
+    log.trace("Unmarshalling {}: {}", type, marshaled);
+
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(type.getClassLoader());
+    try {
+      T value = doUnmarshal(marshaled, type);
+      log.trace("Value: {}", value);
+
+      return value;
     }
+    finally {
+      Thread.currentThread().setContextClassLoader(cl);
+    }
+  }
 
-    protected abstract <T> T doUnmarshal(String marshaled, Class<T> type) throws Exception;
+  @SuppressWarnings({"unchecked"})
+  public <T> T unmarshal(final String marshaled, final TypeLiteral<T> type) throws Exception {
+    checkNotNull(type);
+    return (T) unmarshal(marshaled, type.getRawType());
+  }
+
+  protected abstract <T> T doUnmarshal(String marshaled, Class<T> type) throws Exception;
 }

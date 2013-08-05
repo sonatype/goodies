@@ -13,10 +13,11 @@
 
 package org.sonatype.sisu.goodies.inject.properties;
 
-import org.junit.Test;
+import java.util.Properties;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.util.Properties;
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -28,16 +29,16 @@ import static org.junit.Assert.assertThat;
 public class DirectPropertiesSourceTest
     extends TestSupport
 {
-    @Test
-    public void load() {
-        Properties props1 = new Properties();
-        props1.setProperty("a", "1");
-        props1.setProperty("b", "2");
-        log(props1);
-        DirectPropertiesSource source = new DirectPropertiesSource(props1);
-        Properties props2 = source.properties();
-        log(props2);
-        assertNotNull(props2);
-        assertThat(props2, is(props1));
-    }
+  @Test
+  public void load() {
+    Properties props1 = new Properties();
+    props1.setProperty("a", "1");
+    props1.setProperty("b", "2");
+    log(props1);
+    DirectPropertiesSource source = new DirectPropertiesSource(props1);
+    Properties props2 = source.properties();
+    log(props2);
+    assertNotNull(props2);
+    assertThat(props2, is(props1));
+  }
 }

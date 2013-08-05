@@ -13,12 +13,12 @@
 
 package org.sonatype.sisu.goodies.servlet;
 
-import org.junit.Test;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
-
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
+
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -30,41 +30,41 @@ import static org.junit.Assert.assertThat;
 public class ParametersBuilderTest
     extends TestSupport
 {
-    @Test
-    public void empty() {
-        Map<String, String> params = new ParametersBuilder().get();
-        log(params);
+  @Test
+  public void empty() {
+    Map<String, String> params = new ParametersBuilder().get();
+    log(params);
 
-        assertNotNull(params);
-        assertThat(params.size(), is(0));
-    }
+    assertNotNull(params);
+    assertThat(params.size(), is(0));
+  }
 
-    @Test
-    public void mixedTypes() {
-        Map<String, String> params = new ParametersBuilder()
-            .set("a", "1")
-            .set("b", 2)
-            .get();
-        log(params);
+  @Test
+  public void mixedTypes() {
+    Map<String, String> params = new ParametersBuilder()
+        .set("a", "1")
+        .set("b", 2)
+        .get();
+    log(params);
 
-        assertNotNull(params);
-        assertThat(params.size(), is(2));
-        assertThat(params.get("a"), is("1"));
-        assertThat(params.get("b"), is("2"));
-    }
+    assertNotNull(params);
+    assertThat(params.size(), is(2));
+    assertThat(params.get("a"), is("1"));
+    assertThat(params.get("b"), is("2"));
+  }
 
-    @Test
-    public void order() {
-        Map<String, String> params = new ParametersBuilder()
-            .set("a", "1")
-            .set("b", 2)
-            .get();
-        log(params);
+  @Test
+  public void order() {
+    Map<String, String> params = new ParametersBuilder()
+        .set("a", "1")
+        .set("b", 2)
+        .get();
+    log(params);
 
-        assertNotNull(params);
-        assertThat(params.size(), is(2));
-        Iterator<Map.Entry<String,String>> iter = params.entrySet().iterator();
-        assertThat(iter.next().getKey(), is("a"));
-        assertThat(iter.next().getKey(), is("b"));
-    }
+    assertNotNull(params);
+    assertThat(params.size(), is(2));
+    Iterator<Map.Entry<String, String>> iter = params.entrySet().iterator();
+    assertThat(iter.next().getKey(), is("a"));
+    assertThat(iter.next().getKey(), is("b"));
+  }
 }

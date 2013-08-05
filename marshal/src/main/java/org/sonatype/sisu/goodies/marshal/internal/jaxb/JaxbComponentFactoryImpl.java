@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.jaxb;
 
 import javax.inject.Named;
@@ -31,19 +32,19 @@ import static javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT;
 public class JaxbComponentFactoryImpl
     implements JaxbComponentFactory
 {
-    private JAXBContext getContext(final Class type) throws JAXBException {
-        return JAXBContext.newInstance(type);
-    }
+  private JAXBContext getContext(final Class type) throws JAXBException {
+    return JAXBContext.newInstance(type);
+  }
 
-    public Marshaller marshallerFor(final Class type) throws Exception {
-        checkNotNull(type);
-        Marshaller m = getContext(type).createMarshaller();
-        m.setProperty(JAXB_FORMATTED_OUTPUT, TRUE);
-        return m;
-    }
+  public Marshaller marshallerFor(final Class type) throws Exception {
+    checkNotNull(type);
+    Marshaller m = getContext(type).createMarshaller();
+    m.setProperty(JAXB_FORMATTED_OUTPUT, TRUE);
+    return m;
+  }
 
-    public Unmarshaller unmarshallerFor(final Class type) throws Exception {
-        checkNotNull(type);
-        return getContext(type).createUnmarshaller();
-    }
+  public Unmarshaller unmarshallerFor(final Class type) throws Exception {
+    checkNotNull(type);
+    return getContext(type).createUnmarshaller();
+  }
 }

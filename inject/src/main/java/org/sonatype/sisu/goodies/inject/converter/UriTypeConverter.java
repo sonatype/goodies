@@ -10,13 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.converter;
+
+import java.net.URI;
+
+import javax.inject.Named;
 
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeConverter;
-
-import javax.inject.Named;
-import java.net.URI;
 
 /**
  * Guice {@link TypeConverter} for {@link URI} instances.
@@ -27,11 +29,11 @@ import java.net.URI;
 public class UriTypeConverter
     extends TypeConverterSupport<URI>
 {
-    // FIXME: This low-level type converter will not be picked up due to an issue in Guice, pending investigation on fixing it
-    // FIXME: For now, any project that needs this component should copy this class into their project :-(
+  // FIXME: This low-level type converter will not be picked up due to an issue in Guice, pending investigation on fixing it
+  // FIXME: For now, any project that needs this component should copy this class into their project :-(
 
-    @Override
-    protected Object doConvert(final String value, final TypeLiteral<?> toType) throws Exception {
-        return new URI(value);
-    }
+  @Override
+  protected Object doConvert(final String value, final TypeLiteral<?> toType) throws Exception {
+    return new URI(value);
+  }
 }

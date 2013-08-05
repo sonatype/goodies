@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.template;
 
 import java.net.URL;
@@ -26,12 +27,12 @@ import org.jetbrains.annotations.Nullable;
 public interface TemplateEngine
 {
 
-    String render( Object owner, URL template, @Nullable Map<String, Object> params );
+  String render(Object owner, URL template, @Nullable Map<String, Object> params);
 
-    String render( Object owner, URL template, TemplateParameters params );
+  String render(Object owner, URL template, TemplateParameters params);
 
-    String render( Object owner, @NonNls String template, @Nullable Map<String, Object> params );
+  String render(Object owner, @NonNls String template, @Nullable Map<String, Object> params);
 
-    String render( Object owner, @NonNls String template, TemplateParameters params );
+  String render(Object owner, @NonNls String template, TemplateParameters params);
 
 }

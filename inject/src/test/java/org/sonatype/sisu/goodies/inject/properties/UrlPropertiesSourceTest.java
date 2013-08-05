@@ -13,11 +13,12 @@
 
 package org.sonatype.sisu.goodies.inject.properties;
 
-import org.junit.Test;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
-
 import java.net.URL;
 import java.util.Properties;
+
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
+
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -29,16 +30,16 @@ import static org.junit.Assert.assertThat;
 public class UrlPropertiesSourceTest
     extends TestSupport
 {
-    @Test
-    public void load() {
-        URL resource = getClass().getResource("test1.properties"); // a=1 b=2
-        assertNotNull(resource);
-        UrlPropertiesSource source = new UrlPropertiesSource(resource);
-        Properties props = source.properties();
-        log(props);
-        assertNotNull(props);
-        assertThat(props.size(), is(2));
-        assertThat(props.getProperty("a"), is("1"));
-        assertThat(props.getProperty("b"), is("2"));
-    }
+  @Test
+  public void load() {
+    URL resource = getClass().getResource("test1.properties"); // a=1 b=2
+    assertNotNull(resource);
+    UrlPropertiesSource source = new UrlPropertiesSource(resource);
+    Properties props = source.properties();
+    log(props);
+    assertNotNull(props);
+    assertThat(props.size(), is(2));
+    assertThat(props.getProperty("a"), is("1"));
+    assertThat(props.getProperty("b"), is("2"));
+  }
 }

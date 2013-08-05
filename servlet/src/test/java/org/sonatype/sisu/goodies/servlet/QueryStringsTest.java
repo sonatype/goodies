@@ -13,13 +13,13 @@
 
 package org.sonatype.sisu.goodies.servlet;
 
-import com.google.common.collect.Multimap;
-import org.junit.Test;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import com.google.common.collect.Multimap;
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
@@ -32,92 +32,92 @@ import static org.junit.Assert.assertThat;
 public class QueryStringsTest
     extends TestSupport
 {
-    @Test
-    public void parseSingle() throws Exception {
-        Multimap<String, String> parsed = QueryStrings.parse("a=1");
-        log(parsed);
+  @Test
+  public void parseSingle() throws Exception {
+    Multimap<String, String> parsed = QueryStrings.parse("a=1");
+    log(parsed);
 
-        assertNotNull(parsed);
-        assertThat(parsed.size(), is(1));
-        assertThat(parsed.get("a").size(), is(1));
-        assertThat(parsed.get("a"), contains("1"));
-    }
+    assertNotNull(parsed);
+    assertThat(parsed.size(), is(1));
+    assertThat(parsed.get("a").size(), is(1));
+    assertThat(parsed.get("a"), contains("1"));
+  }
 
-    @Test
-    public void parseDuplicateValues() throws Exception {
-        Multimap<String, String> parsed = QueryStrings.parse("a=1&a=1&a=1");
-        log(parsed);
+  @Test
+  public void parseDuplicateValues() throws Exception {
+    Multimap<String, String> parsed = QueryStrings.parse("a=1&a=1&a=1");
+    log(parsed);
 
-        assertNotNull(parsed);
-        assertThat(parsed.size(), is(1));
-        assertThat(parsed.get("a").size(), is(1));
-        assertThat(parsed.get("a"), contains("1"));
-    }
+    assertNotNull(parsed);
+    assertThat(parsed.size(), is(1));
+    assertThat(parsed.get("a").size(), is(1));
+    assertThat(parsed.get("a"), contains("1"));
+  }
 
-    @Test
-    public void parseMultiple() throws Exception {
-        Multimap<String, String> parsed = QueryStrings.parse("a=1&b=2");
-        log(parsed);
+  @Test
+  public void parseMultiple() throws Exception {
+    Multimap<String, String> parsed = QueryStrings.parse("a=1&b=2");
+    log(parsed);
 
-        assertNotNull(parsed);
-        assertThat(parsed.size(), is(2));
-        assertThat(parsed.get("a").size(), is(1));
-        assertThat(parsed.get("a"), contains("1"));
-        assertThat(parsed.get("b").size(), is(1));
-        assertThat(parsed.get("b"), contains("2"));
-    }
+    assertNotNull(parsed);
+    assertThat(parsed.size(), is(2));
+    assertThat(parsed.get("a").size(), is(1));
+    assertThat(parsed.get("a"), contains("1"));
+    assertThat(parsed.get("b").size(), is(1));
+    assertThat(parsed.get("b"), contains("2"));
+  }
 
-    @Test
-    public void parseSingleNoValue() throws Exception {
-        Multimap<String, String> parsed = QueryStrings.parse("a");
-        log(parsed);
+  @Test
+  public void parseSingleNoValue() throws Exception {
+    Multimap<String, String> parsed = QueryStrings.parse("a");
+    log(parsed);
 
-        assertNotNull(parsed);
-        assertThat(parsed.size(), is(1));
-        assertThat(parsed.get("a").size(), is(1));
-        assertThat(parsed.get("a").iterator().next(), is((String) null));
-    }
+    assertNotNull(parsed);
+    assertThat(parsed.size(), is(1));
+    assertThat(parsed.get("a").size(), is(1));
+    assertThat(parsed.get("a").iterator().next(), is((String) null));
+  }
 
-    @Test
-    public void parseOrder() {
-        Multimap<String, String> parsed = QueryStrings.parse("a=1&b=2");
-        log(parsed);
+  @Test
+  public void parseOrder() {
+    Multimap<String, String> parsed = QueryStrings.parse("a=1&b=2");
+    log(parsed);
 
-        assertNotNull(parsed);
-        assertThat(parsed.size(), is(2));
-        Iterator<Entry<String, String>> iter = parsed.entries().iterator();
-        assertThat(iter.next().getKey(), is("a"));
-        assertThat(iter.next().getKey(), is("b"));
-    }
+    assertNotNull(parsed);
+    assertThat(parsed.size(), is(2));
+    Iterator<Entry<String, String>> iter = parsed.entries().iterator();
+    assertThat(iter.next().getKey(), is("a"));
+    assertThat(iter.next().getKey(), is("b"));
+  }
 
-    @Test
-    public void parseOrderMultipuleValues() {
-        Multimap<String, String> parsed = QueryStrings.parse("a=1&b=2&a=3&b=4");
-        log(parsed);
+  @Test
+  public void parseOrderMultipuleValues() {
+    Multimap<String, String> parsed = QueryStrings.parse("a=1&b=2&a=3&b=4");
+    log(parsed);
 
-        assertNotNull(parsed);
-        assertThat(parsed.size(), is(4));
-        Iterator<Entry<String, String>> iter = parsed.entries().iterator();
-        Entry<String, String> entry;
+    assertNotNull(parsed);
+    assertThat(parsed.size(), is(4));
+    Iterator<Entry<String, String>> iter = parsed.entries().iterator();
+    Entry<String, String> entry;
 
-        entry = iter.next();
-        log(entry);
-        assertThat(entry.getKey(), is("a"));
-        assertThat(entry.getValue(), is("1"));
+    entry = iter.next();
+    log(entry);
+    assertThat(entry.getKey(), is("a"));
+    assertThat(entry.getValue(), is("1"));
 
-        entry = iter.next();
-        log(entry);
-        assertThat(entry.getKey(), is("b"));
-        assertThat(entry.getValue(), is("2"));
+    entry = iter.next();
+    log(entry);
+    assertThat(entry.getKey(), is("b"));
+    assertThat(entry.getValue(), is("2"));
 
-        entry = iter.next();
-        log(entry);
-        assertThat(entry.getKey(), is("a"));
-        assertThat(entry.getValue(), is("3"));
+    entry = iter.next();
+    log(entry);
+    assertThat(entry.getKey(), is("a"));
+    assertThat(entry.getValue(), is("3"));
 
-        entry = iter.next();
-        log(entry);
-        assertThat(entry.getKey(), is("b"));
-        assertThat(entry.getValue(), is("4"));
-    }
+    entry = iter.next();
+    log(entry);
+    assertThat(entry.getKey(), is("b"));
+    assertThat(entry.getValue(), is("4"));
+  }
 }

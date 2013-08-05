@@ -10,10 +10,10 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common.io;
 
 import java.io.PrintWriter;
-import java.lang.Object;
 
 /**
  * String-based {@link PrintWriter} backed by {@link StringBuilderWriter}.
@@ -23,29 +23,29 @@ import java.lang.Object;
 public class PrintBuffer
     extends PrintWriter
 {
-    public PrintBuffer() {
-        super(new StringBuilderWriter(), true);
-    }
+  public PrintBuffer() {
+    super(new StringBuilderWriter(), true);
+  }
 
-    public StringBuilder getBuffer() {
-        return ((StringBuilderWriter)out).getBuffer();
-    }
+  public StringBuilder getBuffer() {
+    return ((StringBuilderWriter) out).getBuffer();
+  }
 
-    /**
-     * @since 1.1
-     */
-    public PrintBuffer formatln(final String format, final Object... args) {
-        format(format, args);
-        println();
-        return this;
-    }
+  /**
+   * @since 1.1
+   */
+  public PrintBuffer formatln(final String format, final Object... args) {
+    format(format, args);
+    println();
+    return this;
+  }
 
-    public void reset() {
-        getBuffer().setLength(0);
-    }
+  public void reset() {
+    getBuffer().setLength(0);
+  }
 
-    @Override
-    public String toString() {
-        return getBuffer().toString();
-    }
+  @Override
+  public String toString() {
+    return getBuffer().toString();
+  }
 }

@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.jackson2;
 
 //import static org.codehaus.jackson.map.SerializationConfig.Feature.INDENT_OUTPUT;
@@ -30,17 +31,17 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 public class ObjectMapperProvider
     implements Provider<ObjectMapper>
 {
-    private final ObjectMapper mapper;
+  private final ObjectMapper mapper;
 
-    public ObjectMapperProvider() {
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.setAnnotationIntrospector( new JacksonAnnotationIntrospector() );
-        mapper.disable( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS );
+  public ObjectMapperProvider() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        this.mapper = mapper;
-    }
+    this.mapper = mapper;
+  }
 
-    public ObjectMapper get() {
-        return mapper;
-    }
+  public ObjectMapper get() {
+    return mapper;
+  }
 }

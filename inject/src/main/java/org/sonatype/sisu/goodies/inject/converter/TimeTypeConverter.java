@@ -10,13 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.converter;
+
+import javax.inject.Named;
+
+import org.sonatype.sisu.goodies.common.Time;
 
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeConverter;
-import org.sonatype.sisu.goodies.common.Time;
-
-import javax.inject.Named;
 
 /**
  * Guice {@link TypeConverter} for {@link Time} instances.
@@ -27,11 +29,11 @@ import javax.inject.Named;
 public class TimeTypeConverter
     extends TypeConverterSupport<Time>
 {
-    // FIXME: This low-level type converter will not be picked up due to an issue in Guice, pending investigation on fixing it
-    // FIXME: For now, any project that needs this component should copy this class into their project :-(
+  // FIXME: This low-level type converter will not be picked up due to an issue in Guice, pending investigation on fixing it
+  // FIXME: For now, any project that needs this component should copy this class into their project :-(
 
-    @Override
-    protected Object doConvert(final String value, final TypeLiteral<?> toType) throws Exception {
-        return Time.parse(value);
-    }
+  @Override
+  protected Object doConvert(final String value, final TypeLiteral<?> toType) throws Exception {
+    return Time.parse(value);
+  }
 }

@@ -28,20 +28,24 @@ import java.lang.reflect.Method;
  *
  * @author Cliff Biffle
  */
-class SynchronizedEventHandler extends EventHandler {
+class SynchronizedEventHandler
+    extends EventHandler
+{
   /**
    * Creates a new SynchronizedEventHandler to wrap {@code method} on
    * {@code target}.
    *
-   * @param target  object to which the method applies.
-   * @param method  handler method.
+   * @param target object to which the method applies.
+   * @param method handler method.
    */
   public SynchronizedEventHandler(Object target, Method method) {
     super(target, method);
   }
 
-  @Override public synchronized void handleEvent(Object event)
-      throws InvocationTargetException {
+  @Override
+  public synchronized void handleEvent(Object event)
+      throws InvocationTargetException
+  {
     super.handleEvent(event);
   }
 

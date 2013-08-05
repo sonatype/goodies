@@ -16,6 +16,9 @@
 
 package org.sonatype.sisu.goodies.eventbus.internal.guava;
 
+import java.lang.reflect.Method;
+import java.util.Set;
+
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -28,9 +31,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
-import java.lang.reflect.Method;
-import java.util.Set;
-
 /**
  * A {@link HandlerFindingStrategy} for collecting all event handler methods that are marked with
  * the {@link Subscribe} annotation.
@@ -38,7 +38,9 @@ import java.util.Set;
  * @author Cliff Biffle
  * @author Louis Wasserman
  */
-class AnnotatedHandlerFinder implements HandlerFindingStrategy {
+class AnnotatedHandlerFinder
+    implements HandlerFindingStrategy
+{
   /**
    * A thread-safe cache that contains the mapping from each class to all methods in that class and
    * all super-classes, that are annotated with {@code @Subscribe}. The cache is shared across all
@@ -48,7 +50,8 @@ class AnnotatedHandlerFinder implements HandlerFindingStrategy {
   private static final LoadingCache<Class<?>, ImmutableList<Method>> handlerMethodsCache =
       CacheBuilder.newBuilder()
           .weakKeys()
-          .build(new CacheLoader<Class<?>, ImmutableList<Method>>() {
+          .build(new CacheLoader<Class<?>, ImmutableList<Method>>()
+          {
             @Override
             public ImmutableList<Method> load(Class<?> concreteClass) throws Exception {
               return getAnnotatedMethodsInternal(concreteClass);
@@ -76,7 +79,8 @@ class AnnotatedHandlerFinder implements HandlerFindingStrategy {
   private static ImmutableList<Method> getAnnotatedMethods(Class<?> clazz) {
     try {
       return handlerMethodsCache.getUnchecked(clazz);
-    } catch (UncheckedExecutionException e) {
+    }
+    catch (UncheckedExecutionException e) {
       throw Throwables.propagate(e.getCause());
     }
   }
@@ -100,10 +104,11 @@ class AnnotatedHandlerFinder implements HandlerFindingStrategy {
                   + " arguments.  Event handler methods must require a single argument.");
             }
             Class<?> eventType = parameterTypes[0];
-            result.add( method );
+            result.add(method);
             break;
           }
-        } catch (NoSuchMethodException ignored) {
+        }
+        catch (NoSuchMethodException ignored) {
           // Move on.
         }
       }
@@ -117,8 +122,8 @@ class AnnotatedHandlerFinder implements HandlerFindingStrategy {
    * Selects an EventHandler implementation based on the annotations on
    * {@code method}.
    *
-   * @param listener  object bearing the event handler method.
-   * @param method  the event handler method to wrap in an EventHandler.
+   * @param listener object bearing the event handler method.
+   * @param method   the event handler method to wrap in an EventHandler.
    * @return an EventHandler that will call {@code method} on {@code listener}
    *         when invoked.
    */
@@ -126,7 +131,8 @@ class AnnotatedHandlerFinder implements HandlerFindingStrategy {
     EventHandler wrapper;
     if (methodIsDeclaredThreadSafe(method)) {
       wrapper = new EventHandler(listener, method);
-    } else {
+    }
+    else {
       wrapper = new SynchronizedEventHandler(listener, method);
     }
     return wrapper;
@@ -136,7 +142,7 @@ class AnnotatedHandlerFinder implements HandlerFindingStrategy {
    * Checks whether {@code method} is thread-safe, as indicated by the
    * {@link AllowConcurrentEvents} annotation.
    *
-   * @param method  handler method to check.
+   * @param method handler method to check.
    * @return {@code true} if {@code handler} is marked as thread-safe,
    *         {@code false} otherwise.
    */

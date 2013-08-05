@@ -10,12 +10,14 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.lifecycle;
 
-import org.junit.Test;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
@@ -25,144 +27,144 @@ import static org.junit.Assert.fail;
 public class LifecycleSupportTest
     extends TestSupport
 {
-    @Test
-    public void startStop() throws Exception {
-        LifecycleSupport support = new LifecycleSupport()
-        {
-            @Override
-            protected void doStart() throws Exception {
-                log("DO START");
-            }
+  @Test
+  public void startStop() throws Exception {
+    LifecycleSupport support = new LifecycleSupport()
+    {
+      @Override
+      protected void doStart() throws Exception {
+        log("DO START");
+      }
 
-            @Override
-            protected void doStop() throws Exception {
-                log("DO STOP");
-            }
-        };
+      @Override
+      protected void doStop() throws Exception {
+        log("DO STOP");
+      }
+    };
 
-        support.start();
-        support.stop();
-        support.start();
-        support.stop();
+    support.start();
+    support.stop();
+    support.start();
+    support.stop();
+  }
+
+  @Test
+  public void startStopFail() throws Exception {
+    LifecycleSupport support = new LifecycleSupport()
+    {
+      @Override
+      protected void doStart() throws Exception {
+        log("DO START");
+      }
+
+      @Override
+      protected void doStop() throws Exception {
+        log("DO STOP");
+        throw new Exception("FAIL");
+      }
+    };
+
+    support.start();
+
+    try {
+      support.stop();
+      fail();
+    }
+    catch (Exception e) {
+      // expected
     }
 
-    @Test
-    public void startStopFail() throws Exception {
-        LifecycleSupport support = new LifecycleSupport()
-        {
-            @Override
-            protected void doStart() throws Exception {
-                log("DO START");
-            }
+    try {
+      support.start();
+      fail("Allowed start after fail");
+    }
+    catch (Exception e) {
+      // expected
+    }
+  }
 
-            @Override
-            protected void doStop() throws Exception {
-                log("DO STOP");
-                throw new Exception("FAIL");
-            }
-        };
+  @Test
+  public void startStopFailResetStart() throws Exception {
+    LifecycleSupport support = new LifecycleSupport()
+    {
+      @Override
+      protected boolean isResettable() {
+        return true;
+      }
 
-        support.start();
+      @Override
+      protected void doStart() throws Exception {
+        log("DO START");
+      }
 
-        try {
-            support.stop();
-            fail();
-        }
-        catch (Exception e) {
-            // expected
-        }
+      @Override
+      protected void doStop() throws Exception {
+        log("DO STOP");
+        throw new Exception("FAIL");
+      }
 
-        try {
-            support.start();
-            fail("Allowed start after fail");
-        }
-        catch (Exception e) {
-            // expected
-        }
+      @Override
+      protected void doReset() throws Exception {
+        log("DO RESET");
+      }
+    };
+
+    support.start();
+
+    try {
+      support.stop();
+      fail();
+    }
+    catch (Exception e) {
+      // expected
     }
 
-    @Test
-    public void startStopFailResetStart() throws Exception {
-        LifecycleSupport support = new LifecycleSupport()
-        {
-            @Override
-            protected boolean isResettable() {
-                return true;
-            }
+    support.start();
+  }
 
-            @Override
-            protected void doStart() throws Exception {
-                log("DO START");
-            }
+  @Test
+  public void startStopFailResetStop() throws Exception {
+    final AtomicBoolean fail = new AtomicBoolean(true);
 
-            @Override
-            protected void doStop() throws Exception {
-                log("DO STOP");
-                throw new Exception("FAIL");
-            }
+    LifecycleSupport support = new LifecycleSupport()
+    {
+      @Override
+      protected boolean isResettable() {
+        return true;
+      }
 
-            @Override
-            protected void doReset() throws Exception {
-                log("DO RESET");
-            }
-        };
+      @Override
+      protected void doStart() throws Exception {
+        log("DO START");
+      }
 
-        support.start();
+      @Override
+      protected void doStop() throws Exception {
+        log("DO STOP");
 
-        try {
-            support.stop();
-            fail();
+        // Fail the first time, but not the second
+        if (fail.get()) {
+          fail.set(false);
+          throw new Exception("FAIL");
         }
-        catch (Exception e) {
-            // expected
-        }
+      }
 
-        support.start();
+      @Override
+      protected void doReset() throws Exception {
+        log("DO RESET");
+      }
+    };
+
+    support.start();
+
+    try {
+      support.stop();
+      fail();
     }
-    
-    @Test
-    public void startStopFailResetStop() throws Exception {
-        final AtomicBoolean fail = new AtomicBoolean(true);
-
-        LifecycleSupport support = new LifecycleSupport()
-        {
-            @Override
-            protected boolean isResettable() {
-                return true;
-            }
-
-            @Override
-            protected void doStart() throws Exception {
-                log("DO START");
-            }
-
-            @Override
-            protected void doStop() throws Exception {
-                log("DO STOP");
-
-                // Fail the first time, but not the second
-                if (fail.get()) {
-                    fail.set(false);
-                    throw new Exception("FAIL");
-                }
-            }
-
-            @Override
-            protected void doReset() throws Exception {
-                log("DO RESET");
-            }
-        };
-
-        support.start();
-
-        try {
-            support.stop();
-            fail();
-        }
-        catch (Exception e) {
-            // expected
-        }
-
-        support.stop();
+    catch (Exception e) {
+      // expected
     }
+
+    support.stop();
+  }
 }

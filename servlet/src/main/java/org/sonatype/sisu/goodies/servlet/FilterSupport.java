@@ -13,7 +13,7 @@
 
 package org.sonatype.sisu.goodies.servlet;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
+import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -23,7 +23,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.sonatype.sisu.goodies.common.ComponentSupport;
 
 /**
  * Support for {@link Filter} implementations.
@@ -34,27 +35,31 @@ public class FilterSupport
     extends ComponentSupport
     implements Filter
 {
-    @Override
-    public void init(final FilterConfig config) throws ServletException {
-        // empty
-    }
+  @Override
+  public void init(final FilterConfig config) throws ServletException {
+    // empty
+  }
 
-    @Override
-    public void destroy() {
-        // empty
-    }
+  @Override
+  public void destroy() {
+    // empty
+  }
 
-    @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-        if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
-            doFilter((HttpServletRequest)request, (HttpServletResponse)response, chain);
-        }
-        else {
-            chain.doFilter(request, response);
-        }
+  @Override
+  public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+      throws IOException, ServletException
+  {
+    if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
+      doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
     }
+    else {
+      chain.doFilter(request, response);
+    }
+  }
 
-    protected void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-        chain.doFilter(request, response);
-    }
+  protected void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
+      throws IOException, ServletException
+  {
+    chain.doFilter(request, response);
+  }
 }

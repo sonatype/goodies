@@ -13,11 +13,11 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Support for {@link StandardMBean} implementations.
@@ -27,21 +27,21 @@ import javax.management.StandardMBean;
 public class StandardMBeanSupport
     extends StandardMBean
 {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+  protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    protected <T> StandardMBeanSupport(final T impl, final Class<T> intf) throws NotCompliantMBeanException {
-        super(impl, intf);
-    }
+  protected <T> StandardMBeanSupport(final T impl, final Class<T> intf) throws NotCompliantMBeanException {
+    super(impl, intf);
+  }
 
-    protected StandardMBeanSupport(final Class<?> intf) throws NotCompliantMBeanException {
-        super(intf);
-    }
+  protected StandardMBeanSupport(final Class<?> intf) throws NotCompliantMBeanException {
+    super(intf);
+  }
 
-    protected <T> StandardMBeanSupport(final T impl, final Class<T> intf, final boolean mxbean) {
-        super(impl, intf, mxbean);
-    }
+  protected <T> StandardMBeanSupport(final T impl, final Class<T> intf, final boolean mxbean) {
+    super(impl, intf, mxbean);
+  }
 
-    protected StandardMBeanSupport(final Class<?> intf, final boolean mxbean) {
-        super(intf, mxbean);
-    }
+  protected StandardMBeanSupport(final Class<?> intf, final boolean mxbean) {
+    super(intf, mxbean);
+  }
 }

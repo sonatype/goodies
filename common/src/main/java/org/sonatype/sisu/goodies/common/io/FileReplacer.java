@@ -10,17 +10,18 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.common.io;
 
-import com.google.common.io.Files;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.sonatype.sisu.goodies.common.io;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.google.common.io.Files;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -32,134 +33,134 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class FileReplacer
 {
-    private static final AtomicInteger counter = new AtomicInteger(0);
+  private static final AtomicInteger counter = new AtomicInteger(0);
 
-    private static final Logger log = LoggerFactory.getLogger(FileReplacer.class);
+  private static final Logger log = LoggerFactory.getLogger(FileReplacer.class);
 
-    private final File file;
+  private final File file;
 
-    private final String filePrefix;
+  private final String filePrefix;
 
-    private final File tempFile;
+  private final File tempFile;
 
-    private final File backupFile;
+  private final File backupFile;
 
-    private boolean deleteBackupFile;
+  private boolean deleteBackupFile;
 
-    public FileReplacer(final File file) throws IOException {
-        this.file = checkNotNull(file);
+  public FileReplacer(final File file) throws IOException {
+    this.file = checkNotNull(file);
 
-        // not using File.createTempFile() here so tmp + backup can share same timestamp-id
-        // and delay creation of file until needed in the case of backup file
-        // counter here just to ensure that sub-mills usage will not conflict
+    // not using File.createTempFile() here so tmp + backup can share same timestamp-id
+    // and delay creation of file until needed in the case of backup file
+    // counter here just to ensure that sub-mills usage will not conflict
 
-        this.filePrefix = file.getName() + "-" + System.currentTimeMillis() + "-" + counter.getAndIncrement();
-        this.tempFile = new File(file.getParentFile(), filePrefix + ".tmp");
-        this.backupFile = new File(file.getParentFile(), filePrefix + ".bak");
+    this.filePrefix = file.getName() + "-" + System.currentTimeMillis() + "-" + counter.getAndIncrement();
+    this.tempFile = new File(file.getParentFile(), filePrefix + ".tmp");
+    this.backupFile = new File(file.getParentFile(), filePrefix + ".bak");
 
-        file.getParentFile().mkdirs();
+    file.getParentFile().mkdirs();
 
-        if (tempFile.exists()) {
-            log.warn("Temporary file already exists; removing: {}", tempFile);
-            delete(tempFile);
-        }
-
-        tempFile.createNewFile();
+    if (tempFile.exists()) {
+      log.warn("Temporary file already exists; removing: {}", tempFile);
+      delete(tempFile);
     }
 
-    public FileReplacer(final String fileName) throws IOException {
-        this(new File(checkNotNull(fileName)));
+    tempFile.createNewFile();
+  }
+
+  public FileReplacer(final String fileName) throws IOException {
+    this(new File(checkNotNull(fileName)));
+  }
+
+  private void delete(final File file) throws IOException {
+    boolean deleted = file.delete();
+    if (!deleted) {
+      throw new IOException("Failed to delete file: " + file);
+    }
+  }
+
+  public File getFile() {
+    return file;
+  }
+
+  public File getTempFile() {
+    return tempFile;
+  }
+
+  public File getBackupFile() {
+    return backupFile;
+  }
+
+  public boolean isDeleteBackupFile() {
+    return deleteBackupFile;
+  }
+
+  public void setDeleteBackupFile(final boolean deleteBackupFile) {
+    this.deleteBackupFile = deleteBackupFile;
+  }
+
+  public static interface ContentWriter
+  {
+    void write(final BufferedOutputStream output) throws IOException;
+  }
+
+  public void replace(final ContentWriter writer) throws IOException {
+    checkNotNull(writer);
+
+    // setup buffering, as almost certainly anywhere using this class is going to want this
+    BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(tempFile));
+
+    // delegate to do the write operation
+    try {
+      try {
+        writer.write(output);
+      }
+      finally {
+        // always close after success or failure
+        output.close();
+      }
+    }
+    catch (IOException e) {
+      // complain with details about temp file and propagate exception
+      log.warn("Failed to write temporary file: {}", tempFile, e);
+      throw e;
     }
 
-    private void delete(final File file) throws IOException {
-        boolean deleted = file.delete();
-        if (!deleted) {
-            throw new IOException("Failed to delete file: " + file);
-        }
+    // replace the file only if operation succeeded
+    replaceFile();
+  }
+
+  private void replaceFile() throws IOException {
+    checkState(tempFile.exists(), "Temporary file missing");
+
+    // backup target file if it exists
+    if (file.exists()) {
+      log.trace("Backing up target file: {} -> {}", file, backupFile);
+
+      if (backupFile.exists()) {
+        log.warn("Backup file already exists; removing: {}", backupFile);
+        delete(backupFile);
+      }
+
+      Files.move(file, backupFile);
     }
 
-    public File getFile() {
-        return file;
+    // move tmp file into place
+    log.trace("Replacing file: {} -> {}", tempFile, file);
+    Files.move(tempFile, file);
+
+    // delete the backup file if requested
+    if (backupFile.exists() && deleteBackupFile) {
+      log.trace("Deleting backup file: {}", backupFile);
+      delete(backupFile);
     }
+  }
 
-    public File getTempFile() {
-        return tempFile;
-    }
-
-    public File getBackupFile() {
-        return backupFile;
-    }
-
-    public boolean isDeleteBackupFile() {
-        return deleteBackupFile;
-    }
-
-    public void setDeleteBackupFile(final boolean deleteBackupFile) {
-        this.deleteBackupFile = deleteBackupFile;
-    }
-
-    public static interface ContentWriter
-    {
-        void write(final BufferedOutputStream output) throws IOException;
-    }
-
-    public void replace(final ContentWriter writer) throws IOException {
-        checkNotNull(writer);
-
-        // setup buffering, as almost certainly anywhere using this class is going to want this
-        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(tempFile));
-
-        // delegate to do the write operation
-        try {
-            try {
-                writer.write(output);
-            }
-            finally {
-                // always close after success or failure
-                output.close();
-            }
-        }
-        catch (IOException e) {
-            // complain with details about temp file and propagate exception
-            log.warn("Failed to write temporary file: {}", tempFile, e);
-            throw e;
-        }
-
-        // replace the file only if operation succeeded
-        replaceFile();
-    }
-
-    private void replaceFile() throws IOException {
-        checkState(tempFile.exists(), "Temporary file missing");
-
-        // backup target file if it exists
-        if (file.exists()) {
-            log.trace("Backing up target file: {} -> {}", file, backupFile);
-
-            if (backupFile.exists()) {
-                log.warn("Backup file already exists; removing: {}", backupFile);
-                delete(backupFile);
-            }
-
-            Files.move(file, backupFile);
-        }
-
-        // move tmp file into place
-        log.trace("Replacing file: {} -> {}", tempFile, file);
-        Files.move(tempFile, file);
-
-        // delete the backup file if requested
-        if (backupFile.exists() && deleteBackupFile) {
-            log.trace("Deleting backup file: {}", backupFile);
-            delete(backupFile);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-            "file=" + file +
-            ", filePrefix='" + filePrefix + '\'' +
-            '}';
-    }
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "{" +
+        "file=" + file +
+        ", filePrefix='" + filePrefix + '\'' +
+        '}';
+  }
 }

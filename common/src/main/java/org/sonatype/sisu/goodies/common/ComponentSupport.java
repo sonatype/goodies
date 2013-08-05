@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
 
 import org.jetbrains.annotations.NonNls;
@@ -25,14 +26,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ComponentSupport
 {
-    @NonNls
-    protected final Logger log;
+  @NonNls
+  protected final Logger log;
 
-    protected ComponentSupport() {
-        this.log = checkNotNull(createLogger());
-    }
+  protected ComponentSupport() {
+    this.log = checkNotNull(createLogger());
+  }
 
-    protected Logger createLogger() {
-        return LoggerFactory.getLogger(getClass());
-    }
+  protected Logger createLogger() {
+    return LoggerFactory.getLogger(getClass());
+  }
 }

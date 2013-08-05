@@ -10,25 +10,28 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.eventbus.internal;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+package org.sonatype.sisu.goodies.eventbus.internal;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 import org.sonatype.guice.bean.locators.BeanLocator;
 import org.sonatype.inject.BeanEntry;
 import org.sonatype.inject.Mediator;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
+
 import com.google.inject.Key;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * {@link org.sonatype.sisu.goodies.eventbus.EventBus} implementation using guava event bus.
@@ -44,89 +47,82 @@ public class DefaultEventBus
     implements EventBus
 {
 
-    static final Logger LOG = LoggerFactory.getLogger( DefaultEventBus.class );
+  static final Logger LOG = LoggerFactory.getLogger(DefaultEventBus.class);
 
-    private static final Marker REGISTRATION = MarkerFactory.getMarker( "registration" );
+  private static final Marker REGISTRATION = MarkerFactory.getMarker("registration");
 
-    private static final Marker EVENTS = MarkerFactory.getMarker( "events" );
+  private static final Marker EVENTS = MarkerFactory.getMarker("events");
 
-    static final Marker DISPATCHING = MarkerFactory.getMarker( "dispatching" );
+  static final Marker DISPATCHING = MarkerFactory.getMarker("dispatching");
 
-    private final org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
+  private final org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
 
-    private final BeanLocator beanLocator;
+  private final BeanLocator beanLocator;
 
-    private final AtomicBoolean handlersLoaded;
+  private final AtomicBoolean handlersLoaded;
 
-    @Inject
-    public DefaultEventBus( final @Named( "${guava.eventBus:-reentrant}" )
-                            org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus,
-                            final BeanLocator beanLocator )
-    {
-        this.beanLocator = checkNotNull( beanLocator );
-        this.eventBus = checkNotNull( eventBus );
-        handlersLoaded = new AtomicBoolean( false );
-        LOG.info( "Using {}", eventBus );
+  @Inject
+  public DefaultEventBus(final @Named("${guava.eventBus:-reentrant}")
+                         org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus,
+                         final BeanLocator beanLocator)
+  {
+    this.beanLocator = checkNotNull(beanLocator);
+    this.eventBus = checkNotNull(eventBus);
+    handlersLoaded = new AtomicBoolean(false);
+    LOG.info("Using {}", eventBus);
+  }
+
+  @Override
+  public EventBus register(final Object handler) {
+    eventBus.register(handler);
+    LOG.debug(REGISTRATION, "Registered handler '{}'", handler);
+    return this;
+  }
+
+  @Override
+  public EventBus unregister(final Object handler) {
+    eventBus.unregister(handler);
+    LOG.debug(REGISTRATION, "Unregistered handler '{}'", handler);
+    return this;
+  }
+
+  @Override
+  public EventBus post(final Object event) {
+    if (handlersLoaded.compareAndSet(false, true)) {
+      registerHandlers(beanLocator);
     }
+    LOG.debug("Event '{}' fired", event);
+    eventBus.post(event);
+    return this;
+  }
 
-    @Override
-    public EventBus register( final Object handler )
-    {
-        eventBus.register( handler );
-        LOG.debug( REGISTRATION, "Registered handler '{}'", handler );
-        return this;
-    }
-
-    @Override
-    public EventBus unregister( final Object handler )
-    {
-        eventBus.unregister( handler );
-        LOG.debug( REGISTRATION, "Unregistered handler '{}'", handler );
-        return this;
-    }
-
-    @Override
-    public EventBus post( final Object event )
-    {
-        if ( handlersLoaded.compareAndSet( false, true ) )
+  private void registerHandlers(final BeanLocator beanLocator) {
+    LOG.debug(REGISTRATION, "Loading automatically registrable handlers");
+    beanLocator.watch(
+        Key.get(Object.class),
+        new Mediator<Annotation, Object, DefaultEventBus>()
         {
-            registerHandlers( beanLocator );
-        }
-        LOG.debug( "Event '{}' fired", event );
-        eventBus.post( event );
-        return this;
-    }
 
-    private void registerHandlers( final BeanLocator beanLocator )
-    {
-        LOG.debug( REGISTRATION, "Loading automatically registrable handlers" );
-        beanLocator.watch(
-            Key.get( Object.class ),
-            new Mediator<Annotation, Object, DefaultEventBus>()
-            {
+          @Override
+          public void add(final BeanEntry<Annotation, Object> entry, final DefaultEventBus watcher)
+              throws Exception
+          {
+            if (entry.getImplementationClass().isAnnotationPresent(EventBus.Managed.class)) {
+              register(entry.getValue());
+            }
+          }
 
-                @Override
-                public void add( final BeanEntry<Annotation, Object> entry, final DefaultEventBus watcher )
-                    throws Exception
-                {
-                    if ( entry.getImplementationClass().isAnnotationPresent( EventBus.Managed.class ) )
-                    {
-                        register( entry.getValue() );
-                    }
-                }
-
-                @Override
-                public void remove( final BeanEntry<Annotation, Object> entry, final DefaultEventBus watcher )
-                    throws Exception
-                {
-                    if ( entry.getImplementationClass().isAnnotationPresent( EventBus.Managed.class ) )
-                    {
-                        unregister( entry.getValue() );
-                    }
-                }
-            },
-            this
-        );
-    }
+          @Override
+          public void remove(final BeanEntry<Annotation, Object> entry, final DefaultEventBus watcher)
+              throws Exception
+          {
+            if (entry.getImplementationClass().isAnnotationPresent(EventBus.Managed.class)) {
+              unregister(entry.getValue());
+            }
+          }
+        },
+        this
+    );
+  }
 
 }

@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.thread;
 
 import java.util.concurrent.ThreadFactory;
@@ -26,19 +27,19 @@ import static java.lang.String.format;
 public class TaskThreadFactory
     implements ThreadFactory
 {
-    private final AtomicInteger counter = new AtomicInteger(0);
+  private final AtomicInteger counter = new AtomicInteger(0);
 
-    private final String prefix;
+  private final String prefix;
 
-    public TaskThreadFactory(final String prefix) {
-        this.prefix = checkNotNull(prefix);
-    }
+  public TaskThreadFactory(final String prefix) {
+    this.prefix = checkNotNull(prefix);
+  }
 
-    private String name() {
-        return format("%s-%d", prefix, counter.incrementAndGet()); //NON-NLS
-    }
+  private String name() {
+    return format("%s-%d", prefix, counter.incrementAndGet()); //NON-NLS
+  }
 
-    public Thread newThread(final Runnable task) {
-        return new TaskThread(task, name());
-    }
+  public Thread newThread(final Runnable task) {
+    return new TaskThread(task, name());
+  }
 }

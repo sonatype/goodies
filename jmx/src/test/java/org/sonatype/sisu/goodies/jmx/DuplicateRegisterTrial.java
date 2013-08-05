@@ -13,10 +13,11 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
-import org.junit.Test;
+import javax.management.InstanceAlreadyExistsException;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import javax.management.InstanceAlreadyExistsException;
+import org.junit.Test;
 
 /**
  * Tests what happens on duplicate registration of mbeans.
@@ -24,32 +25,32 @@ import javax.management.InstanceAlreadyExistsException;
 public class DuplicateRegisterTrial
     extends TestSupport
 {
-    private static interface TestObjectMBean
-    {
-        // ignore
+  private static interface TestObjectMBean
+  {
+    // ignore
+  }
+
+  private static class TestObject
+      extends StandardMBeanSupport
+      implements TestObjectMBean
+  {
+    private TestObject() {
+      super(TestObjectMBean.class, false);
     }
+  }
 
-    private static class TestObject
-        extends StandardMBeanSupport
-        implements TestObjectMBean
-    {
-        private TestObject() {
-            super(TestObjectMBean.class, false);
-        }
-    }
+  @Test(expected = InstanceAlreadyExistsException.class)
+  public void registerDuplicate() throws Exception {
+    ObjectNameBuilder builder = new ObjectNameBuilder().domain("test");
 
-    @Test(expected = InstanceAlreadyExistsException.class)
-    public void registerDuplicate() throws Exception {
-        ObjectNameBuilder builder = new ObjectNameBuilder().domain("test");
+    MBeans.register(builder.copy()
+        .type("test")
+        .build(),
+        new TestObject());
 
-        MBeans.register(builder.copy()
-            .type("test")
-            .build(),
-            new TestObject());
-
-        MBeans.register(builder.copy()
-            .type("test")
-            .build(),
-            new TestObject());
-    }
+    MBeans.register(builder.copy()
+        .type("test")
+        .build(),
+        new TestObject());
+  }
 }

@@ -10,13 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.xstream;
 
-import com.google.inject.AbstractModule;
-import org.sonatype.sisu.goodies.marshal.Marshaller;
-import com.thoughtworks.xstream.XStream;
-
 import javax.inject.Singleton;
+
+import org.sonatype.sisu.goodies.marshal.Marshaller;
+
+import com.google.inject.AbstractModule;
+import com.thoughtworks.xstream.XStream;
 
 /**
  * <a href="http://xstream.codehaus.org">XStream</a> marshaling Guice module.
@@ -26,10 +28,10 @@ import javax.inject.Singleton;
 public class XstreamMarshalModule
     extends AbstractModule
 {
-    @Override
-    protected void configure() {
-        bind(XStream.class).toProvider(XstreamProvider.class).in(Singleton.class);
-        bind(Marshaller.class).to(XstreamMarshaller.class).in(Singleton.class);
-        //bind(Marshaller.class).annotatedWith(named("xstream")).to(XstreamMarshaller.class).in(Singleton.class);
-    }
+  @Override
+  protected void configure() {
+    bind(XStream.class).toProvider(XstreamProvider.class).in(Singleton.class);
+    bind(Marshaller.class).to(XstreamMarshaller.class).in(Singleton.class);
+    //bind(Marshaller.class).annotatedWith(named("xstream")).to(XstreamMarshaller.class).in(Singleton.class);
+  }
 }

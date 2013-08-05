@@ -10,12 +10,14 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject.converter;
+
+import org.sonatype.guice.bean.converters.AbstractTypeConverter;
 
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeConverter;
-import org.sonatype.guice.bean.converters.AbstractTypeConverter;
 
 /**
  * Support for {@link TypeConverter} implementations.
@@ -25,14 +27,14 @@ import org.sonatype.guice.bean.converters.AbstractTypeConverter;
 public abstract class TypeConverterSupport<T>
     extends AbstractTypeConverter<T>
 {
-    public Object convert(final String value, final TypeLiteral<?> toType) {
-        try {
-            return doConvert(value, toType);
-        }
-        catch (Exception e) {
-            throw new ProvisionException(String.format("Unable to convert value: %s due to: %s", value, e)); //NON-NLS
-        }
+  public Object convert(final String value, final TypeLiteral<?> toType) {
+    try {
+      return doConvert(value, toType);
     }
+    catch (Exception e) {
+      throw new ProvisionException(String.format("Unable to convert value: %s due to: %s", value, e)); //NON-NLS
+    }
+  }
 
-    protected abstract Object doConvert(String value, TypeLiteral<?> toType) throws Exception;
+  protected abstract Object doConvert(String value, TypeLiteral<?> toType) throws Exception;
 }

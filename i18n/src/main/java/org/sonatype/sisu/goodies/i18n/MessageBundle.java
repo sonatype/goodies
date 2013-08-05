@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.i18n;
 
 import java.lang.annotation.Documented;
@@ -25,29 +26,29 @@ import java.lang.annotation.Target;
  */
 public interface MessageBundle
 {
-    /**
-     * Message key.
-     *
-     * @since 1.0
-     */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @Documented
-    public @interface Key
-    {
-        String value();
-    }
+  /**
+   * Message key.
+   *
+   * @since 1.0
+   */
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.METHOD)
+  @Documented
+  public @interface Key
+  {
+    String value();
+  }
 
-    /**
-     * Default message.
-     *
-     * @since 1.0
-     */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @Documented
-    public @interface DefaultMessage
-    {
-        String value();
-    }
+  /**
+   * Default message.
+   *
+   * @since 1.0
+   */
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.METHOD)
+  @Documented
+  public @interface DefaultMessage
+  {
+    String value();
+  }
 }

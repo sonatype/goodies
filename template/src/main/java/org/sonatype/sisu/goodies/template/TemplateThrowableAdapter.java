@@ -10,14 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.template;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+package org.sonatype.sisu.goodies.template;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.jetbrains.annotations.NonNls;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Helper to deal with {@link Throwable} instances in a template.
@@ -27,52 +28,45 @@ import org.jetbrains.annotations.NonNls;
 public class TemplateThrowableAdapter
 {
 
-    @NonNls
-    public static final String NL = System.getProperty( "line.separator" );
+  @NonNls
+  public static final String NL = System.getProperty("line.separator");
 
-    private final Throwable cause;
+  private final Throwable cause;
 
-    public TemplateThrowableAdapter( final Throwable cause )
-    {
-        this.cause = checkNotNull( cause );
-    }
+  public TemplateThrowableAdapter(final Throwable cause) {
+    this.cause = checkNotNull(cause);
+  }
 
-    @TemplateAccessible
-    public Throwable getCause()
-    {
-        return cause;
-    }
+  @TemplateAccessible
+  public Throwable getCause() {
+    return cause;
+  }
 
-    @TemplateAccessible
-    public String getType()
-    {
-        return cause.getClass().getName();
-    }
+  @TemplateAccessible
+  public String getType() {
+    return cause.getClass().getName();
+  }
 
-    @TemplateAccessible
-    public String getSimpleType()
-    {
-        return cause.getClass().getSimpleName();
-    }
+  @TemplateAccessible
+  public String getSimpleType() {
+    return cause.getClass().getSimpleName();
+  }
 
-    @TemplateAccessible
-    public String getMessage()
-    {
-        return cause.getMessage();
-    }
+  @TemplateAccessible
+  public String getMessage() {
+    return cause.getMessage();
+  }
 
-    @TemplateAccessible
-    public String getTrace()
-    {
-        StringWriter buff = new StringWriter();
-        cause.printStackTrace( new PrintWriter( buff ) );
-        String tmp = buff.toString();
-        return tmp.replace( NL, "<br/>" ); //NON-NLS
-    }
+  @TemplateAccessible
+  public String getTrace() {
+    StringWriter buff = new StringWriter();
+    cause.printStackTrace(new PrintWriter(buff));
+    String tmp = buff.toString();
+    return tmp.replace(NL, "<br/>"); //NON-NLS
+  }
 
-    public String toString()
-    {
-        return cause.toString();
-    }
+  public String toString() {
+    return cause.toString();
+  }
 
 }

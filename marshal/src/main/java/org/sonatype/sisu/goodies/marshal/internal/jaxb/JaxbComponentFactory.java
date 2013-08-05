@@ -10,12 +10,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.marshal.internal.jaxb;
 
-import com.google.inject.ImplementedBy;
+package org.sonatype.sisu.goodies.marshal.internal.jaxb;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import com.google.inject.ImplementedBy;
 
 /**
  * Provides access to JAXB {@link Marshaller} and {@link Unmarshaller} instances.
@@ -25,7 +26,7 @@ import javax.xml.bind.Unmarshaller;
 @ImplementedBy(JaxbComponentFactoryImpl.class)
 public interface JaxbComponentFactory
 {
-    Marshaller marshallerFor(Class type) throws Exception;
+  Marshaller marshallerFor(Class type) throws Exception;
 
-    Unmarshaller unmarshallerFor(Class type) throws Exception;
+  Unmarshaller unmarshallerFor(Class type) throws Exception;
 }

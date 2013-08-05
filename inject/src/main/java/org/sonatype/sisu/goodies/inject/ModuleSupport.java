@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.inject;
 
 import com.google.inject.AbstractModule;
@@ -29,31 +30,33 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ModuleSupport
     extends AbstractModule
 {
-    @NonNls
-    protected final Logger log;
+  @NonNls
+  protected final Logger log;
 
-    public ModuleSupport() {
-        this.log = checkNotNull(createLogger());
-    }
+  public ModuleSupport() {
+    this.log = checkNotNull(createLogger());
+  }
 
-    protected Logger createLogger() {
-        return LoggerFactory.getLogger(getClass());
-    }
+  protected Logger createLogger() {
+    return LoggerFactory.getLogger(getClass());
+  }
 
-    @Override
-    protected void configure() {
-        // empty
-    }
+  @Override
+  protected void configure() {
+    // empty
+  }
 
-    protected <T,F> void bindFactory(final Class<T> typeClass, final Class<F> factoryClass) {
-        install(new FactoryModuleBuilder()
-            .implement(typeClass, typeClass)
-            .build(factoryClass));
-    }
+  protected <T, F> void bindFactory(final Class<T> typeClass, final Class<F> factoryClass) {
+    install(new FactoryModuleBuilder()
+        .implement(typeClass, typeClass)
+        .build(factoryClass));
+  }
 
-    protected <T,F> void bindFactory(final Class<T> typeClass, final Class<? extends T> implClass, final Class<F> factoryClass) {
-        install(new FactoryModuleBuilder()
-            .implement(typeClass, implClass)
-            .build(factoryClass));
-    }
+  protected <T, F> void bindFactory(final Class<T> typeClass, final Class<? extends T> implClass,
+                                    final Class<F> factoryClass)
+  {
+    install(new FactoryModuleBuilder()
+        .implement(typeClass, implClass)
+        .build(factoryClass));
+  }
 }

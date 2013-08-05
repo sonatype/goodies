@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.lifecycle;
 
 /**
@@ -21,17 +22,17 @@ package org.sonatype.sisu.goodies.lifecycle;
  */
 public interface LifecycleHandler
 {
-    void log(String message);
+  void log(String message);
 
-    void doStart();
+  void doStart();
 
-    void doStop();
+  void doStop();
 
-    boolean isFailed();
+  boolean isFailed();
 
-    void doFailed();
+  void doFailed();
 
-    boolean isResettable();
+  boolean isResettable();
 
-    void doReset();
+  void doReset();
 }

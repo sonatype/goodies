@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.lifecycle;
 
 import org.jetbrains.annotations.NonNls;
@@ -23,26 +24,28 @@ import org.slf4j.LoggerFactory;
  */
 public class Starter
 {
-    @NonNls
-    private static final Logger log = LoggerFactory.getLogger(Starter.class);
+  @NonNls
+  private static final Logger log = LoggerFactory.getLogger(Starter.class);
 
-    private static void onFailure(final Throwable cause) {
-        log.warn(cause.toString(), cause);
+  private static void onFailure(final Throwable cause) {
+    log.warn(cause.toString(), cause);
+  }
+
+  public static void start(final Lifecycle... targets) {
+    if (targets == null) {
+      return;
     }
 
-    public static void start(final Lifecycle... targets) {
-        if (targets == null) return;
-
-        for (Lifecycle target : targets) {
-            if (target != null) {
-                log.trace("Starting: {}", target);
-                try {
-                    target.start();
-                }
-                catch (Exception e) {
-                    onFailure(e);
-                }
-            }
+    for (Lifecycle target : targets) {
+      if (target != null) {
+        log.trace("Starting: {}", target);
+        try {
+          target.start();
         }
+        catch (Exception e) {
+          onFailure(e);
+        }
+      }
     }
+  }
 }

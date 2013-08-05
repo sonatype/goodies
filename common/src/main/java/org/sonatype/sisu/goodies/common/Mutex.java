@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.common;
 
 /**
@@ -21,5 +22,5 @@ package org.sonatype.sisu.goodies.common;
  */
 public final class Mutex
 {
-    // empty
+  // empty
 }

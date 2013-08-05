@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.validation;
 
 import javax.inject.Named;
@@ -17,6 +18,7 @@ import javax.inject.Singleton;
 
 import org.sonatype.sisu.goodies.inject.ModuleSupport;
 import org.sonatype.sisu.goodies.validation.internal.ValidationMethodInterceptor;
+
 import com.google.inject.matcher.Matchers;
 
 /**
@@ -30,14 +32,13 @@ public class ValidationModule
     extends ModuleSupport
 {
 
-    @Override
-    protected void configure()
-    {
-        log.debug( "Binding validation module" );
+  @Override
+  protected void configure() {
+    log.debug("Binding validation module");
 
-        final ValidationMethodInterceptor interceptor = new ValidationMethodInterceptor();
+    final ValidationMethodInterceptor interceptor = new ValidationMethodInterceptor();
 
-        bindInterceptor( Matchers.any(), interceptor.getMatcher(), interceptor );
-    }
+    bindInterceptor(Matchers.any(), interceptor.getMatcher(), interceptor);
+  }
 
 }

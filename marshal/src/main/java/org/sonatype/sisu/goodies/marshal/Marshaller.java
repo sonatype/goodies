@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal;
 
 import com.google.inject.TypeLiteral;
@@ -21,9 +22,9 @@ import com.google.inject.TypeLiteral;
  */
 public interface Marshaller
 {
-    String marshal(Object value) throws Exception;
+  String marshal(Object value) throws Exception;
 
-    <T> T unmarshal(String marshaled, Class<T> type) throws Exception;
+  <T> T unmarshal(String marshaled, Class<T> type) throws Exception;
 
-    <T> T unmarshal(String marshaled, TypeLiteral<T> type) throws Exception;
+  <T> T unmarshal(String marshaled, TypeLiteral<T> type) throws Exception;
 }

@@ -10,11 +10,12 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.jackson2;
 
-import org.junit.Before;
 import org.sonatype.sisu.goodies.marshal.internal.MarshallerTestSupport;
-import org.sonatype.sisu.goodies.marshal.internal.jackson2.JacksonMarshaller;
+
+import org.junit.Before;
 
 /**
  * Test for {@link org.sonatype.sisu.goodies.marshal.internal.jackson2.JacksonMarshaller}.
@@ -22,8 +23,8 @@ import org.sonatype.sisu.goodies.marshal.internal.jackson2.JacksonMarshaller;
 public class JacksonMarshallerTest
     extends MarshallerTestSupport
 {
-    @Before
-    public void setUp() throws Exception {
-        marshaller = new JacksonMarshaller();
-    }
+  @Before
+  public void setUp() throws Exception {
+    marshaller = new JacksonMarshaller();
+  }
 }

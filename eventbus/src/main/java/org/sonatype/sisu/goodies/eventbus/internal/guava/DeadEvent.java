@@ -16,9 +16,9 @@
 
 package org.sonatype.sisu.goodies.eventbus.internal.guava;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.annotations.Beta;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Wraps an event that was posted, but which had no subscribers and thus could
@@ -31,17 +31,19 @@ import com.google.common.annotations.Beta;
  * @since 10.0
  */
 @Beta
-public class DeadEvent {
+public class DeadEvent
+{
 
   private final Object source;
+
   private final Object event;
 
   /**
    * Creates a new DeadEvent.
    *
-   * @param source  object broadcasting the DeadEvent (generally the
-   *                {@link EventBus}).
-   * @param event   the event that could not be delivered.
+   * @param source object broadcasting the DeadEvent (generally the
+   *               {@link EventBus}).
+   * @param event  the event that could not be delivered.
    */
   public DeadEvent(Object source, Object event) {
     this.source = checkNotNull(source);

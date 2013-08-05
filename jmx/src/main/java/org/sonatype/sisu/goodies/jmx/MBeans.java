@@ -13,12 +13,13 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.lang.management.ManagementFactory;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -29,48 +30,48 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class MBeans
 {
-    private static final Logger log = LoggerFactory.getLogger(MBeans.class);
+  private static final Logger log = LoggerFactory.getLogger(MBeans.class);
 
-    public static MBeanServer getServer() {
-        return ManagementFactory.getPlatformMBeanServer();
+  public static MBeanServer getServer() {
+    return ManagementFactory.getPlatformMBeanServer();
+  }
+
+  public static void register(final ObjectName objectName, final Object object) {
+    checkNotNull(objectName);
+    checkNotNull(object);
+
+    log.debug("Register mbean: {}", objectName);
+
+    try {
+      MBeanServer server = getServer();
+
+      if (server.isRegistered(objectName)) {
+        log.warn("MBean already registerd with name: {}", objectName);
+      }
+
+      server.registerMBean(object, objectName);
     }
-
-    public static void register(final ObjectName objectName, final Object object) {
-        checkNotNull(objectName);
-        checkNotNull(object);
-
-        log.debug("Register mbean: {}", objectName);
-
-        try {
-            MBeanServer server = getServer();
-
-            if (server.isRegistered(objectName)) {
-                log.warn("MBean already registerd with name: {}", objectName);
-            }
-
-            server.registerMBean(object, objectName);
-        }
-        catch (Exception e) {
-            log.warn("Failed to register mbean: {}", objectName, e);
-        }
+    catch (Exception e) {
+      log.warn("Failed to register mbean: {}", objectName, e);
     }
+  }
 
-    public static void unregister(final ObjectName objectName) {
-        checkNotNull(objectName);
+  public static void unregister(final ObjectName objectName) {
+    checkNotNull(objectName);
 
-        log.debug("Unregister mbean: {}", objectName);
+    log.debug("Unregister mbean: {}", objectName);
 
-        try {
-            MBeanServer server = getServer();
-            if (server.isRegistered(objectName)) {
-                server.unregisterMBean(objectName);
-            }
-            else {
-                log.debug("Ignoring; mbean is not registered: {}", objectName);
-            }
-        }
-        catch (Exception e) {
-            log.warn("Failed to unregister mbean: {}", objectName, e);
-        }
+    try {
+      MBeanServer server = getServer();
+      if (server.isRegistered(objectName)) {
+        server.unregisterMBean(objectName);
+      }
+      else {
+        log.debug("Ignoring; mbean is not registered: {}", objectName);
+      }
     }
+    catch (Exception e) {
+      log.warn("Failed to unregister mbean: {}", objectName, e);
+    }
+  }
 }

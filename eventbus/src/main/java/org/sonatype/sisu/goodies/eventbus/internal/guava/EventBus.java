@@ -16,7 +16,16 @@
 
 package org.sonatype.sisu.goodies.eventbus.internal.guava;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.VisibleForTesting;
@@ -30,16 +39,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Dispatches events to listeners, and provides ways for listeners to register
@@ -55,10 +55,10 @@ import java.util.logging.Logger;
  * <h2>Receiving Events</h2>
  * To receive events, an object should:<ol>
  * <li>Expose a public method, known as the <i>event handler</i>, which accepts
- *     a single argument of the type of event desired;</li>
+ * a single argument of the type of event desired;</li>
  * <li>Mark it with a {@link Subscribe} annotation;</li>
  * <li>Pass itself to an EventBus instance's {@link #register(Object)} method.
- *     </li>
+ * </li>
  * </ol>
  *
  * <h2>Posting Events</h2>
@@ -101,7 +101,7 @@ import java.util.logging.Logger;
  * receive any Object will never receive a DeadEvent.
  *
  * <p>This class is safe for concurrent use.
- * 
+ *
  * <p>See the Guava User Guide article on <a href=
  * "http://code.google.com/p/guava-libraries/wiki/EventBusExplained">
  * {@code EventBus}</a>.
@@ -110,7 +110,8 @@ import java.util.logging.Logger;
  * @since 10.0
  */
 @Beta
-public class EventBus {
+public class EventBus
+{
 
   /**
    * A thread-safe cache for flattenHierarchy(). The Class class is immutable. This cache is shared
@@ -120,7 +121,8 @@ public class EventBus {
   private static final LoadingCache<Class<?>, Set<Class<?>>> flattenHierarchyCache =
       CacheBuilder.newBuilder()
           .weakKeys()
-          .build(new CacheLoader<Class<?>, Set<Class<?>>>() {
+          .build(new CacheLoader<Class<?>, Set<Class<?>>>()
+          {
             @SuppressWarnings({"unchecked", "rawtypes"}) // safe cast
             @Override
             public Set<Class<?>> load(Class<?> concreteClass) {
@@ -136,6 +138,7 @@ public class EventBus {
    */
   private final SetMultimap<Class<?>, EventHandler> handlersByType =
       HashMultimap.create();
+
   private final ReadWriteLock handlersByTypeLock = new ReentrantReadWriteLock();
 
   /**
@@ -151,21 +154,29 @@ public class EventBus {
    */
   private final HandlerFindingStrategy finder = new AnnotatedHandlerFinder();
 
-  /** queues of events for the current thread to dispatch */
+  /**
+   * queues of events for the current thread to dispatch
+   */
   private final ThreadLocal<Queue<EventWithHandler>> eventsToDispatch =
-      new ThreadLocal<Queue<EventWithHandler>>() {
-    @Override protected Queue<EventWithHandler> initialValue() {
-      return new LinkedList<EventWithHandler>();
-    }
-  };
+      new ThreadLocal<Queue<EventWithHandler>>()
+      {
+        @Override
+        protected Queue<EventWithHandler> initialValue() {
+          return new LinkedList<EventWithHandler>();
+        }
+      };
 
-  /** true if the current thread is currently dispatching an event */
+  /**
+   * true if the current thread is currently dispatching an event
+   */
   private final ThreadLocal<Boolean> isDispatching =
-      new ThreadLocal<Boolean>() {
-    @Override protected Boolean initialValue() {
-      return false;
-    }
-  };
+      new ThreadLocal<Boolean>()
+      {
+        @Override
+        protected Boolean initialValue() {
+          return false;
+        }
+      };
 
   /**
    * Creates a new EventBus named "default".
@@ -177,8 +188,8 @@ public class EventBus {
   /**
    * Creates a new EventBus with the given {@code identifier}.
    *
-   * @param identifier  a brief name for this bus, for logging purposes.  Should
-   *                    be a valid Java identifier.
+   * @param identifier a brief name for this bus, for logging purposes.  Should
+   *                   be a valid Java identifier.
    */
   public EventBus(String identifier) {
     logger = Logger.getLogger(EventBus.class.getName() + "." + checkNotNull(identifier));
@@ -190,7 +201,7 @@ public class EventBus {
    * {@link HandlerFindingStrategy}; the default strategy is the
    * {@link AnnotatedHandlerFinder}.
    *
-   * @param object  object whose handler methods should be registered.
+   * @param object object whose handler methods should be registered.
    */
   public void register(Object object) {
     Multimap<Class<?>, EventHandler> methodsInListener =
@@ -198,7 +209,8 @@ public class EventBus {
     handlersByTypeLock.writeLock().lock();
     try {
       handlersByType.putAll(methodsInListener);
-    } finally {
+    }
+    finally {
       handlersByTypeLock.writeLock().unlock();
     }
   }
@@ -206,7 +218,7 @@ public class EventBus {
   /**
    * Unregisters all handler methods on a registered {@code object}.
    *
-   * @param object  object whose handler methods should be unregistered.
+   * @param object object whose handler methods should be unregistered.
    * @throws IllegalArgumentException if the object was not previously registered.
    */
   public void unregister(Object object) {
@@ -223,7 +235,8 @@ public class EventBus {
               "missing event handler for an annotated method. Is " + object + " registered?");
         }
         currentHandlers.removeAll(eventMethodsInListener);
-      } finally {
+      }
+      finally {
         handlersByTypeLock.writeLock().unlock();
       }
     }
@@ -238,7 +251,7 @@ public class EventBus {
    * {@code event} is not already a {@link DeadEvent}, it will be wrapped in a
    * DeadEvent and reposted.
    *
-   * @param event  event to post.
+   * @param event event to post.
    */
   public void post(Object event) {
     Set<Class<?>> dispatchTypes = flattenHierarchy(event.getClass());
@@ -255,7 +268,8 @@ public class EventBus {
             enqueueEvent(event, wrapper);
           }
         }
-      } finally {
+      }
+      finally {
         handlersByTypeLock.readLock().unlock();
       }
     }
@@ -295,7 +309,8 @@ public class EventBus {
       while ((eventWithHandler = events.poll()) != null) {
         dispatch(eventWithHandler.event, eventWithHandler.handler);
       }
-    } finally {
+    }
+    finally {
       isDispatching.remove();
       eventsToDispatch.remove();
     }
@@ -306,13 +321,14 @@ public class EventBus {
    * is an appropriate override point for subclasses that wish to make
    * event delivery asynchronous.
    *
-   * @param event  event to dispatch.
-   * @param wrapper  wrapper that will call the handler.
+   * @param event   event to dispatch.
+   * @param wrapper wrapper that will call the handler.
    */
   protected void dispatch(Object event, EventHandler wrapper) {
     try {
       wrapper.handleEvent(event);
-    } catch (InvocationTargetException e) {
+    }
+    catch (InvocationTargetException e) {
       logger.log(Level.SEVERE,
           "Could not dispatch event: " + event + " to handler " + wrapper, e);
     }
@@ -323,22 +339,28 @@ public class EventBus {
    * will include all superclasses (transitively), and all interfaces
    * implemented by these superclasses.
    *
-   * @param concreteClass  class whose type hierarchy will be retrieved.
+   * @param concreteClass class whose type hierarchy will be retrieved.
    * @return {@code clazz}'s complete type hierarchy, flattened and uniqued.
    */
   @VisibleForTesting
   Set<Class<?>> flattenHierarchy(Class<?> concreteClass) {
     try {
       return flattenHierarchyCache.getUnchecked(concreteClass);
-    } catch (UncheckedExecutionException e) {
+    }
+    catch (UncheckedExecutionException e) {
       throw Throwables.propagate(e.getCause());
     }
   }
 
-  /** simple struct representing an event and it's handler */
-  protected static class EventWithHandler {
+  /**
+   * simple struct representing an event and it's handler
+   */
+  protected static class EventWithHandler
+  {
     public final Object event;
+
     public final EventHandler handler;
+
     public EventWithHandler(Object event, EventHandler handler) {
       this.event = checkNotNull(event);
       this.handler = checkNotNull(handler);

@@ -10,15 +10,17 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.marshal.internal.xstream;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.sonatype.sisu.goodies.common.TestAccessible;
 import org.sonatype.sisu.goodies.marshal.Marshaller;
 import org.sonatype.sisu.goodies.marshal.internal.MarshallerSupport;
-import com.thoughtworks.xstream.XStream;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import com.thoughtworks.xstream.XStream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,28 +33,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class XstreamMarshaller
     extends MarshallerSupport
 {
-    private final XStream xstream;
+  private final XStream xstream;
 
-    @Inject
-    public XstreamMarshaller(final XStream xstream) {
-        this.xstream = checkNotNull(xstream);
-    }
+  @Inject
+  public XstreamMarshaller(final XStream xstream) {
+    this.xstream = checkNotNull(xstream);
+  }
 
-    @TestAccessible
-    public XstreamMarshaller() {
-        this(new XStream());
-    }
+  @TestAccessible
+  public XstreamMarshaller() {
+    this(new XStream());
+  }
 
-    @Override
-    protected String doMarshal(final Object body) throws Exception {
-        xstream.processAnnotations(body.getClass());
-        return xstream.toXML(body);
-    }
+  @Override
+  protected String doMarshal(final Object body) throws Exception {
+    xstream.processAnnotations(body.getClass());
+    return xstream.toXML(body);
+  }
 
-    @SuppressWarnings({"unchecked"})
-    @Override
-    protected <T> T doUnmarshal(final String marshaled, final Class<T> type) throws Exception {
-        xstream.processAnnotations(type);
-        return (T) xstream.fromXML(marshaled);
-    }
+  @SuppressWarnings({"unchecked"})
+  @Override
+  protected <T> T doUnmarshal(final String marshaled, final Class<T> type) throws Exception {
+    xstream.processAnnotations(type);
+    return (T) xstream.fromXML(marshaled);
+  }
 }

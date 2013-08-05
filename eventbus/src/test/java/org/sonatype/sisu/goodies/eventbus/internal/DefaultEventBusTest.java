@@ -10,17 +10,19 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.eventbus.internal;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
-import org.junit.Test;
-import org.mockito.Mockito;
 import org.sonatype.guice.bean.locators.BeanLocator;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
+
 import com.google.common.eventbus.Subscribe;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Tests for {@link DefaultEventBus}.
@@ -29,48 +31,42 @@ public class DefaultEventBusTest
     extends TestSupport
 {
 
-    @Test
-    public void dispatchOrder()
-    {
-        final EventBus underTest = new DefaultEventBus(
-            new ReentrantGuavaEventBus(), Mockito.mock( BeanLocator.class )
-        );
-        final Handler handler = new Handler( underTest );
-        underTest.register( handler );
-        underTest.post( "a string" );
-        assertThat( handler.firstCalled, is( "handle2" ) );
+  @Test
+  public void dispatchOrder() {
+    final EventBus underTest = new DefaultEventBus(
+        new ReentrantGuavaEventBus(), Mockito.mock(BeanLocator.class)
+    );
+    final Handler handler = new Handler(underTest);
+    underTest.register(handler);
+    underTest.post("a string");
+    assertThat(handler.firstCalled, is("handle2"));
+  }
+
+  private class Handler
+  {
+
+    private final EventBus eventBus;
+
+    private String firstCalled = null;
+
+    Handler(EventBus eventBus) {
+      this.eventBus = eventBus;
     }
 
-    private class Handler
-    {
-
-        private final EventBus eventBus;
-
-        private String firstCalled = null;
-
-        Handler( EventBus eventBus )
-        {
-            this.eventBus = eventBus;
-        }
-
-        @Subscribe
-        public void handle1( String event )
-        {
-            eventBus.post( 1 );
-            if ( firstCalled == null )
-            {
-                firstCalled = "handle1";
-            }
-        }
-
-        @Subscribe
-        public void handle2( Integer event )
-        {
-            if ( firstCalled == null )
-            {
-                firstCalled = "handle2";
-            }
-        }
+    @Subscribe
+    public void handle1(String event) {
+      eventBus.post(1);
+      if (firstCalled == null) {
+        firstCalled = "handle1";
+      }
     }
+
+    @Subscribe
+    public void handle2(Integer event) {
+      if (firstCalled == null) {
+        firstCalled = "handle2";
+      }
+    }
+  }
 
 }

@@ -13,44 +13,45 @@
 
 package org.sonatype.sisu.goodies.jmx;
 
+import java.lang.management.ManagementFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.management.ManagementFactory;
 
 /**
  * VisualVM helper.
  *
- * Set {@code -Dvisualvm.display.name=<name>} (no spaces) as JVM arguments to get VisualVM to display a better name for the application.
+ * Set {@code -Dvisualvm.display.name=<name>} (no spaces) as JVM arguments to get VisualVM to display a better name for
+ * the application.
  */
 public class VisualVmHelper
 {
-    private static final Logger log = LoggerFactory.getLogger(VisualVmHelper.class);
+  private static final Logger log = LoggerFactory.getLogger(VisualVmHelper.class);
 
-    public static int getProcessId() {
-        final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
-        final int index = jvmName.indexOf('@');
-        if (index < 1) {
-            throw new RuntimeException("Unable to parse PID from: " + jvmName);
-        }
-        return Integer.parseInt(jvmName.substring(0, index));
+  public static int getProcessId() {
+    final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+    final int index = jvmName.indexOf('@');
+    if (index < 1) {
+      throw new RuntimeException("Unable to parse PID from: " + jvmName);
     }
+    return Integer.parseInt(jvmName.substring(0, index));
+  }
 
-    public static Process openPid(final int pid) throws Exception {
-        log.info("Opening PID: {}", pid);
+  public static Process openPid(final int pid) throws Exception {
+    log.info("Opening PID: {}", pid);
 
-        final Process proc = Runtime.getRuntime().exec("jvisualvm --openpid " + pid);
-        Runtime.getRuntime().addShutdownHook(new Thread()
-        {
-            @Override
-            public void run() {
-                proc.destroy();
-            }
-        });
-        return proc;
-    }
+    final Process proc = Runtime.getRuntime().exec("jvisualvm --openpid " + pid);
+    Runtime.getRuntime().addShutdownHook(new Thread()
+    {
+      @Override
+      public void run() {
+        proc.destroy();
+      }
+    });
+    return proc;
+  }
 
-    public static Process openCurrentPid() throws Exception {
-        return openPid(getProcessId());
-    }
+  public static Process openCurrentPid() throws Exception {
+    return openPid(getProcessId());
+  }
 }

@@ -13,12 +13,13 @@
 
 package org.sonatype.sisu.goodies.servlet;
 
-import com.google.common.base.Throwables;
-import org.sonatype.sisu.goodies.common.ComponentSupport;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import org.sonatype.sisu.goodies.common.ComponentSupport;
+
+import com.google.common.base.Throwables;
 
 /**
  * Support for {@link ServletContextListener} implementations.
@@ -29,30 +30,30 @@ public abstract class ServletContextListenerSupport
     extends ComponentSupport
     implements ServletContextListener
 {
-    public void contextInitialized(final ServletContextEvent event) {
-        try {
-            log.info("Initializing");
-            initialize(event.getServletContext());
-            log.info("Initialized");
-        }
-        catch (Exception e) {
-            log.error("Failed to initialize", e);
-            throw Throwables.propagate(e);
-        }
+  public void contextInitialized(final ServletContextEvent event) {
+    try {
+      log.info("Initializing");
+      initialize(event.getServletContext());
+      log.info("Initialized");
     }
-
-    protected abstract void initialize(final ServletContext context) throws Exception;
-
-    public void contextDestroyed(final ServletContextEvent event) {
-        try {
-            log.info("Destroying");
-            destroy(event.getServletContext());
-            log.info("Destroyed");
-        }
-        catch (Exception e) {
-            log.error("Failed to destroy", e);
-        }
+    catch (Exception e) {
+      log.error("Failed to initialize", e);
+      throw Throwables.propagate(e);
     }
+  }
 
-    protected abstract void destroy(final ServletContext context) throws Exception;
+  protected abstract void initialize(final ServletContext context) throws Exception;
+
+  public void contextDestroyed(final ServletContextEvent event) {
+    try {
+      log.info("Destroying");
+      destroy(event.getServletContext());
+      log.info("Destroyed");
+    }
+    catch (Exception e) {
+      log.error("Failed to destroy", e);
+    }
+  }
+
+  protected abstract void destroy(final ServletContext context) throws Exception;
 }

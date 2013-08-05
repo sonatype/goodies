@@ -10,15 +10,17 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.crypto.internal;
+
+import java.security.SecureRandom;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.RandomBytesGenerator;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.security.SecureRandom;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,17 +35,17 @@ public class RandomBytesGeneratorImpl
     extends ComponentSupport
     implements RandomBytesGenerator
 {
-    private final SecureRandom random;
+  private final SecureRandom random;
 
-    @Inject
-    public RandomBytesGeneratorImpl(final CryptoHelper crypto) {
-        this.random = checkNotNull(crypto).createSecureRandom();
-    }
+  @Inject
+  public RandomBytesGeneratorImpl(final CryptoHelper crypto) {
+    this.random = checkNotNull(crypto).createSecureRandom();
+  }
 
-    public byte[] generate(final int size) {
-        checkArgument(size > 0);
-        byte[] bytes = new byte[size];
-        random.nextBytes(bytes);
-        return bytes;
-    }
+  public byte[] generate(final int size) {
+    checkArgument(size > 0);
+    byte[] bytes = new byte[size];
+    random.nextBytes(bytes);
+    return bytes;
+  }
 }

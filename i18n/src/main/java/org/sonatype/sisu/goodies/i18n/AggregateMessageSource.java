@@ -10,13 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.i18n;
 
-import com.google.common.collect.Lists;
-import org.sonatype.sisu.goodies.common.ComponentSupport;
+package org.sonatype.sisu.goodies.i18n;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.sonatype.sisu.goodies.common.ComponentSupport;
+
+import com.google.common.collect.Lists;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -29,74 +31,74 @@ public class AggregateMessageSource
     extends ComponentSupport
     implements MessageSource
 {
-    private final List<MessageSource> sources = Lists.newArrayList();
+  private final List<MessageSource> sources = Lists.newArrayList();
 
-    public AggregateMessageSource(final List<MessageSource> sources) {
-        checkNotNull(sources);
-        this.sources.addAll(sources);
+  public AggregateMessageSource(final List<MessageSource> sources) {
+    checkNotNull(sources);
+    this.sources.addAll(sources);
+  }
+
+  public AggregateMessageSource(final MessageSource... sources) {
+    this(Arrays.asList(sources));
+  }
+
+  public List<MessageSource> getSources() {
+    return sources;
+  }
+
+  @Override
+  public String getMessage(final String code) {
+    String result = null;
+
+    for (MessageSource source : sources) {
+      try {
+        result = source.getMessage(code);
+        if (result != null) {
+          break;
+        }
+      }
+      catch (ResourceNotFoundException e) {
+        log.trace(e.toString(), e);
+      }
     }
 
-    public AggregateMessageSource(final MessageSource... sources) {
-        this(Arrays.asList(sources));
+    if (result == null) {
+      throw new ResourceNotFoundException(code);
     }
 
-    public List<MessageSource> getSources() {
-        return sources;
+    return result;
+  }
+
+  @Override
+  public String getMessage(final String code, final String defaultValue) {
+    try {
+      return getMessage(code);
+    }
+    catch (ResourceNotFoundException e) {
+      return defaultValue;
+    }
+  }
+
+  @Override
+  public String format(final String code, final Object... args) {
+    String result = null;
+
+    for (MessageSource source : sources) {
+      try {
+        result = source.format(code, args);
+        if (result != null) {
+          break;
+        }
+      }
+      catch (ResourceNotFoundException e) {
+        log.trace(e.toString(), e);
+      }
     }
 
-    @Override
-    public String getMessage(final String code) {
-        String result = null;
-
-        for (MessageSource source : sources) {
-            try {
-                result = source.getMessage(code);
-                if (result != null) {
-                    break;
-                }
-            }
-            catch (ResourceNotFoundException e) {
-                log.trace(e.toString(), e);
-            }
-        }
-
-        if (result == null) {
-            throw new ResourceNotFoundException(code);
-        }
-
-        return result;
+    if (result == null) {
+      throw new ResourceNotFoundException(code);
     }
 
-    @Override
-    public String getMessage(final String code, final String defaultValue) {
-        try {
-            return getMessage(code);
-        }
-        catch (ResourceNotFoundException e) {
-            return defaultValue;
-        }
-    }
-
-    @Override
-    public String format(final String code, final Object... args) {
-        String result = null;
-
-        for (MessageSource source : sources) {
-            try {
-                result = source.format(code, args);
-                if (result != null) {
-                    break;
-                }
-            }
-            catch (ResourceNotFoundException e) {
-                log.trace(e.toString(), e);
-            }
-        }
-
-        if (result == null) {
-            throw new ResourceNotFoundException(code);
-        }
-
-        return result;
-    }
+    return result;
+  }
 }
