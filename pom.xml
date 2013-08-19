@@ -248,6 +248,7 @@
     <module>prefs</module>
     <module>ssl</module>
     <module>validation</module>
+    <module>maven-settings</module>
   </modules>
 
   <build>
