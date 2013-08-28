@@ -96,7 +96,7 @@
     <dependency>
       <groupId>org.sonatype.sisu.jacksbee</groupId>
       <artifactId>jacksbee-runtime</artifactId>
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2</version>
       <optional>true</optional>
     </dependency>
 
