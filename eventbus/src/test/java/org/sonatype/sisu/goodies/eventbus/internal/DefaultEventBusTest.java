@@ -13,13 +13,11 @@
 
 package org.sonatype.sisu.goodies.eventbus.internal;
 
-import org.sonatype.guice.bean.locators.BeanLocator;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import com.google.common.eventbus.Subscribe;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -33,9 +31,7 @@ public class DefaultEventBusTest
 
   @Test
   public void dispatchOrder() {
-    final EventBus underTest = new DefaultEventBus(
-        new ReentrantGuavaEventBus(), Mockito.mock(BeanLocator.class)
-    );
+    final EventBus underTest = new DefaultEventBus(new ReentrantGuavaEventBus());
     final Handler handler = new Handler(underTest);
     underTest.register(handler);
     underTest.post("a string");
