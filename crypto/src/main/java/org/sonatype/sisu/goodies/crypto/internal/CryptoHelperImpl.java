@@ -13,6 +13,8 @@
 
 package org.sonatype.sisu.goodies.crypto.internal;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -22,6 +24,7 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.Signature;
+import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 
@@ -36,6 +39,14 @@ import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openpgp.PGPCompressedData;
+import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.openpgp.PGPObjectFactory;
+import org.bouncycastle.openpgp.PGPPublicKey;
+import org.bouncycastle.openpgp.PGPSignature;
+import org.bouncycastle.openpgp.PGPSignatureList;
+import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.operator.jcajce.JcaPGPContentVerifierBuilderProvider;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -246,5 +257,51 @@ public class CryptoHelperImpl
     }
     return obj;
   }
+
+  /**
+   * @since 1.8
+   */
+  @Override
+  public PGPSignatureList readPGPSignatures(final InputStream inputStream) throws IOException, PGPException {
+    checkNotNull(inputStream, "inputStream");
+
+    InputStream in = PGPUtil.getDecoderStream(inputStream);
+
+    PGPObjectFactory pgpObjectFactory = new PGPObjectFactory(in);
+
+    Object pgpObject = pgpObjectFactory.nextObject();
+
+    if (pgpObject == null) {
+      throw new PGPException("No pgp objects found in the input stream");
+    }
+
+    if (pgpObject instanceof PGPCompressedData) {
+      pgpObjectFactory = new PGPObjectFactory(((PGPCompressedData) pgpObject).getDataStream());
+
+      return (PGPSignatureList) pgpObjectFactory.nextObject();
+    }
+    else {
+      return (PGPSignatureList) pgpObject;
+    }
+  }
+
+  /**
+   * @since 1.8
+   */
+  @Override
+  public boolean verifyPGPSignature(final InputStream inputStream,
+                                    final PGPSignature signature,
+                                    final PGPPublicKey pubKey)
+      throws IOException, PGPException, SignatureException
+  {
+    signature.init(new JcaPGPContentVerifierBuilderProvider().setProvider(provider), pubKey);
+    byte[] buffer = new byte[10240];
+    int bytes;
+    while ((bytes = inputStream.read(buffer)) != -1) {
+      signature.update(buffer, 0, bytes);
+    }
+    return signature.verify();
+  }
+
 }
 
