@@ -332,14 +332,30 @@ public final class ByteSize
   }
 
   private static ByteSize extract(final String value, final ByteUnit unit, final String... suffixes) {
-    for (String suffix : suffixes) {
-      int i = value.lastIndexOf(suffix);
-      if (i != -1) {
-        String s = value.substring(0, i).trim();
-        long n = Long.parseLong(s);
-        return new ByteSize(n, unit);
+    String number=null, units=null;
+
+    for (int p=0; p<value.length(); p++) {
+      // skip until we find a non-digit
+      if (Character.isDigit(value.charAt(p))) {
+        continue;
+      }
+      // split number and units suffix string
+      number = value.substring(0, p);
+      units = value.substring(p, value.length()).trim();
+      break;
+    }
+
+    // if decoded units, check if its one of the supported suffixes
+    if (units != null) {
+      for (String suffix : suffixes) {
+        if (suffix.equals(units)) {
+          long n = Long.parseLong(number.trim());
+          return new ByteSize(n, unit);
+        }
       }
     }
+
+    // else can not extract
     return null;
   }
 }

@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Tests for {@link ByteSize}.
@@ -30,6 +31,27 @@ public class ByteSizeTest
   @Test
   public void parse_nM() throws Exception {
     ByteSize size = ByteSize.parse("100m");
+    log(size);
+    assertThat(size, equalTo(ByteSize.megaBytes(100)));
+  }
+
+  @Test
+  public void parse_n_M() throws Exception {
+    ByteSize size = ByteSize.parse("100 m");
+    log(size);
+    assertThat(size, equalTo(ByteSize.megaBytes(100)));
+  }
+
+  @Test
+  public void parse__n_M_() throws Exception {
+    ByteSize size = ByteSize.parse(" 100 m ");
+    log(size);
+    assertThat(size, equalTo(ByteSize.megaBytes(100)));
+  }
+
+  @Test
+  public void parse_nMB() throws Exception {
+    ByteSize size = ByteSize.parse("100mb");
     log(size);
     assertThat(size, equalTo(ByteSize.megaBytes(100)));
   }
