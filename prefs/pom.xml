@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.sonatype.sisu.goodies</groupId>
     <artifactId>goodies</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.7.2</version>
   </parent>
 
   <artifactId>goodies-prefs</artifactId>
