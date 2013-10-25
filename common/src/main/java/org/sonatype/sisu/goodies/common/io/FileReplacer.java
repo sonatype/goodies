@@ -48,6 +48,14 @@ public class FileReplacer
   private boolean deleteBackupFile;
 
   public FileReplacer(final File file) throws IOException {
+    this(file, true);
+  }
+
+  public FileReplacer(final String fileName) throws IOException {
+    this(new File(checkNotNull(fileName)));
+  }
+
+  public FileReplacer(final File file, final boolean uniqueBackupFile) throws IOException {
     this.file = checkNotNull(file);
 
     // not using File.createTempFile() here so tmp + backup can share same timestamp-id
@@ -56,7 +64,12 @@ public class FileReplacer
 
     this.filePrefix = file.getName() + "-" + System.currentTimeMillis() + "-" + counter.getAndIncrement();
     this.tempFile = new File(file.getParentFile(), filePrefix + ".tmp");
-    this.backupFile = new File(file.getParentFile(), filePrefix + ".bak");
+    if (uniqueBackupFile) {
+      this.backupFile = new File(file.getParentFile(), filePrefix + ".bak");
+    }
+    else {
+      this.backupFile = new File(file.getParentFile(), this.file.getName() + ".bak");
+    }
 
     file.getParentFile().mkdirs();
 
@@ -66,10 +79,6 @@ public class FileReplacer
     }
 
     tempFile.createNewFile();
-  }
-
-  public FileReplacer(final String fileName) throws IOException {
-    this(new File(checkNotNull(fileName)));
   }
 
   private void delete(final File file) throws IOException {
