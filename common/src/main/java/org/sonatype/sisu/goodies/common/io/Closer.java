@@ -16,11 +16,11 @@ package org.sonatype.sisu.goodies.common.io;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.sonatype.sisu.goodies.common.Loggers;
 import org.sonatype.sisu.goodies.common.UnhandledThrowable;
 
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Quietly closes {@link Closeable} objects.
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public final class Closer
 {
   @NonNls
-  private static final Logger log = LoggerFactory.getLogger(Closer.class);
+  private static final Logger log = Loggers.getLogger(Closer.class);
 
   /**
    * @since 1.5
