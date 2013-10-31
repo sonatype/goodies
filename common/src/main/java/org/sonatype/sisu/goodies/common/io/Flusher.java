@@ -16,11 +16,11 @@ package org.sonatype.sisu.goodies.common.io;
 import java.io.Flushable;
 import java.io.IOException;
 
+import org.sonatype.sisu.goodies.common.Loggers;
 import org.sonatype.sisu.goodies.common.UnhandledThrowable;
 
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Quietly flushes {@link Flushable} objects.
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public final class Flusher
 {
   @NonNls
-  private static final Logger log = LoggerFactory.getLogger(Flusher.class);
+  private static final Logger log = Loggers.getLogger(Flusher.class);
 
   /**
    * @since 1.5

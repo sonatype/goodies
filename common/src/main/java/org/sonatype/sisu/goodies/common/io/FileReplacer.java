@@ -19,9 +19,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.sonatype.sisu.goodies.common.Loggers;
+
 import com.google.common.io.Files;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -35,7 +36,7 @@ public class FileReplacer
 {
   private static final AtomicInteger counter = new AtomicInteger(0);
 
-  private static final Logger log = LoggerFactory.getLogger(FileReplacer.class);
+  private static final Logger log = Loggers.getLogger(FileReplacer.class);
 
   private final File file;
 
