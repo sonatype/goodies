@@ -51,4 +51,32 @@ public final class Throwables2
       }
     }
   }
+
+  // FIXME: This requires Java7 API, but commons is presently Java6
+
+  ///**
+  // * Helper to composite suppressed exceptions onto given throwable and throw.
+  // */
+  //public static <T extends Throwable> T composite(final T root, final Throwable... suppressed)
+  //    throws T
+  //{
+  //  checkNotNull(suppressed);
+  //  for (Throwable t : suppressed) {
+  //    root.addSuppressed(t);
+  //  }
+  //  throw root;
+  //}
+  //
+  ///**
+  // * Helper to composite suppressed exceptions onto given throwable and throw.
+  // */
+  //public static <T extends Throwable> T composite(final T root, final Collection<? extends Throwable> suppressed)
+  //    throws T
+  //{
+  //  checkNotNull(suppressed);
+  //  for (Throwable t : suppressed) {
+  //    root.addSuppressed(t);
+  //  }
+  //  throw root;
+  //}
 }
