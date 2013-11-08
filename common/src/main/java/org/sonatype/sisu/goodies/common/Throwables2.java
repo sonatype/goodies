@@ -12,10 +12,7 @@
  */
 package org.sonatype.sisu.goodies.common;
 
-import java.util.Iterator;
-
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Throwables.getCausalChain;
 
 /**
  * Throwable utilities.
@@ -32,15 +29,13 @@ public final class Throwables2
 
     StringBuilder buff = new StringBuilder();
     explain(buff, throwable);
-    Iterator<Throwable> iter = getCausalChain(throwable).iterator();
 
-    // skip first element (we explained it already)
-    iter.next();
-
-    while (iter.hasNext()) {
+    Throwable cause = throwable;
+    while ((cause = cause.getCause()) != null) {
       buff.append(", caused by: ");
-      explain(buff, iter.next());
+      explain(buff, cause);
     }
+
     return buff.toString();
   }
 
