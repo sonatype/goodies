@@ -14,7 +14,9 @@
 package org.sonatype.sisu.goodies.inject;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.MembersInjector;
 import com.google.inject.Module;
+import com.google.inject.Provider;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
@@ -58,5 +60,23 @@ public class ModuleSupport
     install(new FactoryModuleBuilder()
         .implement(typeClass, implClass)
         .build(factoryClass));
+  }
+
+  /**
+   * @since 1.7.4
+   */
+  @SuppressWarnings("unchecked")
+  protected  <T> Provider<T> defer(final T component) {
+    Class<T> impl = (Class<T>) component.getClass();
+    final MembersInjector<T> membersInjector = getMembersInjector(impl);
+    bind(impl); // help with any auto-wiring dependency analysis
+
+    return new Provider<T>()
+    {
+      public T get() {
+        membersInjector.injectMembers(component);
+        return component;
+      }
+    };
   }
 }
