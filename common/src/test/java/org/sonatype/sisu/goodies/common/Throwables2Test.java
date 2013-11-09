@@ -18,6 +18,7 @@ import org.sonatype.sisu.litmus.testsupport.TestSupport;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -68,5 +69,19 @@ public class Throwables2Test
     );
     log(msg);
     assertThat(msg, is("java.lang.RuntimeException: foo, caused by: java.lang.Exception: bar, caused by: java.lang.Exception: baz"));
+  }
+
+  @Test
+  public void composite() {
+    Throwable foo = new Exception("foo");
+    Throwable bar = new Exception("bar");
+    try {
+      throw Throwables2.composite(new Exception("test"), foo, bar);
+    }
+    catch (Exception e) {
+      assertThat(e.getSuppressed(), arrayWithSize(2));
+      assertThat(e.getSuppressed()[0], is(foo));
+      assertThat(e.getSuppressed()[1], is(bar));
+    }
   }
 }
