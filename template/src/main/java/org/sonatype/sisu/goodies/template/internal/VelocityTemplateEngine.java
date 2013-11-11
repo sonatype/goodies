@@ -21,12 +21,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Provider;
 
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.io.Closer;
 import org.sonatype.sisu.goodies.template.TemplateEngine;
 import org.sonatype.sisu.goodies.template.TemplateParameters;
-import org.sonatype.sisu.velocity.Velocity;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -48,11 +48,11 @@ public class VelocityTemplateEngine
     implements TemplateEngine
 {
 
-  private final Velocity velocity;
+  private final Provider<VelocityEngine> velocityEngineProvider;
 
   @Inject
-  public VelocityTemplateEngine(final Velocity velocity) {
-    this.velocity = checkNotNull(velocity);
+  public VelocityTemplateEngine(final Provider<VelocityEngine> velocityEngineProvider) {
+    this.velocityEngineProvider = checkNotNull(velocityEngineProvider);
   }
 
   public String render(final Object owner, final @NonNls URL template, @Nullable Map<String, Object> params) {
@@ -69,7 +69,7 @@ public class VelocityTemplateEngine
     try {
       input = new InputStreamReader(template.openStream());
 
-      VelocityEngine engine = velocity.getEngine();
+      VelocityEngine engine = velocityEngineProvider.get();
       params.put("owner", owner); //NON-NLS
 
       StringWriter buff = new StringWriter();
