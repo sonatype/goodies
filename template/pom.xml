@@ -39,9 +39,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-velocity</artifactId>
-      <version>1.2</version>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.7</version>
       <optional>true</optional>
     </dependency>
 
