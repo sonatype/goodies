@@ -38,15 +38,8 @@
     -->
 
     <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-inject-bean</artifactId>
-      <exclusions>
-        <!-- exclude non-aop guice version that inject-bean includes -->
-        <exclusion>
-          <groupId>org.sonatype.sisu</groupId>
-          <artifactId>sisu-guice</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.inject</artifactId>
     </dependency>
 
     <dependency>

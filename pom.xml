@@ -47,7 +47,7 @@
   </prerequisites>
 
   <properties>
-    <sisu-guice.version>3.1.4</sisu-guice.version>
+    <sisu-guice.version>3.1.8</sisu-guice.version>
   </properties>
 
   <dependencyManagement>
@@ -77,22 +77,15 @@
       </dependency>
 
       <dependency>
-        <groupId>org.sonatype.sisu</groupId>
-        <artifactId>sisu-inject-bean</artifactId>
-        <version>2.3.4</version>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>org.eclipse.sisu.inject</artifactId>
+        <version>0.1.1</version>
       </dependency>
 
       <dependency>
         <groupId>org.sonatype.sisu</groupId>
         <artifactId>sisu-guice</artifactId>
         <version>${sisu-guice.version}</version>
-        <exclusions>
-          <!-- Exclude sisu-guava, use stock guava 10+ instead -->
-          <exclusion>
-            <groupId>org.sonatype.sisu</groupId>
-            <artifactId>sisu-guava</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>
@@ -116,7 +109,7 @@
       <dependency>
         <groupId>org.sonatype.sisu.litmus</groupId>
         <artifactId>litmus-testsupport</artifactId>
-        <version>1.6</version>
+        <version>1.8-SNAPSHOT</version>
       </dependency>
 
       <dependency>
@@ -300,8 +293,10 @@
                 <bannedDependencies>
                   <searchTransitive>true</searchTransitive>
                   <excludes>
-                    <!-- Keep junit out, use junit-dep instead -->
-                    <exclude>junit:junit</exclude>
+                    <!-- Keep old junits out -->
+                    <exclude>junit:junit:(,4.10]</exclude>
+                    <exclude>junit:junit-dep</exclude>
+
                     <!-- Keep all JCL out, use jcl-over-slf4j instead -->
                     <exclude>commons-logging:commons-logging</exclude>
                     <exclude>commons-logging:commons-logging-api</exclude>

@@ -18,16 +18,15 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
-import org.sonatype.guice.bean.binders.SpaceModule;
-import org.sonatype.guice.bean.binders.WireModule;
-import org.sonatype.guice.bean.reflect.URLClassSpace;
-import org.sonatype.inject.BeanScanning;
-
 import com.google.common.collect.Lists;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.servlet.GuiceServletContextListener;
+import org.eclipse.sisu.space.BeanScanning;
+import org.eclipse.sisu.space.SpaceModule;
+import org.eclipse.sisu.space.URLClassSpace;
+import org.eclipse.sisu.wire.WireModule;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

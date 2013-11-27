@@ -40,13 +40,13 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-inject-bean</artifactId>
-      <scope>provided</scope>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <dependency>

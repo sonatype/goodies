@@ -19,10 +19,6 @@ import java.util.List;
 import javax.inject.Named;
 import javax.management.MBeanServer;
 
-import org.sonatype.guice.bean.binders.SpaceModule;
-import org.sonatype.guice.bean.binders.WireModule;
-import org.sonatype.guice.bean.reflect.URLClassSpace;
-import org.sonatype.inject.BeanScanning;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import com.google.common.collect.Lists;
@@ -30,6 +26,10 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import org.eclipse.sisu.space.BeanScanning;
+import org.eclipse.sisu.space.SpaceModule;
+import org.eclipse.sisu.space.URLClassSpace;
+import org.eclipse.sisu.wire.WireModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.weakref.jmx.Flatten;
