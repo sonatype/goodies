@@ -1,0 +1,20 @@
+# Ignores
+
+# Eclipse related (and M2e)
+.classpath
+.project
+.settings/
+
+# Maven related (and some plugins)
+target/
+*.ser
+*.ec
+
+# Intellij
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# Other
+.svn/
