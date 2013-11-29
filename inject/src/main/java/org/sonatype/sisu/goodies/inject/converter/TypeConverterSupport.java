@@ -13,11 +13,10 @@
 
 package org.sonatype.sisu.goodies.inject.converter;
 
-import org.sonatype.guice.bean.converters.AbstractTypeConverter;
-
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeConverter;
+import org.eclipse.sisu.wire.AbstractTypeConverter;
 
 /**
  * Support for {@link TypeConverter} implementations.

@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.sonatype.guice.bean.binders.ParameterKeys;
 import org.sonatype.sisu.goodies.common.Properties2;
 import org.sonatype.sisu.goodies.inject.ModuleSupport;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.eclipse.sisu.wire.ParameterKeys;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
