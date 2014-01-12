@@ -19,12 +19,13 @@ import java.util.Properties;
 
 import com.google.common.base.Throwables;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Helper to read Maven pom.properties metadata.
+ *
+ * @since 1.9
  */
 public class PomProperties
   extends Properties
@@ -37,7 +38,7 @@ public class PomProperties
 
   public static final String VERSION = "version";
 
-  private static final Logger log = LoggerFactory.getLogger(PomProperties.class);
+  private static final Logger log = Loggers.getLogger(PomProperties.class);
 
   public PomProperties(final Class owner, final String groupId, final String artifactId) {
     checkNotNull(owner);

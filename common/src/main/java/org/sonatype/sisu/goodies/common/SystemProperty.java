@@ -24,16 +24,17 @@ import javax.annotation.Nullable;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Helper to access System properties.
+ *
+ * @since 1.9
  */
 public class SystemProperty
 {
-  private static final Logger log = LoggerFactory.getLogger(SystemProperty.class);
+  private static final Logger log = Loggers.getLogger(SystemProperty.class);
 
   private final String name;
 

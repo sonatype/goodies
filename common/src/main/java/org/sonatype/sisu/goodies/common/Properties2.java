@@ -72,6 +72,10 @@ public class Properties2
     return result;
   }
 
+  /**
+   * @deprecated Use {@link SystemProperty}.
+   */
+  @Deprecated
   public static String getSystemProperty(final Class<?> type, final @NonNls String name,
                                          final @Nullable Object defaultValue)
   {
@@ -85,6 +89,10 @@ public class Properties2
     }
   }
 
+  /**
+   * @deprecated Use {@link SystemProperty}.
+   */
+  @Deprecated
   public static String getSystemProperty(final Class<?> type, final @NonNls String name) {
     return getSystemProperty(type, name, null);
   }
