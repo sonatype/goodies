@@ -47,7 +47,7 @@
   </prerequisites>
 
   <properties>
-    <sisu-guice.version>3.1.8</sisu-guice.version>
+    <sisu-guice.version>3.1.10</sisu-guice.version>
   </properties>
 
   <dependencyManagement>
@@ -55,7 +55,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.7.5</version>
+        <version>1.7.6</version>
       </dependency>
 
       <dependency>
@@ -109,7 +109,7 @@
       <dependency>
         <groupId>org.sonatype.sisu.litmus</groupId>
         <artifactId>litmus-testsupport</artifactId>
-        <version>1.8</version>
+        <version>1.9-SNAPSHOT</version>
       </dependency>
 
       <dependency>
