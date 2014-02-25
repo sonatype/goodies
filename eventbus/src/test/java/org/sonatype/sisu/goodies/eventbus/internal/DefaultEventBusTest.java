@@ -16,6 +16,7 @@ package org.sonatype.sisu.goodies.eventbus.internal;
 import org.sonatype.sisu.goodies.eventbus.EventBus;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
+import com.google.common.eventbus.ReentrantGuavaEventBus;
 import com.google.common.eventbus.Subscribe;
 import org.junit.Test;
 

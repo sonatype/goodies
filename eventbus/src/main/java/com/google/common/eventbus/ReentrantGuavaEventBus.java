@@ -11,17 +11,13 @@
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
 
-package org.sonatype.sisu.goodies.eventbus.internal;
+package com.google.common.eventbus;
 
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-
-import org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus;
-import org.sonatype.sisu.goodies.eventbus.internal.guava.EventHandler;
-
-import com.google.common.collect.Lists;
 
 /**
  * A Guava {@link EventBus} that differs from default one by dispatching events as they appear (is re-entrant).
@@ -36,26 +32,29 @@ public class ReentrantGuavaEventBus
 {
 
   /**
-   * List of events for the current thread to dispatch
+   * Queues of events for the current thread to dispatch.
    */
-  private final ThreadLocal<List<EventWithHandler>> eventsToDispatch = new ThreadLocal<List<EventWithHandler>>();
+  private final ThreadLocal<Queue<EventWithSubscriber>> eventsToDispatch =
+      new ThreadLocal<Queue<EventWithSubscriber>>()
+      {
+        @Override
+        protected Queue<EventWithSubscriber> initialValue() {
+          return new LinkedList<EventWithSubscriber>();
+        }
+      };
 
   @Override
-  protected void enqueueEvent(final Object event, final EventHandler handler) {
-    if (eventsToDispatch.get() == null) {
-      eventsToDispatch.set(Lists.<EventWithHandler>newArrayList());
-    }
-    eventsToDispatch.get().add(new EventWithHandler(event, handler));
+  void enqueueEvent(Object event, EventSubscriber subscriber) {
+    eventsToDispatch.get().offer(new EventWithSubscriber(event, subscriber));
   }
 
   @Override
-  protected void dispatchQueuedEvents() {
-    final List<EventWithHandler> eventWithHandlers = eventsToDispatch.get();
-    if (eventWithHandlers != null) {
-      eventsToDispatch.remove();
-      for (final EventWithHandler eventWithHandler : eventWithHandlers) {
-        dispatch(eventWithHandler.event, eventWithHandler.handler);
-      }
+  void dispatchQueuedEvents() {
+    Queue<EventWithSubscriber> events = eventsToDispatch.get();
+    eventsToDispatch.remove();
+    EventWithSubscriber eventWithSubscriber;
+    while ((eventWithSubscriber = events.poll()) != null) {
+      dispatch(eventWithSubscriber.event, eventWithSubscriber.subscriber);
     }
   }
 
