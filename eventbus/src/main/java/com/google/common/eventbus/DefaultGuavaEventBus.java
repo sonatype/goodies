@@ -11,13 +11,12 @@
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
 
-package org.sonatype.sisu.goodies.eventbus.internal;
+package com.google.common.eventbus;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus;
-import org.sonatype.sisu.goodies.eventbus.internal.guava.EventHandler;
+import org.sonatype.sisu.goodies.eventbus.internal.DefaultEventBus;
 
 /**
  * @since 1.5
@@ -29,7 +28,7 @@ public class DefaultGuavaEventBus
 {
 
   @Override
-  protected void dispatch(final Object event, final EventHandler wrapper) {
+  public void dispatch(final Object event, final EventSubscriber wrapper) {
     DefaultEventBus.LOG.trace(DefaultEventBus.DISPATCHING, "Dispatching '{}' to {}", event, wrapper);
     super.dispatch(event, wrapper);
   }

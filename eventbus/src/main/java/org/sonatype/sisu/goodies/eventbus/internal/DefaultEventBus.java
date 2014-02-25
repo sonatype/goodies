@@ -40,20 +40,16 @@ public class DefaultEventBus
     implements EventBus
 {
 
-  static final Logger LOG = LoggerFactory.getLogger(DefaultEventBus.class);
+  public static final Logger LOG = LoggerFactory.getLogger(DefaultEventBus.class);
 
   private static final Marker REGISTRATION = MarkerFactory.getMarker("registration");
 
-  private static final Marker EVENTS = MarkerFactory.getMarker("events");
+  public static final Marker DISPATCHING = MarkerFactory.getMarker("dispatching");
 
-  static final Marker DISPATCHING = MarkerFactory.getMarker("dispatching");
-
-  private final org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus;
+  private final com.google.common.eventbus.EventBus eventBus;
 
   @Inject
-  public DefaultEventBus(final @Named("${guava.eventBus:-reentrant}")
-                         org.sonatype.sisu.goodies.eventbus.internal.guava.EventBus eventBus)
-  {
+  public DefaultEventBus(final @Named("${guava.eventBus:-reentrant}") com.google.common.eventbus.EventBus eventBus) {
     this.eventBus = checkNotNull(eventBus);
     LOG.info("Using {}", eventBus);
   }
