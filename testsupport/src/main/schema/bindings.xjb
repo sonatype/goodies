@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2007-2013 Sonatype, Inc. All rights reserved.
+
+    This program is licensed to you under the Apache License Version 2.0,
+    and you may not use this file except in compliance with the Apache License Version 2.0.
+    You may obtain a copy of the Apache License Version 2.0 at http://www.apache.org/licenses/LICENSE-2.0.
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the Apache License Version 2.0 is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
+
+-->
+<bindings
+    xmlns="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+    version="2.1">
+
+    <globalBindings
+        fixedAttributeAsConstantProperty="true"
+        collectionType="java.util.ArrayList">
+        <xjc:simple/>
+    </globalBindings>
+
+    <bindings schemaLocation="index.xsd" node="/xsd:schema">
+        <schemaBindings>
+            <package name="org.sonatype.sisu.litmus.testsupport.junit.index"/>
+            <nameXmlTransform>
+                <elementName suffix="XO"/>
+                <typeName suffix="XO"/>
+            </nameXmlTransform>
+        </schemaBindings>
+    </bindings>
+
+</bindings>
