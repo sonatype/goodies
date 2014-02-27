@@ -20,7 +20,7 @@ package org.sonatype.sisu.litmus.testsupport.group;
  * fixtures
  * or generally are poorly designed.
  *
- * @since 1.5
+ * @since litmus 1.5
  */
 public interface Slow
 {

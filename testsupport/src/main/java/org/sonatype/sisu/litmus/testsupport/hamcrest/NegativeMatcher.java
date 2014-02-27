@@ -19,7 +19,7 @@ import org.hamcrest.Matcher;
 /**
  * A matcher that is able to describe itself when inverted.
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 public interface NegativeMatcher<T>
     extends Matcher<T>

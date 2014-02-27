@@ -97,7 +97,7 @@ import static javax.xml.bind.Marshaller.JAXB_FRAGMENT;
  * </code></pre>
  * The index file will contain the mappings between the numbered directories (1,2,...) and the test class/method.
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 public class TestIndexRule
     extends TestWatcher

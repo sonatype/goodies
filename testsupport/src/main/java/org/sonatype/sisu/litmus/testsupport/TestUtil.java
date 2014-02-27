@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Test utilities.
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public final class TestUtil
 {
@@ -168,7 +168,7 @@ public final class TestUtil
   }
 
   /**
-   * @since 1.1
+   * @since litmus 1.1
    */
   public File createTempFile() {
     return createTempFile(UUID.randomUUID().toString());
@@ -186,7 +186,7 @@ public final class TestUtil
   }
 
   /**
-   * @since 1.1
+   * @since litmus 1.1
    */
   public File createTempDir() {
     return createTempDir(UUID.randomUUID().toString());

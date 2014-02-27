@@ -20,7 +20,6 @@ import java.util.LinkedHashMap;
  * Tests @InjectMocks property injection
  *
  * @see MockitoRuleTest
- * @since 1.3
  */
 public class MockitoRulePropertyBean
 {

@@ -33,8 +33,6 @@ import static org.junit.Assume.assumeThat;
 
 /**
  * Tests for {@link URLMatchers}
- *
- * @since 1.8.1
  */
 public class URLMatchersTest
 {

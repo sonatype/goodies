@@ -43,7 +43,7 @@ import static org.hamcrest.Matchers.isA;
 /**
  * Java beans related matchers.
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class BeanMatchers
 {
@@ -70,7 +70,7 @@ public class BeanMatchers
    * those.
    *
    * @param <T> expected type
-   * @since 1.0
+   * @since litmus 1.0
    */
   public static class SimilarMatcher<T>
       extends BaseMatcher<T>
@@ -109,7 +109,7 @@ public class BeanMatchers
      * Constructor.
      *
      * @param expected expected value. Can be null.
-     * @since 1.0
+     * @since litmus 1.0
      */
     public SimilarMatcher(final T expected) {
       this.expected = expected;

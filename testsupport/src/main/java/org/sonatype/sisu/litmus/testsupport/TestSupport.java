@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Support for tests.
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class TestSupport
 {

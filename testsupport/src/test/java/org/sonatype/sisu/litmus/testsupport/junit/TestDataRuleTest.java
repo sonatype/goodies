@@ -26,8 +26,6 @@ import static org.hamcrest.Matchers.is;
 
 /**
  * {@link TestDataRule} UTs.
- *
- * @since 1.4
  */
 public class TestDataRuleTest
     extends TestSupport
@@ -38,8 +36,6 @@ public class TestDataRuleTest
 
   /**
    * Test that a file is resolved from root directory.
-   *
-   * @since 1.0
    */
   @Test
   public void resolveFromRoot() {
@@ -51,8 +47,6 @@ public class TestDataRuleTest
 
   /**
    * Test that a file is resolved from package directory in root directory.
-   *
-   * @since 1.0
    */
   @Test
   public void resolveFromPackage() {
@@ -64,8 +58,6 @@ public class TestDataRuleTest
 
   /**
    * Test that a file is resolved from some middle package directory in root directory.
-   *
-   * @since 1.6.1
    */
   @Test
   public void resolveFromMiddlePackage() {
@@ -77,8 +69,6 @@ public class TestDataRuleTest
 
   /**
    * Test that a file is resolved from class directory in root directory.
-   *
-   * @since 1.0
    */
   @Test
   public void resolveFromClass() {
@@ -90,8 +80,6 @@ public class TestDataRuleTest
 
   /**
    * Test that a file is resolved from method directory in root directory.
-   *
-   * @since 1.0
    */
   @Test
   public void resolveFromMethod() {
@@ -103,8 +91,6 @@ public class TestDataRuleTest
 
   /**
    * Test that a RuntimeException is thrown when file does not exist.
-   *
-   * @since 1.6.1
    */
   @Test(expected = RuntimeException.class)
   public void resolveInexistent()

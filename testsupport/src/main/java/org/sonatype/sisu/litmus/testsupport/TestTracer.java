@@ -28,7 +28,7 @@ import static java.lang.String.format;
 /**
  * Traces test execution to a {@link Logger}.
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class TestTracer
     extends TestWatcher
@@ -55,14 +55,14 @@ public class TestTracer
   }
 
   /**
-   * @since 1.3
+   * @since litmus 1.3
    */
   protected String prefix(final Description desc) {
     return format("TEST %s", desc == null ? UNKNOWN_METHOD_NAME : desc.getMethodName());
   }
 
   /**
-   * @since 1.3
+   * @since litmus 1.3
    */
   protected void log(String message, Object... args) {
     level.log(logger, message, args);

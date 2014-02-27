@@ -23,7 +23,7 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
  * A very naive TrustManager.
  * Trusts every certificate it comes across.
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 @IgnoreJRERequirement
 public class TrustingX509TrustManager

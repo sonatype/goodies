@@ -21,7 +21,7 @@ import org.hamcrest.Matcher;
 /**
  * Matchers builder for diff between strings (text file like).
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class DiffMatchers
 {
@@ -29,7 +29,7 @@ public class DiffMatchers
   /**
    * Diff between two strings.
    *
-   * @since 1.0
+   * @since litmus 1.0
    */
   private static class StringDiffMatcher
       extends BaseMatcher<String>
@@ -93,7 +93,7 @@ public class DiffMatchers
   /**
    * Tests that two strings are equal, displaying a fancy diff if they are not.
    *
-   * @since 1.0
+   * @since litmus 1.0
    */
   @Factory
   public static Matcher<String> equalTo(final String string) {
@@ -103,7 +103,7 @@ public class DiffMatchers
   /**
    * Tests that two strings are equal, displaying only a fancy diff if they are not.
    *
-   * @since 1.0
+   * @since litmus 1.0
    */
   @Factory
   public static Matcher<String> equalToOnlyDiffs(final String string) {

@@ -21,7 +21,7 @@ package org.sonatype.sisu.litmus.testsupport.group;
  * For unit tests, it is considered best practice to ensure <b>ALL</b> of your unit tests pass as the minimal measure
  * by which you judge accepting new code into your project.
  *
- * @since 1.5
+ * @since litmus 1.5
  */
 public interface Smoke
 {

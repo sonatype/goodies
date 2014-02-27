@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * JUnit rule for accessing test data
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 public class TestDataRule
     extends TestWatcher
@@ -84,7 +84,7 @@ public class TestDataRule
    *
    * @param clazz class to get the path for
    * @return path to class
-   * @since 1.0
+   * @since litmus 1.0
    */
   //@TestAccessible
   static String asPath(final Class<?> clazz) {

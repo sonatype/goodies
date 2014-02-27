@@ -22,7 +22,6 @@ import org.mockito.ArgumentCaptor;
  * This tests @InjectMocks field injection
  *
  * @see MockitoRuleTest
- * @since 1.3
  */
 public class MockitoRuleFieldBean
 {

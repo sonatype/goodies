@@ -24,7 +24,7 @@ import org.mockito.invocation.InvocationOnMock;
 /**
  * ???
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class ImplementsPartialJavaBean
     extends ReturnsMoreEmptyValues

@@ -26,7 +26,7 @@ import org.junit.runner.Description;
  * A JUnit {@link org.junit.Rule} implementation of {@link TestInfo}, with values derived from {@link Description}
  *
  * @see Description
- * @since 1.3
+ * @since litmus 1.3
  */
 public class TestInfoRule
     extends TestWatcher

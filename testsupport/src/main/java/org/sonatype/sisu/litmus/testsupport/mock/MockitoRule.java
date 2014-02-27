@@ -31,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * validation
  * fails then, both {@link Throwable}s are wrapped in a {@link MultipleFailureException}
  *
- * @since 1.3
+ * @since litmus 1.3
  */
 public class MockitoRule
     implements TestRule

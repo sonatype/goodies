@@ -34,8 +34,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * {@link ConjunctionMatcher} UTs.
- *
- * @since 1.4
  */
 public class ConjunctionMatcherTest
     extends TestSupport

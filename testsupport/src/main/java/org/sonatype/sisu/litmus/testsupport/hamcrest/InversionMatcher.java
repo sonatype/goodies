@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Similar to {@link org.hamcrest.core.IsNot} as functionality yet, it delegates the
  * {@link Matcher#describeTo(org.hamcrest.Description)} to negated matcher so it better describes the intention.
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 public class InversionMatcher<T>
     extends BaseMatcher<T>

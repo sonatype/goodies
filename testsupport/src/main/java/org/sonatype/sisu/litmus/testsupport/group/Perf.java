@@ -19,7 +19,7 @@ package org.sonatype.sisu.litmus.testsupport.group;
  * Tests measuring performance typically require a specialized environment in which to run to ensure consistent results
  * and so should be easily identified.
  *
- * @since 1.5
+ * @since litmus 1.5
  */
 public interface Perf
 {

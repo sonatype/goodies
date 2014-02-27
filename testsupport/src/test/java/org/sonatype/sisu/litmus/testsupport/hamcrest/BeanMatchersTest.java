@@ -28,8 +28,6 @@ import static org.sonatype.sisu.litmus.testsupport.hamcrest.BeanMatchers.similar
 
 /**
  * {@link BeanMatchers} tests.
- *
- * @since 1.0
  */
 public class BeanMatchersTest
     extends TestSupport

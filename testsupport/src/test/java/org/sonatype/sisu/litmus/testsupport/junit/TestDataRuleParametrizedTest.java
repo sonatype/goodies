@@ -21,8 +21,6 @@ import org.junit.runners.Parameterized;
 
 /**
  * {@link TestDataRule} UTs for parametrized tests.
- *
- * @since 1.4
  */
 @RunWith(Parameterized.class)
 public class TestDataRuleParametrizedTest

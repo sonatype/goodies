@@ -42,8 +42,6 @@ import static org.sonatype.sisu.litmus.testsupport.hamcrest.FileMatchers.isDirec
 
 /**
  * {@link TestIndexRule} UTs.
- *
- * @since 1.4
  */
 public class TestIndexRuleTest
     extends TestSupport

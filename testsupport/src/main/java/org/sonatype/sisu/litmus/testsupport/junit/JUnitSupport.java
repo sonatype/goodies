@@ -27,7 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Generic JUnit support utils.
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class JUnitSupport
 {
@@ -49,7 +49,7 @@ public class JUnitSupport
    *                                  if one or more test classes fail
    * @see #logFailures(java.util.List)
    * @see {@link JUnitCore#runClasses(Class[])}}
-   * @since 1.3
+   * @since litmus 1.3
    */
   public void runUnitTests(final boolean assertResults, final Class... testClasses) {
     if (checkNotNull(testClasses).length == 0) {

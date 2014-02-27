@@ -16,7 +16,7 @@ package org.sonatype.sisu.litmus.testsupport.group;
 /**
  * Marker interface to categorize a test as unstable.
  *
- * @since 1.6.1
+ * @since litmus 1.6.1
  */
 public interface Unstable
 {

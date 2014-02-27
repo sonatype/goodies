@@ -29,8 +29,6 @@ import static org.hamcrest.Matchers.containsString;
 
 /**
  * {@link LogFileMatcher} UTs.
- *
- * @since 1.4
  */
 public class LogFileMatcherTest
     extends TestSupport

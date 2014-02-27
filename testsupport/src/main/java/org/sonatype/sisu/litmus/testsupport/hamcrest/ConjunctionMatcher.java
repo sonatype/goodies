@@ -30,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p/>
  * Similar to {@link org.hamcrest.core.AllOf} as functionality yet, will better handle describeTo/describeMismatch.
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 public class ConjunctionMatcher<T>
     extends TypeSafeMatcher<T>

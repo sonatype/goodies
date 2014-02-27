@@ -21,7 +21,7 @@ import org.hamcrest.Matcher;
 /**
  * Replacement for {@link org.hamcrest.core.IsNot} that delegates mismatch description to wrapped Matcher if set.
  *
- * @since 1.0
+ * @since litmus 1.0
  * @deprecated Use {@link InversionMatcher} instead (which can better describe the negation)
  */
 @Deprecated

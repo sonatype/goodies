@@ -27,7 +27,7 @@ import org.incava.util.diff.Difference;
  * <p/>
  * Thank you!
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class DiffUtils
 {
@@ -36,7 +36,7 @@ public class DiffUtils
   /**
    * Returns a visual diff between two strings (text file like strings).
    *
-   * @since 1.0
+   * @since litmus 1.0
    */
   public static String diffSideBySide(String fromStr, String toStr, boolean onlyDiffs) {
     // this is equivalent of running unix diff -y command

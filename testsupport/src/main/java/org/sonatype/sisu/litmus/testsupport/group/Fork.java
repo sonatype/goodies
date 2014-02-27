@@ -19,7 +19,7 @@ package org.sonatype.sisu.litmus.testsupport.group;
  * Forking a new JVM to run your test is usually more resource intensive or requires a different set of system
  * properties as non-forked tests.
  *
- * @since 1.5
+ * @since litmus 1.5
  */
 public interface Fork
 {

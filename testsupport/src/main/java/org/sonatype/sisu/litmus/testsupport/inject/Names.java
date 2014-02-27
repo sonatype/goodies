@@ -16,7 +16,7 @@ package org.sonatype.sisu.litmus.testsupport.inject;
 /**
  * ???
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public interface Names
 {

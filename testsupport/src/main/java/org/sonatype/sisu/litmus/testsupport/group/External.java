@@ -25,7 +25,7 @@ package org.sonatype.sisu.litmus.testsupport.group;
  * External tests should obviously be avoided and are a sign of code smell. But if you have them, it is useful to at
  * least mark them and perhaps run them only on systems which will support the test requirements.
  *
- * @since 1.5
+ * @since litmus 1.5
  */
 public interface External
 {

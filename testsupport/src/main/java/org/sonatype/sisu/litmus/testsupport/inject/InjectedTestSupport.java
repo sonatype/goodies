@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 /**
  * Support for injection-based tests.
  *
- * @since 1.0
+ * @since litmus 1.0
  */
 public class InjectedTestSupport
     extends InjectedTest

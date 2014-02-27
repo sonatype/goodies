@@ -18,7 +18,7 @@ import java.io.File;
 /**
  * Test data access.
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 public interface TestData
 {

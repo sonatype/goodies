@@ -28,8 +28,6 @@ import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Test {@link org.sonatype.sisu.litmus.testsupport.junit.TestInfoRule}
- *
- * @since 1.3
  */
 @TestInfoRuleTest.ValuedAnnotation("test class annotation for testing TestInfoRule.getAnnotation()")
 public class TestInfoRuleTest

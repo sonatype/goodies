@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Log file matcher. Will read every line of a log file and will verify that at least one line is matching. Matching is
  * specific to subclasses.
  *
- * @since 1.4
+ * @since litmus 1.4
  */
 public abstract class LogFileMatcher
     extends TypeSafeMatcher<File>

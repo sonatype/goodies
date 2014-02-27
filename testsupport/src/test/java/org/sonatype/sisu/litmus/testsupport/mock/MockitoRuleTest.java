@@ -35,8 +35,6 @@ import static org.hamcrest.Matchers.sameInstance;
  * <p>
  * Note: @InjectMocks only is supposed to work with @Spy , not @Mock
  * </p>
- *
- * @since 1.3
  */
 public class MockitoRuleTest
 {

@@ -19,7 +19,7 @@ import java.util.Collection;
 /**
  * Information about the currently executing test.
  *
- * @since 1.3
+ * @since litmus 1.3
  */
 public interface TestInfo
 {

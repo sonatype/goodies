@@ -558,7 +558,7 @@ public class FileMatchers
    * fact empty.
    *
    * @return a matcher that checks if a File (directory) is empty!
-   * @since 1.3
+   * @since litmus 1.3
    */
   public static Matcher<? super File> isEmptyDirectory() {
     return new TypeSafeMatcher<File>()
@@ -601,7 +601,7 @@ public class FileMatchers
   }
 
   /**
-   * @since 1.2
+   * @since litmus 1.2
    */
   @Factory
   public static Matcher<? super File> matchSha1(File file)
