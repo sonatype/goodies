@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2007-2013 Sonatype, Inc. All rights reserved.
+
+    This program is licensed to you under the Apache License Version 2.0,
+    and you may not use this file except in compliance with the Apache License Version 2.0.
+    You may obtain a copy of the Apache License Version 2.0 at http://www.apache.org/licenses/LICENSE-2.0.
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the Apache License Version 2.0 is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
+
+-->
+<configuration>
+  <!--
+  NOTE: Using logback.xml for this file explicitly since this is a fallback configuration.
+  NOTE: Tests can customize by providing a logback-test.xml, which will be preferred if found.
+  NOTE: See http://logback.qos.ch/manual/configuration.html for more information.
+  -->
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>%d{HH:mm:ss.SSS} %level [%thread%X{DC}] %logger - %msg%n</Pattern>
+    </encoder>
+  </appender>
+
+  <root level="${test.log.level:-INFO}">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>
