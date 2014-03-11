@@ -31,23 +31,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 
 /**
- * <p>Java class for TestInfo complex type.
+ * Test information exchange object.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
- *
- * <pre>
- * &lt;complexType name="TestInfo">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="link" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
+ * @since 1.10
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TestInfo", propOrder = {

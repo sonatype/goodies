@@ -35,29 +35,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 
 /**
- * <p>Java class for Test complex type.
+ * Test exchange object.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
- *
- * <pre>
- * &lt;complexType name="Test">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="index" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="className" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="methodName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="duration" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="throwableMessage" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="throwableStacktrace" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element ref="{http://sonatype.com/xsd/litmus-testsupport/index/1.0}testInfo" maxOccurs="unbounded"
- * minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
+ * @since 1.10
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Test", propOrder = {
