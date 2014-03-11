@@ -36,23 +36,22 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * <p>Java class for Index complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="Index">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="counter" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element ref="{http://sonatype.com/xsd/litmus-testsupport/index/1.0}test" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{http://sonatype.com/xsd/litmus-testsupport/index/1.0}test" maxOccurs="unbounded"
+ * minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Index", propOrder = {
@@ -62,87 +61,85 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XmlRootElement(name = "index")
 @Generated(value = "XJC 2.2.5-b10", date = "2014-03-10T19:09:54")
 @XStreamAlias("index")
-public class IndexXO {
+public class IndexXO
+{
 
-    protected int counter;
-    @XmlElement(name = "test", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.0")
-    protected List<TestXO> tests;
+  protected int counter;
 
-    /**
-     * Gets the value of the counter property.
-     * 
-     */
-    public int getCounter() {
-        return counter;
+  @XmlElement(name = "test", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.0")
+  protected List<TestXO> tests;
+
+  /**
+   * Gets the value of the counter property.
+   */
+  public int getCounter() {
+    return counter;
+  }
+
+  /**
+   * Sets the value of the counter property.
+   */
+  public void setCounter(int value) {
+    this.counter = value;
+  }
+
+  /**
+   * Gets the value of the tests property.
+   *
+   * <p>
+   * This accessor method returns a reference to the live list,
+   * not a snapshot. Therefore any modification you make to the
+   * returned list will be present inside the JAXB object.
+   * This is why there is not a <CODE>set</CODE> method for the tests property.
+   *
+   * <p>
+   * For example, to add a new item, do as follows:
+   * <pre>
+   *    getTests().add(newItem);
+   * </pre>
+   *
+   *
+   * <p>
+   * Objects of the following type(s) are allowed in the list
+   * {@link TestXO }
+   */
+  public List<TestXO> getTests() {
+    if (tests == null) {
+      tests = new ArrayList<TestXO>();
     }
+    return this.tests;
+  }
 
-    /**
-     * Sets the value of the counter property.
-     * 
-     */
-    public void setCounter(int value) {
-        this.counter = value;
-    }
+  public void setTests(List<TestXO> value) {
+    this.tests = null;
+    List<TestXO> draftl = this.getTests();
+    draftl.addAll(value);
+  }
 
-    /**
-     * Gets the value of the tests property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the tests property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getTests().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link TestXO }
-     * 
-     * 
-     */
-    public List<TestXO> getTests() {
-        if (tests == null) {
-            tests = new ArrayList<TestXO>();
-        }
-        return this.tests;
-    }
+  public IndexXO withCounter(int value) {
+    setCounter(value);
+    return this;
+  }
 
-    public void setTests(List<TestXO> value) {
-        this.tests = null;
-        List<TestXO> draftl = this.getTests();
-        draftl.addAll(value);
+  public IndexXO withTests(TestXO... values) {
+    if (values != null) {
+      for (TestXO value : values) {
+        getTests().add(value);
+      }
     }
+    return this;
+  }
 
-    public IndexXO withCounter(int value) {
-        setCounter(value);
-        return this;
+  public IndexXO withTests(Collection<TestXO> values) {
+    if (values != null) {
+      getTests().addAll(values);
     }
+    return this;
+  }
 
-    public IndexXO withTests(TestXO... values) {
-        if (values!= null) {
-            for (TestXO value: values) {
-                getTests().add(value);
-            }
-        }
-        return this;
-    }
-
-    public IndexXO withTests(Collection<TestXO> values) {
-        if (values!= null) {
-            getTests().addAll(values);
-        }
-        return this;
-    }
-
-    public IndexXO withTests(List<TestXO> value) {
-        setTests(value);
-        return this;
-    }
+  public IndexXO withTests(List<TestXO> value) {
+    setTests(value);
+    return this;
+  }
 
 }

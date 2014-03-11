@@ -32,9 +32,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * <p>Java class for TestInfo complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="TestInfo">
  *   &lt;complexContent>
@@ -48,8 +48,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TestInfo", propOrder = {
@@ -60,91 +58,84 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XmlRootElement(name = "testInfo")
 @Generated(value = "XJC 2.2.5-b10", date = "2014-03-10T19:09:54")
 @XStreamAlias("testInfo")
-public class TestInfoXO {
+public class TestInfoXO
+{
 
-    protected boolean link;
-    @XmlElement(required = true)
-    protected String key;
-    @XmlElement(required = true)
-    protected String value;
+  protected boolean link;
 
-    /**
-     * Gets the value of the link property.
-     * 
-     */
-    public boolean isLink() {
-        return link;
-    }
+  @XmlElement(required = true)
+  protected String key;
 
-    /**
-     * Sets the value of the link property.
-     * 
-     */
-    public void setLink(boolean value) {
-        this.link = value;
-    }
+  @XmlElement(required = true)
+  protected String value;
 
-    /**
-     * Gets the value of the key property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getKey() {
-        return key;
-    }
+  /**
+   * Gets the value of the link property.
+   */
+  public boolean isLink() {
+    return link;
+  }
 
-    /**
-     * Sets the value of the key property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setKey(String value) {
-        this.key = value;
-    }
+  /**
+   * Sets the value of the link property.
+   */
+  public void setLink(boolean value) {
+    this.link = value;
+  }
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getValue() {
-        return value;
-    }
+  /**
+   * Gets the value of the key property.
+   *
+   * @return possible object is
+   * {@link String }
+   */
+  public String getKey() {
+    return key;
+  }
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+  /**
+   * Sets the value of the key property.
+   *
+   * @param value allowed object is
+   *              {@link String }
+   */
+  public void setKey(String value) {
+    this.key = value;
+  }
 
-    public TestInfoXO withLink(boolean value) {
-        setLink(value);
-        return this;
-    }
+  /**
+   * Gets the value of the value property.
+   *
+   * @return possible object is
+   * {@link String }
+   */
+  public String getValue() {
+    return value;
+  }
 
-    public TestInfoXO withKey(String value) {
-        setKey(value);
-        return this;
-    }
+  /**
+   * Sets the value of the value property.
+   *
+   * @param value allowed object is
+   *              {@link String }
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public TestInfoXO withValue(String value) {
-        setValue(value);
-        return this;
-    }
+  public TestInfoXO withLink(boolean value) {
+    setLink(value);
+    return this;
+  }
+
+  public TestInfoXO withKey(String value) {
+    setKey(value);
+    return this;
+  }
+
+  public TestInfoXO withValue(String value) {
+    setValue(value);
+    return this;
+  }
 
 }
