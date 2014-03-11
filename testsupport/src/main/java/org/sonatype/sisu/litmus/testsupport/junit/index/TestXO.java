@@ -66,148 +66,62 @@ public class TestXO
   @XmlElement(name = "testInfo", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.0")
   protected List<TestInfoXO> testInfos;
 
-  /**
-   * Gets the value of the index property.
-   */
   public int getIndex() {
     return index;
   }
 
-  /**
-   * Sets the value of the index property.
-   */
   public void setIndex(int value) {
     this.index = value;
   }
 
-  /**
-   * Gets the value of the className property.
-   *
-   * @return possible object is
-   * {@link String }
-   */
   public String getClassName() {
     return className;
   }
 
-  /**
-   * Sets the value of the className property.
-   *
-   * @param value allowed object is
-   *              {@link String }
-   */
   public void setClassName(String value) {
     this.className = value;
   }
 
-  /**
-   * Gets the value of the methodName property.
-   *
-   * @return possible object is
-   * {@link String }
-   */
   public String getMethodName() {
     return methodName;
   }
 
-  /**
-   * Sets the value of the methodName property.
-   *
-   * @param value allowed object is
-   *              {@link String }
-   */
   public void setMethodName(String value) {
     this.methodName = value;
   }
 
-  /**
-   * Gets the value of the duration property.
-   */
   public long getDuration() {
     return duration;
   }
 
-  /**
-   * Sets the value of the duration property.
-   */
   public void setDuration(long value) {
     this.duration = value;
   }
 
-  /**
-   * Gets the value of the success property.
-   */
   public boolean isSuccess() {
     return success;
   }
 
-  /**
-   * Sets the value of the success property.
-   */
   public void setSuccess(boolean value) {
     this.success = value;
   }
 
-  /**
-   * Gets the value of the throwableMessage property.
-   *
-   * @return possible object is
-   * {@link String }
-   */
   public String getThrowableMessage() {
     return throwableMessage;
   }
 
-  /**
-   * Sets the value of the throwableMessage property.
-   *
-   * @param value allowed object is
-   *              {@link String }
-   */
   public void setThrowableMessage(String value) {
     this.throwableMessage = value;
   }
 
-  /**
-   * Gets the value of the throwableStacktrace property.
-   *
-   * @return possible object is
-   * {@link String }
-   */
   public String getThrowableStacktrace() {
     return throwableStacktrace;
   }
 
-  /**
-   * Sets the value of the throwableStacktrace property.
-   *
-   * @param value allowed object is
-   *              {@link String }
-   */
   public void setThrowableStacktrace(String value) {
     this.throwableStacktrace = value;
   }
 
-  /**
-   * Gets the value of the testInfos property.
-   *
-   * <p>
-   * This accessor method returns a reference to the live list,
-   * not a snapshot. Therefore any modification you make to the
-   * returned list will be present inside the JAXB object.
-   * This is why there is not a <CODE>set</CODE> method for the testInfos property.
-   *
-   * <p>
-   * For example, to add a new item, do as follows:
-   * <pre>
-   *    getTestInfos().add(newItem);
-   * </pre>
-   *
-   *
-   * <p>
-   * Objects of the following type(s) are allowed in the list
-   * {@link TestInfoXO }
-   */
   public List<TestInfoXO> getTestInfos() {
     if (testInfos == null) {
       testInfos = new ArrayList<TestInfoXO>();

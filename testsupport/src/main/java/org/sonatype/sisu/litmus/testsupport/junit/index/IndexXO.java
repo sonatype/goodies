@@ -46,40 +46,14 @@ public class IndexXO
   @XmlElement(name = "test", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.0")
   protected List<TestXO> tests;
 
-  /**
-   * Gets the value of the counter property.
-   */
   public int getCounter() {
     return counter;
   }
 
-  /**
-   * Sets the value of the counter property.
-   */
   public void setCounter(int value) {
     this.counter = value;
   }
 
-  /**
-   * Gets the value of the tests property.
-   *
-   * <p>
-   * This accessor method returns a reference to the live list,
-   * not a snapshot. Therefore any modification you make to the
-   * returned list will be present inside the JAXB object.
-   * This is why there is not a <CODE>set</CODE> method for the tests property.
-   *
-   * <p>
-   * For example, to add a new item, do as follows:
-   * <pre>
-   *    getTests().add(newItem);
-   * </pre>
-   *
-   *
-   * <p>
-   * Objects of the following type(s) are allowed in the list
-   * {@link TestXO }
-   */
   public List<TestXO> getTests() {
     if (tests == null) {
       tests = new ArrayList<TestXO>();
