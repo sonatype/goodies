@@ -25,6 +25,7 @@
 
   <artifactId>goodies-lifecycle</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
+  <packaging>bundle</packaging>
 
   <dependencies>
     <dependency>
@@ -40,6 +41,7 @@
       <artifactId>statemap</artifactId>
       <classifier>java</classifier>
       <version>6.0.1</version>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -61,6 +63,31 @@
             </goals>
             <configuration>
               <sync>true</sync>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <artifactSet>
+                <includes>
+                  <include>net.sf.smc:statemap</include>
+                </includes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>statemap</pattern>
+                  <shadedPattern>org.sonatype.sisu.goodies.lifecycle.internal</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>

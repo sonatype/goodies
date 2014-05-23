@@ -25,6 +25,7 @@
 
   <artifactId>goodies-i18n</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
+  <packaging>bundle</packaging>
 
   <dependencies>
     <dependency>

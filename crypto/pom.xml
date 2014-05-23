@@ -25,6 +25,7 @@
 
   <artifactId>goodies-crypto</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
+  <packaging>bundle</packaging>
 
   <properties>
     <bouncycastle.version>1.49</bouncycastle.version>
