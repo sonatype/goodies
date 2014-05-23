@@ -596,6 +596,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
+            <_consumer-policy>$(version;==)</_consumer-policy>
             <Include-Resource>
               /=${project.build.outputDirectory},{maven-resources}
             </Include-Resource>
