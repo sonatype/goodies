@@ -596,7 +596,9 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
+            <!-- relax range to account for guava versioning -->
             <_consumer-policy>$(version;==)</_consumer-policy>
+            <!-- include all content in the output directory -->
             <Include-Resource>
               /=${project.build.outputDirectory},{maven-resources}
             </Include-Resource>

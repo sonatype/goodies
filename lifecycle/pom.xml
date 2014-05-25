@@ -72,6 +72,9 @@
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
+            <!--
+            Repackage the statemap runtime classes in the final jar.
+            -->
             <goals>
               <goal>shade</goal>
             </goals>
