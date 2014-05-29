@@ -63,12 +63,10 @@
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
+          <!-- merge with guava at runtime as fragment -->
+          <excludeDependencies>guava</excludeDependencies>
           <instructions>
-            <!-- merge eventbus customizations with guava -->
             <Fragment-Host>com.google.guava</Fragment-Host>
-            <Private-Package>
-              com.google.common.eventbus.*;-split-package:=first
-            </Private-Package>
           </instructions>
         </configuration>
       </plugin>
