@@ -59,6 +59,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.ssl.keystore.CertificateUtil;
+import org.sonatype.sisu.goodies.ssl.keystore.KeyNotFoundException;
 import org.sonatype.sisu.goodies.ssl.keystore.KeystoreException;
 
 import org.apache.geronimo.crypto.asn1.ASN1InputStream;

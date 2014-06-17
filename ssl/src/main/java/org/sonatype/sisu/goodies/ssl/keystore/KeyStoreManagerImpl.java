@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.ssl.keystore.internal;
+package org.sonatype.sisu.goodies.ssl.keystore;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
@@ -26,10 +26,8 @@ import javax.net.ssl.TrustManager;
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.common.TestAccessible;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
-import org.sonatype.sisu.goodies.ssl.keystore.CertificateUtil;
-import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManager;
-import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManagerConfiguration;
-import org.sonatype.sisu.goodies.ssl.keystore.KeystoreException;
+import org.sonatype.sisu.goodies.ssl.keystore.internal.ReloadableX509KeyManager;
+import org.sonatype.sisu.goodies.ssl.keystore.internal.ReloadableX509TrustManager;
 import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.FileKeystoreInstance;
 import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeystoreInstance;
 

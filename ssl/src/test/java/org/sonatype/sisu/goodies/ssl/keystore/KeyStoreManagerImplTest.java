@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.ssl.keystore.internal;
+package org.sonatype.sisu.goodies.ssl.keystore;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,10 +47,6 @@ import javax.net.ssl.X509TrustManager;
 import org.sonatype.sisu.goodies.common.Time;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.internal.CryptoHelperImpl;
-import org.sonatype.sisu.goodies.ssl.keystore.CertificateUtil;
-import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManager;
-import org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManagerConfiguration;
-import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeyNotFoundException;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 import org.sonatype.sisu.litmus.testsupport.hamcrest.FileMatchers;
 
@@ -70,10 +66,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.sonatype.sisu.goodies.ssl.keystore.internal.KeyStoreManagerImpl.PRIVATE_KEY_ALIAS;
+import static org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManagerImpl.PRIVATE_KEY_ALIAS;
 
 /**
- * Tests for {@link org.sonatype.sisu.goodies.ssl.keystore.internal.KeyStoreManagerImpl}.
+ * Tests for {@link org.sonatype.sisu.goodies.ssl.keystore.KeyStoreManagerImpl}.
  * <p/>
  * To turn on SSL debug logging, use:
  * System.setProperty( "javax.net.debug", "ssl" );

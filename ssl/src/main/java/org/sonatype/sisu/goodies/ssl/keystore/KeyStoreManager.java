@@ -20,8 +20,6 @@ import java.util.Collection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
-import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeyNotFoundException;
-
 import org.jetbrains.annotations.NonNls;
 
 /**
