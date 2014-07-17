@@ -30,17 +30,17 @@ import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
+import com.google.common.base.Strings;
+
 import com.google.common.base.Throwables;
 import org.bouncycastle.util.encoders.Base64Encoder;
-import org.fest.util.Strings;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Default implementation of {@link PasswordCipher}.
  * 
- * @since 3.0
+ * @since 1.10
  */
 @Singleton
 @Named
