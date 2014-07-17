@@ -30,8 +30,9 @@ import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
-import com.google.common.base.Strings;
+import com.google.common.annotations.VisibleForTesting;
 
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import org.bouncycastle.util.encoders.Base64Encoder;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -64,6 +65,12 @@ public class DefaultPasswordCipher
   private final CryptoHelper cryptoHelper;
 
   private final Base64Encoder base64Encoder;
+
+  @VisibleForTesting
+  public DefaultPasswordCipher(final CryptoHelper cryptoHelper)
+  {
+    this(cryptoHelper, "PBEWithSHAAnd128BitRC4", 23);
+  }
 
   @Inject
   public DefaultPasswordCipher(final CryptoHelper cryptoHelper,

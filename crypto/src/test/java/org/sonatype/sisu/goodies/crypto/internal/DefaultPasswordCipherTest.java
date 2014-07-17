@@ -42,7 +42,7 @@ public class DefaultPasswordCipherTest
   @Before
   public void prepare() {
     Security.addProvider(new BouncyCastleProvider());
-    this.testSubject = new DefaultPasswordCipher(new CryptoHelperImpl(), "PBEWithSHAAnd128BitRC4", 23);
+    this.testSubject = new DefaultPasswordCipher(new CryptoHelperImpl());
   }
 
   @After
