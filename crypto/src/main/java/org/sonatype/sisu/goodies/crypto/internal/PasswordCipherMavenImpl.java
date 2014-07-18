@@ -13,6 +13,7 @@
 package org.sonatype.sisu.goodies.crypto.internal;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
@@ -29,7 +30,6 @@ import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
 import com.google.common.base.Charsets;
-
 import com.google.common.base.Throwables;
 import org.bouncycastle.util.encoders.Base64Encoder;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -117,6 +117,9 @@ public class PasswordCipherMavenImpl
       System.arraycopy(allEncryptedBytes, SALT_SIZE + 1, encryptedBytes, 0, encryptedBytes.length);
       Cipher cipher = createCipher(passPhrase, salt, Cipher.DECRYPT_MODE);
       return cipher.doFinal(encryptedBytes);
+    }
+    catch (IOException e) {
+      throw new IllegalArgumentException("Invalid payload (base64 problem)", e);
     }
     catch (Exception e) {
       throw Throwables.propagate(e);
