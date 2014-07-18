@@ -24,6 +24,7 @@ import java.security.cert.CertificateFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -46,6 +47,11 @@ public interface CryptoHelper
   SecureRandom createSecureRandom(String algorithm) throws NoSuchAlgorithmException;
 
   SecureRandom createSecureRandom();
+
+  /**
+   * @since 1.10
+   */
+  SecretKeyFactory createSecretKeyFactory(String transformation) throws NoSuchAlgorithmException;
 
   KeyStore createKeyStore(String type) throws KeyStoreException;
 

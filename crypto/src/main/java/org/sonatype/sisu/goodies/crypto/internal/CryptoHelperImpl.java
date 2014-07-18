@@ -26,6 +26,7 @@ import java.security.cert.CertificateFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.net.ssl.KeyManagerFactory;
@@ -35,7 +36,6 @@ import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -143,7 +143,13 @@ public class CryptoHelperImpl
     }
     return obj;
   }
-
+  
+  @Override
+  public SecretKeyFactory createSecretKeyFactory(String transformation) throws NoSuchAlgorithmException {
+    checkNotNull(transformation);
+    return SecretKeyFactory.getInstance(transformation, getProvider());
+  }
+  
   @Override
   public KeyStore createKeyStore(final String type) throws KeyStoreException {
     checkNotNull(type);

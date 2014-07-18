@@ -10,23 +10,22 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto;
+package org.sonatype.sisu.goodies.crypto.internal;
 
 /**
- * Component for password based encryption (PBE). To be used on smaller payloads like user passwords, due to use of byte
- * arrays for payload.
- * 
- * @since 1.10
+ * UT for {@link MavenCipherLegacyImpl}
  */
-public interface PasswordCipher
+public class MavenCipherLegacyImplTest
+    extends MavenCipherTestSupport
 {
-  /**
-   * Encrypt the provided plaintext payload using provided pass phrase.
-   */
-  byte[] encrypt(byte[] payload, String passPhrase);
+  private static final String passPhrase = "foofoo";
 
-  /**
-   * Decrypt the provided input payload using provided pass phrase.
-   */
-  byte[] decrypt(byte[] payload, String passPhrase);
+  private static final String plaintext = "my testing phrase";
+
+  private static final String encrypted = "{CFUju8n8eKQHj8u0HI9uQMRmKQALtoXH7lY=}";
+
+  public MavenCipherLegacyImplTest() {
+    super(passPhrase, plaintext, encrypted, new MavenCipherLegacyImpl(new PasswordCipherMavenLegacyImpl(
+        new CryptoHelperImpl())));
+  }
 }

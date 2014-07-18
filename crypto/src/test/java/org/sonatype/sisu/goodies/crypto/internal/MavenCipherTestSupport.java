@@ -14,35 +14,45 @@ package org.sonatype.sisu.goodies.crypto.internal;
 
 import java.security.Security;
 
+import org.sonatype.sisu.goodies.crypto.MavenCipher;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
-import org.junit.After;
-
+import static com.google.common.base.Preconditions.checkNotNull;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Test;
+import org.junit.After;
 import org.junit.Before;
-
+import org.junit.Test;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 /**
- * UT for {@link DefaultPasswordCipher}
+ * UT support for {@link MavenCipher} implementations containing simple set of excersises.
  */
-public class DefaultPasswordCipherTest
+public abstract class MavenCipherTestSupport
     extends TestSupport
 {
-  private String passPhrase = "foofoo";
+  protected final String passPhrase;
 
-  private String plaintext = "my testing phrase";
+  protected final String plaintext;
 
-  private String encrypted = "{CFUju8n8eKQHj8u0HI9uQMRmKQALtoXH7lY=}";
+  protected final String encrypted;
 
-  private DefaultPasswordCipher testSubject;
+  protected final MavenCipher testSubject;
+
+  protected MavenCipherTestSupport(final String passPhrase, final String plaintext, final String encrypted,
+      final MavenCipher testSubject)
+  {
+    this.passPhrase = checkNotNull(passPhrase);
+    this.plaintext = checkNotNull(plaintext);
+    this.encrypted = checkNotNull(encrypted);
+    this.testSubject = checkNotNull(testSubject);
+  }
 
   @Before
   public void prepare() {
     Security.addProvider(new BouncyCastleProvider());
-    this.testSubject = new DefaultPasswordCipher(new CryptoHelperImpl());
   }
 
   @After

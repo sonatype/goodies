@@ -19,7 +19,6 @@ import java.security.spec.KeySpec;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.inject.Inject;
@@ -31,69 +30,73 @@ import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
 import com.google.common.annotations.VisibleForTesting;
-
-import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import org.bouncycastle.util.encoders.Base64Encoder;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Default implementation of {@link PasswordCipher}.
+ * Maven legacy implementation of {@link PasswordCipher} compatible with encryption used by plexus-cipher versions
+ * [1.0,1.5]. Note: this is encryption only, is not directly usable as drop-in replacement for plexus-cipher as it also
+ * "shields" the encrypted payload. Use {@link MavenCipherLegacyImpl} as drop in replacement for corresponding version
+ * of plexus-cipher.
  * 
  * @since 1.10
  */
 @Singleton
 @Named
 @ThreadSafe
-public class DefaultPasswordCipher
+public class PasswordCipherMavenLegacyImpl
     extends ComponentSupport
     implements PasswordCipher
 {
-  private static final char ENCRYPTED_STRING_DECORATION_START = '{';
+  private static final String DEFAULT_ALGORITHM = "PBEWithSHAAnd128BitRC4";
 
-  private static final char ENCRYPTED_STRING_DECORATION_STOP = '}';
+  private static final int DEFAULT_ITERATION_COUNT = 23;
 
-  private static final String STRING_ENCODING = "UTF8";
-
-  private static final int SALT_SIZE = 8;
+  private static final int DEFAULT_SALT_SIZE = 8;
 
   private final String algorithm;
 
   private final int iterationCount;
 
+  private final int saltSize;
+
   private final CryptoHelper cryptoHelper;
 
   private final Base64Encoder base64Encoder;
 
+  private final SecureRandom secureRandom;
+
   @VisibleForTesting
-  public DefaultPasswordCipher(final CryptoHelper cryptoHelper)
-  {
-    this(cryptoHelper, "PBEWithSHAAnd128BitRC4", 23);
+  public PasswordCipherMavenLegacyImpl(final CryptoHelper cryptoHelper) {
+    this(cryptoHelper, DEFAULT_ALGORITHM, DEFAULT_ITERATION_COUNT, DEFAULT_SALT_SIZE);
   }
 
   @Inject
-  public DefaultPasswordCipher(final CryptoHelper cryptoHelper,
-      final @Named("${passwordCipher.algorithm:-PBEWithSHAAnd128BitRC4}") String algorithm,
-      final @Named("${passwordCipher.iterationCount:-23}") int iterationCount)
+  public PasswordCipherMavenLegacyImpl(final CryptoHelper cryptoHelper, //
+      final @Named("${passwordCipher.algorithm:-" + DEFAULT_ALGORITHM + "}") String algorithm, //
+      final @Named("${passwordCipher.iterationCount:-" + DEFAULT_ITERATION_COUNT + "}") int iterationCount, //
+      final @Named("${passwordCipher.iterationCount:-" + DEFAULT_SALT_SIZE + "}") int saltSize)
   {
     this.cryptoHelper = checkNotNull(cryptoHelper);
     this.algorithm = checkNotNull(algorithm);
     this.iterationCount = iterationCount;
+    this.saltSize = saltSize;
     this.base64Encoder = new Base64Encoder();
+    this.secureRandom = cryptoHelper.createSecureRandom();
+    this.secureRandom.setSeed(System.nanoTime());
   }
 
   @Override
-  public String encrypt(final String str, final String passPhrase) {
-    checkNotNull(str);
+  public byte[] encrypt(final byte[] payload, final String passPhrase) {
+    checkNotNull(payload);
     checkNotNull(passPhrase);
     try {
-      SecureRandom secureRandom = cryptoHelper.createSecureRandom();
-      secureRandom.setSeed(System.nanoTime());
-      byte[] salt = secureRandom.generateSeed(SALT_SIZE);
-      Cipher cipher = createCipher(passPhrase, salt, true);
-      byte[] utf8 = str.getBytes(STRING_ENCODING);
-      byte[] enc = cipher.doFinal(utf8);
+      byte[] salt = new byte[saltSize];
+      secureRandom.nextBytes(salt);
+      byte[] enc = createCipher(passPhrase, salt, Cipher.ENCRYPT_MODE).doFinal(payload);
       byte saltLen = (byte) (salt.length & 0x00ff);
       int encLen = enc.length;
       byte[] res = new byte[salt.length + encLen + 1];
@@ -102,7 +105,7 @@ public class DefaultPasswordCipher
       System.arraycopy(enc, 0, res, saltLen + 1, encLen);
       ByteArrayOutputStream bout = new ByteArrayOutputStream(res.length * 2);
       base64Encoder.encode(res, 0, res.length, bout);
-      return ENCRYPTED_STRING_DECORATION_START + bout.toString(STRING_ENCODING) + ENCRYPTED_STRING_DECORATION_STOP;
+      return bout.toByteArray();
     }
     catch (Exception e) {
       throw Throwables.propagate(e);
@@ -110,18 +113,15 @@ public class DefaultPasswordCipher
   }
 
   @Override
-  public String decrypt(final String str, final String passPhrase) {
-    checkNotNull(str);
+  public byte[] decrypt(final byte[] payload, final String passPhrase) {
+    checkNotNull(payload);
     checkNotNull(passPhrase);
-
-    String payload = peel(str);
-    checkArgument(payload != null, "Input string is not a password cipher");
     try {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      base64Encoder.decode(payload, baos);
+      base64Encoder.decode(payload, 0, payload.length, baos);
       byte[] res = baos.toByteArray();
       int saltLen = res[0] & 0x00ff;
-      checkArgument(saltLen == SALT_SIZE, "Encrypted string corrupted (salt size)");
+      checkArgument(saltLen == saltSize, "Encrypted string corrupted (salt size)");
       checkArgument(res.length >= (saltLen + 2), "Encrypted string corrupted (payload size)");
       byte[] salt = new byte[saltLen];
       System.arraycopy(res, 1, salt, 0, saltLen);
@@ -129,51 +129,27 @@ public class DefaultPasswordCipher
       checkArgument(decLen >= 1, "Encrypted string corrupted (payload segment)");
       byte[] dec = new byte[decLen];
       System.arraycopy(res, saltLen + 1, dec, 0, decLen);
-      Cipher cipher = createCipher(passPhrase, salt, false);
-      byte[] utf8 = cipher.doFinal(dec);
-      return new String(utf8, "UTF8");
+      Cipher cipher = createCipher(passPhrase, salt, Cipher.DECRYPT_MODE);
+      return cipher.doFinal(dec);
     }
     catch (Exception e) {
       throw Throwables.propagate(e);
     }
   }
 
-  @Override
-  public boolean isPasswordCipher(final String str) {
-    return peel(str) != null;
-  }
-
   // ==
 
-  private Cipher createCipher(final String passPhrase, final byte[] salt, final boolean encrypt) {
-    int mode = encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE;
+  private Cipher createCipher(final String passPhrase, final byte[] salt, final int mode) {
     try {
       Cipher cipher = cryptoHelper.createCipher(algorithm);
-      PBEParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);
       KeySpec keySpec = new PBEKeySpec(passPhrase.toCharArray());
-      SecretKey key = SecretKeyFactory.getInstance(algorithm, ((CryptoHelperImpl) cryptoHelper).getProvider())
-          .generateSecret(keySpec);
+      SecretKey key = cryptoHelper.createSecretKeyFactory(algorithm).generateSecret(keySpec);
+      PBEParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);
       cipher.init(mode, key, paramSpec);
       return cipher;
     }
     catch (Exception e) {
       throw Throwables.propagate(e);
     }
-  }
-
-  /**
-   * Peels of the start and stop braces from payload if possible, otherwise returns {@code null} signalling that input
-   * is invalid.
-   */
-  private String peel(final String str) {
-    if (Strings.isNullOrEmpty(str)) {
-      return null;
-    }
-    int start = str.indexOf(ENCRYPTED_STRING_DECORATION_START);
-    int stop = str.indexOf(ENCRYPTED_STRING_DECORATION_STOP);
-    if (start != -1 && stop != -1 && stop > start + 1) {
-      return str.substring(start + 1, stop);
-    }
-    return null;
   }
 }

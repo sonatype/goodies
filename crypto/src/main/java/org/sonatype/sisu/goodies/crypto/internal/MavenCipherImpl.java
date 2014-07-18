@@ -10,23 +10,28 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto;
+package org.sonatype.sisu.goodies.crypto.internal;
+
+import javax.annotation.concurrent.ThreadSafe;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.sonatype.sisu.goodies.crypto.MavenCipher;
 
 /**
- * Component for password based encryption (PBE). To be used on smaller payloads like user passwords, due to use of byte
- * arrays for payload.
+ * Implementation of {@link MavenCipher} compatible with plexus-cipher version [1.6,].
  * 
  * @since 1.10
  */
-public interface PasswordCipher
+@Singleton
+@Named(MavenCipher.CURRENT)
+@ThreadSafe
+public class MavenCipherImpl
+    extends MavenCipherSupport
 {
-  /**
-   * Encrypt the provided plaintext payload using provided pass phrase.
-   */
-  byte[] encrypt(byte[] payload, String passPhrase);
-
-  /**
-   * Decrypt the provided input payload using provided pass phrase.
-   */
-  byte[] decrypt(byte[] payload, String passPhrase);
+  @Inject
+  public MavenCipherImpl(final PasswordCipherMavenImpl passwordCipher) {
+    super(passwordCipher);
+  }
 }
