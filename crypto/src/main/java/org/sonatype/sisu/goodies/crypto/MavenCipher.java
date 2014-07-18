@@ -28,7 +28,7 @@ public interface MavenCipher
   /**
    * Compatible with plexus-cipher versions [1.6,].
    */
-  String CURRENT = "current";
+  String CURRENT = "default";
 
   /**
    * Encrypt the provided plaintext string using provided pass phrase.
