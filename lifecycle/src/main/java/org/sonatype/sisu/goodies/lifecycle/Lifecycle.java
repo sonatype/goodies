@@ -20,11 +20,7 @@ package org.sonatype.sisu.goodies.lifecycle;
 public interface Lifecycle
     extends LifecycleAware
 {
-  // TODO: Bring back state exposure or is<State> methods
-
   void start() throws Exception;
 
   void stop() throws Exception;
-
-  // TODO: Add init/destroy
 }
