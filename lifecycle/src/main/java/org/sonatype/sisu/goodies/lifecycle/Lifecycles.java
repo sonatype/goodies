@@ -23,6 +23,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Lifecycles
 {
+  //
+  // Starting
+  //
+
   /**
    * Start given lifecycle and propagate exceptions.
    */
@@ -38,15 +42,31 @@ public class Lifecycles
   }
 
   /**
-   * Start given object if it implements {@link Lifecycle}.
+   * Start given lifecycle-aware and propagate exceptions.
    */
-  public static void start(final Object lifecycle) {
-    checkNotNull(lifecycle);
+  public static void start(final LifecycleAware aware) {
+    checkNotNull(aware);
 
-    if (lifecycle instanceof Lifecycle) {
-      start((Lifecycle)lifecycle);
+    start(aware.getLifecycle());
+  }
+
+  /**
+   * Start given object if it implements {@link Lifecycle} or {@link LifecycleAware}.
+   */
+  public static void start(final Object obj) {
+    checkNotNull(obj);
+
+    if (obj instanceof Lifecycle) {
+      start((Lifecycle) obj);
+    }
+    else if (obj instanceof LifecycleAware) {
+      start((LifecycleAware) obj);
     }
   }
+
+  //
+  // Stopping
+  //
 
   /**
    * Stop given lifecycle and propagate exceptions.
@@ -63,13 +83,25 @@ public class Lifecycles
   }
 
   /**
-   * Stop given object if it implements {@link Lifecycle}.
+   * Stop given lifecycle-aware and propagate exceptions.
    */
-  public static void stop(final Object lifecycle) {
-    checkNotNull(lifecycle);
+  public static void stop(final LifecycleAware aware) {
+    checkNotNull(aware);
 
-    if (lifecycle instanceof Lifecycle) {
-      stop((Lifecycle)lifecycle);
+    stop(aware.getLifecycle());
+  }
+
+  /**
+   * Stop given object if it implements {@link Lifecycle} or {@link LifecycleAware}.
+   */
+  public static void stop(final Object obj) {
+    checkNotNull(obj);
+
+    if (obj instanceof Lifecycle) {
+      stop((Lifecycle)obj);
+    }
+    else if (obj instanceof LifecycleAware) {
+      stop((LifecycleAware) obj);
     }
   }
 }
