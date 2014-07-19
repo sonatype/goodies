@@ -43,6 +43,8 @@ public class Lifecycles
 
   /**
    * Start given lifecycle-aware and propagate exceptions.
+   *
+   * @see #start(Lifecycle)
    */
   public static void start(final LifecycleAware aware) {
     checkNotNull(aware);
@@ -52,6 +54,9 @@ public class Lifecycles
 
   /**
    * Start given object if it implements {@link Lifecycle} or {@link LifecycleAware}.
+   *
+   * @see #start(Lifecycle)
+   * @see #start(LifecycleAware)
    */
   public static void start(final Object obj) {
     checkNotNull(obj);
@@ -84,6 +89,8 @@ public class Lifecycles
 
   /**
    * Stop given lifecycle-aware and propagate exceptions.
+   *
+   * @see #stop(Lifecycle)
    */
   public static void stop(final LifecycleAware aware) {
     checkNotNull(aware);
@@ -93,6 +100,9 @@ public class Lifecycles
 
   /**
    * Stop given object if it implements {@link Lifecycle} or {@link LifecycleAware}.
+   *
+   * @see #stop(Lifecycle)
+   * @see #stop(LifecycleAware)
    */
   public static void stop(final Object obj) {
     checkNotNull(obj);
