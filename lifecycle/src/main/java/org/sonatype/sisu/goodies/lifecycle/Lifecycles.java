@@ -11,6 +11,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Lifecycles
 {
+  /**
+   * Start given lifecycle and propagate exceptions.
+   */
   public static void start(final Lifecycle lifecycle) {
     checkNotNull(lifecycle);
 
@@ -22,6 +25,9 @@ public class Lifecycles
     }
   }
 
+  /**
+   * Start given object if it implements {@link Lifecycle}.
+   */
   public static void start(final Object lifecycle) {
     checkNotNull(lifecycle);
 
@@ -30,6 +36,9 @@ public class Lifecycles
     }
   }
 
+  /**
+   * Stop given lifecycle and propagate exceptions.
+   */
   public static void stop(final Lifecycle lifecycle) {
     checkNotNull(lifecycle);
 
@@ -41,6 +50,9 @@ public class Lifecycles
     }
   }
 
+  /**
+   * Stop given object if it implements {@link Lifecycle}.
+   */
   public static void stop(final Object lifecycle) {
     checkNotNull(lifecycle);
 
