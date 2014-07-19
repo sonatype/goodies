@@ -20,7 +20,10 @@ import org.slf4j.LoggerFactory;
  * Quietly stops {@link Lifecycle} objects.
  *
  * @since 1.0
+ *
+ * @deprecated Use {@link Lifecycles} helpers instead.
  */
+@Deprecated
 public class Stopper
 {
   @NonNls
