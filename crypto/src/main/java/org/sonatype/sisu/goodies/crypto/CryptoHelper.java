@@ -24,6 +24,7 @@ import java.security.cert.CertificateFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -58,5 +59,10 @@ public interface CryptoHelper
   TrustManagerFactory createTrustManagerFactory(String algorithm) throws NoSuchAlgorithmException;
 
   MessageDigest createDigest(String algorithm) throws NoSuchAlgorithmException;
+
+  /**
+   * @since 1.10
+   */
+  SecretKeyFactory createSecretKeyFactory(String algorithm) throws NoSuchAlgorithmException;
 }
 
