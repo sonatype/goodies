@@ -12,12 +12,13 @@
  */
 package org.sonatype.sisu.goodies.crypto.internal;
 
+import javax.annotation.Nullable;
+
 import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.MavenCipher;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
 import com.google.common.base.Charsets;
-
 import com.google.common.base.Strings;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -74,6 +75,7 @@ public abstract class MavenCipherSupport
    * Peels of the start and stop "shield" braces from payload if possible, otherwise returns {@code null} signaling that
    * input is invalid.
    */
+  @Nullable
   protected String peel(final String str) {
     if (Strings.isNullOrEmpty(str)) {
       return null;

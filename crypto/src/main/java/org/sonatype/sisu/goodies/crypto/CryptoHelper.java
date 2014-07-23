@@ -48,11 +48,6 @@ public interface CryptoHelper
 
   SecureRandom createSecureRandom();
 
-  /**
-   * @since 1.10
-   */
-  SecretKeyFactory createSecretKeyFactory(String transformation) throws NoSuchAlgorithmException;
-
   KeyStore createKeyStore(String type) throws KeyStoreException;
 
   KeyPairGenerator createKeyPairGenerator(String algorithm) throws NoSuchAlgorithmException;

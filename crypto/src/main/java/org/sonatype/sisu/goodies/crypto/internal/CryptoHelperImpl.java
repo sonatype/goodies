@@ -145,12 +145,6 @@ public class CryptoHelperImpl
   }
   
   @Override
-  public SecretKeyFactory createSecretKeyFactory(String transformation) throws NoSuchAlgorithmException {
-    checkNotNull(transformation);
-    return SecretKeyFactory.getInstance(transformation, getProvider());
-  }
-  
-  @Override
   public KeyStore createKeyStore(final String type) throws KeyStoreException {
     checkNotNull(type);
     KeyStore obj;
