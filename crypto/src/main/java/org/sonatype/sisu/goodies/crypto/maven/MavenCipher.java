@@ -24,7 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * {@link PasswordCipher} wrapper that uses Apache Maven format (aka Plexus Cipher). Is meant to be a drop-in
  * replacement for plexus-cipher. Compatibility with given version of Plexus Cipher depends on which
- * {@link PasswordCipher} is used with this class. See 
+ * {@link PasswordCipher} is used with this class. See {@link PasswordCipherMavenImpl} and
+ * {@link PasswordCipherMavenLegacyImpl} for more compatibility information.
  * 
  * @since 1.10
  */
