@@ -36,6 +36,7 @@ import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -143,7 +144,7 @@ public class CryptoHelperImpl
     }
     return obj;
   }
-  
+
   @Override
   public KeyStore createKeyStore(final String type) throws KeyStoreException {
     checkNotNull(type);
