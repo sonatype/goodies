@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto.internal;
+package org.sonatype.sisu.goodies.crypto.maven;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,17 +21,14 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import org.bouncycastle.util.encoders.Base64Encoder;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -42,11 +39,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 
  * @since 1.10
  */
-@Singleton
-@Named
 @ThreadSafe
 public class PasswordCipherMavenImpl
-    extends ComponentSupport
     implements PasswordCipher
 {
   private static final int SPICE_SIZE = 16;
@@ -67,7 +61,6 @@ public class PasswordCipherMavenImpl
 
   private final SecureRandom secureRandom;
 
-  @Inject
   public PasswordCipherMavenImpl(final CryptoHelper cryptoHelper) {
     this.cryptoHelper = checkNotNull(cryptoHelper);
     this.base64Encoder = new Base64Encoder();

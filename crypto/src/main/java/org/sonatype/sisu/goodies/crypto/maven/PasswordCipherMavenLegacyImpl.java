@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto.internal;
+package org.sonatype.sisu.goodies.crypto.maven;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,17 +22,13 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 import org.bouncycastle.util.encoders.Base64Encoder;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,11 +40,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 
  * @since 1.10
  */
-@Singleton
-@Named
 @ThreadSafe
 public class PasswordCipherMavenLegacyImpl
-    extends ComponentSupport
     implements PasswordCipher
 {
   private static final String DEFAULT_ALGORITHM = "PBEWithSHAAnd128BitRC4";
@@ -69,16 +62,20 @@ public class PasswordCipherMavenLegacyImpl
 
   private final SecureRandom secureRandom;
 
-  @VisibleForTesting
+  /**
+   * Creates instance using "defaults" (from Plexus Cipher).
+   */
   public PasswordCipherMavenLegacyImpl(final CryptoHelper cryptoHelper) {
     this(cryptoHelper, DEFAULT_ALGORITHM, DEFAULT_ITERATION_COUNT, DEFAULT_SALT_SIZE);
   }
 
-  @Inject
+  /**
+   * Allows customization of algorithm, iteration count and salt size as DefaultPlexusCipher did.
+   */
   public PasswordCipherMavenLegacyImpl(final CryptoHelper cryptoHelper, //
-      final @Named("${passwordCipher.algorithm:-" + DEFAULT_ALGORITHM + "}") String algorithm, //
-      final @Named("${passwordCipher.iterationCount:-" + DEFAULT_ITERATION_COUNT + "}") int iterationCount, //
-      final @Named("${passwordCipher.iterationCount:-" + DEFAULT_SALT_SIZE + "}") int saltSize)
+      final String algorithm, //
+      final int iterationCount, //
+      final int saltSize)
   {
     this.cryptoHelper = checkNotNull(cryptoHelper);
     this.algorithm = checkNotNull(algorithm);

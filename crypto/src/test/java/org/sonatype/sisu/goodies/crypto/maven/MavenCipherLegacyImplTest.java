@@ -10,28 +10,25 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto.internal;
+package org.sonatype.sisu.goodies.crypto.maven;
 
-import javax.annotation.concurrent.ThreadSafe;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import org.sonatype.sisu.goodies.crypto.MavenCipher;
+import org.sonatype.sisu.goodies.crypto.internal.CryptoHelperImpl;
+import org.sonatype.sisu.goodies.crypto.maven.PasswordCipherMavenLegacyImpl;
 
 /**
- * Implementation of {@link MavenCipher} compatible with plexus-cipher version [1.6,].
- * 
- * @since 1.10
+ * UT for {@link MavenCipher} with {@link PasswordCipherMavenLegacyImpl}.
  */
-@Singleton
-@Named(MavenCipher.CURRENT)
-@ThreadSafe
-public class MavenCipherImpl
-    extends MavenCipherSupport
+public class MavenCipherLegacyImplTest
+    extends MavenCipherTestSupport
 {
-  @Inject
-  public MavenCipherImpl(final PasswordCipherMavenImpl passwordCipher) {
-    super(passwordCipher);
+  private static final String passPhrase = "foofoo";
+
+  private static final String plaintext = "my testing phrase";
+
+  private static final String encrypted = "{CFUju8n8eKQHj8u0HI9uQMRmKQALtoXH7lY=}";
+
+  public MavenCipherLegacyImplTest() {
+    super(passPhrase, plaintext, encrypted, new MavenCipher(new PasswordCipherMavenLegacyImpl(
+        new CryptoHelperImpl())));
   }
 }

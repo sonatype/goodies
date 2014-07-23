@@ -10,11 +10,11 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto.internal;
+package org.sonatype.sisu.goodies.crypto.maven;
 
 import java.security.Security;
 
-import org.sonatype.sisu.goodies.crypto.MavenCipher;
+import org.sonatype.sisu.goodies.crypto.maven.MavenCipher;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import static com.google.common.base.Preconditions.checkNotNull;

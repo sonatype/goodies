@@ -10,12 +10,10 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto.internal;
+package org.sonatype.sisu.goodies.crypto.maven;
 
 import javax.annotation.Nullable;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
-import org.sonatype.sisu.goodies.crypto.MavenCipher;
 import org.sonatype.sisu.goodies.crypto.PasswordCipher;
 
 import com.google.common.base.Charsets;
@@ -24,13 +22,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Support class for {@link MavenCipher} implementations.
+ * {@link PasswordCipher} wrapper that uses Apache Maven format (aka Plexus Cipher). Is meant to be a drop-in
+ * replacement for plexus-cipher. Compatibility with given version of Plexus Cipher depends on which
+ * {@link PasswordCipher} is used with this class. See 
  * 
  * @since 1.10
  */
-public abstract class MavenCipherSupport
-    extends ComponentSupport
-    implements MavenCipher
+public class MavenCipher
 {
   private static final char SHIELD_BEGIN = '{';
 
@@ -38,22 +36,20 @@ public abstract class MavenCipherSupport
 
   private final PasswordCipher passwordCipher;
 
-  protected MavenCipherSupport(final PasswordCipher passwordCipher) {
+  public MavenCipher(final PasswordCipher passwordCipher) {
     this.passwordCipher = checkNotNull(passwordCipher);
   }
 
-  @Override
   public String encrypt(final String str, final String passPhrase) {
     checkNotNull(str);
     checkNotNull(passPhrase);
     return SHIELD_BEGIN + doEncrypt(str, passPhrase) + SHIELD_END;
   }
 
-  protected String doEncrypt(final String str, final String passPhrase) {
+  private String doEncrypt(final String str, final String passPhrase) {
     return new String(passwordCipher.encrypt(str.getBytes(Charsets.UTF_8), passPhrase), Charsets.UTF_8);
   }
 
-  @Override
   public String decrypt(final String str, final String passPhrase) {
     checkNotNull(str);
     checkNotNull(passPhrase);
@@ -62,11 +58,10 @@ public abstract class MavenCipherSupport
     return doDecrypt(payload, passPhrase);
   }
 
-  protected String doDecrypt(final String str, final String passPhrase) {
+  private String doDecrypt(final String str, final String passPhrase) {
     return new String(passwordCipher.decrypt(str.getBytes(Charsets.UTF_8), passPhrase), Charsets.UTF_8);
   }
 
-  @Override
   public boolean isPasswordCipher(final String str) {
     return peel(str) != null;
   }
@@ -76,7 +71,7 @@ public abstract class MavenCipherSupport
    * input is invalid.
    */
   @Nullable
-  protected String peel(final String str) {
+  private String peel(final String str) {
     if (Strings.isNullOrEmpty(str)) {
       return null;
     }

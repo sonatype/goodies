@@ -10,15 +10,17 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.crypto.internal;
+package org.sonatype.sisu.goodies.crypto.maven;
+
+import org.sonatype.sisu.goodies.crypto.internal.CryptoHelperImpl;
+import org.sonatype.sisu.goodies.crypto.maven.PasswordCipherMavenImpl;
 
 import org.junit.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * UT for {@link MavenCipherImpl}
+ * UT for {@link MavenCipher} with {@link PasswordCipherMavenImpl}
  */
 public class MavenCipherImplTest
     extends MavenCipherTestSupport
@@ -30,7 +32,7 @@ public class MavenCipherImplTest
   private static final String encrypted = "{5FjvnZvhNDMHHnxXoPu1a0WcgZzaArKRCnGBnsA83R7rYQHKGFrprtAM4Qyr4diV}";
 
   public MavenCipherImplTest() {
-    super(passPhrase, plaintext, encrypted, new MavenCipherImpl(new PasswordCipherMavenImpl(new CryptoHelperImpl())));
+    super(passPhrase, plaintext, encrypted, new MavenCipher(new PasswordCipherMavenImpl(new CryptoHelperImpl())));
   }
 
   /**
