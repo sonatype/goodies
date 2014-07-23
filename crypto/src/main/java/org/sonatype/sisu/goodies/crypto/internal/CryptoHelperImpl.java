@@ -251,5 +251,22 @@ public class CryptoHelperImpl
     }
     return obj;
   }
+
+  @Override
+  public SecretKeyFactory createSecretKeyFactory(final String algorithm) throws NoSuchAlgorithmException {
+    checkNotNull(algorithm);
+    SecretKeyFactory obj;
+    try {
+      obj = SecretKeyFactory.getInstance(algorithm, getProvider());
+    }
+    catch (NoSuchAlgorithmException e) {
+      logFallback(e);
+      obj = SecretKeyFactory.getInstance(algorithm);
+    }
+    if (log.isTraceEnabled()) {
+      log.trace("Created secret-key-factory: {} ({})", obj.getAlgorithm(), obj.getProvider().getName());
+    }
+    return obj;
+  }
 }
 

@@ -20,7 +20,10 @@ import org.slf4j.LoggerFactory;
  * Quietly starts {@link Lifecycle} objects.
  *
  * @since 1.0
+ *
+ * @deprecated Use {@link Lifecycles} helpers instead.
  */
+@Deprecated
 public class Starter
 {
   @NonNls

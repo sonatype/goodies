@@ -152,7 +152,7 @@ public final class TestUtil
     File file;
     dir.mkdirs();
     try {
-      file = File.createTempFile(prefix + "-", ".tmp", dir); //NON-NLS
+      file = File.createTempFile(prefix + "-", ".tmp", dir).getCanonicalFile(); //NON-NLS
     }
     catch (IOException e) {
       // No need to expose this as checked for test code to deal with, just barf it up

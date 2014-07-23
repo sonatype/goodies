@@ -64,5 +64,10 @@ public interface CryptoHelper
   TrustManagerFactory createTrustManagerFactory(String algorithm) throws NoSuchAlgorithmException;
 
   MessageDigest createDigest(String algorithm) throws NoSuchAlgorithmException;
+
+  /**
+   * @since 1.10
+   */
+  SecretKeyFactory createSecretKeyFactory(String algorithm) throws NoSuchAlgorithmException;
 }
 
