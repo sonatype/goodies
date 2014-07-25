@@ -36,11 +36,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Maven legacy impl of {@link PasswordCipher} compatible with encryption used by plexus-cipher versions [1.0,1.5].
  *
- * Note: this is encryption only, is not directly usable as drop-in replacement for plexus-cipher as it also
- * "shields" the encrypted payload.
- *
- * Use {@link MavenCipherLegacyImpl} as drop in replacement for corresponding version of plexus-cipher.
- *
  * @since 1.10
  */
 @ThreadSafe
