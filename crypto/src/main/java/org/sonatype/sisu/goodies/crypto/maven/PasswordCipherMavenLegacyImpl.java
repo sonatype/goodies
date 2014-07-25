@@ -10,6 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
+
 package org.sonatype.sisu.goodies.crypto.maven;
 
 import java.io.ByteArrayOutputStream;
@@ -33,11 +34,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Maven legacy implementation of {@link PasswordCipher} compatible with encryption used by plexus-cipher versions
- * [1.0,1.5]. Note: this is encryption only, is not directly usable as drop-in replacement for plexus-cipher as it also
- * "shields" the encrypted payload. Use {@link MavenCipherLegacyImpl} as drop in replacement for corresponding version
- * of plexus-cipher.
- * 
+ * Maven legacy impl of {@link PasswordCipher} compatible with encryption used by plexus-cipher versions [1.0,1.5].
+ *
+ * Note: this is encryption only, is not directly usable as drop-in replacement for plexus-cipher as it also
+ * "shields" the encrypted payload.
+ *
+ * Use {@link MavenCipherLegacyImpl} as drop in replacement for corresponding version of plexus-cipher.
+ *
  * @since 1.10
  */
 @ThreadSafe
@@ -72,10 +75,10 @@ public class PasswordCipherMavenLegacyImpl
   /**
    * Allows customization of algorithm, iteration count and salt size as DefaultPlexusCipher did.
    */
-  public PasswordCipherMavenLegacyImpl(final CryptoHelper cryptoHelper, //
-      final String algorithm, //
-      final int iterationCount, //
-      final int saltSize)
+  public PasswordCipherMavenLegacyImpl(final CryptoHelper cryptoHelper,
+                                       final String algorithm,
+                                       final int iterationCount,
+                                       final int saltSize)
   {
     this.cryptoHelper = checkNotNull(cryptoHelper);
     this.algorithm = checkNotNull(algorithm);
@@ -139,17 +142,12 @@ public class PasswordCipherMavenLegacyImpl
 
   // ==
 
-  private Cipher createCipher(final String passPhrase, final byte[] salt, final int mode) {
-    try {
-      Cipher cipher = cryptoHelper.createCipher(algorithm);
-      KeySpec keySpec = new PBEKeySpec(passPhrase.toCharArray());
-      SecretKey key = cryptoHelper.createSecretKeyFactory(algorithm).generateSecret(keySpec);
-      PBEParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);
-      cipher.init(mode, key, paramSpec);
-      return cipher;
-    }
-    catch (Exception e) {
-      throw Throwables.propagate(e);
-    }
+  private Cipher createCipher(final String passPhrase, final byte[] salt, final int mode) throws Exception {
+    Cipher cipher = cryptoHelper.createCipher(algorithm);
+    KeySpec keySpec = new PBEKeySpec(passPhrase.toCharArray());
+    SecretKey key = cryptoHelper.createSecretKeyFactory(algorithm).generateSecret(keySpec);
+    PBEParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);
+    cipher.init(mode, key, paramSpec);
+    return cipher;
   }
 }

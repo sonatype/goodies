@@ -13,8 +13,9 @@
 package org.sonatype.sisu.goodies.crypto;
 
 /**
- * Component for password based encryption (PBE). To be used on smaller payloads like user passwords, due to use of byte
- * arrays for payload.
+ * Component for password based encryption (PBE).
+ *
+ * To be used on smaller payloads like user passwords, due to use of byte arrays for payload.
  * 
  * @since 1.10
  */
