@@ -13,16 +13,16 @@
 package org.sonatype.sisu.goodies.crypto.maven;
 
 import org.sonatype.sisu.goodies.crypto.internal.CryptoHelperImpl;
-import org.sonatype.sisu.goodies.crypto.maven.PasswordCipherMavenImpl;
 
 import org.junit.Test;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
  * UT for {@link MavenCipher} with {@link PasswordCipherMavenImpl}
  */
-public class MavenCipherImplTest
+public class PasswordCipherMavenImplTest
     extends MavenCipherTestSupport
 {
   private static final String passPhrase = "foofoo";
@@ -31,7 +31,7 @@ public class MavenCipherImplTest
 
   private static final String encrypted = "{5FjvnZvhNDMHHnxXoPu1a0WcgZzaArKRCnGBnsA83R7rYQHKGFrprtAM4Qyr4diV}";
 
-  public MavenCipherImplTest() {
+  public PasswordCipherMavenImplTest() {
     super(passPhrase, plaintext, encrypted, new MavenCipher(new PasswordCipherMavenImpl(new CryptoHelperImpl())));
   }
 

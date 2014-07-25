@@ -13,12 +13,11 @@
 package org.sonatype.sisu.goodies.crypto.maven;
 
 import org.sonatype.sisu.goodies.crypto.internal.CryptoHelperImpl;
-import org.sonatype.sisu.goodies.crypto.maven.PasswordCipherMavenLegacyImpl;
 
 /**
  * UT for {@link MavenCipher} with {@link PasswordCipherMavenLegacyImpl}.
  */
-public class MavenCipherLegacyImplTest
+public class PasswordCipherMavenLegacyImplTest
     extends MavenCipherTestSupport
 {
   private static final String passPhrase = "foofoo";
@@ -27,7 +26,7 @@ public class MavenCipherLegacyImplTest
 
   private static final String encrypted = "{CFUju8n8eKQHj8u0HI9uQMRmKQALtoXH7lY=}";
 
-  public MavenCipherLegacyImplTest() {
+  public PasswordCipherMavenLegacyImplTest() {
     super(passPhrase, plaintext, encrypted, new MavenCipher(new PasswordCipherMavenLegacyImpl(
         new CryptoHelperImpl())));
   }
