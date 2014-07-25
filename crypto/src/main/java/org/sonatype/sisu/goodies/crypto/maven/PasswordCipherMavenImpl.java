@@ -123,56 +123,51 @@ public class PasswordCipherMavenImpl
 
   // ==
 
-  private Cipher createCipher(final String passPhrase, byte[] salt, final int mode) {
-    try {
-      final MessageDigest digester = cryptoHelper.createDigest(DIGEST_ALG); // construction of this is cheap
-      byte[] keyAndIv = new byte[SPICE_SIZE * 2];
-      if (salt == null || salt.length == 0) {
-        // Unsalted! Bad idea!
-        salt = null;
-      }
-      byte[] result;
-      int currentPos = 0;
-      while (currentPos < keyAndIv.length) {
-        digester.update(passPhrase.getBytes(Charsets.UTF_8));
-        if (salt != null) {
-          // First 8 bytes of salt ONLY! That wasn't obvious to me
-          // when using AES encrypted private keys in "Traditional
-          // SSLeay Format".
-          //
-          // Example:
-          // DEK-Info: AES-128-CBC,8DA91D5A71988E3D4431D9C2C009F249
-          //
-          // Only the first 8 bytes are salt, but the whole thing is
-          // re-used again later as the IV. MUCH gnashing of teeth!
-          digester.update(salt, 0, 8);
-        }
-        result = digester.digest();
-        int stillNeed = keyAndIv.length - currentPos;
-        // Digest gave us more than we need. Let's truncate it.
-        if (result.length > stillNeed) {
-          byte[] b = new byte[stillNeed];
-          System.arraycopy(result, 0, b, 0, b.length);
-          result = b;
-        }
-        System.arraycopy(result, 0, keyAndIv, currentPos, result.length);
-        currentPos += result.length;
-        if (currentPos < keyAndIv.length) {
-          // Next round starts with a hash of the hash.
-          digester.reset();
-          digester.update(result);
-        }
-      }
-      byte[] key = new byte[SPICE_SIZE];
-      byte[] iv = new byte[SPICE_SIZE];
-      System.arraycopy(keyAndIv, 0, key, 0, key.length);
-      System.arraycopy(keyAndIv, key.length, iv, 0, iv.length);
-      Cipher cipher = Cipher.getInstance(CIPHER_ALG);
-      cipher.init(mode, new SecretKeySpec(key, KEY_ALG), new IvParameterSpec(iv));
-      return cipher;
+  private Cipher createCipher(final String passPhrase, byte[] salt, final int mode) throws Exception {
+    final MessageDigest digester = cryptoHelper.createDigest(DIGEST_ALG); // construction of this is cheap
+    byte[] keyAndIv = new byte[SPICE_SIZE * 2];
+    if (salt == null || salt.length == 0) {
+      // Unsalted! Bad idea!
+      salt = null;
     }
-    catch (Exception e) {
-      throw Throwables.propagate(e);
+    byte[] result;
+    int currentPos = 0;
+    while (currentPos < keyAndIv.length) {
+      digester.update(passPhrase.getBytes(Charsets.UTF_8));
+      if (salt != null) {
+        // First 8 bytes of salt ONLY! That wasn't obvious to me
+        // when using AES encrypted private keys in "Traditional
+        // SSLeay Format".
+        //
+        // Example:
+        // DEK-Info: AES-128-CBC,8DA91D5A71988E3D4431D9C2C009F249
+        //
+        // Only the first 8 bytes are salt, but the whole thing is
+        // re-used again later as the IV. MUCH gnashing of teeth!
+        digester.update(salt, 0, 8);
+      }
+      result = digester.digest();
+      int stillNeed = keyAndIv.length - currentPos;
+      // Digest gave us more than we need. Let's truncate it.
+      if (result.length > stillNeed) {
+        byte[] b = new byte[stillNeed];
+        System.arraycopy(result, 0, b, 0, b.length);
+        result = b;
+      }
+      System.arraycopy(result, 0, keyAndIv, currentPos, result.length);
+      currentPos += result.length;
+      if (currentPos < keyAndIv.length) {
+        // Next round starts with a hash of the hash.
+        digester.reset();
+        digester.update(result);
+      }
     }
+    byte[] key = new byte[SPICE_SIZE];
+    byte[] iv = new byte[SPICE_SIZE];
+    System.arraycopy(keyAndIv, 0, key, 0, key.length);
+    System.arraycopy(keyAndIv, key.length, iv, 0, iv.length);
+    Cipher cipher = Cipher.getInstance(CIPHER_ALG);
+    cipher.init(mode, new SecretKeySpec(key, KEY_ALG), new IvParameterSpec(iv));
+    return cipher;
   }
 }
