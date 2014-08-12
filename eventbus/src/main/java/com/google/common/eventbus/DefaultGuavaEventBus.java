@@ -17,6 +17,11 @@ import javax.inject.Singleton;
 
 import org.sonatype.sisu.goodies.eventbus.internal.DefaultEventBus;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @since 1.5
  */
@@ -25,6 +30,10 @@ import org.sonatype.sisu.goodies.eventbus.internal.DefaultEventBus;
 public class DefaultGuavaEventBus
     extends EventBus
 {
+
+  public DefaultGuavaEventBus() {
+    super(new LoggingSubscriberExceptionHandler("default"));
+  }
 
   @Override
   public void dispatch(final Object event, final EventSubscriber wrapper) {
@@ -35,6 +44,33 @@ public class DefaultGuavaEventBus
   @Override
   public String toString() {
     return "Default Guava EventBus";
+  }
+
+  private static final class LoggingSubscriberExceptionHandler
+      implements SubscriberExceptionHandler
+  {
+
+    /**
+     * Logger for event dispatch failures.  Named by the fully-qualified name of
+     * this class, followed by the identifier provided at construction.
+     */
+    private final Logger logger;
+
+    /**
+     * @param identifier a brief name for this bus, for logging purposes. Should
+     *                   be a valid Java identifier.
+     */
+    public LoggingSubscriberExceptionHandler(final String identifier) {
+      logger = LoggerFactory.getLogger(EventBus.class.getName() + "." + checkNotNull(identifier));
+    }
+
+    @Override
+    public void handleException(final Throwable exception, final SubscriberExceptionContext context) {
+      logger.error(
+          "Could not dispatch event: {} to {}",
+          context.getSubscriber(), context.getSubscriberMethod(), exception
+      );
+    }
   }
 
 }
