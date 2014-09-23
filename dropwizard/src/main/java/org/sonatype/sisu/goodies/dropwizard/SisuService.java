@@ -45,6 +45,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Local copy of SisuService from https://github.com/tesla/dropwizard-sisu with various tweaks.
+ *
+ * @since 1.11
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class SisuService<T extends Configuration>
