@@ -47,6 +47,7 @@
   </prerequisites>
 
   <properties>
+    <dropwizard.version>0.7.1</dropwizard.version>
     <slf4j.version>1.7.6</slf4j.version>
     <sisu-guice.version>3.1.10</sisu-guice.version>
     <powermock.version>1.5</powermock.version>
@@ -70,10 +71,21 @@
     <module>validation</module>
     <module>jaxb</module>
     <module>xjc</module>
+    <module>dropwizard</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>io.dropwizard</groupId>
+        <artifactId>dropwizard-core</artifactId>
+        <version>${dropwizard.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.dropwizard</groupId>
+        <artifactId>dropwizard-configuration</artifactId>
+        <version>${dropwizard.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
