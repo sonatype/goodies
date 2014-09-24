@@ -23,6 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
 
 import com.codahale.metrics.health.HealthCheck;
+import com.codahale.metrics.servlets.HealthCheckServlet;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -40,6 +41,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.servlets.tasks.Task;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.sisu.BeanEntry;
 import org.eclipse.sisu.inject.BeanLocator;
 import org.eclipse.sisu.space.BeanScanning;
@@ -121,7 +123,18 @@ public abstract class SisuService<T extends Configuration>
   protected void customize(T configuration, Environment environment) {
   }
 
+  /**
+   * Allows subclasses to customize the exposure of health checks on the public app port (in addition to the internal
+   * admin port). By default, health checks will be exposed at the path {@code /healthcheck} to ease monitoring and load
+   * balancing.
+   */
+  protected void configurePublicHealthChecks(T configuration, Environment environment) {
+    ServletHolder servlet = new ServletHolder(new HealthCheckServlet(environment.healthChecks()));
+    environment.getApplicationContext().addServlet(servlet, "/healthcheck");
+  }
+
   private void runWithInjector(T configuration, Environment environment, Injector injector) {
+    configurePublicHealthChecks(configuration, environment);
     customize(configuration, environment);
     BeanLocator locator = injector.getInstance(BeanLocator.class);
     environment.jersey().register(new SisuComponentProviderFactory(locator));
