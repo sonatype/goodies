@@ -181,7 +181,7 @@ public class TestIndexRule
   @Override
   protected void starting(final Description description) {
     this.description = Preconditions.checkNotNull(description);
-    this.stopwatch = new Stopwatch().start();
+    this.stopwatch = Stopwatch.createStarted();
   }
 
   @Override
@@ -360,14 +360,10 @@ public class TestIndexRule
    */
   private void copyStyleSheets() {
     try {
-      Files.copy(
-          Resources.newInputStreamSupplier(Resources.getResource("index.css")),
-          new File(indexDir, "index.css")
-      );
-      Files.copy(
-          Resources.newInputStreamSupplier(Resources.getResource("index.xsl")),
-          new File(indexDir, "index.xsl")
-      );
+      Resources.asByteSource(Resources.getResource("index.css")).copyTo(
+          Files.asByteSink(new File(indexDir, "index.css")));
+      Resources.asByteSource(Resources.getResource("index.xsl")).copyTo(
+          Files.asByteSink(new File(indexDir, "index.xsl")));
     }
     catch (IOException e) {
       // well, that's it!
@@ -411,7 +407,7 @@ public class TestIndexRule
       marshaller.marshal(index, writer);
 
       Files.createParentDirs(indexXml);
-      Files.copy(CharStreams.newReaderSupplier(writer.toString()), indexXml, Charset.forName("UTF-8"));
+      Files.asCharSink(indexXml, Charset.forName("UTF-8")).write(writer.toString());
     }
     catch (Exception e) {
       // TODO Should we fail the test if we cannot write the index?
