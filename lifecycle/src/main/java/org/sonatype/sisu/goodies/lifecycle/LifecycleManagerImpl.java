@@ -15,11 +15,6 @@ package org.sonatype.sisu.goodies.lifecycle;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.sonatype.sisu.goodies.lifecycle.Lifecycle;
-import org.sonatype.sisu.goodies.lifecycle.LifecycleAware;
-import org.sonatype.sisu.goodies.lifecycle.LifecycleManager;
-import org.sonatype.sisu.goodies.lifecycle.LifecycleSupport;
-
 import com.google.common.collect.Lists;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -92,7 +87,7 @@ public class LifecycleManagerImpl
       }
       catch (Exception e) {
         failed++;
-        log.error("Failed to start component: {}", component);
+        log.error("Failed to start component: {}", component, e);
       }
     }
     if (failed != 0) {
@@ -111,7 +106,7 @@ public class LifecycleManagerImpl
       }
       catch (Exception e) {
         failed++;
-        log.error("Failed to stop component: {}", component);
+        log.error("Failed to stop component: {}", component, e);
       }
     }
     if (failed != 0) {
