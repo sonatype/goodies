@@ -35,6 +35,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A blocked port is either explicitly blocked or previously reserved.
  * There is no any kind of logic for "optimizing" the blocked port ranges and set at all, so a port might be
  * enlisted in both places as blocked.
+ *
+ * @since 1.12
  */
 public class PortRegistry
 {
