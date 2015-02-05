@@ -49,9 +49,9 @@
 
   <properties>
     <dropwizard.version>0.7.1</dropwizard.version>
-    <slf4j.version>1.7.9</slf4j.version>
-    <sisu-guice.version>3.1.10</sisu-guice.version>
-    <powermock.version>1.5</powermock.version>
+    <slf4j.version>1.7.10</slf4j.version>
+    <sisu-guice.version>3.2.5</sisu-guice.version>
+    <powermock.version>1.6.1</powermock.version>
   </properties>
 
   <modules>
@@ -144,7 +144,7 @@
       <dependency>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-annotations</artifactId>
-        <version>1.9</version>
+        <version>1.13</version>
       </dependency>
 
       <dependency>
@@ -156,7 +156,7 @@
       <dependency>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>org.eclipse.sisu.inject</artifactId>
-        <version>0.1.1</version>
+        <version>0.3.0.M1</version>
       </dependency>
 
       <dependency>
@@ -276,13 +276,13 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
-        <version>2.3.1</version>
+        <version>2.3.5</version>
       </dependency>
 
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.11</version>
+        <version>4.12</version>
       </dependency>
 
       <dependency>
@@ -361,19 +361,19 @@
       <dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-junit</artifactId>
-        <version>1.1.1</version>
+        <version>1.2.2</version>
       </dependency>
 
       <dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-guice</artifactId>
-        <version>1.1.1</version>
+        <version>1.2.2</version>
       </dependency>
 
       <dependency>
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
-        <version>1.38</version>
+        <version>1.38</version> <!-- Later versions depend on Jackson 2.4, so we'd need to update too -->
         <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>

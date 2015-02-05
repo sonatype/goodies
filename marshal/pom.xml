@@ -28,8 +28,8 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <jackson.version>1.9.12</jackson.version>
-    <jackson2.version>2.3.1</jackson2.version>
+    <jackson.version>1.9.13</jackson.version>
+    <jackson2.version>2.3.5</jackson2.version>
   </properties>
 
   <dependencies>
