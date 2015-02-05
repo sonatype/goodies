@@ -14,13 +14,11 @@ package org.sonatype.sisu.litmus.testsupport.port;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
@@ -68,15 +66,13 @@ public class PortRegistry
    *
    * @throws RuntimeException if a port could not be reserved
    */
-  public int reservePort() {
+  public synchronized int reservePort() {
     int port = 0;
     int attempts = 0;
     boolean searchingForPort = true;
-    synchronized (reservedPorts) {
-      while (searchingForPort && ++attempts < MAX_ATTEMPTS) {
-        port = findFreePort();
-        searchingForPort = isBlocked(port) || !reservedPorts.add(port);
-      }
+    while (searchingForPort && ++attempts < MAX_ATTEMPTS) {
+      port = findFreePort();
+      searchingForPort = isBlocked(port) || !reservedPorts.add(port);
     }
     if (searchingForPort) {
       throw new RuntimeException("Could not allocate a free port after " + MAX_ATTEMPTS + " attempts.");
@@ -89,33 +85,24 @@ public class PortRegistry
    *
    * @throws IllegalArgumentException if a port was not reserved in the first place.
    */
-  public void releasePort(int port) {
-    checkNotNull(port);
-    synchronized (reservedPorts) {
-      if (!reservedPorts.remove(port)) {
-        throw new IllegalArgumentException("port " + port + " not yet reserved by this service.");
-      }
+  public synchronized void releasePort(int port) {
+    if (!reservedPorts.remove(port)) {
+      throw new IllegalArgumentException("port " + port + " not yet reserved by this service.");
     }
   }
 
-  public void blockPorts(final Range<Integer> blockedRange) {
+  public synchronized void blockPorts(final Range<Integer> blockedRange) {
     checkNotNull(blockedRange);
-    synchronized (reservedPorts) {
-      this.blockedPortRanges.add(blockedRange);
-    }
+    this.blockedPortRanges.add(blockedRange);
   }
 
-  public void blockPorts(final Set<Integer> blockedPorts) {
+  public synchronized void blockPorts(final Set<Integer> blockedPorts) {
     checkNotNull(blockedPorts);
-    synchronized (reservedPorts) {
-      this.blockedPorts.addAll(blockedPorts);
-    }
+    this.blockedPorts.addAll(blockedPorts);
   }
 
-  public void blockPorts(final int... blockedPorts) {
-    synchronized (reservedPorts) {
-      this.blockedPorts.addAll(Ints.asList(blockedPorts));
-    }
+  public synchronized void blockPorts(final int... blockedPorts) {
+    this.blockedPorts.addAll(Ints.asList(blockedPorts));
   }
 
   /**
