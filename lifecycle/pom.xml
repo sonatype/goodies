@@ -35,6 +35,7 @@
 
     <!--
     TODO: Investigate 6.1.0 version update. http://smc.sourceforge.net/
+    Not on central, this version deployed manually to RSO 3rd party repo
     -->
     <dependency>
       <groupId>net.sf.smc</groupId>
@@ -45,8 +46,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.sonatype.sisu.litmus</groupId>
-      <artifactId>litmus-testsupport</artifactId>
+      <groupId>org.sonatype.sisu.goodies</groupId>
+      <artifactId>goodies-testsupport</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

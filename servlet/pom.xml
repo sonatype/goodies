@@ -34,9 +34,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.eclipse.jetty.orbit</groupId>
-      <artifactId>javax.servlet</artifactId>
-      <version>3.0.0.v201112011016</version>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
     </dependency>
 
     <dependency>
@@ -45,8 +45,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.sonatype.sisu.litmus</groupId>
-      <artifactId>litmus-testsupport</artifactId>
+      <groupId>org.sonatype.sisu.goodies</groupId>
+      <artifactId>goodies-testsupport</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

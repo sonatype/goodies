@@ -28,8 +28,8 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <jackson.version>1.9.12</jackson.version>
-    <jackson2.version>2.3.1</jackson2.version>
+    <jackson.version>1.9.13</jackson.version>
+    <jackson2.version>2.3.5</jackson2.version>
   </properties>
 
   <dependencies>
@@ -97,13 +97,12 @@
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
-      <version>1.4.4</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
-      <groupId>org.sonatype.sisu.litmus</groupId>
-      <artifactId>litmus-testsupport</artifactId>
+      <groupId>org.sonatype.sisu.goodies</groupId>
+      <artifactId>goodies-testsupport</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
