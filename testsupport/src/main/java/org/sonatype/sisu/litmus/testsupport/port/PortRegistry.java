@@ -40,6 +40,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class PortRegistry
 {
+  private static final int MAX_ATTEMPTS = 10;
+
   /**
    * Contiguous ranges of reservedPorts blocked.
    */
@@ -71,13 +73,13 @@ public class PortRegistry
     int attempts = 0;
     boolean searchingForPort = true;
     synchronized (reservedPorts) {
-      while (searchingForPort && ++attempts < 10) {
+      while (searchingForPort && ++attempts < MAX_ATTEMPTS) {
         port = findFreePort();
-        searchingForPort = !reservedPorts.add(port) || isBlocked(port);
+        searchingForPort = isBlocked(port) || !reservedPorts.add(port);
       }
     }
-    if (!(attempts < 10)) {
-      throw new RuntimeException("Could not allocate a free port after " + attempts + " attempts.");
+    if (searchingForPort) {
+      throw new RuntimeException("Could not allocate a free port after " + MAX_ATTEMPTS + " attempts.");
     }
     return port;
   }
