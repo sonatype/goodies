@@ -33,7 +33,6 @@ import org.sonatype.sisu.litmus.testsupport.junit.index.TestXO;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Throwables;
-import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import org.junit.rules.TestWatcher;
@@ -214,6 +213,13 @@ public class TestIndexRule
     return testDir;
   }
 
+  /**
+   * Overrides default test directory with a custom location.
+   */
+  public void setDirectory(final File customTestDir) {
+    testDir = customTestDir;
+  }
+
   @Override
   public File getDirectory(final String name) {
     final File dir = new File(getDirectory(), name);
@@ -237,10 +243,11 @@ public class TestIndexRule
 
   @Override
   public void recordLink(final String key, final File file) {
-    if (file.exists()) {
+    final File parent = file.getParentFile();
+    if (file.exists() || parent.exists()) {
       initialize();
       try {
-        recordLink(key, calculateRelativePath(indexDir, file));
+        recordLink(key, calculateRelativePath(indexDir, parent) + '/' + file.getName());
       }
       catch (IOException e) {
         throw Throwables.propagate(e);
@@ -344,7 +351,9 @@ public class TestIndexRule
       save();
       copyStyleSheets();
 
-      testDir = new File(dataDir, String.valueOf(index.getCounter()));
+      if (testDir == null) {
+        testDir = new File(dataDir, String.valueOf(index.getCounter()));
+      }
       checkState(
           (testDir.mkdirs() || testDir.exists()) && testDir.isDirectory(),
           "Not able to create test directory '%s'",
@@ -359,7 +368,11 @@ public class TestIndexRule
    * Copy index CSS and XSLT to ${indexDir} (they are referenced by index.xml), overriding existent ones.
    */
   private void copyStyleSheets() {
+    final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
     try {
+      // make sure we can find our index resources even when running inside OSGi
+      Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+
       Resources.asByteSource(Resources.getResource("index.css")).copyTo(
           Files.asByteSink(new File(indexDir, "index.css")));
       Resources.asByteSource(Resources.getResource("index.xsl")).copyTo(
@@ -367,6 +380,9 @@ public class TestIndexRule
     }
     catch (IOException e) {
       // well, that's it!
+    }
+    finally {
+      Thread.currentThread().setContextClassLoader(tccl);
     }
   }
 
