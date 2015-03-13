@@ -14,12 +14,13 @@ package org.sonatype.sisu.litmus.testsupport.ldap;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.sonatype.sisu.litmus.testsupport.port.PortRegistry;
 
 import com.google.common.annotations.VisibleForTesting;
 import net.sf.ehcache.CacheManager;
@@ -69,6 +70,8 @@ public class LdapServer
 
   private File workingDirectory;
 
+  private PortRegistry portRegistry;
+
   private DefaultDirectoryService directoryService;
 
   private org.apache.directory.server.ldap.LdapServer ldapServer;
@@ -88,9 +91,14 @@ public class LdapServer
   private boolean running = false;
 
   public LdapServer(File workingDirectory) {
+    this(workingDirectory, new PortRegistry());
+  }
+
+  public LdapServer(File workingDirectory, PortRegistry portRegistry) {
     log.debug("Creating LdapServer with workingDirectory={}",
         workingDirectory == null ? null : workingDirectory.getAbsolutePath());
     this.workingDirectory = workingDirectory;
+    this.portRegistry = portRegistry;
   }
 
   /**
@@ -119,7 +127,7 @@ public class LdapServer
     long start = System.currentTimeMillis();
 
     if (port <= 0) {
-      port = getRandomPort();
+      port = portRegistry.reservePort();
     }
 
     // an example that shows how to create and configure embedded apacheds instance
@@ -243,14 +251,12 @@ public class LdapServer
     directoryService.addPartition(acmeBrickPartition);
   }
 
-  private static int getRandomPort() throws IOException {
-    ServerSocket socket = new ServerSocket(0);
-    try {
-      return socket.getLocalPort();
-    }
-    finally {
-      socket.close();
-    }
+  public void suspend() throws Exception {
+    ldapServer.stop();
+  }
+
+  public void resume() throws Exception {
+    ldapServer.start();
   }
 
   public void stop() throws Exception {
@@ -262,6 +268,8 @@ public class LdapServer
 
     ldapServer.stop();
     directoryService.shutdown();
+    portRegistry.releasePort(port);
+    port = 0;
     running = false;
 
     log.debug("Stopped LdapServer in {} ms", System.currentTimeMillis() - start);
