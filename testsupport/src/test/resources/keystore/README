@@ -1,0 +1,10 @@
+Self-signed SSL certificated generated described in http://directory.apache.org/apacheds/basic-ug/3.3-enabling-ssl.html
+
+test.ks has the private key, testclient.ks only the certificate.
+
+Both keystores have password 'secret'. Certificate alias is 'test' in both keystores.
+
+keytool -genkey -keyalg RSA -validity 50000 -dname "cn=test, ou=goodies, o=Sonatype c=US" -alias test -keystore test.ks -storepass secret -keypass secret
+
+keytool -exportcert -keystore test.ks -storepass secret -alias test | keytool -importcert -keystore testclient.ks -storepass secret -noprompt
+
