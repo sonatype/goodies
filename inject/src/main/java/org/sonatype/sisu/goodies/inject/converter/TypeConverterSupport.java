@@ -12,10 +12,14 @@
  */
 package org.sonatype.sisu.goodies.inject.converter;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Key;
 import com.google.inject.ProvisionException;
 import com.google.inject.TypeLiteral;
+import com.google.inject.matcher.Matchers;
+import com.google.inject.name.Names;
 import com.google.inject.spi.TypeConverter;
-import org.eclipse.sisu.wire.AbstractTypeConverter;
+import org.eclipse.sisu.inject.TypeArguments;
 
 /**
  * Support for {@link TypeConverter} implementations.
@@ -23,8 +27,24 @@ import org.eclipse.sisu.wire.AbstractTypeConverter;
  * @since 1.5
  */
 public abstract class TypeConverterSupport<T>
-    extends AbstractTypeConverter<T>
+    extends AbstractModule
+    implements TypeConverter
 {
+  private boolean bound;
+
+  @Override
+  public void configure() {
+    if (!bound) {
+      // Explicitly bind module instance under a specific sub-type (not Module as Guice forbids that)
+      bind(Key.get(TypeConverterSupport.class, Names.named(getClass().getName()))).toInstance(this);
+      bound = true;
+    }
+
+    // make sure we pick up the right super type argument, i.e. Foo from TypeConverterSupport<Foo>
+    final TypeLiteral<?> superType = TypeLiteral.get(getClass()).getSupertype(TypeConverterSupport.class);
+    convertToTypes(Matchers.only(TypeArguments.get(superType, 0)), this);
+  }
+
   public Object convert(final String value, final TypeLiteral<?> toType) {
     try {
       return doConvert(value, toType);
