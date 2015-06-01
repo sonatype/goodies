@@ -14,8 +14,6 @@ package org.sonatype.sisu.goodies.i18n;
 
 import javax.annotation.Nullable;
 
-import org.jetbrains.annotations.NonNls;
-
 /**
  * Provides simple access to i18n messages.
  *
@@ -26,12 +24,12 @@ public interface MessageSource
   /**
    * @throws ResourceNotFoundException
    */
-  String getMessage(@NonNls String code);
+  String getMessage(String code);
 
-  String getMessage(@NonNls String code, @Nullable String defaultValue);
+  String getMessage(String code, @Nullable String defaultValue);
 
   /**
    * @throws ResourceNotFoundException
    */
-  String format(@NonNls String code, Object... args);
+  String format(String code, Object... args);
 }

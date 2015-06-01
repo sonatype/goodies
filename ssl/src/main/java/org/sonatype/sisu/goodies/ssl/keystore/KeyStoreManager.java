@@ -20,8 +20,6 @@ import java.util.Collection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
-import org.jetbrains.annotations.NonNls;
-
 /**
  * Provides access to identity and trust stores.
  *
@@ -53,7 +51,7 @@ public interface KeyStoreManager
    * @param alias       the alias of the public key
    * @throws KeystoreException thrown if the certificate cannot be imported.
    */
-  void importTrustCertificate(Certificate certificate, @NonNls String alias)
+  void importTrustCertificate(Certificate certificate, String alias)
       throws KeystoreException;
 
   /**
@@ -65,7 +63,7 @@ public interface KeyStoreManager
    * @throws java.security.cert.CertificateParsingException
    *                           thrown if the PEM formatted string cannot be parsed into a certificate.
    */
-  void importTrustCertificate(@NonNls String certificateInPEM, @NonNls String alias)
+  void importTrustCertificate(String certificateInPEM, String alias)
       throws KeystoreException, CertificateParsingException;
 
   /**
@@ -76,7 +74,7 @@ public interface KeyStoreManager
    * @throws KeyNotFoundException thrown if a certificate with the given alias is not found.
    * @throws KeystoreException    thrown if there is a problem retrieving the certificate.
    */
-  Certificate getTrustedCertificate(@NonNls String alias)
+  Certificate getTrustedCertificate(String alias)
       throws KeystoreException;
 
   /**
@@ -94,7 +92,7 @@ public interface KeyStoreManager
    * @param alias the alias of the certificate to be removed.
    * @throws KeystoreException thrown if the certificate by this alias cannot be removed or does not exist.
    */
-  void removeTrustCertificate(@NonNls String alias)
+  void removeTrustCertificate(String alias)
       throws KeystoreException;
 
   /**
@@ -108,9 +106,9 @@ public interface KeyStoreManager
    * @param country            two letter country code.
    * @throws KeystoreException thrown if the key pair cannot be created.
    */
-  void generateAndStoreKeyPair(@NonNls String commonName, @NonNls String organizationalUnit,
-                               @NonNls String organization, @NonNls String locality, @NonNls String state,
-                               @NonNls String country)
+  void generateAndStoreKeyPair(String commonName, String organizationalUnit,
+                               String organization, String locality, String state,
+                               String country)
       throws KeystoreException;
 
   /**

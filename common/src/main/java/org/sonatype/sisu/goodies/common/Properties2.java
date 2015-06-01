@@ -31,8 +31,6 @@ import org.sonatype.sisu.goodies.common.io.Closer;
 
 import com.google.common.collect.Lists;
 
-import org.jetbrains.annotations.NonNls;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -77,7 +75,7 @@ public class Properties2
    * @deprecated Use {@link SystemProperty}.
    */
   @Deprecated
-  public static String getSystemProperty(final Class<?> type, final @NonNls String name,
+  public static String getSystemProperty(final Class<?> type, final String name,
                                          final @Nullable Object defaultValue)
   {
     checkNotNull(type);
@@ -94,7 +92,7 @@ public class Properties2
    * @deprecated Use {@link SystemProperty}.
    */
   @Deprecated
-  public static String getSystemProperty(final Class<?> type, final @NonNls String name) {
+  public static String getSystemProperty(final Class<?> type, final String name) {
     return getSystemProperty(type, name, null);
   }
 

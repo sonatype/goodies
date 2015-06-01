@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 import com.google.common.base.Throwables;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +41,6 @@ public final class TestUtil
 
   protected final File baseDir;
 
-  @NonNls
   protected final Logger log;
 
   private File tmpDir;
@@ -121,7 +119,7 @@ public final class TestUtil
    * @param path The path to resolve.
    * @return The resolved file for the given path.
    */
-  public File resolveFile(final @NonNls String path) {
+  public File resolveFile(final String path) {
     checkNotNull(path);
 
     File file = new File(path);

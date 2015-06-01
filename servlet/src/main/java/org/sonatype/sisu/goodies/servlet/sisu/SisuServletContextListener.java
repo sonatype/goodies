@@ -26,7 +26,6 @@ import org.eclipse.sisu.space.BeanScanning;
 import org.eclipse.sisu.space.SpaceModule;
 import org.eclipse.sisu.space.URLClassSpace;
 import org.eclipse.sisu.wire.WireModule;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +39,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class SisuServletContextListener
     extends GuiceServletContextListener
 {
-  @NonNls
   public static final String INJECTOR_KEY = "@INJECTOR"; // NOTE: GuiceServletContextListener binds this into Injector.class.getName()
 
-  @NonNls
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
   private ServletContext servletContext;

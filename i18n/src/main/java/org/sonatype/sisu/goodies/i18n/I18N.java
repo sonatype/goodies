@@ -20,7 +20,6 @@ import org.sonatype.sisu.goodies.common.TestAccessible;
 import org.sonatype.sisu.goodies.i18n.MessageBundle.DefaultMessage;
 import org.sonatype.sisu.goodies.i18n.MessageBundle.Key;
 
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +33,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class I18N
 {
-  @NonNls
   private static final Logger log = LoggerFactory.getLogger(I18N.class);
 
   @TestAccessible

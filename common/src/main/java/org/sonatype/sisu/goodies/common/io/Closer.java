@@ -18,7 +18,6 @@ import java.io.IOException;
 import org.sonatype.sisu.goodies.common.Loggers;
 import org.sonatype.sisu.goodies.common.UnhandledThrowable;
 
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 
 /**
@@ -28,7 +27,6 @@ import org.slf4j.Logger;
  */
 public final class Closer
 {
-  @NonNls
   private static final Logger log = Loggers.getLogger(Closer.class);
 
   /**

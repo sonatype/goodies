@@ -12,7 +12,6 @@
  */
 package org.sonatype.sisu.goodies.lifecycle;
 
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,6 @@ import org.slf4j.LoggerFactory;
 @Deprecated
 public class Starter
 {
-  @NonNls
   private static final Logger log = LoggerFactory.getLogger(Starter.class);
 
   private static void onFailure(final Throwable cause) {

@@ -14,7 +14,6 @@ package org.sonatype.sisu.goodies.thread;
 
 import org.sonatype.sisu.goodies.common.Mutex;
 
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class ThreadSupport
     extends Thread
 {
-  @NonNls
   protected final Logger log;
 
   private final Mutex lock = new Mutex();

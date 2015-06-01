@@ -14,8 +14,6 @@ package org.sonatype.sisu.goodies.common;
 
 import java.util.concurrent.TimeUnit;
 
-import org.jetbrains.annotations.NonNls;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -293,7 +291,7 @@ public final class Time
   /**
    * @since 1.1
    */
-  public static Time parse(final @NonNls String value) {
+  public static Time parse(final String value) {
     if (value != null) {
       return doParse(value.trim().toLowerCase());
     }
@@ -306,7 +304,7 @@ public final class Time
 
     final String[] suffixes;
 
-    private ParseConfig(final TimeUnit unit, final @NonNls String... suffixes) {
+    private ParseConfig(final TimeUnit unit, final String... suffixes) {
       this.unit = unit;
       this.suffixes = suffixes;
     }
@@ -324,7 +322,7 @@ public final class Time
       new ParseConfig(MICROSECONDS, "microseconds", "microsecond", "micros", "us"),
   };
 
-  private static Time doParse(final @NonNls String value) {
+  private static Time doParse(final String value) {
     for (ParseConfig config : PARSE_CONFIGS) {
       Time t = extract(value, config.unit, config.suffixes);
       if (t != null) {

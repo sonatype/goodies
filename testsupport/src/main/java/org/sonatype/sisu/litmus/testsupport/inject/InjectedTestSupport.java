@@ -24,7 +24,6 @@ import org.sonatype.sisu.litmus.testsupport.TestUtil;
 
 import com.google.common.base.Preconditions;
 import org.eclipse.sisu.launch.InjectedTest;
-import org.jetbrains.annotations.NonNls;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
@@ -50,7 +49,6 @@ public class InjectedTestSupport
 
   protected final TestUtil util = new TestUtil(this);
 
-  @NonNls
   protected final Logger logger = util.getLog();
 
   private Level logLevel = Level.INFO;
@@ -74,7 +72,7 @@ public class InjectedTestSupport
     this.logLevel = Preconditions.checkNotNull(logLevel);
   }
 
-  protected void log(final @NonNls String message) {
+  protected void log(final String message) {
     logLevel.log(logger, message);
   }
 
@@ -82,11 +80,11 @@ public class InjectedTestSupport
     logLevel.log(logger, String.valueOf(value));
   }
 
-  protected void log(final @NonNls String format, final Object... args) {
+  protected void log(final String format, final Object... args) {
     logLevel.log(logger, format, args);
   }
 
-  protected void log(final @NonNls String message, final Throwable cause) {
+  protected void log(final String message, final Throwable cause) {
     logLevel.log(logger, message, cause);
   }
 

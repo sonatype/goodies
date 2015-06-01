@@ -12,7 +12,6 @@
  */
 package org.sonatype.sisu.goodies.common;
 
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -24,7 +23,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ComponentSupport
 {
-  @NonNls
   protected final Logger log;
 
   protected ComponentSupport() {

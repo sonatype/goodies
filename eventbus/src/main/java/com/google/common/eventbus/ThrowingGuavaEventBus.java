@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 import org.sonatype.sisu.goodies.common.Loggers;
 
 import com.google.common.base.Throwables;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 
 /**
@@ -29,7 +28,6 @@ public class ThrowingGuavaEventBus
     extends EventBus
 {
 
-  @NonNls
   protected final Logger log;
 
   public ThrowingGuavaEventBus() {

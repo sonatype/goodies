@@ -14,7 +14,6 @@ package org.sonatype.sisu.litmus.testsupport;
 
 import org.sonatype.gossip.Level;
 
-import org.jetbrains.annotations.NonNls;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.MockitoAnnotations;
@@ -32,7 +31,6 @@ public class TestSupport
 
   protected final TestUtil util = new TestUtil(this);
 
-  @NonNls
   protected final Logger logger = util.getLog();
 
   private Level logLevel = Level.INFO;
@@ -53,7 +51,7 @@ public class TestSupport
     this.logLevel = checkNotNull(logLevel);
   }
 
-  protected void log(final @NonNls String message) {
+  protected void log(final String message) {
     logLevel.log(logger, message);
   }
 
@@ -61,11 +59,11 @@ public class TestSupport
     logLevel.log(logger, String.valueOf(value));
   }
 
-  protected void log(final @NonNls String format, final Object... args) {
+  protected void log(final String format, final Object... args) {
     logLevel.log(logger, format, args);
   }
 
-  protected void log(final @NonNls String message, final Throwable cause) {
+  protected void log(final String message, final Throwable cause) {
     logLevel.log(logger, message, cause);
   }
 

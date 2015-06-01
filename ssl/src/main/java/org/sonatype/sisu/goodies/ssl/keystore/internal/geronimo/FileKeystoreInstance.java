@@ -70,7 +70,6 @@ import org.apache.geronimo.crypto.asn1.x509.X509CertificateStructure;
 import org.apache.geronimo.crypto.asn1.x509.X509Name;
 import org.apache.geronimo.crypto.encoders.Base64;
 import org.apache.geronimo.crypto.jce.PKCS10CertificationRequest;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +84,6 @@ public class FileKeystoreInstance
     implements KeystoreInstance
 {
 
-  @NonNls
   private static final Logger log = LoggerFactory.getLogger(FileKeystoreInstance.class);
 
   final static String JKS = "JKS";

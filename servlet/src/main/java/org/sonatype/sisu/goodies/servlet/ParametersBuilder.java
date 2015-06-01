@@ -18,8 +18,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
-import org.jetbrains.annotations.NonNls;
-
 /**
  * Helper to build servlet parameters.
  *
@@ -29,7 +27,7 @@ public class ParametersBuilder
 {
   private final Map<String, String> params = Maps.newLinkedHashMap();
 
-  public ParametersBuilder set(final @NonNls String key, final @Nullable Object value) {
+  public ParametersBuilder set(final String key, final @Nullable Object value) {
     params.put(key, value != null ? String.valueOf(value) : null);
     return this;
   }

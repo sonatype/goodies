@@ -15,8 +15,6 @@ package org.sonatype.sisu.goodies.template;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.jetbrains.annotations.NonNls;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -27,7 +25,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class TemplateThrowableAdapter
 {
 
-  @NonNls
   public static final String NL = System.getProperty("line.separator");
 
   private final Throwable cause;

@@ -17,8 +17,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.jetbrains.annotations.NonNls;
-
 /**
  * Provides template rendering functionality.
  *
@@ -31,8 +29,8 @@ public interface TemplateEngine
 
   String render(Object owner, URL template, TemplateParameters params);
 
-  String render(Object owner, @NonNls String template, @Nullable Map<String, Object> params);
+  String render(Object owner, String template, @Nullable Map<String, Object> params);
 
-  String render(Object owner, @NonNls String template, TemplateParameters params);
+  String render(Object owner, String template, TemplateParameters params);
 
 }
