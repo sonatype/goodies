@@ -52,11 +52,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.intellij</groupId>
-      <artifactId>annotations</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>info.cukes</groupId>
       <artifactId>cucumber-junit</artifactId>
     </dependency>
