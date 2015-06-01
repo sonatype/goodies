@@ -16,10 +16,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import com.google.common.collect.Maps;
-import org.jetbrains.annotations.Nullable;
+
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

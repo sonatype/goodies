@@ -18,6 +18,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
@@ -29,10 +30,10 @@ import org.sonatype.sisu.goodies.template.TemplateParameters;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

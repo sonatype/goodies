@@ -14,9 +14,11 @@ package org.sonatype.sisu.goodies.servlet;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Maps;
+
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Helper to build servlet parameters.

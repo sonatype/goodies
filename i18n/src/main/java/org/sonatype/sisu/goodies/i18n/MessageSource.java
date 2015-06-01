@@ -12,8 +12,9 @@
  */
 package org.sonatype.sisu.goodies.i18n;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Provides simple access to i18n messages.

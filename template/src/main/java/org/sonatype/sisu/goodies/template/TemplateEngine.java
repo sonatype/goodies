@@ -15,8 +15,9 @@ package org.sonatype.sisu.goodies.template;
 import java.net.URL;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Provides template rendering functionality.

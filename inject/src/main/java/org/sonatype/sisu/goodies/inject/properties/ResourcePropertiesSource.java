@@ -15,7 +15,7 @@ package org.sonatype.sisu.goodies.inject.properties;
 import java.net.URL;
 import java.util.Properties;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
