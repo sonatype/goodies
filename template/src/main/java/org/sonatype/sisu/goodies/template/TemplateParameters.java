@@ -15,7 +15,6 @@ package org.sonatype.sisu.goodies.template;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import org.jetbrains.annotations.NonNls;
 
 /**
  * Helper to build template parameters map.
@@ -26,7 +25,7 @@ public class TemplateParameters
 {
   private final Map<String, Object> params = Maps.newHashMap();
 
-  public TemplateParameters set(final @NonNls String key, final Object value) {
+  public TemplateParameters set(final String key, final Object value) {
     params.put(key, value);
     return this;
   }

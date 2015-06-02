@@ -14,12 +14,14 @@ package org.sonatype.sisu.litmus.testsupport.hamcrest;
 
 import java.util.Arrays;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
+
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.jetbrains.annotations.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

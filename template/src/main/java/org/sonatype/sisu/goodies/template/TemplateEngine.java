@@ -15,8 +15,7 @@ package org.sonatype.sisu.goodies.template;
 import java.net.URL;
 import java.util.Map;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * Provides template rendering functionality.
@@ -30,8 +29,8 @@ public interface TemplateEngine
 
   String render(Object owner, URL template, TemplateParameters params);
 
-  String render(Object owner, @NonNls String template, @Nullable Map<String, Object> params);
+  String render(Object owner, String template, @Nullable Map<String, Object> params);
 
-  String render(Object owner, @NonNls String template, TemplateParameters params);
+  String render(Object owner, String template, TemplateParameters params);
 
 }

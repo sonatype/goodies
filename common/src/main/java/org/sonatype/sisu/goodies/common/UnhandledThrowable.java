@@ -14,7 +14,6 @@ package org.sonatype.sisu.goodies.common;
 
 import org.sonatype.gossip.Level;
 
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,7 +25,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class UnhandledThrowable
 {
-  @NonNls
   private static final Logger log = Loggers.getLogger(UnhandledThrowable.class);
 
   private UnhandledThrowable() {}

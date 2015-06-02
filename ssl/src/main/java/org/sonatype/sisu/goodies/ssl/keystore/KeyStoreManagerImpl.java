@@ -34,7 +34,6 @@ import org.sonatype.sisu.goodies.ssl.keystore.internal.geronimo.KeystoreInstance
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import org.jetbrains.annotations.NonNls;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -51,17 +50,13 @@ public class KeyStoreManagerImpl
     implements KeyStoreManager
 {
 
-  @NonNls
   private static final String PRIVATE_KEY_STORE_NAME = "private.ks";
 
-  @NonNls
   private static final String TRUSTED_KEY_STORE_NAME = "trusted.ks";
 
-  @NonNls
   private static final String DEFAULT00_KEY_ALIAS = "__default00";
 
   @TestAccessible
-  @NonNls
   static final String PRIVATE_KEY_ALIAS = "identity";
 
   private final CryptoHelper crypto;

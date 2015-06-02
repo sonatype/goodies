@@ -14,7 +14,6 @@ package org.sonatype.sisu.litmus.testsupport;
 
 import org.sonatype.gossip.Level;
 
-import org.jetbrains.annotations.NonNls;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.MultipleFailureException;
@@ -34,10 +33,8 @@ public class TestTracer
 {
   private static final String UNKNOWN_METHOD_NAME = "UNKNOWN METHOD NAME";
 
-  @NonNls
   private final Logger logger;
 
-  @NonNls
   private Level level = Level.INFO;
 
   public TestTracer(final Logger logger) {

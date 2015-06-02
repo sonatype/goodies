@@ -18,7 +18,6 @@ import java.security.cert.Certificate;
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.jetbrains.annotations.NonNls;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +32,6 @@ public class CertificateUtilTest
     extends TestSupport
 {
 
-  @NonNls
   public static final String NL = System.getProperty("line.separator");
 
   // Need to use platform NL here for compatibility

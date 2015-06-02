@@ -12,8 +12,6 @@
  */
 package org.sonatype.sisu.goodies.common;
 
-import org.jetbrains.annotations.NonNls;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.sonatype.sisu.goodies.common.ByteSize.ByteUnit.BYTES;
 import static org.sonatype.sisu.goodies.common.ByteSize.ByteUnit.GIGABYTES;
@@ -293,7 +291,7 @@ public final class ByteSize
   // Parsing
   //
 
-  public static ByteSize parse(final @NonNls String value) {
+  public static ByteSize parse(final String value) {
     if (value != null) {
       return doParse(value.trim().toLowerCase());
     }
@@ -306,7 +304,7 @@ public final class ByteSize
 
     final String[] suffixes;
 
-    private ParseConfig(final ByteUnit unit, final @NonNls String... suffixes) {
+    private ParseConfig(final ByteUnit unit, final String... suffixes) {
       this.unit = unit;
       this.suffixes = suffixes;
     }
@@ -320,7 +318,7 @@ public final class ByteSize
       new ParseConfig(TERABYTES, "terabytes", "terabyte", "tib", "tb", "t"),
   };
 
-  private static ByteSize doParse(final @NonNls String value) {
+  private static ByteSize doParse(final String value) {
     for (ParseConfig config : PARSE_CONFIGS) {
       ByteSize t = extract(value, config.unit, config.suffixes);
       if (t != null) {

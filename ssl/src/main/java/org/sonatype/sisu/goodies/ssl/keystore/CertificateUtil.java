@@ -36,7 +36,6 @@ import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.openssl.PEMReader;
 import org.bouncycastle.openssl.PEMWriter;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +61,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class CertificateUtil
 {
 
-  @NonNls
   private static final Logger LOG = LoggerFactory.getLogger(CertificateUtil.class);
 
   /**
