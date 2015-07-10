@@ -17,7 +17,7 @@ package org.sonatype.sisu.goodies.common;
  */
 public class SonarExample
 {
-  public SonarExample() {
+  SonarExample() {
     int foo = 1;
     foo = foo;
   }
