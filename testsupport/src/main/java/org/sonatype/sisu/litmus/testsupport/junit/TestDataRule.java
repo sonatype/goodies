@@ -13,8 +13,18 @@
 package org.sonatype.sisu.litmus.testsupport.junit;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.sonatype.sisu.litmus.testsupport.TestData;
 
@@ -23,6 +33,9 @@ import org.junit.runner.Description;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
+import static java.nio.file.FileVisitResult.TERMINATE;
 
 /**
  * JUnit rule for accessing test data
@@ -33,7 +46,6 @@ public class TestDataRule
     extends TestWatcher
     implements TestData
 {
-
   /**
    * The root directories containing test data.
    */
@@ -81,15 +93,20 @@ public class TestDataRule
       searchDirs.add(file(dir, asPath(description.getTestClass()), mn(description.getMethodName())));
     }
 
+    final Set<File> ignoreDirs = new HashSet<>();
+
     // interleave search across the different directories; overlays take precedence
     while (!searchDirs.isEmpty()) {
       for (int i = searchDirs.size() - 1; i >= 0; i--) {
 
         File dir = searchDirs.get(i);
-        final File file = file(dir, path);
-        if (file.exists()) {
+        final File file = findFile(dir, path, ignoreDirs);
+        if (file != null) {
           return file;
         }
+
+        ignoreDirs.add(dir); // skip this sub-tree when searching from parent
+
         dir = dir.getParentFile();
         if (dir == null || dir.equals(dataDirs.get(i).getParentFile())) {
           searchDirs.remove(i);
@@ -102,6 +119,49 @@ public class TestDataRule
 
     throw new RuntimeException(String.format("Path %s not found in %s searching from %s/%s upwards",
         path, dataDirs, asPath(description.getTestClass()), mn(description.getMethodName())));
+  }
+
+  /**
+   * Finds the file that matches the given path relative to the given root directory.
+   *
+   * @param rootDir root directory to search from
+   * @param path path to look up (supports globbed syntax)
+   * @param ignoreDirs directories to ignore
+   * @return matching file; {@code null} if no match was found
+   */
+  private static File findFile(final File rootDir, final String path, final Set<File> ignoreDirs) {
+    if (!isGlobbedPath(path)) {
+      final File file = file(rootDir, path);
+      return file.exists() ? file : null;
+    }
+
+    final File[] result = new File[1];
+    final PathMatcher matcher = asGlobbedMatcher(path);
+    final Path rootPath = rootDir.toPath();
+
+    try {
+      Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>()
+      {
+        @Override
+        public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) {
+          return ignoreDirs.contains(dir.toFile()) ? SKIP_SUBTREE : CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
+          if (matcher.matches(rootPath.relativize(file))) {
+            result[0] = file.toFile();
+            return TERMINATE;
+          }
+          return CONTINUE;
+        }
+      });
+    }
+    catch (IOException e) {
+      return null;
+    }
+
+    return result[0];
   }
 
   /**
@@ -124,6 +184,36 @@ public class TestDataRule
    */
   private static String asPath(final Package pkg) {
     return pkg.getName().replace(".", "/");
+  }
+
+  /**
+   * Returns {@code true} if path looks like a globbed path; otherwise {@code false}
+   */
+  private static boolean isGlobbedPath(final String path) {
+    for (final char c : path.toCharArray()) {
+      if (c == '*' || c == '?' || c == '[' || c == '{') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Return a package matcher for the given globbed path.
+   *
+   * @param path globbed path
+   * @return patch matcher
+   */
+  private static PathMatcher asGlobbedMatcher(final String path) {
+    final String pattern;
+    if (path.startsWith("**/")) {
+      // workaround for matching relative roots
+      pattern = "glob:{**/,}" + path.substring(3);
+    }
+    else {
+      pattern = "glob:" + path;
+    }
+    return FileSystems.getDefault().getPathMatcher(pattern);
   }
 
   /**

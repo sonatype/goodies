@@ -29,7 +29,7 @@ public interface TestData
    * {@code <dataDir>/<test class package>/<test class name>/<test method name>/</path>}<br/>
    * {@code all parent directories of above up to and including <dataDir>}
    *
-   * @param path path to look up
+   * @param path path to look up (supports globbed syntax)
    * @return found file
    */
   File resolveFile(String path);
