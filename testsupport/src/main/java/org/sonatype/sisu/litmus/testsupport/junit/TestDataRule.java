@@ -13,6 +13,8 @@
 package org.sonatype.sisu.litmus.testsupport.junit;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.sonatype.sisu.litmus.testsupport.TestData;
 
@@ -33,10 +35,9 @@ public class TestDataRule
 {
 
   /**
-   * The root directory containing test data.
-   * Cannot be null.
+   * The root directories containing test data.
    */
-  private final File dataDir;
+  private final List<File> dataDirs = new ArrayList<>();
 
   /**
    * Test description.
@@ -48,9 +49,22 @@ public class TestDataRule
    * Constructor.
    *
    * @param dataDir root directory containing test data. Cannot be null.
+   * @param additionalDirs additional directories to overlay on the primary.
    */
-  public TestDataRule(final File dataDir) {
-    this.dataDir = checkNotNull(dataDir);
+  public TestDataRule(final File dataDir, final File... additionalDirs) {
+    dataDirs.add(checkNotNull(dataDir));
+    for (final File dir : additionalDirs) {
+      dataDirs.add(checkNotNull(dir));
+    }
+  }
+
+  /**
+   * Overlays the given directory on top of the current test data.
+   *
+   * @param dataDir directory containing test data.
+   */
+  public void addDirectory(final File dataDir) {
+    dataDirs.add(checkNotNull(dataDir));
   }
 
   @Override
@@ -61,21 +75,33 @@ public class TestDataRule
   @Override
   public File resolveFile(final String path) {
     checkState(description != null, "Test was not yet initialized");
-    File dir = file(dataDir, asPath(description.getTestClass()), mn(description.getMethodName()));
-    do {
-      final File file = file(dir, path);
-      if (file.exists()) {
-        return file;
-      }
-      dir = dir.getParentFile();
-    }
-    while (!dir.equals(dataDir.getParentFile()) && dataDir.getParentFile() != null);
 
-    throw new RuntimeException(
-        "Path " + path + " not found in any of "
-            + file(dataDir, asPath(description.getTestClass()), mn(description.getMethodName()))
-            + " or its parent directories"
-    );
+    final List<File> searchDirs = new ArrayList<>(dataDirs.size());
+    for (final File dir : dataDirs) {
+      searchDirs.add(file(dir, asPath(description.getTestClass()), mn(description.getMethodName())));
+    }
+
+    // interleave search across the different directories; overlays take precedence
+    while (!searchDirs.isEmpty()) {
+      for (int i = searchDirs.size() - 1; i >= 0; i--) {
+
+        File dir = searchDirs.get(i);
+        final File file = file(dir, path);
+        if (file.exists()) {
+          return file;
+        }
+        dir = dir.getParentFile();
+        if (dir == null || dir.equals(dataDirs.get(i).getParentFile())) {
+          searchDirs.remove(i);
+        }
+        else {
+          searchDirs.set(i, dir);
+        }
+      }
+    }
+
+    throw new RuntimeException(String.format("Path %s not found in %s searching from %s/%s upwards",
+        path, dataDirs, asPath(description.getTestClass()), mn(description.getMethodName())));
   }
 
   /**
@@ -121,7 +147,7 @@ public class TestDataRule
    * @param methodName method name
    * @return index-less method name
    */
-  private String mn(final String methodName) {
+  private static String mn(final String methodName) {
     if (methodName.contains("[")) {
       return methodName.substring(0, methodName.indexOf("["));
     }

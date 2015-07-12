@@ -89,11 +89,33 @@ public class TestDataRuleTest
   }
 
   /**
+   * Test that a file is resolved from overlay directory before original directory.
+   */
+  @Test
+  public void resolveFromOverlay() {
+    assertThat(underTest.resolveFile("from-root"),
+        is(equalTo(util.resolveFile("src/test/uncopied-resources/from-root"))));
+    assertThat(underTest.resolveFile("from-middle-package"),
+        is(equalTo(util.resolveFile("src/test/uncopied-resources/org/sonatype/sisu/litmus/from-middle-package"))));
+    assertThat(underTest.resolveFile("from-class"),
+        is(equalTo(util.resolveFile("src/test/uncopied-resources/" + TestDataRule.asPath(getClass()) + "/from-class"))));
+
+    // overlaid resources only contain root and class, not middle package
+    underTest.addDirectory(util.resolveFile("src/test/overlaid-resources"));
+
+    assertThat(underTest.resolveFile("from-root"),
+        is(equalTo(util.resolveFile("src/test/overlaid-resources/from-root"))));
+    assertThat(underTest.resolveFile("from-middle-package"),
+        is(equalTo(util.resolveFile("src/test/uncopied-resources/org/sonatype/sisu/litmus/from-middle-package"))));
+    assertThat(underTest.resolveFile("from-class"),
+        is(equalTo(util.resolveFile("src/test/overlaid-resources/" + TestDataRule.asPath(getClass()) + "/from-class"))));
+  }
+
+  /**
    * Test that a RuntimeException is thrown when file does not exist.
    */
   @Test(expected = RuntimeException.class)
   public void resolveInexistent()
-      throws Exception
   {
     underTest.resolveFile("foo");
   }
