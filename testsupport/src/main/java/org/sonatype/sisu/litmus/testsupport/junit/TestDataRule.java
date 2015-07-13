@@ -24,6 +24,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.Set;
 
 import org.sonatype.sisu.litmus.testsupport.TestData;
@@ -117,8 +118,8 @@ public class TestDataRule
       }
     }
 
-    throw new RuntimeException(String.format("Path %s not found in %s searching from %s/%s upwards",
-        path, dataDirs, asPath(description.getTestClass()), mn(description.getMethodName())));
+    throw new MissingResourceException(String.format("Path %s not found in %s searching from %s/%s upwards",
+        path, dataDirs, asPath(description.getTestClass()), mn(description.getMethodName())), null, null);
   }
 
   /**
@@ -129,7 +130,7 @@ public class TestDataRule
    * @param ignoreDirs directories to ignore
    * @return matching file; {@code null} if no match was found
    */
-  private static File findFile(final File rootDir, final String path, final Set<File> ignoreDirs) {
+  private File findFile(final File rootDir, final String path, final Set<File> ignoreDirs) {
     if (!isGlobbedPath(path)) {
       final File file = file(rootDir, path);
       return file.exists() ? file : null;
@@ -157,8 +158,8 @@ public class TestDataRule
         }
       });
     }
-    catch (IOException e) {
-      return null;
+    catch (final IOException e) {
+      failed(e, description);
     }
 
     return result[0];
@@ -238,8 +239,9 @@ public class TestDataRule
    * @return index-less method name
    */
   private static String mn(final String methodName) {
-    if (methodName.contains("[")) {
-      return methodName.substring(0, methodName.indexOf("["));
+    final int bracketIndex = methodName.indexOf('[');
+    if (bracketIndex >= 0) {
+      return methodName.substring(0, bracketIndex);
     }
     return methodName;
   }
