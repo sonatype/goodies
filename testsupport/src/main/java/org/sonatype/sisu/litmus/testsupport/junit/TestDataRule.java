@@ -89,7 +89,9 @@ public class TestDataRule
 
     final List<File> searchDirs = new ArrayList<>(dataDirs.size());
     for (final File dir : dataDirs) {
-      searchDirs.add(file(dir, asPath(description.getTestClass()), mn(description.getMethodName())));
+      if (dir.isDirectory()) {
+        searchDirs.add(file(dir, asPath(description.getTestClass()), mn(description.getMethodName())));
+      }
     }
 
     final Set<File> ignoreDirs = new HashSet<>();
