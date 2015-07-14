@@ -61,13 +61,11 @@ public class TestDataRule
   /**
    * Constructor.
    *
-   * @param dataDir root directory containing test data. Cannot be null.
-   * @param additionalDirs additional directories to overlay on the primary.
+   * @param dataDirs root directories containing test data. Cannot be null.
    */
-  public TestDataRule(final File dataDir, final File... additionalDirs) {
-    dataDirs.add(checkNotNull(dataDir));
-    for (final File dir : additionalDirs) {
-      dataDirs.add(checkNotNull(dir));
+  public TestDataRule(final File... dataDirs) {
+    for (final File dir : dataDirs) {
+      this.dataDirs.add(checkNotNull(dir));
     }
   }
 
