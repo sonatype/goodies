@@ -15,7 +15,6 @@ package org.sonatype.sisu.litmus.testsupport.concurrent;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +38,7 @@ class ConcurrentTestWorker
 
   private final ConcurrentTestContext context;
 
-  private final Logger log = Preconditions.checkNotNull(LoggerFactory.getLogger(getClass()));
+  private static final Logger log = LoggerFactory.getLogger(ConcurrentTestWorker.class);
 
   public ConcurrentTestWorker(final int workerNumber,
                               final ConcurrentTask concurrentTask,

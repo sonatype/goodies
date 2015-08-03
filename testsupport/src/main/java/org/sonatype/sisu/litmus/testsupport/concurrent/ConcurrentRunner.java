@@ -41,7 +41,7 @@ public class ConcurrentRunner
 
   private final int iterationTimeoutSeconds;
 
-  private final Logger log = Preconditions.checkNotNull(LoggerFactory.getLogger(getClass()));
+  private static final Logger log = LoggerFactory.getLogger(ConcurrentRunner.class);
 
   private List<ConcurrentTask> tasks = new ArrayList<>();
 
@@ -146,7 +146,7 @@ public class ConcurrentRunner
     for (ConcurrentTestWorker testWorker : testWorkers) {
       if (testWorker.experiencedFailure()) {
         // Throws any old exception, but also JUnit assertion errors
-        log.info("Attempting to throw ", testWorker.getException());
+        log.info("Attempting to throw", testWorker.getException());
         Throwables.propagateIfPossible(testWorker.getException(), Exception.class, AssertionError.class);
       }
     }
