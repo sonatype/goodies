@@ -124,7 +124,7 @@ public class ConcurrentRunner
   {
     ExecutorService service = Executors.newFixedThreadPool(tasks.size());
     final List<Future<Void>> futures = service
-        .invokeAll(testWorkers, iterationTimeoutSeconds * iterations, TimeUnit.SECONDS);
+        .invokeAll(testWorkers, (long) iterationTimeoutSeconds * iterations, TimeUnit.SECONDS);
     service.shutdown();
     return futures;
   }
