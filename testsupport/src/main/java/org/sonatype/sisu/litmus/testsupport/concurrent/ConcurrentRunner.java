@@ -34,12 +34,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ConcurrentRunner
 {
-  private List<ConcurrentTask> tasks = new ArrayList<>();
-
-  // A cyclic barrier ensures that the threads align after each unit of work, to avoid some completing much before
-  // the others, thereby increasing contention
-  private CyclicBarrier startingGun;
-
   // A signal to get test workers to abort if a peer finds a failure
   private final AtomicBoolean failureHasOccurred = new AtomicBoolean(false);
 
@@ -47,9 +41,15 @@ public class ConcurrentRunner
 
   private final int iterationTimeoutSeconds;
 
-  private AtomicInteger runInvocations = new AtomicInteger(0);
-
   private final Logger log = Preconditions.checkNotNull(LoggerFactory.getLogger(getClass()));
+
+  private List<ConcurrentTask> tasks = new ArrayList<>();
+
+  // A cyclic barrier ensures that the threads align after each unit of work, to avoid some completing much before
+  // the others, thereby increasing contention
+  private CyclicBarrier startingGun;
+
+  private AtomicInteger runInvocations = new AtomicInteger(0);
 
   /**
    * @param iterations              How many times each task should be invoked

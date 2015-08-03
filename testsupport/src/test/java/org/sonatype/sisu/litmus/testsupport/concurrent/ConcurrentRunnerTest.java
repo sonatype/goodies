@@ -15,8 +15,6 @@ package org.sonatype.sisu.litmus.testsupport.concurrent;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
-import org.sonatype.sisu.litmus.testsupport.concurrent.ConcurrentRunner;
-import org.sonatype.sisu.litmus.testsupport.concurrent.ConcurrentTask;
 
 import org.junit.Test;
 
