@@ -10,12 +10,14 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.litmus.concurrenttest;
+package org.sonatype.sisu.litmus.testsupport.concurrent;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -23,9 +25,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A helper class to wrap a {@link ConcurrentTask} and trap any exceptions that it throws. If an exception is thrown,
  * it
  * trips a flag to force its peers to abort sooner, rather than waiting for the executor service to time out.
+ *
+ * @since 1.15
  */
 class ConcurrentTestWorker
-    extends ComponentSupport
     implements Callable<Void>
 {
   private final ConcurrentTask concurrentTask;
@@ -35,6 +38,8 @@ class ConcurrentTestWorker
   private final AtomicReference<Throwable> exception = new AtomicReference<>();
 
   private final ConcurrentTestContext context;
+
+  private final Logger log = Preconditions.checkNotNull(LoggerFactory.getLogger(getClass()));
 
   public ConcurrentTestWorker(final int workerNumber,
                               final ConcurrentTask concurrentTask,
@@ -47,26 +52,26 @@ class ConcurrentTestWorker
 
   @Override
   public Void call() throws Exception {
-      try {
+    try {
       for (int i = 0; i < context.getIterations(); i++) {
         if (context.testFailing()) {
-          log.info("Test worker " + workerNumber + " aborting before iteration " + i);
+          log.info("Test worker {} aborting before iteration {}", workerNumber, i);
           break;
         }
         context.awaitIterationStart();
         context.recordRunInvocation();
 
         concurrentTask.run();
-        log.info("Test worker " + workerNumber + " completing iteration " + i);
+        log.info("Test worker {} completing iteration {}", workerNumber, i);
       }
     }
     catch (Exception | AssertionError e) {
-      log.info("Test worker " + workerNumber + "'s task threw exception", e);
+      log.info("Test worker {}'s task threw exception", workerNumber, e);
       context.indicateFailure();
       this.exception.set(e);
     }
     finally {
-      log.info("Test worker " + workerNumber + " done.");
+      log.info("Test worker {} done", workerNumber);
     }
     return null;
   }

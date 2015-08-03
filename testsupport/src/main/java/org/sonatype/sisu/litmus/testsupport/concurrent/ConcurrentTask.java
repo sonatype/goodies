@@ -10,11 +10,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.litmus.concurrenttest;
+package org.sonatype.sisu.litmus.testsupport.concurrent;
 
 /**
  * A task of some sort to be executed concurrently with other tasks. Tasks must be stateless, thread-safe and
  * reusable.
+ *
+ * @since 1.15
  */
 public interface ConcurrentTask
 {

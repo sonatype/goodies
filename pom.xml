@@ -65,7 +65,6 @@
     <module>marshal</module>
     <module>thread</module>
     <module>testsupport</module>
-    <module>concurrenttest</module>
     <module>eventbus</module>
     <module>crypto</module>
     <module>template</module>

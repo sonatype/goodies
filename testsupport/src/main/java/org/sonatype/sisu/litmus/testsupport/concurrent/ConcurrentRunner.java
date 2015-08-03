@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.litmus.concurrenttest;
+package org.sonatype.sisu.litmus.testsupport.concurrent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +22,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.sonatype.sisu.goodies.common.Loggers;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import org.slf4j.Logger;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.slf4j.LoggerFactory;
 
 /**
  * Executes a batch of {@link ConcurrentTask}s concurrently for testing purposes.
+ *
+ * @since 1.15
  */
 public class ConcurrentRunner
 {
@@ -50,7 +49,7 @@ public class ConcurrentRunner
 
   private AtomicInteger runInvocations = new AtomicInteger(0);
 
-  private final Logger log= checkNotNull(Loggers.getLogger(this));
+  private final Logger log = Preconditions.checkNotNull(LoggerFactory.getLogger(getClass()));
 
   /**
    * @param iterations              How many times each task should be invoked
@@ -94,7 +93,7 @@ public class ConcurrentRunner
 
       @Override
       public void run() {
-        log.debug("Iteration starting: " + iterationCount++);
+        log.debug("Iteration starting: {}", iterationCount++);
       }
     });
 
