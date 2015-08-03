@@ -69,7 +69,7 @@ class ConcurrentTestContext
     iterationStartSignal.reset();
   }
 
-  public void awaitIterationStart() throws InterruptedException, TimeoutException, BrokenBarrierException {
+  public void awaitIterationStart() throws Exception {
     iterationStartSignal.await(iterationStartTimeoutSeconds, TimeUnit.SECONDS);
   }
 }
