@@ -95,7 +95,7 @@ public class ReloadableX509KeyManager
    */
   public static ReloadableX509KeyManager replaceX509KeyManager(ReloadableX509KeyManager reloadableX509KeyManager,
                                                                KeyManager[] KeyManagers)
-      throws NoSuchAlgorithmException, IllegalStateException
+      throws NoSuchAlgorithmException
   {
     for (int ii = 0; ii < KeyManagers.length; ii++) {
       if (ReloadableX509KeyManager.class.isInstance(KeyManagers[ii])) {
