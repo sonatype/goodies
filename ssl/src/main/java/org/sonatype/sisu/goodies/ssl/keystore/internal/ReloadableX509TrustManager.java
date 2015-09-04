@@ -38,21 +38,17 @@ public class ReloadableX509TrustManager
    *
    * @param delegateTrustManager the X509TrustManager to delegate calls to.
    */
-  private ReloadableX509TrustManager(X509TrustManager delegateTrustManager) {
+  private ReloadableX509TrustManager(final X509TrustManager delegateTrustManager) {
     this.setDelegateTrustManager(delegateTrustManager);
   }
 
   @Override
-  public void checkClientTrusted(X509Certificate[] x509Certificates, String s)
-      throws CertificateException
-  {
+  public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s) throws CertificateException {
     delegateTrustManager.checkClientTrusted(x509Certificates, s);
   }
 
   @Override
-  public void checkServerTrusted(X509Certificate[] x509Certificates, String s)
-      throws CertificateException
-  {
+  public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s) throws CertificateException {
     delegateTrustManager.checkServerTrusted(x509Certificates, s);
   }
 
@@ -66,7 +62,7 @@ public class ReloadableX509TrustManager
    *
    * @param delegateTrustManager the X509TrustManager which will be used to delegate calls to.
    */
-  private void setDelegateTrustManager(X509TrustManager delegateTrustManager) {
+  private void setDelegateTrustManager(final X509TrustManager delegateTrustManager) {
     this.delegateTrustManager = delegateTrustManager;
   }
 
@@ -81,9 +77,9 @@ public class ReloadableX509TrustManager
    *                               thrown if a X509TrustManager cannot be found in the array.
    * @throws IllegalStateException thrown if a ReloadableX509TrustManager is found in the array.
    */
-  public static ReloadableX509TrustManager replaceX509TrustManager(
-      ReloadableX509TrustManager reloadableX509TrustManager, TrustManager[] trustManagers)
-      throws NoSuchAlgorithmException, IllegalStateException
+  public static ReloadableX509TrustManager replaceX509TrustManager(ReloadableX509TrustManager reloadableX509TrustManager,
+                                                                   final TrustManager[] trustManagers)
+      throws NoSuchAlgorithmException
   {
     for (int ii = 0; ii < trustManagers.length; ii++) {
       if (ReloadableX509TrustManager.class.isInstance(trustManagers[ii])) {
