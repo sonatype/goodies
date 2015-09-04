@@ -23,18 +23,22 @@ import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Vector;
 
-import org.sonatype.sisu.goodies.ssl.keystore.internal.DigesterUtils;
-
-import org.bouncycastle.asn1.DERObjectIdentifier;
+import com.google.common.hash.Hashing;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.x509.X509Name;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.jce.X509Principal;
-import org.bouncycastle.openssl.PEMReader;
-import org.bouncycastle.openssl.PEMWriter;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,13 +49,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Simple utility methods when dealing with certificates.
  * <p/>
  * In order to use the methods decodePEMFormattedCertificate or serializeCertificateInPEM, the BouncyCastleProvider
- * must
- * be registered. <BR/><BR/>
+ * must be registered. <BR/><BR/>
  * <pre>
  * <code>
- *    if( Security.getProvider( "BC" ) == null )
- *    {
- *        Security.addProvider( new BouncyCastleProvider() );
+ *    if (Security.getProvider("BC") == null) {
+ *        Security.addProvider(new BouncyCastleProvider());
  *    }
  * </code>
  * </pre>
@@ -60,53 +62,56 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class CertificateUtil
 {
+  private static final Logger log = LoggerFactory.getLogger(CertificateUtil.class);
 
-  private static final Logger LOG = LoggerFactory.getLogger(CertificateUtil.class);
-
-  /**
-   * Private constructor, this class only has static methods.
-   */
   private CertificateUtil() {
+    // empty
   }
 
-  public static X509Certificate generateCertificate(PublicKey publicKey, PrivateKey privateKey, String algorithm,
-                                                    int validDays, String commonName, String orgUnit,
-                                                    String organization, String locality, String state,
-                                                    String country)
+  public static X509Certificate generateCertificate(final PublicKey publicKey,
+                                                    final PrivateKey privateKey,
+                                                    final String algorithm,
+                                                    final int validDays,
+                                                    final String commonName,
+                                                    final String orgUnit,
+                                                    final String organization,
+                                                    final String locality,
+                                                    final String state,
+                                                    final String country)
       throws SignatureException, InvalidKeyException, NoSuchAlgorithmException, CertificateEncodingException
   {
     X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
-    Vector<DERObjectIdentifier> order = new Vector<DERObjectIdentifier>();
-    Hashtable<DERObjectIdentifier, String> attributeMap = new Hashtable<DERObjectIdentifier, String>();
+    Vector<ASN1ObjectIdentifier> order = new Vector<>();
+    Hashtable<ASN1ObjectIdentifier, String> attributeMap = new Hashtable<>();
 
     if (commonName != null) {
-      attributeMap.put(X509Principal.CN, commonName);
-      order.add(X509Principal.CN);
+      attributeMap.put(X509Name.CN, commonName);
+      order.add(X509Name.CN);
     }
 
     if (orgUnit != null) {
-      attributeMap.put(X509Principal.OU, orgUnit);
-      order.add(X509Principal.OU);
+      attributeMap.put(X509Name.OU, orgUnit);
+      order.add(X509Name.OU);
     }
 
     if (organization != null) {
-      attributeMap.put(X509Principal.O, organization);
-      order.add(X509Principal.O);
+      attributeMap.put(X509Name.O, organization);
+      order.add(X509Name.O);
     }
 
     if (locality != null) {
-      attributeMap.put(X509Principal.L, locality);
-      order.add(X509Principal.L);
+      attributeMap.put(X509Name.L, locality);
+      order.add(X509Name.L);
     }
 
     if (state != null) {
-      attributeMap.put(X509Principal.ST, state);
-      order.add(X509Principal.ST);
+      attributeMap.put(X509Name.ST, state);
+      order.add(X509Name.ST);
     }
 
     if (country != null) {
-      attributeMap.put(X509Principal.C, country);
-      order.add(X509Principal.C);
+      attributeMap.put(X509Name.C, country);
+      order.add(X509Name.C);
     }
 
     X509Principal issuerDN = new X509Principal(order, attributeMap);
@@ -134,11 +139,9 @@ public final class CertificateUtil
    * @return the certificate in PEM format
    * @throws java.io.IOException thrown if the certificate cannot be converted into the PEM format.
    */
-  public static String serializeCertificateInPEM(Certificate certificate)
-      throws IOException
-  {
+  public static String serializeCertificateInPEM(Certificate certificate) throws IOException {
     StringWriter stringWriter = new StringWriter();
-    PEMWriter pemWriter = new PEMWriter(stringWriter);
+    JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
     pemWriter.writeObject(certificate);
     pemWriter.close();
 
@@ -154,21 +157,22 @@ public final class CertificateUtil
    *          thrown if the PEM formatted string cannot be parsed into a Certificate.
    */
   public static Certificate decodePEMFormattedCertificate(String pemFormattedCertificate)
-      throws CertificateParsingException
+      throws CertificateException
   {
-    LOG.trace("Parsing PEM formatted certificate string:\n{}", pemFormattedCertificate);
+    log.trace("Parsing PEM formatted certificate string:\n{}", pemFormattedCertificate);
 
     // make sure we have something to parse
     if (pemFormattedCertificate != null) {
       StringReader stringReader = new StringReader(pemFormattedCertificate);
-      PEMReader pemReader = new PEMReader(stringReader);
+      PEMParser pemReader = new PEMParser(stringReader);
       try {
         Object object = pemReader.readObject();
-        LOG.trace("Object found while paring PEM formatted string: {}", object);
+        log.trace("Object found while paring PEM formatted string: {}", object);
 
-        // verify the object is a cert
-        if (Certificate.class.isInstance(object)) {
-          return (Certificate) object;
+        if (object instanceof X509CertificateHolder) {
+          X509CertificateHolder holder = (X509CertificateHolder)object;
+          JcaX509CertificateConverter converter = new JcaX509CertificateConverter();
+          return converter.getCertificate(holder);
         }
       }
       catch (IOException e) {
@@ -186,19 +190,16 @@ public final class CertificateUtil
   /**
    * Calculates the SHA1 of a Certificate.
    */
-  public static String calculateSha1(final Certificate certificate)
-      throws CertificateEncodingException
-  {
+  public static String calculateSha1(final Certificate certificate) throws CertificateEncodingException {
     checkNotNull(certificate);
-    return DigesterUtils.getSha1Digest(certificate.getEncoded()).toUpperCase();
+    return Hashing.sha1().hashBytes(certificate.getEncoded()).toString().toUpperCase(Locale.US);
   }
 
   /**
-   * Calculates the SHA1 of a Certificate and formats for readability, such as <code>64:C4:44:A9:02:F7:F0:02:16:AA:C3:43:0B:BF:ED:44:C8:81:87:CD<code/>.
+   * Calculates the SHA1 of a Certificate and formats for readability,
+   * such as {@code 64:C4:44:A9:02:F7:F0:02:16:AA:C3:43:0B:BF:ED:44:C8:81:87:CD}.
    */
-  public static String calculateFingerprint(final Certificate certificate)
-      throws CertificateEncodingException
-  {
+  public static String calculateFingerprint(final Certificate certificate) throws CertificateEncodingException {
     String sha1Hash = calculateSha1(certificate);
     return encode(sha1Hash, ':', 2);
   }
@@ -217,5 +218,4 @@ public final class CertificateUtil
 
     return buff.toString();
   }
-
 }

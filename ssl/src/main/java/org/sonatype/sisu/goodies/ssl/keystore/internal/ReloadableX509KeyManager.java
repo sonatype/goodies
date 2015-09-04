@@ -22,8 +22,9 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.X509KeyManager;
 
 /**
- * A X509KeyManager that will can be updated.  The default implementation is not updated when changes made to a
- * keystore.
+ * A X509KeyManager that will can be updated.
+ *
+ * The default implementation is not updated when changes made to a keystore.
  *
  * @see ReloadableX509TrustManager
  * @since 1.6
@@ -31,7 +32,6 @@ import javax.net.ssl.X509KeyManager;
 public class ReloadableX509KeyManager
     implements X509KeyManager
 {
-
   private X509KeyManager delegateKeyManager;
 
   /**
@@ -118,5 +118,4 @@ public class ReloadableX509KeyManager
 
     throw new NoSuchAlgorithmException("No X509KeyManager found in KeyManager[]");
   }
-
 }

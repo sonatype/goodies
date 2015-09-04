@@ -14,7 +14,7 @@ package org.sonatype.sisu.goodies.ssl.keystore;
 
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateParsingException;
+import java.security.cert.CertificateException;
 import java.util.Collection;
 
 import javax.net.ssl.KeyManager;
@@ -27,22 +27,19 @@ import javax.net.ssl.TrustManager;
  */
 public interface KeyStoreManager
 {
-
   /**
    * Returns an array of TrustManager that represents all client certificates that can connect.
    *
    * @throws KeystoreException thrown if the array of TrustManagers cannot be created
    */
-  TrustManager[] getTrustManagers()
-      throws KeystoreException;
+  TrustManager[] getTrustManagers() throws KeystoreException;
 
   /**
    * Returns an array of KeyManagers used to handle the authentication with the remote peers.
    *
    * @throws KeystoreException thrown if the array of KeyManagers cannot be created
    */
-  KeyManager[] getKeyManagers()
-      throws KeystoreException;
+  KeyManager[] getKeyManagers() throws KeystoreException;
 
   /**
    * Imports a clients public key that will be allowed to connect.
@@ -51,8 +48,7 @@ public interface KeyStoreManager
    * @param alias       the alias of the public key
    * @throws KeystoreException thrown if the certificate cannot be imported.
    */
-  void importTrustCertificate(Certificate certificate, String alias)
-      throws KeystoreException;
+  void importTrustCertificate(Certificate certificate, String alias) throws KeystoreException;
 
   /**
    * Imports a clients public key that will be allowed to connect.
@@ -63,8 +59,7 @@ public interface KeyStoreManager
    * @throws java.security.cert.CertificateParsingException
    *                           thrown if the PEM formatted string cannot be parsed into a certificate.
    */
-  void importTrustCertificate(String certificateInPEM, String alias)
-      throws KeystoreException, CertificateParsingException;
+  void importTrustCertificate(String certificateInPEM, String alias) throws KeystoreException, CertificateException;
 
   /**
    * Returns a Certificate by an alias, that was previously stored in the keystore.
@@ -74,16 +69,14 @@ public interface KeyStoreManager
    * @throws KeyNotFoundException thrown if a certificate with the given alias is not found.
    * @throws KeystoreException    thrown if there is a problem retrieving the certificate.
    */
-  Certificate getTrustedCertificate(String alias)
-      throws KeystoreException;
+  Certificate getTrustedCertificate(String alias) throws KeystoreException;
 
   /**
    * Returns a collection of trusted certificates.
    *
    * @throws KeystoreException thrown if there is a problem opening the keystore.
    */
-  Collection<Certificate> getTrustedCertificates()
-      throws KeystoreException;
+  Collection<Certificate> getTrustedCertificates() throws KeystoreException;
 
   /**
    * Removes a trusted certificate from the store.  Calling this method with an alias that does NOT exist will not
@@ -92,8 +85,7 @@ public interface KeyStoreManager
    * @param alias the alias of the certificate to be removed.
    * @throws KeystoreException thrown if the certificate by this alias cannot be removed or does not exist.
    */
-  void removeTrustCertificate(String alias)
-      throws KeystoreException;
+  void removeTrustCertificate(String alias) throws KeystoreException;
 
   /**
    * Generates and stores a key pair used for authenticating remote clients.
@@ -106,8 +98,11 @@ public interface KeyStoreManager
    * @param country            two letter country code.
    * @throws KeystoreException thrown if the key pair cannot be created.
    */
-  void generateAndStoreKeyPair(String commonName, String organizationalUnit,
-                               String organization, String locality, String state,
+  void generateAndStoreKeyPair(String commonName,
+                               String organizationalUnit,
+                               String organization,
+                               String locality,
+                               String state,
                                String country)
       throws KeystoreException;
 
@@ -122,8 +117,7 @@ public interface KeyStoreManager
    *
    * @throws KeystoreException thrown when the certificate has not been created.
    */
-  Certificate getCertificate()
-      throws KeystoreException;
+  Certificate getCertificate() throws KeystoreException;
 
   /**
    * Removes the private key from the KeyStore.
@@ -131,9 +125,7 @@ public interface KeyStoreManager
    * @throws KeystoreException thrown if the KeyStore has not been initialized, the key could not be found, or an
    *                           error updating the KeyStore.
    */
-  void removePrivateKey()
-      throws KeystoreException;
+  void removePrivateKey() throws KeystoreException;
 
-  PrivateKey getPrivateKey()
-      throws KeystoreException;
+  PrivateKey getPrivateKey() throws KeystoreException;
 }

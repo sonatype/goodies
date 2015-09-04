@@ -20,9 +20,10 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * A X509TrustManager that will can be updated.  The default implementation is not updated when changes made to a
- * keystore.
- * <p/>
+ * A X509TrustManager that will can be updated.
+ *
+ * The default implementation is not updated when changes made to a keystore.
+ *
  * Based on work from: http://jcalcote.wordpress.com/2010/06/22/managing-a-dynamic-java-trust-store/
  *
  * @since 1.6
@@ -30,7 +31,6 @@ import javax.net.ssl.X509TrustManager;
 public class ReloadableX509TrustManager
     implements X509TrustManager
 {
-
   private X509TrustManager delegateTrustManager;
 
   /**
@@ -106,5 +106,4 @@ public class ReloadableX509TrustManager
 
     throw new NoSuchAlgorithmException("No X509TrustManager found in TrustManager[]");
   }
-
 }

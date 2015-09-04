@@ -31,7 +31,6 @@ public class KeyStoreManagerConfigurationSupport
     extends ComponentSupport
     implements KeyStoreManagerConfiguration
 {
-
   private static final String DEFAULT = "DEFAULT";
 
   private File baseDir;
@@ -199,5 +198,4 @@ public class KeyStoreManagerConfigurationSupport
         ", trustManagerAlgorithm='" + trustManagerAlgorithm + '\'' +
         '}';
   }
-
 }
