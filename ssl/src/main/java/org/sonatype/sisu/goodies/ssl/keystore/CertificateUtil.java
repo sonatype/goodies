@@ -36,7 +36,6 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
@@ -114,7 +113,7 @@ public final class CertificateUtil
       order.add(X509Name.C);
     }
 
-    X509Principal issuerDN = new X509Principal(order, attributeMap);
+    X509Name issuerDN = new X509Name(order, attributeMap);
 
     // validity
     long now = System.currentTimeMillis();
@@ -126,7 +125,7 @@ public final class CertificateUtil
     certificateGenerator.setSubjectDN(issuerDN);
     certificateGenerator.setPublicKey(publicKey);
     certificateGenerator.setSignatureAlgorithm(algorithm);
-    certificateGenerator.setSerialNumber(new BigInteger(String.valueOf(now)));
+    certificateGenerator.setSerialNumber(BigInteger.valueOf(now));
 
     // make certificate
     return certificateGenerator.generate(privateKey);
