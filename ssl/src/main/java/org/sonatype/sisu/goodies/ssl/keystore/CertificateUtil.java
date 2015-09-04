@@ -139,13 +139,12 @@ public final class CertificateUtil
    * @return the certificate in PEM format
    * @throws java.io.IOException thrown if the certificate cannot be converted into the PEM format.
    */
-  public static String serializeCertificateInPEM(Certificate certificate) throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
-    pemWriter.writeObject(certificate);
-    pemWriter.close();
-
-    return stringWriter.toString();
+  public static String serializeCertificateInPEM(final Certificate certificate) throws IOException {
+    StringWriter buff = new StringWriter();
+    try (JcaPEMWriter writer = new JcaPEMWriter(buff)) {
+      writer.writeObject(certificate);
+    }
+    return buff.toString();
   }
 
   /**
@@ -156,7 +155,7 @@ public final class CertificateUtil
    * @throws java.security.cert.CertificateParsingException
    *          thrown if the PEM formatted string cannot be parsed into a Certificate.
    */
-  public static Certificate decodePEMFormattedCertificate(String pemFormattedCertificate)
+  public static Certificate decodePEMFormattedCertificate(final String pemFormattedCertificate)
       throws CertificateException
   {
     log.trace("Parsing PEM formatted certificate string:\n{}", pemFormattedCertificate);
