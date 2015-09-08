@@ -22,8 +22,9 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.X509KeyManager;
 
 /**
- * A X509KeyManager that will can be updated.  The default implementation is not updated when changes made to a
- * keystore.
+ * A X509KeyManager that will can be updated.
+ *
+ * The default implementation is not updated when changes made to a keystore.
  *
  * @see ReloadableX509TrustManager
  * @since 1.6
@@ -31,7 +32,6 @@ import javax.net.ssl.X509KeyManager;
 public class ReloadableX509KeyManager
     implements X509KeyManager
 {
-
   private X509KeyManager delegateKeyManager;
 
   /**
@@ -39,27 +39,27 @@ public class ReloadableX509KeyManager
    *
    * @param delegateKeyManager the X509KeyManager to delegate calls to.
    */
-  private ReloadableX509KeyManager(X509KeyManager delegateKeyManager) {
+  private ReloadableX509KeyManager(final X509KeyManager delegateKeyManager) {
     this.setDelegateKeyManager(delegateKeyManager);
   }
 
   @Override
-  public String[] getClientAliases(String s, Principal[] principals) {
+  public String[] getClientAliases(final String s, final Principal[] principals) {
     return delegateKeyManager.getClientAliases(s, principals);
   }
 
   @Override
-  public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
+  public String chooseClientAlias(final String[] strings, final Principal[] principals, final Socket socket) {
     return delegateKeyManager.chooseClientAlias(strings, principals, socket);
   }
 
   @Override
-  public String[] getServerAliases(String s, Principal[] principals) {
+  public String[] getServerAliases(final String s, final Principal[] principals) {
     return delegateKeyManager.getServerAliases(s, principals);
   }
 
   @Override
-  public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
+  public String chooseServerAlias(final String s, final Principal[] principals, final Socket socket) {
     return delegateKeyManager.chooseServerAlias(s, principals, socket);
   }
 
@@ -78,7 +78,7 @@ public class ReloadableX509KeyManager
    *
    * @param delegateKeyManager the X509KeyManager which will be used to delegate calls to.
    */
-  private void setDelegateKeyManager(X509KeyManager delegateKeyManager) {
+  private void setDelegateKeyManager(final X509KeyManager delegateKeyManager) {
     this.delegateKeyManager = delegateKeyManager;
   }
 
@@ -94,8 +94,8 @@ public class ReloadableX509KeyManager
    * @throws IllegalStateException thrown if a ReloadableX509KeyManager is found in the array.
    */
   public static ReloadableX509KeyManager replaceX509KeyManager(ReloadableX509KeyManager reloadableX509KeyManager,
-                                                               KeyManager[] KeyManagers)
-      throws NoSuchAlgorithmException, IllegalStateException
+                                                               final KeyManager[] KeyManagers)
+      throws NoSuchAlgorithmException
   {
     for (int ii = 0; ii < KeyManagers.length; ii++) {
       if (ReloadableX509KeyManager.class.isInstance(KeyManagers[ii])) {
@@ -118,5 +118,4 @@ public class ReloadableX509KeyManager
 
     throw new NoSuchAlgorithmException("No X509KeyManager found in KeyManager[]");
   }
-
 }

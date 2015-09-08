@@ -16,7 +16,7 @@ import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateParsingException;
+import java.security.cert.CertificateException;
 import java.util.Collection;
 import java.util.List;
 
@@ -40,7 +40,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * An implementation of a {@link KeyStoreManager} that stores the trusted certificates and
  * public/private key used for authentication in different key-stores.
- * <p/>
+ *
  * Current key-store implementation appears to NOT to have case-sensitive alias support (ie. "myKey" = "mykey").
  *
  * @since 1.6
@@ -49,7 +49,6 @@ public class KeyStoreManagerImpl
     extends ComponentSupport
     implements KeyStoreManager
 {
-
   private static final String PRIVATE_KEY_STORE_NAME = "private.ks";
 
   private static final String TRUSTED_KEY_STORE_NAME = "trusted.ks";
@@ -186,7 +185,8 @@ public class KeyStoreManagerImpl
         log.warn("Trusted key-store should have been empty when initialized but was not");
       }
     }
-    catch (KeystoreException ignore) {
+    catch (KeystoreException e) {
+      // ignore
     }
 
     log.debug("Trusted key-store initialized");
@@ -215,9 +215,7 @@ public class KeyStoreManagerImpl
   }
 
   @Override
-  public TrustManager[] getTrustManagers()
-      throws KeystoreException
-  {
+  public TrustManager[] getTrustManagers() throws KeystoreException {
     TrustManager[] trustManagers = trustedKeyStore.getTrustManager(config.getTrustManagerAlgorithm(),
         config.getTrustedKeyStorePassword());
 
@@ -234,9 +232,7 @@ public class KeyStoreManagerImpl
   }
 
   @Override
-  public KeyManager[] getKeyManagers()
-      throws KeystoreException
-  {
+  public KeyManager[] getKeyManagers() throws KeystoreException {
     KeyManager[] keyManagers = privateKeyStore.getKeyManager(config.getKeyManagerAlgorithm(), PRIVATE_KEY_ALIAS,
         config.getPrivateKeyStorePassword());
 
@@ -253,9 +249,7 @@ public class KeyStoreManagerImpl
   }
 
   @Override
-  public void importTrustCertificate(Certificate certificate, String alias)
-      throws KeystoreException
-  {
+  public void importTrustCertificate(Certificate certificate, String alias) throws KeystoreException {
     log.debug("Importing trust certificate w/alias: {}", alias);
 
     if (trustedKeyStore.getCertificate(alias) != null) {
@@ -273,8 +267,7 @@ public class KeyStoreManagerImpl
 
   @Override
   public void importTrustCertificate(String certificateInPEM, String alias)
-      throws KeystoreException,
-             CertificateParsingException
+      throws KeystoreException, CertificateException
   {
     // parse the cert
     Certificate certificate = CertificateUtil.decodePEMFormattedCertificate(certificateInPEM);
@@ -283,27 +276,21 @@ public class KeyStoreManagerImpl
   }
 
   @Override
-  public Certificate getTrustedCertificate(String alias)
-      throws KeystoreException
-  {
+  public Certificate getTrustedCertificate(String alias) throws KeystoreException {
     return trustedKeyStore.getCertificate(
         checkNotNull(alias, "'alias' cannot be null when looking up a trusted Certificate."), //NON-NLS
         config.getTrustedKeyStorePassword());
   }
 
   @Override
-  public Collection<Certificate> getTrustedCertificates()
-      throws KeystoreException
-  {
+  public Collection<Certificate> getTrustedCertificates() throws KeystoreException {
     String[] aliases = trustedKeyStore.listTrustCertificates(config.getTrustedKeyStorePassword());
     List<Certificate> certificates = Lists.newArrayListWithCapacity(aliases.length);
     for (String alias : aliases) {
       Certificate cert = trustedKeyStore.getCertificate(alias);
       // FIXME: Work around some strange case not clear why, but alias is reported for non-existent/removed certs
       if (cert == null) {
-        log.warn(
-            "Trust-store reports it contains certificate for alias '{}' but certificate is null", alias
-        );
+        log.warn("Trust-store reports it contains certificate for alias '{}' but certificate is null", alias);
         continue;
       }
       certificates.add(cert);
@@ -313,9 +300,7 @@ public class KeyStoreManagerImpl
   }
 
   @Override
-  public void removeTrustCertificate(String alias)
-      throws KeystoreException
-  {
+  public void removeTrustCertificate(String alias) throws KeystoreException {
     log.debug("Removing trust certificate w/alias: {}", alias);
 
     trustedKeyStore.deleteEntry(alias, config.getTrustedKeyStorePassword());
@@ -327,8 +312,12 @@ public class KeyStoreManagerImpl
   }
 
   @Override
-  public void generateAndStoreKeyPair(String commonName, String organizationalUnit, String organization,
-                                      String locality, String state, String country)
+  public void generateAndStoreKeyPair(final String commonName,
+                                      final String organizationalUnit,
+                                      final String organization,
+                                      final String locality,
+                                      final String state,
+                                      final String country)
       throws KeystoreException
   {
     privateKeyStore.generateKeyPair(PRIVATE_KEY_ALIAS,
@@ -366,25 +355,18 @@ public class KeyStoreManagerImpl
   }
 
   @Override
-  public Certificate getCertificate()
-      throws KeystoreException
-  {
+  public Certificate getCertificate() throws KeystoreException {
     return privateKeyStore.getCertificate(PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword());
   }
 
   @Override
-  public PrivateKey getPrivateKey()
-      throws KeystoreException
-  {
+  public PrivateKey getPrivateKey() throws KeystoreException {
     return privateKeyStore.getPrivateKey(PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword(),
         config.getPrivateKeyPassword());
   }
 
   @Override
-  public void removePrivateKey()
-      throws KeystoreException
-  {
+  public void removePrivateKey() throws KeystoreException {
     privateKeyStore.deleteEntry(PRIVATE_KEY_ALIAS, config.getPrivateKeyStorePassword());
   }
-
 }

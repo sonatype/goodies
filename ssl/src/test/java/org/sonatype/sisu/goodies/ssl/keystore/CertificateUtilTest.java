@@ -31,8 +31,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class CertificateUtilTest
     extends TestSupport
 {
-
-  public static final String NL = System.getProperty("line.separator");
+  private static final String NL = System.lineSeparator();
 
   // Need to use platform NL here for compatibility
   private final String CERT_IN_PEM =
@@ -62,9 +61,7 @@ public class CertificateUtilTest
    * Tests a Certificate can be decoded then serialized and end up with the same result.
    */
   @Test
-  public void testMarshalPEMFormat()
-      throws Exception
-  {
+  public void testMarshalPEMFormat() throws Exception {
     Certificate certificate = CertificateUtil.decodePEMFormattedCertificate(CERT_IN_PEM);
     assertThat(CertificateUtil.serializeCertificateInPEM(certificate).trim(), equalTo(CERT_IN_PEM));
   }
@@ -73,9 +70,7 @@ public class CertificateUtilTest
    * Tests calculating a fingerprint for a Certificate.
    */
   @Test
-  public void testCalculateFingerPrint()
-      throws Exception
-  {
+  public void testCalculateFingerPrint() throws Exception {
     Certificate certificate = CertificateUtil.decodePEMFormattedCertificate(CERT_IN_PEM);
     String actualFingerPrint = CertificateUtil.calculateFingerprint(certificate);
     assertThat(actualFingerPrint, equalTo(SHA_CERT_FINGERPRINT));

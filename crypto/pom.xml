@@ -28,7 +28,7 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <bouncycastle.version>1.49</bouncycastle.version>
+    <bouncycastle.version>1.52</bouncycastle.version>
   </properties>
 
   <dependencies>

@@ -18,14 +18,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.SignatureException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -86,9 +82,7 @@ public class KeyStoreManagerImplTest
   private KeyStoreManager keyStoreManager;
 
   @Before
-  public void setUp()
-      throws Exception
-  {
+  public void setUp() throws Exception {
     keyStoreManager = createKeyStoreManager(keyStoreDir);
   }
 
@@ -115,9 +109,7 @@ public class KeyStoreManagerImplTest
   }
 
   @Test
-  public void testPrefixes()
-      throws Exception
-  {
+  public void testPrefixes() throws Exception {
     assertThat(new File(keyStoreDir, "private.ks"), FileMatchers.exists());
     assertThat(new File(keyStoreDir, "trusted.ks"), FileMatchers.exists());
 
@@ -131,9 +123,7 @@ public class KeyStoreManagerImplTest
    * Verifies a KeyPair is generated and added to the keyManager.
    */
   @Test
-  public void testKeyPairGeneration()
-      throws Exception
-  {
+  public void testKeyPairGeneration() throws Exception {
     // create the key pair
     keyStoreManager.generateAndStoreKeyPair("Joe Coder", "dev", "codeSoft", "AnyTown", "state", "US");
 
@@ -158,9 +148,7 @@ public class KeyStoreManagerImplTest
    * Tests recreating the key pair will update the KeyManager.
    */
   @Test
-  public void testReKeyPairGeneration()
-      throws Exception
-  {
+  public void testReKeyPairGeneration() throws Exception {
     // create the key pair
     keyStoreManager.generateAndStoreKeyPair("Original Key", "dev", "codeSoft", "AnyTown", "state", "US");
 
@@ -183,13 +171,10 @@ public class KeyStoreManagerImplTest
     assertThat(
         ((X509KeyManager) newKeyManagers[0]).getCertificateChain(PRIVATE_KEY_ALIAS)[0].getSubjectDN().getName(),
         equalTo(expectedDN));
-
   }
 
   @Test
-  public void testEmptyPrincipalAttributes()
-      throws Exception
-  {
+  public void testEmptyPrincipalAttributes() throws Exception {
     // create the key pair
     keyStoreManager.generateAndStoreKeyPair(null, null, null, null, null, null);
 
@@ -207,9 +192,7 @@ public class KeyStoreManagerImplTest
    * Verifies a certificate is added to the TrustManager.
    */
   @Test
-  public void testAddTrustedCertificate()
-      throws Exception
-  {
+  public void testAddTrustedCertificate() throws Exception {
     // create the key pair
     keyStoreManager.generateAndStoreKeyPair("Joe Coder", "dev", "codeSoft", "AnyTown", "state", "US");
 
@@ -233,9 +216,7 @@ public class KeyStoreManagerImplTest
    * TrustManager has been updated.
    */
   @Test
-  public void testUpdateTrustedCertificate()
-      throws Exception
-  {
+  public void testUpdateTrustedCertificate() throws Exception {
     // create the key pair
     keyStoreManager.generateAndStoreKeyPair("Joe Coder", "dev", "codeSoft", "AnyTown", "state", "US");
 
@@ -275,9 +256,7 @@ public class KeyStoreManagerImplTest
    * Verifies an empty alias throws a KeyNotFoundException.
    */
   @Test(expected = KeyNotFoundException.class)
-  public void testGetTrustedCertificateEmptyAlias()
-      throws Exception
-  {
+  public void testGetTrustedCertificateEmptyAlias() throws Exception {
     keyStoreManager.getTrustedCertificate("");
   }
 
@@ -285,9 +264,7 @@ public class KeyStoreManagerImplTest
    * Verifies an blank (" ") alias throws a KeyNotFoundException.
    */
   @Test(expected = KeyNotFoundException.class)
-  public void testGetTrustedCertificateBlankAlias()
-      throws Exception
-  {
+  public void testGetTrustedCertificateBlankAlias() throws Exception {
     keyStoreManager.getTrustedCertificate(" ");
   }
 
@@ -296,9 +273,7 @@ public class KeyStoreManagerImplTest
    * valid cert in the keystore.
    */
   @Test(expected = KeyNotFoundException.class)
-  public void testGetTrustedCertificateNonExistentAlias()
-      throws Exception
-  {
+  public void testGetTrustedCertificateNonExistentAlias() throws Exception {
     X509Certificate certificate =
         generateCertificate(10, "Foo Bar", "other-org-unit", "other-org", "other-locality", "other-state",
             "other-country");
@@ -311,9 +286,7 @@ public class KeyStoreManagerImplTest
    * Tests initial condition returns an empty array of Certificates
    */
   @Test
-  public void testGetTrustedCertificatesEmpty()
-      throws Exception
-  {
+  public void testGetTrustedCertificatesEmpty() throws Exception {
     Collection<Certificate> certificates = keyStoreManager.getTrustedCertificates();
     assertNotNull(certificates);
     assertTrue(certificates.isEmpty());
@@ -323,9 +296,7 @@ public class KeyStoreManagerImplTest
    * Verifies the expected trusted certificates are returned when getTrustedCertificate is called.
    */
   @Test
-  public void testGetTrustedCertificates()
-      throws Exception
-  {
+  public void testGetTrustedCertificates() throws Exception {
     X509Certificate certificate1 =
         generateCertificate(10, "Cert One", "other-org-unit", "other-org", "other-locality", "other-state",
             "other-country");
@@ -347,9 +318,7 @@ public class KeyStoreManagerImplTest
    * Verifies removing an certificate by an alias that does not exist, does NOT throw an Exception.
    */
   @Test
-  public void testRemoveCertificateDoesNotExist()
-      throws Exception
-  {
+  public void testRemoveCertificateDoesNotExist() throws Exception {
     // nothing much to do here, just call and expect it not to fail
     keyStoreManager.removeTrustCertificate("does-not-exist");
   }
@@ -358,9 +327,7 @@ public class KeyStoreManagerImplTest
    * Tests removing a certificate, and that the cert has been removed from the TrustManager
    */
   @Test
-  public void testRemoveCertificate()
-      throws Exception
-  {
+  public void testRemoveCertificate() throws Exception {
     X509Certificate certificate =
         generateCertificate(10, "Delete Me", "other-org-unit", "other-org", "other-locality", "other-state",
             "other-country");
@@ -391,9 +358,7 @@ public class KeyStoreManagerImplTest
    * Tests the import of a certificate in pem format
    */
   @Test
-  public void testImportCertificateInPEMFormat()
-      throws Exception
-  {
+  public void testImportCertificateInPEMFormat() throws Exception {
     // create the key pair
     keyStoreManager.generateAndStoreKeyPair("Joe Coder", "dev", "codeSoft", "AnyTown", "state", "US");
 
@@ -416,9 +381,7 @@ public class KeyStoreManagerImplTest
   }
 
   @Test
-  public void importCertificateWithDuplicateAliasReplacePrevious()
-      throws Exception
-  {
+  public void importCertificateWithDuplicateAliasReplacePrevious() throws Exception {
     keyStoreManager.generateAndStoreKeyPair("Joe Coder", "dev", "codeSoft", "AnyTown", "state", "US");
     X509Certificate cert1 = generateCertificate(10, "a", "b", "c", "d", "e", "f");
     String cert1Pem = CertificateUtil.serializeCertificateInPEM(cert1);
@@ -441,23 +404,17 @@ public class KeyStoreManagerImplTest
   }
 
   @Test(expected = CertificateParsingException.class)
-  public void testImportEmptyPEMString()
-      throws Exception
-  {
+  public void testImportEmptyPEMString() throws Exception {
     keyStoreManager.importTrustCertificate("", "empty-cert-alias");
   }
 
   @Test(expected = CertificateParsingException.class)
-  public void testImportBlankPEMString()
-      throws Exception
-  {
+  public void testImportBlankPEMString() throws Exception {
     keyStoreManager.importTrustCertificate(" ", "empty-cert-alias");
   }
 
   @Test(expected = CertificateParsingException.class)
-  public void testImportNullPEMString()
-      throws Exception
-  {
+  public void testImportNullPEMString() throws Exception {
     keyStoreManager.importTrustCertificate((String) null, "empty-cert-alias");
   }
 
@@ -466,9 +423,7 @@ public class KeyStoreManagerImplTest
    * is created.
    */
   @Test
-  public void testIsKeyPairInitialized()
-      throws Exception
-  {
+  public void testIsKeyPairInitialized() throws Exception {
     // expect false
     assertThat("Expected false after creating a new (empty) KeyStoreManager",
         !keyStoreManager.isKeyPairInitialized());
@@ -482,17 +437,13 @@ public class KeyStoreManagerImplTest
     // now create a new KeyStoreManager using the same directory, isKeyPairInitialized should return true
     assertThat("Expected true after loading an existing KeystoreManager",
         createKeyStoreManager(keyStoreDir).isKeyPairInitialized());
-
   }
 
   /**
    * Verify that the Server and Client TrustManagers will trust each other.
    */
   @Test
-  public void testServerAndClientTrustManagers()
-      throws Exception
-  {
-
+  public void testServerAndClientTrustManagers() throws Exception {
     File serverSideKeyStoreDir = new File(keyStoreDir, "testSSLConnection/serverSideKeyStores/");
     File clientSideKeyStoreDir = new File(keyStoreDir, "testSSLConnection/clientSideKeyStores/");
 
@@ -519,12 +470,16 @@ public class KeyStoreManagerImplTest
 
     // verify the client trusts the server
     clientTrustManager.checkServerTrusted(new X509Certificate[]{(X509Certificate) serverCertificate}, "TLS");
-
   }
 
-  private X509Certificate generateCertificate(int validity, String commonName, String orgUnit, String organization,
-                                              String locality, String state, String country)
-      throws SignatureException, InvalidKeyException, NoSuchAlgorithmException, CertificateEncodingException
+  private X509Certificate generateCertificate(int validity,
+                                              String commonName,
+                                              String orgUnit,
+                                              String organization,
+                                              String locality,
+                                              String state,
+                                              String country)
+      throws Exception
   {
     KeyPairGenerator kpgen = KeyPairGenerator.getInstance("RSA");
     kpgen.initialize(512);
@@ -538,9 +493,7 @@ public class KeyStoreManagerImplTest
    * Tests an SSLContext (created with input from the KeyStoreManager) can be used to with an SSLServerSocketFactory
    */
   @Test
-  public void testSSLConnection()
-      throws Exception
-  {
+  public void testSSLConnection() throws Exception {
     // first setup the keystores
     KeyStoreManager serverKeyStoreManager =
         createKeyStoreManager(new File(keyStoreDir, "testSSLConnection/serverKeyStore"));
@@ -652,7 +605,6 @@ public class KeyStoreManagerImplTest
   class SSLServerThread
       extends Thread
   {
-
     private final SSLServerSocket sslServerSocket;
 
     private final List<String> results;
@@ -684,5 +636,4 @@ public class KeyStoreManagerImplTest
       }
     }
   }
-
 }
