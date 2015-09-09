@@ -17,8 +17,6 @@ import org.sonatype.sisu.goodies.common.Mutex;
 
 import org.slf4j.Logger;
 
-import static org.sonatype.sisu.goodies.lifecycle.Starter.start;
-
 /**
  * Manages a shutdown hook to trigger {@link Lifecycle#stop} on all registered components.
  *
@@ -48,7 +46,7 @@ public class LifecycleShutdownManager
       }
     };
     // need to begin in started state
-    start(lifecycles);
+    Lifecycles.start(lifecycles);
   }
 
   private void install() {
