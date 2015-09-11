@@ -12,10 +12,10 @@
  */
 package org.sonatype.goodies.lifecycle;
 
+import org.sonatype.goodies.common.ComponentSupport;
+import org.sonatype.goodies.common.Mutex;
 import org.sonatype.goodies.lifecycle.LifecycleHandlerContext.MainMap;
 import org.sonatype.gossip.Level;
-import org.sonatype.sisu.goodies.common.ComponentSupport;
-import org.sonatype.sisu.goodies.common.Mutex;
 
 import com.google.common.base.Throwables;
 

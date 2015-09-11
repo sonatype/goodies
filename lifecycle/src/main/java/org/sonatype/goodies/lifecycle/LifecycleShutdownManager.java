@@ -12,8 +12,8 @@
  */
 package org.sonatype.goodies.lifecycle;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
-import org.sonatype.sisu.goodies.common.Mutex;
+import org.sonatype.goodies.common.ComponentSupport;
+import org.sonatype.goodies.common.Mutex;
 
 import org.slf4j.Logger;
 

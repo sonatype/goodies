@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 
 import javax.annotation.Nullable;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
+import org.sonatype.goodies.common.ComponentSupport;
 
 import com.google.common.collect.Lists;
 

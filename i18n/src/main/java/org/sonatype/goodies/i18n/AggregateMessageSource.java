@@ -15,7 +15,7 @@ package org.sonatype.goodies.i18n;
 import java.util.Arrays;
 import java.util.List;
 
-import org.sonatype.sisu.goodies.common.ComponentSupport;
+import org.sonatype.goodies.common.ComponentSupport;
 
 import com.google.common.collect.Lists;
 
