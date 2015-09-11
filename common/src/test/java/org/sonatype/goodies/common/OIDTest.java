@@ -14,7 +14,7 @@ package org.sonatype.goodies.common;
 
 import java.util.Arrays;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 

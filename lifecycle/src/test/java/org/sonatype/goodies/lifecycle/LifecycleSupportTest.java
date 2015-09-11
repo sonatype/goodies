@@ -14,7 +14,7 @@ package org.sonatype.goodies.lifecycle;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 

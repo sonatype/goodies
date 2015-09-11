@@ -12,7 +12,7 @@
  */
 package org.sonatype.goodies.prefs.memory;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.goodies.testsupport.TestSupport;
 
 import org.junit.Before;
 import org.junit.Test;
