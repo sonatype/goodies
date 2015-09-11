@@ -10,15 +10,15 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.i18n;
+package org.sonatype.goodies.i18n;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.sonatype.goodies.i18n.MessageBundle.DefaultMessage;
+import org.sonatype.goodies.i18n.MessageBundle.Key;
 import org.sonatype.sisu.goodies.common.TestAccessible;
-import org.sonatype.sisu.goodies.i18n.MessageBundle.DefaultMessage;
-import org.sonatype.sisu.goodies.i18n.MessageBundle.Key;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
