@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  * To configure set system property:
  *
- * {@code java.util.prefs.PreferencesFactory=org.sonatype.sisu.goodies.prefs.memory.MemoryPreferencesFactory}
+ * {@code java.util.prefs.PreferencesFactory=org.sonatype.goodies.prefs.memory.MemoryPreferencesFactory}
  *
  * @since 1.5
  */
