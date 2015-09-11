@@ -18,8 +18,8 @@ import java.lang.reflect.Proxy;
 
 import org.sonatype.goodies.i18n.MessageBundle.DefaultMessage;
 import org.sonatype.goodies.i18n.MessageBundle.Key;
-import org.sonatype.sisu.goodies.common.TestAccessible;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class I18N
 {
   private static final Logger log = LoggerFactory.getLogger(I18N.class);
 
-  @TestAccessible
+  @VisibleForTesting
   static final String MISSING_MESSAGE_FORMAT = "ERROR_MISSING_MESSAGE[%s]"; //NON-NLS
 
   private I18N() {
