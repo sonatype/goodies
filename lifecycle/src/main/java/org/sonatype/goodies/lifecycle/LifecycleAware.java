@@ -10,28 +10,14 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.lifecycle;
+package org.sonatype.goodies.lifecycle;
 
 /**
- * Live-cycle state-machine handler.
- *
- * This is the interface exposed to the generated state-machine for hooking up to custom behavior.
+ * Interface for components that are aware of their {@link Lifecycle}.
  *
  * @since 1.0
  */
-public interface LifecycleHandler
+public interface LifecycleAware
 {
-  void log(String message);
-
-  void doStart();
-
-  void doStop();
-
-  boolean isFailed();
-
-  void doFailed();
-
-  boolean isResettable();
-
-  void doReset();
+  Lifecycle getLifecycle();
 }

@@ -10,14 +10,17 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.lifecycle;
+package org.sonatype.goodies.lifecycle;
 
 /**
- * Interface for components that are aware of their {@link Lifecycle}.
+ * Component life-cycle.
  *
  * @since 1.0
  */
-public interface LifecycleAware
+public interface Lifecycle
+    extends LifecycleAware
 {
-  Lifecycle getLifecycle();
+  void start() throws Exception;
+
+  void stop() throws Exception;
 }
