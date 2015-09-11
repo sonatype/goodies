@@ -27,8 +27,6 @@ import java.util.Properties;
 
 import javax.annotation.Nullable;
 
-import org.sonatype.sisu.goodies.common.io.Closer;
-
 import com.google.common.collect.Lists;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -60,13 +58,8 @@ public class Properties2
     checkNotNull(url);
 
     Properties result = new Properties();
-    Reader reader = null;
-    try {
-      reader = new BufferedReader(new InputStreamReader(url.openStream()));
+    try (Reader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
       result.load(reader);
-    }
-    finally {
-      Closer.close(reader);
     }
     return result;
   }
