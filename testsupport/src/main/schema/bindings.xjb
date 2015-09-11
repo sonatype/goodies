@@ -29,7 +29,7 @@
 
     <bindings schemaLocation="index.xsd" node="/xsd:schema">
         <schemaBindings>
-            <package name="org.sonatype.sisu.litmus.testsupport.junit.index"/>
+            <package name="org.sonatype.goodies.testsupport.junit.index"/>
             <nameXmlTransform>
                 <elementName suffix="XO"/>
                 <typeName suffix="XO"/>
