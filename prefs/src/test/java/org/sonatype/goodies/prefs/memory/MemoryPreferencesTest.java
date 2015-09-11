@@ -10,9 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.sisu.goodies.prefs.memory;
-
-import java.util.prefs.Preferences;
+package org.sonatype.goodies.prefs.memory;
 
 import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
@@ -20,39 +18,32 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * Tests for {@link MemoryPreferencesFactory}.
+ * Tests for {@link MemoryPreferences}.
  */
-public class MemoryPreferencesFactoryTest
+public class MemoryPreferencesTest
     extends TestSupport
 {
-  private MemoryPreferencesFactory factory;
+  private MemoryPreferences root;
 
   @Before
   public void setUp() throws Exception {
-    factory = new MemoryPreferencesFactory();
+    root = new MemoryPreferences();
   }
 
   @Test
-  public void getSystemRoot() {
-    Preferences pref = factory.systemRoot();
-    assertThat(pref, notNullValue());
-    assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
-
-    // should return same instance
-    assertThat(pref, is(factory.systemRoot()));
-  }
-
-  @Test
-  public void getUserRoot() {
-    Preferences pref = factory.userRoot();
-    assertThat(pref, notNullValue());
-    assertThat(pref.name(), is(MemoryPreferences.ROOT_NAME));
-
-    // should return same instance
-    assertThat(pref, is(factory.userRoot()));
+  public void getSetRemoveValue() {
+    String key = "foo";
+    String value = root.get(key, null);
+    assertThat(value, nullValue());
+    root.put(key, "bar");
+    value = root.get(key, null);
+    assertThat(value, is("bar"));
+    root.remove(key);
+    value = root.get(key, null);
+    assertThat(value, nullValue());
   }
 }
