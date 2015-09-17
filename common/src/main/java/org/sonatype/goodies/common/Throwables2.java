@@ -14,8 +14,6 @@ package org.sonatype.goodies.common;
 
 import java.util.Collection;
 
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -56,14 +54,9 @@ public final class Throwables2
     }
   }
 
-  // FIXME: This requires Java7 API, but goodies is presently Java6.
-  // FIXME: This should compile to Java6 bytecode w/o any problems and can used on a Java7 JRE.
-  // FIXME: Remove @IgnoreJRERequirement once goodies is based on Java7.
-
   /**
    * Helper to composite suppressed exceptions onto given throwable and throw.
    */
-  @IgnoreJRERequirement
   public static <T extends Throwable> T composite(final T root, final Throwable... suppressed)
       throws T
   {
@@ -77,7 +70,6 @@ public final class Throwables2
   /**
    * Helper to composite suppressed exceptions onto given throwable and throw.
    */
-  @IgnoreJRERequirement
   public static <T extends Throwable> T composite(final T root, final Collection<? extends Throwable> suppressed)
       throws T
   {
