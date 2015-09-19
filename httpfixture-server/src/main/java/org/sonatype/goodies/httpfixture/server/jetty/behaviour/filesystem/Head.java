@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 public class Head
     extends FSBehaviour
 {
-
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
       throws Exception
   {
@@ -45,14 +44,11 @@ public class Head
     return false;
   }
 
-  public Head(File file)
-  {
+  public Head(File file) {
     super(file);
   }
 
-  public Head(String path)
-  {
+  public Head(String path) {
     super(path);
   }
-
 }

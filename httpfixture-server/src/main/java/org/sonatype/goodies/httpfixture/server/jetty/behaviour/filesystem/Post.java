@@ -23,14 +23,11 @@ import javax.servlet.http.HttpServletResponse;
 public class Post
     extends FSBehaviour
 {
-
-  public Post(File file)
-  {
+  public Post(File file) {
     super(file);
   }
 
-  public Post(String path)
-  {
+  public Post(String path) {
     super(path);
   }
 
@@ -84,5 +81,4 @@ public class Post
     response.setStatus(code);
     return false;
   }
-
 }

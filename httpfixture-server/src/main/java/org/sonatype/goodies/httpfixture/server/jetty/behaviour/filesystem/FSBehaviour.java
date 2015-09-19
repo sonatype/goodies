@@ -19,22 +19,17 @@ import org.sonatype.goodies.httpfixture.server.jetty.behaviour.BehaviourSupport;
 public abstract class FSBehaviour
     extends BehaviourSupport
 {
+  protected final File file;
 
-  protected final File fPath;
-
-  public FSBehaviour(String path)
-  {
+  public FSBehaviour(String path) {
     this(new File(path));
   }
 
-  public FSBehaviour(File file)
-  {
-    this.fPath = file;
+  public FSBehaviour(File file) {
+    this.file = file;
   }
 
-  protected File fs(String path)
-  {
-    return new File(fPath, path);
+  protected File fs(String path) {
+    return new File(file, path);
   }
-
 }

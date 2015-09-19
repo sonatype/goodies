@@ -35,7 +35,8 @@ public class KeyBehaviour
   }
 
   @Override
-  public boolean execute(final HttpServletRequest request, final HttpServletResponse response,
+  public boolean execute(final HttpServletRequest request,
+                         final HttpServletResponse response,
                          final Map<Object, Object> ctx)
       throws Exception
   {

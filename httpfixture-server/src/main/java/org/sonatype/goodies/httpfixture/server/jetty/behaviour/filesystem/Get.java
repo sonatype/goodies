@@ -25,14 +25,9 @@ import org.sonatype.goodies.httpfixture.server.jetty.behaviour.BehaviourSupport;
 
 import com.google.common.io.ByteStreams;
 
-
-/**
- * @author Benjamin Hanzelmann
- */
 public class Get
     extends BehaviourSupport
 {
-
   private String fpath = ".";
 
   public void setPath(String fpath) {
@@ -79,5 +74,4 @@ public class Get
 
     return true;
   }
-
 }

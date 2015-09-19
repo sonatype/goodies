@@ -25,7 +25,6 @@ import com.google.common.io.ByteStreams;
 public class Put
     extends FSBehaviour
 {
-
   public Put(File file) {
     super(file);
   }
@@ -62,5 +61,4 @@ public class Put
     response.setStatus(code);
     return false;
   }
-
 }

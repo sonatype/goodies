@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 public class Delete
     extends FSBehaviour
 {
-
   private boolean really = false;
 
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
@@ -51,26 +50,21 @@ public class Delete
     return false;
   }
 
-  public Delete(File file)
-  {
+  public Delete(File file) {
     super(file);
   }
 
-  public Delete(String path)
-  {
+  public Delete(String path) {
     super(path);
   }
 
-  public Delete(File file, boolean reallyDelete)
-  {
+  public Delete(File file, boolean reallyDelete) {
     super(file);
     this.really = reallyDelete;
   }
 
-  public Delete(String path, boolean reallyDelete)
-  {
+  public Delete(String path, boolean reallyDelete) {
     super(path);
     this.really = reallyDelete;
   }
-
 }
