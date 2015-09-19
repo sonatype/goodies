@@ -23,7 +23,6 @@ import org.sonatype.goodies.httpfixture.runner.SuiteConfigurator;
 /**
  * This annotation may be used to filter a configurator list.
  *
- * @author Benjamin Hanzelmann
  * @see ConfiguratorList
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -31,5 +30,5 @@ import org.sonatype.goodies.httpfixture.runner.SuiteConfigurator;
 @Inherited
 public @interface IgnoreConfigurators
 {
-  public Class<? extends SuiteConfigurator>[] value();
+  Class<? extends SuiteConfigurator>[] value();
 }

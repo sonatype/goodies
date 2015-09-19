@@ -23,7 +23,6 @@ import org.sonatype.goodies.httpfixture.runner.SuiteConfigurator;
 /**
  * The annotation to set used configurators directly.
  *
- * @author Benjamin Hanzelmann
  * @see SuiteConfigurator
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -31,5 +30,5 @@ import org.sonatype.goodies.httpfixture.runner.SuiteConfigurator;
 @Inherited
 public @interface Configurators
 {
-  public Class<? extends SuiteConfigurator>[] value();
+  Class<? extends SuiteConfigurator>[] value();
 }

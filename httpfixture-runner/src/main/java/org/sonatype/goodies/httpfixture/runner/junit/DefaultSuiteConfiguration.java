@@ -18,25 +18,20 @@ import org.junit.After;
 import org.junit.Before;
 
 /**
- * @author Benjamin Hanzelmann
+ * Adapts {@link AbstractSuiteConfiguration} to JUnit annotations.
  */
 public abstract class DefaultSuiteConfiguration
     extends AbstractSuiteConfiguration
 {
+  @Override
+  @Before
+  public void before() throws Exception {
+    super.before();
+  }
 
-    @Override
-    @Before
-    public void before()
-        throws Exception
-    {
-        super.before();
-    }
-
-    @Override
-    @After
-    public void after()
-        throws Exception
-    {
-        super.after();
-    }
+  @Override
+  @After
+  public void after() throws Exception {
+    super.after();
+  }
 }

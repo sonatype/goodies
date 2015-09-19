@@ -12,12 +12,7 @@
  */
 package org.sonatype.goodies.httpfixture.runner;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public interface SuiteConfiguration
 {
-
   void setConfigurator(SuiteConfigurator configurator);
-
 }

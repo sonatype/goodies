@@ -17,25 +17,18 @@ import java.net.URLEncoder;
 
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class AbstractSuiteConfiguration
     implements SuiteConfiguration
 {
-
   private SuiteConfigurator configurator;
 
   private ThreadLocal<ServerProvider> provider = new ThreadLocal<ServerProvider>();
 
-  public void setConfigurator(SuiteConfigurator configurator)
-  {
+  public void setConfigurator(SuiteConfigurator configurator) {
     this.configurator = configurator;
   }
 
-  public void before()
-      throws Exception
-  {
+  public void before() throws Exception {
     provider.set(configurator().provider());
     if (provider.get() == null) {
       throw new IllegalArgumentException("Configurator failed, provider is null.");
@@ -44,30 +37,25 @@ public class AbstractSuiteConfiguration
     provider.get().start();
   }
 
-  public void configureProvider(ServerProvider provider)
-  {
+  public void configureProvider(ServerProvider provider) {
+    // empty
   }
 
-  public void after()
-      throws Exception
-  {
+  public void after() throws Exception {
     if (provider.get() != null) {
       provider.get().stop();
     }
   }
 
-  public String url()
-  {
+  public String url() {
     return provider.get().getUrl().toExternalForm();
   }
 
-  public ServerProvider provider()
-  {
+  public ServerProvider provider() {
     return provider.get();
   }
 
-  public String url(String path, String... parts)
-  {
+  public String url(String path, String... parts) {
     try {
       String url = url() + "/" + path;
       for (String part : parts) {
@@ -84,9 +72,7 @@ public class AbstractSuiteConfiguration
     }
   }
 
-  public SuiteConfigurator configurator()
-  {
+  public SuiteConfigurator configurator() {
     return configurator;
   }
-
 }

@@ -63,5 +63,4 @@ public class ServerResource
       Throwables.propagate(e);
     }
   }
-
 }

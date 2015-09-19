@@ -14,14 +14,9 @@ package org.sonatype.goodies.httpfixture.runner;
 
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public interface SuiteConfigurator
 {
-
   ServerProvider provider();
 
   String getName();
-
 }

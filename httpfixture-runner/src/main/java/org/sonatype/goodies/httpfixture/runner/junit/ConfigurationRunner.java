@@ -39,21 +39,17 @@ import org.junit.runners.model.Statement;
  * If none of the annotations are present, the runner tries to load a default list (
  * <code>DefaultSuiteConfigurators.list</code>).
  *
- * @author Benjamin Hanzelmann
  * @see SuiteConfigurator
  * @see DefaultSuiteConfiguration
  */
 public class ConfigurationRunner
     extends BlockJUnit4ClassRunner
 {
-
   private List<Class<? extends SuiteConfigurator>> defaultConfiguratorClasses;
 
   private List<SuiteConfigurator> configurators = new LinkedList<SuiteConfigurator>();
 
-  public ConfigurationRunner(Class<?> klass)
-      throws InitializationError
-  {
+  public ConfigurationRunner(Class<?> klass) throws InitializationError {
     super(klass);
     if (!SuiteConfiguration.class.isAssignableFrom(klass)) {
       IllegalArgumentException error =
@@ -63,8 +59,7 @@ public class ConfigurationRunner
   }
 
   @Override
-  protected List<FrameworkMethod> computeTestMethods()
-  {
+  protected List<FrameworkMethod> computeTestMethods() {
     if (defaultConfiguratorClasses == null) {
       initDefaultConfiguratorClasses();
     }
@@ -85,15 +80,13 @@ public class ConfigurationRunner
   /**
    * Load list of configurators from all resources named "SuiteConfigurator.list". (One full class name per line.)
    */
-  private void initDefaultConfiguratorClasses()
-  {
+  private void initDefaultConfiguratorClasses() {
     defaultConfiguratorClasses = ConfigurationHelper.getDefaultConfiguratorClasses();
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  protected void validateInstanceMethods(List<Throwable> errors)
-  {
+  protected void validateInstanceMethods(List<Throwable> errors) {
     if (computeTestMethods().isEmpty() && configurators != null && configurators.isEmpty()) {
       String msg = "No SuiteConfigurator found to run the tests with.";
       errors.add(new Exception(msg));
@@ -102,13 +95,11 @@ public class ConfigurationRunner
   }
 
   @Override
-  protected Statement methodInvoker(FrameworkMethod method, Object test)
-  {
+  protected Statement methodInvoker(FrameworkMethod method, Object test) {
     SuiteConfiguration cfg = SuiteConfiguration.class.cast(test);
     ConfiguratorMethod cfgMethod = ConfiguratorMethod.class.cast(method);
     cfg.setConfigurator(cfgMethod.getConfigurator());
 
     return super.methodInvoker(method, test);
   }
-
 }

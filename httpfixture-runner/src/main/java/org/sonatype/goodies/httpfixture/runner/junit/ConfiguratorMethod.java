@@ -18,41 +18,32 @@ import org.sonatype.goodies.httpfixture.runner.SuiteConfigurator;
 
 import org.junit.runners.model.FrameworkMethod;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class ConfiguratorMethod
     extends FrameworkMethod
 {
-
   private SuiteConfigurator configurator;
 
-  public ConfiguratorMethod(Method method, SuiteConfigurator cfg)
-  {
+  public ConfiguratorMethod(Method method, SuiteConfigurator cfg) {
     super(method);
     this.configurator = cfg;
   }
 
-  public SuiteConfigurator getConfigurator()
-  {
+  public SuiteConfigurator getConfigurator() {
     return configurator;
   }
 
   @Override
-  public String getName()
-  {
+  public String getName() {
     return String.format("%s %s", super.getName(), configurator.getName());
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return getName();
   }
 
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result + ((configurator == null) ? 0 : configurator.hashCode());
@@ -60,8 +51,7 @@ public class ConfiguratorMethod
   }
 
   @Override
-  public boolean equals(Object obj)
-  {
+  public boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
@@ -82,5 +72,4 @@ public class ConfiguratorMethod
     }
     return true;
   }
-
 }
