@@ -20,13 +20,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Deliver
     extends BehaviourSupport
 {
-
   private File file;
 
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
@@ -58,9 +54,7 @@ public class Deliver
     return false;
   }
 
-  public Deliver(File file)
-  {
+  public Deliver(File file) {
     this.file = file;
   }
-
 }

@@ -17,17 +17,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Realm
     extends BehaviourSupport
 {
-
   private String realm;
 
-  public Realm(String realm)
-  {
+  public Realm(String realm) {
     this.realm = realm;
   }
 
@@ -37,5 +32,4 @@ public class Realm
     response.addHeader("WWW-Authenticate", "Basic realm=\"" + realm + "\"");
     return true;
   }
-
 }

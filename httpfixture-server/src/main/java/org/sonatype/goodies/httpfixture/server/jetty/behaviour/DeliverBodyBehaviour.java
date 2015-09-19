@@ -20,11 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.sonatype.goodies.httpfixture.server.api.Behaviour;
 
 /**
- * {@link Behaviour} that combines {@link ErrorBehaviour} and {@link Content} behaviours, by letting specifying
- * response
- * error code along with body, thus allowing to simulate error pages too.
- *
- * @author cstamas
+ * {@link Behaviour} that combines {@link ErrorBehaviour} and {@link Content} behaviours,
+ * by letting specifying response error code along with body, thus allowing to simulate error pages too.
  */
 public class DeliverBodyBehaviour
     extends BehaviourSupport
@@ -35,8 +32,7 @@ public class DeliverBodyBehaviour
 
   private final String body;
 
-  public DeliverBodyBehaviour(final int code, final String bodyContentType, final String body)
-  {
+  public DeliverBodyBehaviour(final int code, final String bodyContentType, final String body) {
     this.code = code;
     this.bodyContentType = bodyContentType;
     this.body = body;

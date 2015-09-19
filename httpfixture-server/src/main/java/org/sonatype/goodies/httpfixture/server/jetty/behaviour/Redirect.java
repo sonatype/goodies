@@ -18,13 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Redirect
     extends BehaviourSupport
 {
-
   private int count = -1;
 
   private final AtomicInteger redirectCount = new AtomicInteger(0);
@@ -39,39 +35,32 @@ public class Redirect
 
   private int status = -1;
 
-  public static Redirect redirect(String url)
-  {
+  public static Redirect redirect(String url) {
     return new Redirect(url);
   }
 
-  public static Redirect redirect(String url, int status)
-  {
+  public static Redirect redirect(String url, int status) {
     return new Redirect(url, status);
   }
 
-  public Redirect(String pattern, String replace)
-  {
+  public Redirect(String pattern, String replace) {
     this.pattern = pattern;
     this.replace = replace;
   }
 
-  public Redirect()
-  {
+  public Redirect() {
     super();
   }
 
-  public Redirect(int count)
-  {
+  public Redirect(int count) {
     this.count = count;
   }
 
-  public Redirect(String url)
-  {
+  public Redirect(String url) {
     this.target = url;
   }
 
-  public Redirect(String url, int status)
-  {
+  public Redirect(String url, int status) {
     this.target = url;
     this.status = status;
   }
@@ -124,5 +113,4 @@ public class Redirect
 
     return true;
   }
-
 }

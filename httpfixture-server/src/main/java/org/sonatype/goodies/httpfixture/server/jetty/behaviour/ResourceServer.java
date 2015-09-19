@@ -25,9 +25,6 @@ import java.util.zip.GZIPOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class ResourceServer
     extends BehaviourSupport
 {
@@ -60,9 +57,7 @@ public class ResourceServer
     return false;
   }
 
-  private int copy(InputStream is, OutputStream os)
-      throws IOException
-  {
+  private int copy(InputStream is, OutputStream os) throws IOException {
     int total = 0;
 
     for (byte[] buffer = new byte[1024 * 4]; ; ) {
@@ -83,11 +78,8 @@ public class ResourceServer
 
   static class Resource
   {
-
     byte[] data;
 
     int size;
-
   }
-
 }

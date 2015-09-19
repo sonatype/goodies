@@ -557,9 +557,6 @@ public class JettyServerProvider
     this.securityHandler = securityHandler;
   }
 
-  /**
-   * @author Benjamin Hanzelmann
-   */
   public static class CertificateHolder
   {
     private Certificate[] chain;
@@ -571,7 +568,6 @@ public class JettyServerProvider
     public Certificate[] getChain() {
       return chain;
     }
-
 
     public CertificateHolder(Certificate[] chain) {
       this.chain = chain;

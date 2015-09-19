@@ -14,7 +14,6 @@ package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -28,11 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.util.B64Code;
 
-/**
- * Incomplete, last step is not validated.
- *
- * @author Benjamin Hanzelmann
- */
+// FIXME: Incomplete, last step is not validated
+
 public class NTLMAuth
     extends BehaviourSupport
 {
@@ -67,13 +63,7 @@ public class NTLMAuth
     return false;
   }
 
-  /**
-   * @param authHeader
-   * @param response
-   * @return
-   */
-  private boolean checkType3(String authHeader, HttpServletResponse response)
-  {
+  private boolean checkType3(String authHeader, HttpServletResponse response) {
     String user = "user";
     String password = "password";
     String host = "test";
@@ -81,15 +71,7 @@ public class NTLMAuth
     return true;
   }
 
-  /**
-   * @param authHeader
-   * @param response
-   * @throws IOException
-   * @throws UnsupportedEncodingException
-   */
-  private void answerType1(String authHeader, HttpServletResponse response)
-      throws UnsupportedEncodingException, IOException
-  {
+  private void answerType1(String authHeader, HttpServletResponse response) throws IOException {
     // byte[] decode = new Base64Encoder().decode( authHeader );
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     out.write("NTLMSSP".getBytes("iso-8859-1"));
@@ -117,20 +99,13 @@ public class NTLMAuth
     response.sendError(401);
   }
 
-  /**
-   * @param response
-   * @throws IOException
-   */
-  private void sendChallenge(HttpServletResponse response)
-      throws IOException
-  {
+  private void sendChallenge(HttpServletResponse response) throws IOException {
     log.debug("Challenging NTML authentication");
     response.addHeader("WWW-Authenticate", "NTLM");
     response.sendError(401);
   }
 
-  private byte[] convertShort(int num)
-  {
+  private byte[] convertShort(int num) {
     byte[] val = new byte[2];
     String hex = Integer.toString(num, 16);
     while (hex.length() < 4) {
@@ -209,26 +184,20 @@ public class NTLMAuth
     return lmResp;
   }
 
-  private byte[] encrypt(byte[] key, byte[] bytes)
-      throws Exception
-  {
+  private byte[] encrypt(byte[] key, byte[] bytes) throws Exception {
     Cipher ecipher = getCipher(key);
     byte[] enc = ecipher.doFinal(bytes);
     return enc;
-
   }
 
-  private Cipher getCipher(byte[] key)
-      throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException
-  {
+  private Cipher getCipher(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
     final Cipher ecipher = Cipher.getInstance("DES/ECB/NoPadding");
     key = setupKey(key);
     ecipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "DES"));
     return ecipher;
   }
 
-  private byte[] setupKey(byte[] key56)
-  {
+  private byte[] setupKey(byte[] key56) {
     byte[] key = new byte[8];
     key[0] = (byte) ((key56[0] >> 1) & 0xff);
     key[1] = (byte) ((((key56[0] & 0x01) << 6) | (((key56[1] & 0xff) >> 2) & 0xff)) & 0xff);
@@ -245,9 +214,7 @@ public class NTLMAuth
     return key;
   }
 
-  private void calcResp(byte[] keys, byte[] plaintext, byte[] results)
-      throws Exception
-  {
+  private void calcResp(byte[] keys, byte[] plaintext, byte[] results) throws Exception {
     byte[] keys1 = new byte[7];
     byte[] keys2 = new byte[7];
     byte[] keys3 = new byte[7];
@@ -278,5 +245,4 @@ public class NTLMAuth
       results[i + 16] = results3[i];
     }
   }
-
 }

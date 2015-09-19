@@ -25,8 +25,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * {@link Behaviour} that generates random count of bytes as response.
- *
- * @author cstamas
  */
 public class GenerateRandomBehaviour
     extends BehaviourSupport
@@ -38,17 +36,15 @@ public class GenerateRandomBehaviour
   private final int length;
 
   /**
-   * Constructor.
-   *
    * @param length the length of the response in bytes.
    */
-  public GenerateRandomBehaviour(final int length)
-  {
+  public GenerateRandomBehaviour(final int length) {
     checkArgument(length > 0, "Length must be greater than zero!");
     this.length = length;
   }
 
-  public boolean execute(final HttpServletRequest request, final HttpServletResponse response,
+  public boolean execute(final HttpServletRequest request,
+                         final HttpServletResponse response,
                          final Map<Object, Object> ctx)
       throws Exception
   {

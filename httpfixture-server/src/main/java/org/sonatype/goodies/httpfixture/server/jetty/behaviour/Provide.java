@@ -19,19 +19,14 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Provide
     extends BehaviourSupport
 {
-
   private final Map<String, byte[]> db = new ConcurrentHashMap<String, byte[]>();
 
   private int latency = -1;
 
-  public void addPath(String path, byte[] content)
-  {
+  public void addPath(String path, byte[] content) {
     this.db.put(path, content);
   }
 
@@ -65,10 +60,7 @@ public class Provide
     return true;
   }
 
-  public void setLatency(int i)
-  {
+  public void setLatency(int i) {
     this.latency = i;
-
   }
-
 }

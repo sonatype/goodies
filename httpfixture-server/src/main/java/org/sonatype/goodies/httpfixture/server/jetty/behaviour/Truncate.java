@@ -17,22 +17,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Truncate
     extends BehaviourSupport
 {
-
   private int count = -1;
 
-  public Truncate()
-  {
+  public Truncate() {
     super();
   }
 
-  public Truncate(int count)
-  {
+  public Truncate(int count) {
     this.count = count;
   }
 
@@ -56,5 +50,4 @@ public class Truncate
     }
     return false;
   }
-
 }

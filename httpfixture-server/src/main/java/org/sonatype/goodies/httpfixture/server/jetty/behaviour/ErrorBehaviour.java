@@ -17,33 +17,26 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class ErrorBehaviour
     extends BehaviourSupport
 {
-
   private String msg;
 
   private int error = -1;
 
-  public static ErrorBehaviour error(int code)
-  {
+  public static ErrorBehaviour error(int code) {
     return new ErrorBehaviour(code, "error");
   }
 
-  public static ErrorBehaviour error(int code, String msg)
-  {
+  public static ErrorBehaviour error(int code, String msg) {
     return new ErrorBehaviour(code, msg);
   }
 
-  public ErrorBehaviour()
-  {
+  public ErrorBehaviour() {
+    // empty
   }
 
-  public ErrorBehaviour(int error, String msg)
-  {
+  public ErrorBehaviour(int error, String msg) {
     this.error = error;
     this.msg = msg;
   }
@@ -68,7 +61,5 @@ public class ErrorBehaviour
     }
 
     return false;
-
   }
-
 }

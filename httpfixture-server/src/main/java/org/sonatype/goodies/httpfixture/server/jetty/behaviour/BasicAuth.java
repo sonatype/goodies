@@ -20,44 +20,35 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.util.B64Code;
 
-/**
- * @author Benjamin Hanzelmann
- *
- */
 public class BasicAuth
     extends BehaviourSupport
 {
+  private final String password;
 
-    private final String password;
+  private final String user;
 
-    private final String user;
+  private final AtomicInteger failed = new AtomicInteger(0);
 
-    private final AtomicInteger failed = new AtomicInteger( 0 );
+  public BasicAuth(String user, String password) {
+    this.user = user;
+    this.password = password;
+  }
 
-    public BasicAuth( String user, String password )
-    {
-        this.user = user;
-        this.password = password;
+  public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
+      throws Exception
+  {
+    String userPass = new String(B64Code.encode((user + ":" + password).getBytes("UTF-8")));
+    if (("Basic " + userPass).equals(request.getHeader("Authorization"))) {
+      return true;
     }
 
-    public boolean execute( HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx )
-        throws Exception
-    {
-        String userPass = new String( B64Code.encode( ( user + ":" + password ).getBytes( "UTF-8" ) ) );
-        if ( ( "Basic " + userPass ).equals( request.getHeader( "Authorization" ) ) )
-        {
-            return true;
-        }
+    failed.incrementAndGet();
 
-        failed.incrementAndGet();
+    response.sendError(401, "not authorized");
+    return false;
+  }
 
-        response.sendError( 401, "not authorized" );
-        return false;
-    }
-
-    public int getFailedCount()
-    {
-        return failed.get();
-    }
-
+  public int getFailedCount() {
+    return failed.get();
+  }
 }

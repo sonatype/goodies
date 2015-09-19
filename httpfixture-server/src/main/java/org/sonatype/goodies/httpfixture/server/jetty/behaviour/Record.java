@@ -24,20 +24,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Record
     extends BehaviourSupport
 {
-
   private final Map<String, Map<String, String>> requestHeaders =
       new ConcurrentHashMap<String, Map<String, String>>();
 
   private final List<String> requests = Collections.synchronizedList(new LinkedList<String>());
 
-  public Record()
-  {
+  public Record() {
+    // empty
   }
 
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
@@ -47,8 +43,7 @@ public class Record
     return true;
   }
 
-  private void add(HttpServletRequest request)
-  {
+  private void add(HttpServletRequest request) {
     String uri = request.getRequestURI();
     String req = request.getMethod() + " " + uri;
     requests.add(req);
@@ -68,22 +63,18 @@ public class Record
     }
   }
 
-  public Map<String, Map<String, String>> getRequestHeaders()
-  {
+  public Map<String, Map<String, String>> getRequestHeaders() {
     return requestHeaders;
   }
 
-  public List<String> getRequests()
-  {
+  public List<String> getRequests() {
     List<String> list = new ArrayList<String>(requests);
     Collections.reverse(list);
     return list;
   }
 
-  public void clear()
-  {
+  public void clear() {
     requestHeaders.clear();
     requests.clear();
   }
-
 }

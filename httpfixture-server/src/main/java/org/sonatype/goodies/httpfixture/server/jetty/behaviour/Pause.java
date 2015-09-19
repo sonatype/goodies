@@ -19,37 +19,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.sonatype.goodies.common.Time;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Pause
     extends BehaviourSupport
 {
-
   private long pause = -1;
 
-  public static Pause pause(Time time)
-  {
+  public static Pause pause(Time time) {
     return new Pause(time.toMillis());
   }
 
-  public Pause()
-  {
+  public Pause() {
     super();
   }
 
-  public Pause(long pause)
-  {
+  public Pause(long pause) {
     this.pause = pause;
   }
 
-  public Pause(int pause)
-  {
+  public Pause(int pause) {
     this.pause = pause;
   }
 
-  public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
-  {
+  public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx) {
     if (pause == -1) {
       String path = request.getPathInfo().substring(1);
       String[] split = path.split("/", 2);
@@ -63,5 +54,4 @@ public class Pause
     }
     return true;
   }
-
 }

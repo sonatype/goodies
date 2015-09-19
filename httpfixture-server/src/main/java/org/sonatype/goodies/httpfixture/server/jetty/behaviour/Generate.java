@@ -25,13 +25,11 @@ import javax.servlet.http.HttpServletResponse;
 public class Generate
     extends BehaviourSupport
 {
-
   private static final byte[] bytes = new byte[1024];
 
   private final Map<String, Long> lengths = new ConcurrentHashMap<String, Long>();
 
-  public void addContent(String path, long length)
-  {
+  public void addContent(String path, long length) {
     if (!path.startsWith("/")) {
       path = '/' + path;
     }
@@ -64,5 +62,4 @@ public class Generate
 
     return true;
   }
-
 }

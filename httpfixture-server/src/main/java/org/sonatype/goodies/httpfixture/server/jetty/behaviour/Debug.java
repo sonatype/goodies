@@ -18,13 +18,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Debug
     extends BehaviourSupport
 {
-
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
       throws Exception
   {
@@ -39,5 +35,4 @@ public class Debug
 
     return true;
   }
-
 }

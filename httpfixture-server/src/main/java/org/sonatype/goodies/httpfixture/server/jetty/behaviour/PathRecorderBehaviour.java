@@ -25,14 +25,12 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 /**
- * {@link Behaviour} implementation that records request path(s) (URIs) for processed HTTP verb. The URIs are in order
- * for given HTTP verb, as they did income. This behaviour, while does similar thing as {@link Record}, it differs from
- * it that here, paths are reusable and stored as is (Record combines verb and path and other info into one string),
- * and
- * this class does not reorder request paths, it keeps their "income" order (Recorder reverts the list, last request
- * becomes first).
+ * {@link Behaviour} implementation that records request path(s) (URIs) for processed HTTP verb.
  *
- * @author cstamas
+ * The URIs are in order for given HTTP verb, as they did income. This behaviour, while does similar thing as
+ * {@link Record}, it differs from it that here, paths are reusable and stored as is (Record combines verb and path
+ * and other info into one string), and this class does not reorder request paths, it keeps their "income" order
+ * (Recorder reverts the list, last request becomes first).
  */
 public class PathRecorderBehaviour
     extends BehaviourSupport
@@ -48,13 +46,11 @@ public class PathRecorderBehaviour
     return true;
   }
 
-  public List<String> getPathsForVerb(final String verb)
-  {
+  public List<String> getPathsForVerb(final String verb) {
     return new ArrayList<String>(pathsMap.get(verb));
   }
 
-  public void clear()
-  {
+  public void clear() {
     pathsMap.clear();
   }
 }

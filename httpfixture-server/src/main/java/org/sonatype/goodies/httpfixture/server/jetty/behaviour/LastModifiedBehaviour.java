@@ -23,21 +23,17 @@ import org.sonatype.goodies.httpfixture.server.api.Behaviour;
 /**
  * {@link Behaviour} implementation that overrides the Last-Modified response header, depending on the value
  * this instance has set.
- *
- * @author cstamas
  */
 public class LastModifiedBehaviour
     extends BehaviourSupport
 {
   private Date lastModified;
 
-  public LastModifiedBehaviour(final Date date)
-  {
+  public LastModifiedBehaviour(final Date date) {
     setLastModified(date);
   }
 
-  public void setLastModified(final Date when)
-  {
+  public void setLastModified(final Date when) {
     lastModified = when;
   }
 
@@ -49,5 +45,4 @@ public class LastModifiedBehaviour
     }
     return true;
   }
-
 }

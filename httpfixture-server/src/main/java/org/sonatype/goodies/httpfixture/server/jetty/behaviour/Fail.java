@@ -18,14 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-/**
- * @author Benjamin Hanzelmann
- */
 public class Fail
     extends BehaviourSupport
 {
-
   private String message = null;
 
   private int code = -1;
@@ -36,15 +31,13 @@ public class Fail
 
   private final AtomicInteger failed = new AtomicInteger(0);
 
-  public Fail(int count, int code, String message)
-  {
+  public Fail(int count, int code, String message) {
     this.numFailures = count;
     this.code = code;
     this.message = message;
   }
 
-  public Fail(int code, String message)
-  {
+  public Fail(int code, String message) {
     this(-1, code, message);
   }
 
@@ -69,9 +62,7 @@ public class Fail
     return true;
   }
 
-  public int getFailedCount()
-  {
+  public int getFailedCount() {
     return failed.get();
   }
-
 }

@@ -20,33 +20,22 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.sonatype.goodies.httpfixture.server.api.Behaviour;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Stutter
     extends BehaviourSupport
 {
-
   private int wait = -1;
 
   private byte[] content;
 
-  public Stutter()
-  {
+  public Stutter() {
     super();
   }
 
-  public Stutter(int i, byte[] content)
-  {
+  public Stutter(int i, byte[] content) {
     this.wait = i;
     this.content = content;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.sonatype.tests.jetty.server.api.Behaviour#execute(javax.servlet.http.HttpServletRequest,
-   * javax.servlet.http.HttpServletResponse, java.util.Map)
-   */
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
       throws Exception
   {
@@ -89,5 +78,4 @@ public class Stutter
       return true;
     }
   }
-
 }

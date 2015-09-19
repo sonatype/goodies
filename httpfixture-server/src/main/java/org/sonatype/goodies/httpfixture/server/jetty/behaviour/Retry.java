@@ -18,26 +18,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Retry
     extends BehaviourSupport
 {
-
   private final AtomicInteger counter = new AtomicInteger(0);
 
   private int retry = -1;
 
   private int error = 404;
 
-  public Retry(int error)
-  {
+  public Retry(int error) {
     this.error = error;
   }
 
-  public Retry(int error, int retry)
-  {
+  public Retry(int error, int retry) {
     this(error);
     this.retry = retry;
   }
@@ -57,5 +51,4 @@ public class Retry
 
     return true;
   }
-
 }

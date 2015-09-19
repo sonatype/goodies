@@ -25,27 +25,23 @@ public abstract class BehaviourSupport
 {
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  public static String firstPart( String path )
-  {
-    return path.substring( 1 ).split( "/", 2 )[0];
+  public static String firstPart(String path) {
+    return path.substring(1).split("/", 2)[0];
   }
 
-  public static String lastPart( String path )
-  {
-    String[] split = path.substring( 1 ).split( "/" );
+  public static String lastPart(String path) {
+    String[] split = path.substring(1).split("/");
     return split[split.length - 1];
   }
 
-  public static String pathAsContent( String path )
-  {
-    return path.substring( 1 ).replaceFirst( "[^/]*/", "" );
+  public static String pathAsContent(String path) {
+    return path.substring(1).replaceFirst("[^/]*/", "");
   }
 
-  public static void setContent( String content, Map<Object, Object> ctx )
+  public static void setContent(String content, Map<Object, Object> ctx)
       throws UnsupportedEncodingException
   {
-    ctx.put( Behaviour.Keys.CONTENT, content );
-    ctx.put( Behaviour.Keys.CONTENT_SIZE, content.getBytes( "UTF-8" ).length );
+    ctx.put(Behaviour.Keys.CONTENT, content);
+    ctx.put(Behaviour.Keys.CONTENT_SIZE, content.getBytes("UTF-8").length);
   }
-
 }

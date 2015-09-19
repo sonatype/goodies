@@ -18,13 +18,9 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Consumer
     extends BehaviourSupport
 {
-
   private int total;
 
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
@@ -44,11 +40,9 @@ public class Consumer
     return true;
   }
 
-  public int getTotal()
-  {
+  public int getTotal() {
     int ret = total;
     total = 0;
     return ret;
   }
-
 }

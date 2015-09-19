@@ -20,9 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.util.B64Code;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class ProxyAuth
     extends BehaviourSupport
 {
@@ -34,12 +31,10 @@ public class ProxyAuth
 
   private final String password;
 
-  public ProxyAuth(String user, String password)
-  {
+  public ProxyAuth(String user, String password) {
     this.user = user;
     this.password = password;
   }
-
 
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
       throws Exception
@@ -69,20 +64,16 @@ public class ProxyAuth
     return this.authorized;
   }
 
-  public boolean isAuthorized()
-  {
+  public boolean isAuthorized() {
     return authorized;
   }
 
-  public boolean isChallenged()
-  {
+  public boolean isChallenged() {
     return challenged;
   }
 
-  public void reset()
-  {
+  public void reset() {
     this.authorized = false;
     this.challenged = false;
   }
-
 }

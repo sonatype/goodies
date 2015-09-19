@@ -22,19 +22,14 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class Expect
     extends BehaviourSupport
 {
-
   private final Map<String, byte[]> expectations = new ConcurrentHashMap<String, byte[]>();
 
   private final Map<String, byte[]> seen = new ConcurrentHashMap<String, byte[]>();
 
-  public void addExpectation(String path, byte[] content)
-  {
+  public void addExpectation(String path, byte[] content) {
     expectations.put(path, content);
   }
 
@@ -62,13 +57,11 @@ public class Expect
     return true;
   }
 
-  public byte[] seenBytes(String path)
-  {
+  public byte[] seenBytes(String path) {
     return seen.get(path);
   }
 
-  public void assertExpectations()
-  {
+  public void assertExpectations() {
     for (Entry<String, byte[]> entry : expectations.entrySet()) {
       String path = entry.getKey();
       if (!Arrays.equals(entry.getValue(), seen.get(path))) {
@@ -80,5 +73,4 @@ public class Expect
       }
     }
   }
-
 }
