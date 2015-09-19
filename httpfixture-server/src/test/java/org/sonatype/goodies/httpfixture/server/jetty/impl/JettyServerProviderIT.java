@@ -38,6 +38,7 @@ import java.net.URLConnection;
 import org.sonatype.goodies.httpfixture.server.fluent.Behaviours;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Content;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Pause;
+import org.sonatype.goodies.testsupport.TestSupport;
 
 import org.junit.After;
 import org.junit.Before;
@@ -49,42 +50,34 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @author Benjamin Hanzelmann
+ * Tests for {@link JettyServerProvider}.
  */
 public class JettyServerProviderIT
+  extends TestSupport
 {
-
   private static JettyServerProvider provider;
 
   @Before
-  public void init()
-      throws Exception
-  {
+  public void init() throws Exception {
     provider = new JettyServerProvider();
     provider.addDefaultServices();
     provider.start();
   }
 
   @After
-  public void afterClass()
-      throws Exception
-  {
+  public void afterClass() throws Exception {
     provider.stop();
   }
 
   @Test
-  public void testConnect()
-      throws Exception
-  {
+  public void testConnect() throws Exception {
     Socket s = new Socket();
     s.connect(new InetSocketAddress("localhost", provider.getPort()));
     s.close();
   }
 
   @Test
-  public void testContent()
-      throws Exception
-  {
+  public void testContent() throws Exception {
     String content = "someContent";
     URL url = new URL("http://localhost:" + provider.getPort() + "/content/" + content);
     URLConnection conn = url.openConnection();
@@ -96,9 +89,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void testError()
-      throws Exception
-  {
+  public void testError() throws Exception {
     URL url = new URL("http://localhost:" + provider.getPort() + "/error/404/errormsg");
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     assertEquals(404, conn.getResponseCode());
@@ -106,9 +97,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void testBehaviour()
-      throws Exception
-  {
+  public void testBehaviour() throws Exception {
     provider.addBehaviour("/behave/*", new Pause(550), new Content());
 
     long begin = System.currentTimeMillis();
@@ -123,9 +112,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void testStutter()
-      throws Exception
-  {
+  public void testStutter() throws Exception {
     byte[] buffer = new byte[5];
     int read = -1;
 
@@ -161,9 +148,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void testPause()
-      throws Exception
-  {
+  public void testPause() throws Exception {
     URL url = new URL("http://localhost:" + provider.getPort() + "/pause/550/content");
     URLConnection conn = url.openConnection();
 
@@ -178,9 +163,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void testTruncate()
-      throws Exception
-  {
+  public void testTruncate() throws Exception {
     URL url = new URL("http://localhost:" + provider.getPort() + "/truncate/5/content");
     URLConnection conn = url.openConnection();
     InputStream in = conn.getInputStream();
@@ -191,9 +174,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void testTimeout()
-      throws Exception
-  {
+  public void testTimeout() throws Exception {
     long begin = System.currentTimeMillis();
 
     String path = "/timeout/550/content";
@@ -209,9 +190,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void overrideBehavior()
-      throws IOException
-  {
+  public void overrideBehavior() throws IOException {
     provider.addBehaviour("/test/*", Behaviours.error(404));
 
     URL url = new URL("http://localhost:" + provider.getPort() + "/test/1");
@@ -230,9 +209,7 @@ public class JettyServerProviderIT
   }
 
   @Test
-  public void overrideBehavior2()
-      throws IOException
-  {
+  public void overrideBehavior2() throws IOException {
     provider.addBehaviour("/*", Behaviours.error(404));
     provider.addBehaviour("/test/artifact.pom", Behaviours.content("pom", "application/xml"));
 

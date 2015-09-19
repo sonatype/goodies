@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.Socket;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
@@ -51,7 +50,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
- * @author Benjamin Hanzelmann
+ * Client-side certificates test.
  */
 public class ClientSideCertTest
     extends TestSupport
@@ -59,16 +58,12 @@ public class ClientSideCertTest
   private File clientKeystore;
 
   @Before
-  public void setup()
-      throws URISyntaxException
-  {
+  public void setup() throws Exception {
     clientKeystore = util.resolveFile("src/test/resources/client.keystore");
   }
 
   @Test
-  public void testClientSideCertFail()
-      throws Exception
-  {
+  public void testClientSideCertFail() throws Exception {
     ServerProvider p = new JettyServerProvider();
     p.setSSL("keystore", "password");
     p.addAuthentication("/*", Constraint.__CERT_AUTH2);
@@ -95,9 +90,7 @@ public class ClientSideCertTest
     }
   }
 
-  private HttpsURLConnection connect(String location)
-      throws Exception
-  {
+  private HttpsURLConnection connect(String location) throws Exception {
     URL url = new URL(location);
     HttpsURLConnection connection;
     // Uncomment this in case server demands some unsafe operations
@@ -123,9 +116,7 @@ public class ClientSideCertTest
   }
 
   @Test
-  public void testClientSideCert()
-      throws Exception
-  {
+  public void testClientSideCert() throws Exception {
     ServerProvider p = new JettyServerProvider();
     p.setSSL("keystore", "password");
     p.addAuthentication("/*", Constraint.__CERT_AUTH2);
@@ -163,9 +154,7 @@ public class ClientSideCertTest
     }
   }
 
-  private CertificateHolder getCertificate(String alias, String keystorePath, String keystorePass)
-      throws Exception
-  {
+  private CertificateHolder getCertificate(String alias, String keystorePath, String keystorePass) throws Exception {
     FileInputStream is = null;
     Certificate cert = null;
     try {
@@ -182,9 +171,7 @@ public class ClientSideCertTest
     return new CertificateHolder(new Certificate[]{cert});
   }
 
-  private static SSLSocketFactory getFactory(File pKeyFile, String pKeyPassword, String certAlias)
-      throws Exception
-  {
+  private static SSLSocketFactory getFactory(File pKeyFile, String pKeyPassword, String certAlias) throws Exception {
     KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
     KeyStore keyStore = KeyStore.getInstance("JKS");
 
@@ -264,20 +251,16 @@ public class ClientSideCertTest
   public static final class CustomTrustManager
       implements X509TrustManager
   {
-
-    public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-        throws CertificateException
-    {
+    public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+      // empty
     }
 
-    public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-        throws CertificateException
-    {
+    public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+      // empty
     }
 
     public X509Certificate[] getAcceptedIssuers() {
       return new X509Certificate[0];
     }
-
   }
 }
