@@ -15,23 +15,16 @@ package org.sonatype.goodies.httpfixture.server.jetty.configurations;
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 import org.sonatype.goodies.httpfixture.server.jetty.impl.JettyProxyProvider;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class HttpProxyAuthConfigurator
     extends DefaultSuiteConfigurator
 {
-
   @Override
-  public String getName()
-  {
+  public String getName() {
     return super.getName() + " AUTHPROXY ";
   }
 
-
   @Override
-  public ServerProvider provider()
-  {
+  public ServerProvider provider() {
     try {
       return new JettyProxyProvider("puser", "password");
     }
@@ -39,5 +32,4 @@ public class HttpProxyAuthConfigurator
       throw new IllegalStateException(e.getMessage(), e);
     }
   }
-
 }

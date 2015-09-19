@@ -14,23 +14,17 @@ package org.sonatype.goodies.httpfixture.server.jetty.configurations;
 
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public abstract class AuthSuiteConfigurator
     extends DefaultSuiteConfigurator
 {
-
   private String authName;
 
-  public AuthSuiteConfigurator(String authName)
-  {
+  public AuthSuiteConfigurator(String authName) {
     this.authName = authName;
   }
 
   @Override
-  public ServerProvider provider()
-  {
+  public ServerProvider provider() {
     ServerProvider p = super.provider();
     p.addAuthentication("/*", authName);
     p.addUser("user", "password");
@@ -38,9 +32,7 @@ public abstract class AuthSuiteConfigurator
   }
 
   @Override
-  public String getName()
-  {
+  public String getName() {
     return super.getName() + " Authentication";
   }
-
 }

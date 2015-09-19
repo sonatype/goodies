@@ -12,24 +12,15 @@
  */
 package org.sonatype.goodies.httpfixture.server.jetty.configurations;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class DigestAuthSslSuiteConfigurator
     extends AuthSslSuiteConfigurator
 {
-
-  /**
-   * @param authName
-   */
-  public DigestAuthSslSuiteConfigurator()
-  {
+  public DigestAuthSslSuiteConfigurator() {
     super("DIGEST");
   }
 
   @Override
-  public String getName()
-  {
+  public String getName() {
     return super.getName() + " DIGEST";
   }
 }

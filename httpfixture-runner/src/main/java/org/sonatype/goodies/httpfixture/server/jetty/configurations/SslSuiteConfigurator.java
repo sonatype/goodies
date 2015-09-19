@@ -14,35 +14,26 @@ package org.sonatype.goodies.httpfixture.server.jetty.configurations;
 
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class SslSuiteConfigurator
     extends DefaultSuiteConfigurator
 {
-
   @Override
-  public ServerProvider provider()
-  {
+  public ServerProvider provider() {
     ServerProvider p = super.provider();
     p.setSSL(keystore(), password());
     return p;
   }
 
-  protected String keystore()
-  {
+  protected String keystore() {
     return "keystore";
   }
 
-  protected String password()
-  {
+  protected String password() {
     return "password";
   }
 
   @Override
-  public String getName()
-  {
+  public String getName() {
     return "HTTPS";
   }
-
 }

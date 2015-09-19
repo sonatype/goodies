@@ -26,60 +26,53 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Benjamin Hanzelmann
- *
+ * Tests for {@link Consumer}.
  */
-@RunWith( ConfigurationRunner.class )
-@Configurators( DefaultSuiteConfigurator.class )
+@RunWith(ConfigurationRunner.class)
+@Configurators(DefaultSuiteConfigurator.class)
 public class ConsumerTest
     extends BehaviourSuiteConfiguration<Consumer>
 {
-    private Consumer consumer = new Consumer();
+  private Consumer consumer = new Consumer();
 
-    @Test
-    public void testConsumer()
-        throws Exception
-    {
-        URL url = new URL( url( "foo" ) );
+  @Test
+  public void testConsumer() throws Exception {
+    URL url = new URL(url("foo"));
 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setDoOutput( true );
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setDoOutput(true);
 
-        byte[] pattern = new byte[64];
-        for ( int i = 0; i < pattern.length; i++ )
-        {
-            pattern[i] = (byte) ( 33 + i );
-        }
-        int count = 1024 * 1024 * 16;
-        count = 16;
-        int targetSize = count * pattern.length;
-        
-        conn.setFixedLengthStreamingMode( targetSize );
-        conn.connect();
-        OutputStream out = conn.getOutputStream();
+    byte[] pattern = new byte[64];
+    for (int i = 0; i < pattern.length; i++) {
+      pattern[i] = (byte) (33 + i);
+    }
+    int count = 1024 * 1024 * 16;
+    count = 16;
+    int targetSize = count * pattern.length;
 
-        int total = 0;
-        for ( int i = 0; i < count; i++ )
-        {
-            out.write( pattern );
-            total += pattern.length;
-        }
-        
-        out.flush();
+    conn.setFixedLengthStreamingMode(targetSize);
+    conn.connect();
+    OutputStream out = conn.getOutputStream();
 
-        out.close();
-
-        assertEquals( 200, conn.getResponseCode() );
-        conn.disconnect();
-
-        assertEquals( total, targetSize );
-        assertEquals( total, behaviour().getTotal() );
+    int total = 0;
+    for (int i = 0; i < count; i++) {
+      out.write(pattern);
+      total += pattern.length;
     }
 
+    out.flush();
 
-    @Override
-    protected Consumer behaviour()
-    {
-        return consumer;
-    }
+    out.close();
+
+    assertEquals(200, conn.getResponseCode());
+    conn.disconnect();
+
+    assertEquals(total, targetSize);
+    assertEquals(total, behaviour().getTotal());
+  }
+
+  @Override
+  protected Consumer behaviour() {
+    return consumer;
+  }
 }

@@ -16,25 +16,18 @@ import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
 import org.eclipse.jetty.util.security.Constraint;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class CertAuthSuiteConfigurator
     extends SslSuiteConfigurator
 {
-
   @Override
-  public ServerProvider provider()
-  {
+  public ServerProvider provider() {
     ServerProvider p = super.provider();
     p.addAuthentication("/*", Constraint.__CERT_AUTH2);
     return p;
   }
 
   @Override
-  public String getName()
-  {
+  public String getName() {
     return super.getName() + " CERT-AUTH";
   }
-
 }

@@ -12,13 +12,19 @@
  */
 package org.sonatype.goodies.httpfixture.runner.junit;
 
+import org.sonatype.goodies.testsupport.TestSupport;
+
 import org.junit.Rule;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * Tests for {@link ServerResource}.
+ */
 public class ServerResourceTest
+    extends TestSupport
 {
   @Rule
   public ServerResource server = new ServerResource(new DummyProvider());
@@ -29,5 +35,4 @@ public class ServerResourceTest
     server.getServerProvider().stop();
     assertThat(server.getServerProvider().isStarted(), is(false));
   }
-
 }

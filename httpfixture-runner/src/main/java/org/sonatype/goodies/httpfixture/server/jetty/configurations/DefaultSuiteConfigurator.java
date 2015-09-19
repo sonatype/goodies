@@ -16,14 +16,9 @@ import org.sonatype.goodies.httpfixture.runner.SuiteConfigurator;
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 import org.sonatype.goodies.httpfixture.server.jetty.impl.JettyServerProvider;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class DefaultSuiteConfigurator
     implements SuiteConfigurator
 {
-
-
   public ServerProvider provider() {
     try {
       return new JettyServerProvider();
@@ -36,5 +31,4 @@ public class DefaultSuiteConfigurator
   public String getName() {
     return "HTTP";
   }
-
 }

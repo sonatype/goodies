@@ -12,24 +12,15 @@
  */
 package org.sonatype.goodies.httpfixture.server.jetty.configurations;
 
-/**
- * @author Benjamin Hanzelmann
- */
 public class BasicAuthSuiteConfigurator
     extends AuthSuiteConfigurator
 {
-
-  /**
-   * @param authName
-   */
-  public BasicAuthSuiteConfigurator()
-  {
+  public BasicAuthSuiteConfigurator() {
     super("BASIC");
   }
 
   @Override
-  public String getName()
-  {
+  public String getName() {
     return super.getName() + " BASIC";
   }
 }

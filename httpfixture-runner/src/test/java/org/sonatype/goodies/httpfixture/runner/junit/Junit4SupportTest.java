@@ -14,23 +14,20 @@ package org.sonatype.goodies.httpfixture.runner.junit;
 
 import org.sonatype.goodies.httpfixture.runner.annotations.Configurators;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/**
- * @author Benjamin Hanzelmann
- *
- */
-@RunWith( ConfigurationRunner.class )
-@Configurators( DummyConfigurator.class )
+// FIXME: Document what this test does, why it exists
+
+@RunWith(ConfigurationRunner.class)
+@Configurators(DummyConfigurator.class)
 public class Junit4SupportTest
     extends DefaultSuiteConfiguration
 {
-    static DummyProvider p = new DummyProvider();
+  static DummyProvider p = new DummyProvider();
 
-    @org.junit.Test
-    public void succeed()
-    {
-
-    }
-
+  @Test
+  public void succeed() {
+    // empty
+  }
 }

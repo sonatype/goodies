@@ -15,18 +15,17 @@ package org.sonatype.goodies.httpfixture.runner.junit;
 import org.sonatype.goodies.httpfixture.runner.SuiteConfigurator;
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
+/**
+ * Dummy {@link SuiteConfigurator}.
+ */
 public class DummyConfigurator
     implements SuiteConfigurator
 {
+  public ServerProvider provider() {
+    return new DummyProvider();
+  }
 
-    public ServerProvider provider()
-    {
-        return new DummyProvider();
-    }
-
-    public String getName()
-    {
-        return "Test";
-    }
-
+  public String getName() {
+    return "Test";
+  }
 }

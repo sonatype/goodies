@@ -15,7 +15,6 @@ package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
@@ -33,85 +32,66 @@ import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
 import org.junit.Before;
 
-/**
- * @author Benjamin Hanzelmann
- *
- */
 public abstract class BehaviourSuiteConfiguration<T extends Behaviour>
     extends AbstractSuiteConfiguration
 {
-    public static final class CustomTrustManager
-        implements X509TrustManager
-    {
-
-        public void checkClientTrusted( X509Certificate[] arg0, String arg1 )
-            throws CertificateException
-        {
-        }
-
-        public void checkServerTrusted( X509Certificate[] arg0, String arg1 )
-            throws CertificateException
-        {
-        }
-
-        public X509Certificate[] getAcceptedIssuers()
-        {
-            return new X509Certificate[0];
-        }
-
+  public static final class CustomTrustManager
+      implements X509TrustManager
+  {
+    public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+      // empty
     }
 
-    protected T behaviour;
-    
-    @Override
-    @Before
-    public void before()
-        throws Exception
-    {
-        trustAllHttpsCertificates();
-        super.before();
+    public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+      // empty
     }
 
-    @Override
-    public void configureProvider( ServerProvider provider )
-    {
-        super.configureProvider( provider );
-        provider.addBehaviour( "/*", behaviour() );
-        // ( (JettyServerProvider) provider() ).addDefaultServices();
+    public X509Certificate[] getAcceptedIssuers() {
+      return new X509Certificate[0];
     }
+  }
 
-    protected abstract T behaviour();
+  protected T behaviour;
 
+  @Override
+  @Before
+  public void before() throws Exception {
+    trustAllHttpsCertificates();
+    super.before();
+  }
 
-    protected byte[] fetch( String url )
-        throws IOException, MalformedURLException
-    {
-        InputStream in = new URL( url ).openStream();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        byte[] b = new byte[16 * 1024];
-        int count = -1;
-        while ( ( count = in.read( b ) ) != -1 )
-        {
-            out.write( b, 0, count );
-        }
-        out.close();
-        return out.toByteArray();
+  @Override
+  public void configureProvider(ServerProvider provider) {
+    super.configureProvider(provider);
+    provider.addBehaviour("/*", behaviour());
+    // ( (JettyServerProvider) provider() ).addDefaultServices();
+  }
+
+  protected abstract T behaviour();
+
+  protected byte[] fetch(String url) throws IOException {
+    InputStream in = new URL(url).openStream();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    byte[] b = new byte[16 * 1024];
+    int count = -1;
+    while ((count = in.read(b)) != -1) {
+      out.write(b, 0, count);
     }
+    out.close();
+    return out.toByteArray();
+  }
 
-    private static void trustAllHttpsCertificates()
-    {
-        SSLContext context;
+  private static void trustAllHttpsCertificates() {
+    SSLContext context;
 
-        TrustManager[] _trustManagers = new TrustManager[] { new CustomTrustManager() };
-        try
-        {
-            context = SSLContext.getInstance( "SSL" );
-            context.init( null, _trustManagers, new SecureRandom() );
-        }
-        catch ( GeneralSecurityException gse )
-        {
-            throw new IllegalStateException( gse.getMessage() );
-        }
-        HttpsURLConnection.setDefaultSSLSocketFactory( context.getSocketFactory() );
+    TrustManager[] _trustManagers = new TrustManager[]{new CustomTrustManager()};
+    try {
+      context = SSLContext.getInstance("SSL");
+      context.init(null, _trustManagers, new SecureRandom());
     }
+    catch (GeneralSecurityException gse) {
+      throw new IllegalStateException(gse.getMessage());
+    }
+    HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+  }
 }

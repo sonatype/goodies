@@ -13,7 +13,6 @@
 package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.sonatype.goodies.httpfixture.runner.junit.ConfigurationRunner;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.filesystem.Get;
@@ -24,35 +23,30 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * @author Benjamin Hanzelmann
- *
+ * Tests for {@link Get}.
  */
-@RunWith( ConfigurationRunner.class )
+@RunWith(ConfigurationRunner.class)
 public class GetTest
     extends BehaviourSuiteConfiguration<Get>
 {
-    private Get get = new Get();
+  private Get get = new Get();
 
-    @Override
-    public Get behaviour()
-    {
-        return get;
-    }
+  @Override
+  public Get behaviour() {
+    return get;
+  }
 
-    @Test
-    public void testServe()
-        throws IOException
-    {
-        File f = FileUtil.createTempFile( "foo" );
+  @Test
+  public void testServe() throws Exception {
+    File f = FileUtil.createTempFile("foo");
 
-        behaviour().setPath( f.getParent() );
+    behaviour().setPath(f.getParent());
 
-        String url = url( f.getName() );
-        byte[] ba = fetch( url );
+    String url = url(f.getName());
+    byte[] ba = fetch(url);
 
-        Assert.assertArrayEquals( "foo".getBytes( "UTF-8" ), ba );
+    Assert.assertArrayEquals("foo".getBytes("UTF-8"), ba);
 
-        f.delete();
-    }
-
+    f.delete();
+  }
 }

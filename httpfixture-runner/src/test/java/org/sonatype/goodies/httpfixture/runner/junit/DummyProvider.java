@@ -25,15 +25,14 @@ import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 import com.google.common.base.Throwables;
 
 /**
- * @author Benjamin Hanzelmann
+ * Dummy {@link ServerProvider}.
  */
 class DummyProvider
     implements ServerProvider
 {
   private boolean started;
 
-  public URL getUrl()
-  {
+  public URL getUrl() {
     try {
       return URI.create("dummy://url").toURL();
     }
@@ -42,42 +41,39 @@ class DummyProvider
     }
   }
 
-  public void stop()
-      throws Exception
-  {
+  public void stop() throws Exception {
     started = false;
   }
 
   public void addBehaviour(String pathspec, Behaviour... behaviour) {
+    // empty
   }
 
   @Override
   public void addServlet(final String pathSpec, final Servlet servlet) {
-
+    // empty
   }
 
   @Override
   public void addFilter(final String pathSpec, final Filter filter) {
-
+    // empty
   }
 
   @Override
   public void serveFiles(final String pathSpec, final FileContext fileContext) {
-
+    // empty
   }
 
-  public void start()
-      throws Exception
-  {
+  public void start() throws Exception {
     started = true;
   }
 
-  public void initServer()
-      throws Exception
-  {
+  public void initServer() throws Exception {
+    // empty
   }
 
   public void setPort(int port) {
+    // empty
   }
 
   public int getPort() {
@@ -85,14 +81,15 @@ class DummyProvider
   }
 
   public void setSSL(String keystore, String password) {
+    // empty
   }
 
   public void addAuthentication(String pathSpec, String authName) {
-
+    // empty
   }
 
   public void addUser(String user, Object password) {
-
+    // empty
   }
 
   public boolean isStarted() {
@@ -100,11 +97,10 @@ class DummyProvider
   }
 
   public void setSSLTruststore(final String truststore, final String password) {
-
+    // empty
   }
 
   public void setSSLNeedClientAuth(final boolean needClientAuth) {
-
+    // empty
   }
-
 }
