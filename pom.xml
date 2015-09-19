@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2011-present Sonatype, Inc. All rights reserved.
+    Copyright (c) 2010-present Sonatype, Inc. All rights reserved.
 
     This program is licensed to you under the Apache License Version 2.0,
     and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -31,7 +31,7 @@
   <version>2.0.0-SNAPSHOT</version>
 
   <url>https://github.com/sonatype/goodies</url>
-  <inceptionYear>2011</inceptionYear>
+  <inceptionYear>2010</inceptionYear>
 
   <scm>
     <connection>scm:git:git://github.com/sonatype/goodies.git</connection>
