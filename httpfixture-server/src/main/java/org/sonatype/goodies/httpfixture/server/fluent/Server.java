@@ -28,7 +28,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Server
 {
-
   private final ServerProvider serverProvider;
 
   public Server() {
@@ -64,9 +63,7 @@ public class Server
    *
    * @throws IllegalStateException if the server is already started.
    */
-  public Server port(int port)
-      throws IllegalStateException
-  {
+  public Server port(int port) throws IllegalStateException {
     if (serverProvider.isStarted()) {
       throw new IllegalStateException("Server is currently running, cannot change port.");
     }
@@ -94,16 +91,12 @@ public class Server
     return new ServeContext(this, pattern);
   }
 
-  public Server start()
-      throws Exception
-  {
+  public Server start() throws Exception {
     serverProvider.start();
     return this;
   }
 
-  public void stop()
-      throws Exception
-  {
+  public void stop() throws Exception {
     serverProvider.stop();
   }
 
@@ -111,9 +104,7 @@ public class Server
     return serverProvider.getPort();
   }
 
-  public URL getUrl()
-      throws MalformedURLException
-  {
+  public URL getUrl() throws MalformedURLException {
     return serverProvider.getUrl();
   }
 

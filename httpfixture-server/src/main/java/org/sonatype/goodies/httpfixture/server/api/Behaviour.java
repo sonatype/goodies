@@ -19,9 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface Behaviour
 {
-  public enum Keys
+  enum Keys
   {
-    CONTENT, STUTTER_MSGS, STUTTER_TIME, CONTENT_SIZE, TRUNCATE_MSG;
+    CONTENT,
+    STUTTER_MSGS,
+    STUTTER_TIME,
+    CONTENT_SIZE,
+    TRUNCATE_MSG
   }
 
   /**
@@ -29,6 +33,5 @@ public interface Behaviour
    *
    * @return <code>true</code> if execution of following behaviours should continue.
    */
-  boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
-      throws Exception;
+  boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx) throws Exception;
 }

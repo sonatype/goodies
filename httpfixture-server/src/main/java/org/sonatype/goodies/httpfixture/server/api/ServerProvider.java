@@ -20,12 +20,9 @@ import javax.servlet.Servlet;
 
 public interface ServerProvider
 {
+  void start() throws Exception;
 
-  void start()
-      throws Exception;
-
-  void stop()
-      throws Exception;
+  void stop() throws Exception;
 
   boolean isStarted();
 
@@ -64,8 +61,7 @@ public interface ServerProvider
   int getPort();
 
   /**
-   * @param keystore The keystore to use. (generated with e.g. 'keytool -keystore keystore -alias jetty -genkey
-   *                 -keyalg DSA')
+   * @param keystore The keystore to use. (generated with keytool -keystore keystore -alias jetty -genkey -keyalg DSA')
    */
   void setSSL(String keystore, String password);
 
@@ -92,7 +88,7 @@ public interface ServerProvider
   /**
    * File serving context.
    */
-  public static class FileContext
+  class FileContext
   {
     private final boolean collectionAllow;
 
@@ -115,5 +111,4 @@ public interface ServerProvider
       return baseDir;
     }
   }
-
 }
