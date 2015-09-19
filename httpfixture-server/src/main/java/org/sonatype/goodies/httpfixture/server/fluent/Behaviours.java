@@ -22,9 +22,6 @@ import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Record;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Redirect;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.filesystem.Get;
 
-/**
- * @since 1.0
- */
 public class Behaviours
 {
 

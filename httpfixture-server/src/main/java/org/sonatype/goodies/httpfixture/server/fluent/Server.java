@@ -26,9 +26,6 @@ import org.sonatype.goodies.httpfixture.server.jetty.impl.JettyServerProvider;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @since 0.4.3
- */
 public class Server
 {
 
@@ -48,8 +45,6 @@ public class Server
 
   /**
    * Start a server on a random port.
-   *
-   * @since 0.6
    */
   public static Server server() {
     return new Server();
@@ -68,7 +63,6 @@ public class Server
    * Set the port for the server.
    *
    * @throws IllegalStateException if the server is already started.
-   * @since 0.6
    */
   public Server port(int port)
       throws IllegalStateException
@@ -86,17 +80,11 @@ public class Server
     return this;
   }
 
-  /**
-   * @since 0.8
-   */
   public Server withTruststore(final String truststore, final String password) {
     serverProvider.setSSLTruststore(truststore, password);
     return this;
   }
 
-  /**
-   * @since 0.8
-   */
   public Server requireClientAuth() {
     serverProvider.setSSLNeedClientAuth(true);
     return this;

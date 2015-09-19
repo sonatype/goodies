@@ -85,14 +85,8 @@ public interface ServerProvider
 
   // void addFilter( String pathSpec, Filter filter );
 
-  /**
-   * @since 0.8
-   */
   void setSSLTruststore(String truststore, String password);
 
-  /**
-   * @since 0.8
-   */
   void setSSLNeedClientAuth(boolean needClientAuth);
 
   /**

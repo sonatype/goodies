@@ -27,7 +27,6 @@ import static com.google.common.base.Preconditions.checkArgument;
  * {@link Behaviour} that generates random count of bytes as response.
  *
  * @author cstamas
- * @since 0.8
  */
 public class GenerateRandomBehaviour
     extends BehaviourSupport

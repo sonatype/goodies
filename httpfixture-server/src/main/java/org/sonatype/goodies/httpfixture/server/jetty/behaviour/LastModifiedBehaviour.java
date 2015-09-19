@@ -25,7 +25,6 @@ import org.sonatype.goodies.httpfixture.server.api.Behaviour;
  * this instance has set.
  *
  * @author cstamas
- * @since 0.8
  */
 public class LastModifiedBehaviour
     extends BehaviourSupport

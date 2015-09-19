@@ -25,7 +25,6 @@ import org.sonatype.goodies.httpfixture.server.api.Behaviour;
  * error code along with body, thus allowing to simulate error pages too.
  *
  * @author cstamas
- * @since 0.8
  */
 public class DeliverBodyBehaviour
     extends BehaviourSupport

@@ -33,7 +33,6 @@ import com.google.common.collect.Multimap;
  * becomes first).
  *
  * @author cstamas
- * @since 0.8
  */
 public class PathRecorderBehaviour
     extends BehaviourSupport

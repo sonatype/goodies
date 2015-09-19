@@ -131,17 +131,11 @@ public class JettyServerProvider
     return server != null && server.isStarted();
   }
 
-  /**
-   * @since 0.8
-   */
   public void setSSLTruststore(final String truststore, final String password) {
     this.sslTruststore = truststore;
     this.sslTruststorePassword = password;
   }
 
-  /**
-   * @since 0.8
-   */
   public void setSSLNeedClientAuth(final boolean needClientAuth) {
     this.sslNeedClientAuth = needClientAuth;
   }

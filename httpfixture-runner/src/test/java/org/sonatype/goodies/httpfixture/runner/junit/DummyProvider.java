@@ -99,16 +99,10 @@ class DummyProvider
     return started;
   }
 
-  /**
-   * @since 0.8
-   */
   public void setSSLTruststore(final String truststore, final String password) {
 
   }
 
-  /**
-   * @since 0.8
-   */
   public void setSSLNeedClientAuth(final boolean needClientAuth) {
 
   }
