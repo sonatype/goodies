@@ -1,0 +1,2 @@
+org.sonatype.goodies.httpfixture.server.jetty.configurations.DefaultSuiteConfigurator
+org.sonatype.goodies.httpfixture.server.jetty.configurations.SslSuiteConfigurator

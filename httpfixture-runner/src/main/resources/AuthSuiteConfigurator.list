@@ -1,0 +1,4 @@
+org.sonatype.goodies.httpfixture.server.jetty.configurations.BasicAuthSuiteConfigurator
+org.sonatype.goodies.httpfixture.server.jetty.configurations.BasicAuthSslSuiteConfigurator
+org.sonatype.goodies.httpfixture.server.jetty.configurations.DigestAuthSuiteConfigurator
+org.sonatype.goodies.httpfixture.server.jetty.configurations.DigestAuthSslSuiteConfigurator
