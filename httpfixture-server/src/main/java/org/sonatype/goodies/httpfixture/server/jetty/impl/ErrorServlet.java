@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Benjamin Hanzelmann
+ * Servlet which returns errors.
  */
 public class ErrorServlet
     extends HttpServlet
@@ -28,14 +28,11 @@ public class ErrorServlet
   private static final long serialVersionUID = 35957265254538010L;
 
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String path = req.getPathInfo().substring(1);
     String[] split = path.split("/", 2);
     int sc = Integer.valueOf(split[0]);
     String msg = split[1];
     resp.sendError(sc, msg);
   }
-
 }

@@ -25,20 +25,13 @@ import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 
-
 /**
  * This is NOT a HTTP Proxy, it simply mimics it at connection and auth level, but it's still plain
  * server provider. See {@link Proxy}.
- *
- * @author Benjamin Hanzelmann
  */
 public class JettyProxyProvider
     extends JettyServerProvider
 {
-
-  /**
-   * @author Benjamin Hanzelmann
-   */
   public class ProxyAuthHandler
       extends ConstraintSecurityHandler
   {
@@ -63,39 +56,33 @@ public class JettyProxyProvider
         throw new ServletException(e.getMessage(), e);
       }
     }
-
   }
 
   private String password;
 
   private String user;
 
-  public JettyProxyProvider()
-  {
+  public JettyProxyProvider() {
+    // empty
   }
 
-  public JettyProxyProvider(String user, String pw)
-      throws Exception
-  {
+  public JettyProxyProvider(String user, String pw) throws Exception {
     this.user = user;
     this.password = pw;
   }
 
   @Override
-  public void addAuthentication(String pathSpec, String authName)
-  {
+  public void addAuthentication(String pathSpec, String authName) {
     setSecurityHandler(new ProxyAuthHandler());
     super.addAuthentication(pathSpec, authName);
   }
 
   @Override
-  protected void initWebappContext(Server s)
-  {
+  protected void initWebappContext(Server s) {
     super.initWebappContext(s);
     if (user != null) {
       ProxyAuthHandler pah = new ProxyAuthHandler();
       getWebappContext().setSecurityHandler(pah);
     }
   }
-
 }

@@ -45,8 +45,7 @@ public class JettyProxyProviderTest
 {
   @Before
   @IgnoreJRERequirement
-  public void clearJvmHttpAuthCaches()
-  {
+  public void clearJvmHttpAuthCaches() {
     // FIXME: this is circumvention got from here: http://stackoverflow.com/questions/480895/reset-the-authenticator-credentials
     // Actual Java bug is this: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6626700
     sun.net.www.protocol.http.AuthCacheValue.setAuthCache(new sun.net.www.protocol.http.AuthCacheImpl());

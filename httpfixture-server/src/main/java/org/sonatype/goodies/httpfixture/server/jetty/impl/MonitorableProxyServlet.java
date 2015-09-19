@@ -29,8 +29,7 @@ import org.eclipse.jetty.util.B64Code;
 import org.eclipse.jetty.util.StringUtil;
 
 /**
- * A real HTTP proxy servlet with ability to gather
- * accessed URIs accessed via this proxy.
+ * A real HTTP proxy servlet with ability to gather accessed URIs accessed via this proxy.
  */
 public class MonitorableProxyServlet
     extends org.eclipse.jetty.proxy.ProxyServlet
@@ -59,10 +58,7 @@ public class MonitorableProxyServlet
   }
 
   @Override
-  public void service(ServletRequest req, ServletResponse res)
-      throws ServletException,
-             IOException
-  {
+  public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
     final HttpServletRequest request = (HttpServletRequest) req;
     final HttpServletResponse response = (HttpServletResponse) res;
 

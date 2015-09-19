@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * @author Benjamin Hanzelmann
+ * Servlet which provides customized {@link Behaviour} handling.
  */
 public class BehaviourServlet
     extends HttpServlet
@@ -46,16 +46,11 @@ public class BehaviourServlet
   }
 
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     behave(req, resp);
   }
 
-
-  private void behave(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException
-  {
+  private void behave(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
     log.debug("behaving: {} - {}", req.getRequestURI(), Arrays.toString(behaviour));
     try {
       Map<Object, Object> ctx = new HashMap<Object, Object>();
@@ -71,44 +66,32 @@ public class BehaviourServlet
   }
 
   @Override
-  protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     behave(req, resp);
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     behave(req, resp);
   }
 
   @Override
-  protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     behave(req, resp);
   }
 
   @Override
-  protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     behave(req, resp);
   }
 
   @Override
-  protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     behave(req, resp);
   }
 
   @Override
-  protected void doTrace(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     behave(req, resp);
   }
 

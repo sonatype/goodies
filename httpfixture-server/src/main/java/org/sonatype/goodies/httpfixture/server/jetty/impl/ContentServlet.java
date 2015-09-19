@@ -19,9 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
- * @author Benjamin Hanzelmann
+ * Servlet that returns content.
  */
 public class ContentServlet
     extends HttpServlet
@@ -29,9 +28,7 @@ public class ContentServlet
   private static final long serialVersionUID = -7203178968027466655L;
 
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException
-  {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     // strip leading '/'
     String content = req.getPathInfo().substring(1);
 

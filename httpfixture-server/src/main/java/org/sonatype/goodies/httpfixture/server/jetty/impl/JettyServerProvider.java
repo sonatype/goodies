@@ -71,12 +71,11 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * @author Benjamin Hanzelmann
+ * Jetty {@link ServerProvider}.
  */
 public class JettyServerProvider
     implements ServerProvider
 {
-
   protected Server server;
 
   protected int port = -1;
@@ -140,16 +139,14 @@ public class JettyServerProvider
     this.sslNeedClientAuth = needClientAuth;
   }
 
-  public Server getServer()
-  {
+  public Server getServer() {
     if (server == null) {
       initServer();
     }
     return server;
   }
 
-  public Server createServer()
-  {
+  public Server createServer() {
     Server s = new Server();
 
     ServerConnector connector;
@@ -246,9 +243,7 @@ public class JettyServerProvider
    * @param alias      The alias to use for the key in the keystore.
    * @param certHolder The key and certificate to use.
    */
-  public void addCertificate(String alias, CertificateHolder certHolder)
-      throws Exception
-  {
+  public void addCertificate(String alias, CertificateHolder certHolder) throws Exception {
     checkArgument(sslContextFactory != null, "Cannot add user CERT w/o SSL configured!");
 
     KeyManagerFactory keyManagerFactory =
@@ -380,8 +375,7 @@ public class JettyServerProvider
     webappContext.getServletHandler().addServletWithMapping(servletHolder, pathSpec);
   }
 
-  protected void initWebappContext(Server s)
-  {
+  protected void initWebappContext(Server s) {
     this.webappContext = new ServletContextHandler();
     // webappContext.setConfigurations( new Configuration[] { new WebXmlConfiguration(). } );
     // webappContext.setContextPath( "/" );
@@ -392,9 +386,7 @@ public class JettyServerProvider
     handlerCollection.addHandler(new DefaultHandler());
   }
 
-  private String resourceFile(String resource)
-      throws Exception
-  {
+  private String resourceFile(String resource) throws Exception {
     URL r = getClass().getResource("/" + resource);
     if (r == null) {
       throw new IllegalStateException("cannot find resource: " + resource);
@@ -483,9 +475,7 @@ public class JettyServerProvider
     return serverConnector;
   }
 
-  public void start()
-      throws Exception
-  {
+  public void start() throws Exception {
     if (server == null) {
       initServer();
     }
@@ -513,9 +503,7 @@ public class JettyServerProvider
     addServlet(pathspec, new BehaviourServlet(behaviour));
   }
 
-  public void stop()
-      throws Exception
-  {
+  public void stop() throws Exception {
     server.stop();
 
     int total = 0;
@@ -530,8 +518,7 @@ public class JettyServerProvider
 
   }
 
-  public URL getUrl()
-  {
+  public URL getUrl() {
     String protocol;
     if (ssl) {
       protocol = "https";
@@ -598,12 +585,14 @@ public class JettyServerProvider
     public void checkClientTrusted(X509Certificate[] arg0, String arg1)
         throws CertificateException
     {
+      // empty
     }
 
     @Override
     public void checkServerTrusted(X509Certificate[] arg0, String arg1)
         throws CertificateException
     {
+      // empty
     }
 
     @Override
