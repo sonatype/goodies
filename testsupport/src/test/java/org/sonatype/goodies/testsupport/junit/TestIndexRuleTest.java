@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-present Sonatype, Inc. All rights reserved.
+ * Copyright (c) 2010-present Sonatype, Inc. All rights reserved.
  *
  * This program is licensed to you under the Apache License Version 2.0,
  * and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -23,12 +23,14 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.sonatype.goodies.testsupport.TestSupport;
+import org.sonatype.goodies.testsupport.group.Slow;
 import org.sonatype.goodies.testsupport.hamcrest.FileMatchers;
 
 import com.google.common.io.Files;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
@@ -42,6 +44,7 @@ import static org.sonatype.goodies.testsupport.hamcrest.FileMatchers.isDirectory
 /**
  * {@link TestIndexRule} UTs.
  */
+@Category(Slow.class)
 public class TestIndexRuleTest
     extends TestSupport
 {
