@@ -49,6 +49,9 @@
   </prerequisites>
 
   <properties>
+    <!-- allow technically non-compliant HTML for JDK8 -->
+    <additionalparam>-Xdoclint:none</additionalparam>
+    
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
 
