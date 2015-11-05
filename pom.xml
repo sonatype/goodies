@@ -49,9 +49,6 @@
   </prerequisites>
 
   <properties>
-    <!-- allow technically non-compliant HTML for JDK8 -->
-    <additionalparam>-Xdoclint:none</additionalparam>
-    
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
 
@@ -489,6 +486,14 @@
               /=${project.build.outputDirectory},{maven-resources}
             </Include-Resource>
           </instructions>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <additionalparam>-Xdoclint:none</additionalparam>
         </configuration>
       </plugin>
     </plugins>
