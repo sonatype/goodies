@@ -12,10 +12,12 @@
  */
 package org.sonatype.goodies.lifecycle;
 
+import org.sonatype.goodies.lifecycle.SimpleLifecycleSupport.State;
 import org.sonatype.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -24,59 +26,140 @@ import static org.junit.Assert.fail;
 public class SimpleLifecycleSupportTest
     extends TestSupport
 {
-  @Test
-  public void startStop() throws Exception {
-    SimpleLifecycleSupport support = new SimpleLifecycleSupport()
-    {
-      @Override
-      protected void doStart() throws Exception {
-        log("DO START");
-      }
+  private static class TestError
+    extends Error
+  {
+    // empty
+  }
 
-      @Override
-      protected void doStop() throws Exception {
-        log("DO STOP");
-      }
-    };
+  public static class TestException
+    extends Exception
+  {
+    // empty
+  }
 
-    support.start();
-    support.stop();
-    support.start();
-    support.stop();
+  private void assertState(final SimpleLifecycleSupport lifecycle, final State state) {
+    assertTrue(lifecycle.is(state));
   }
 
   @Test
-  public void startStopFail() throws Exception {
-    SimpleLifecycleSupport support = new SimpleLifecycleSupport()
+  public void startStopStartStop() throws Exception {
+    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport();
+
+    assertState(underTest, State.NEW);
+
+    underTest.start();
+    assertState(underTest, State.STARTED);
+
+    underTest.stop();
+    assertState(underTest, State.STOPPED);
+
+    underTest.start();
+    assertState(underTest, State.STARTED);
+
+    underTest.stop();
+    assertState(underTest, State.STOPPED);
+  }
+
+  @Test
+  public void stopBeforeStartDisallowed() throws Exception {
+    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport();
+
+    assertState(underTest, State.NEW);
+
+    try {
+      underTest.stop();
+    }
+    catch (IllegalStateException e) {
+      // expected
+    }
+
+    assertState(underTest, State.NEW);
+  }
+
+  @Test
+  public void startException() throws Exception {
+    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
     {
       @Override
       protected void doStart() throws Exception {
-        log("DO START");
-      }
-
-      @Override
-      protected void doStop() throws Exception {
-        log("DO STOP");
-        throw new Exception("FAIL");
+        throw new TestException();
       }
     };
 
-    support.start();
-
     try {
-      support.stop();
+      underTest.start();
       fail();
     }
-    catch (Exception e) {
+    catch (TestException e) {
       // expected
     }
 
+    assertState(underTest, State.FAILED);
+  }
+
+  @Test
+  public void startError() throws Exception {
+    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
+    {
+      @Override
+      protected void doStart() throws Exception {
+        throw new TestError();
+      }
+    };
+
     try {
-      support.start();
-      fail("Allowed start after fail");
+      underTest.start();
+      fail();
     }
-    catch (Exception e) {
+    catch (TestError e) {
       // expected
     }
+
+    assertState(underTest, State.FAILED);
+  }
+
+  @Test
+  public void stopException() throws Exception {
+    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
+    {
+      @Override
+      protected void doStop() throws Exception {
+        throw new TestException();
+      }
+    };
+
+    underTest.start();
+    try {
+      underTest.stop();
+      fail();
+    }
+    catch (TestException e) {
+      // expected
+    }
+
+    assertState(underTest, State.FAILED);
+  }
+
+  @Test
+  public void stopError() throws Exception {
+    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
+    {
+      @Override
+      protected void doStop() throws Exception {
+        throw new TestError();
+      }
+    };
+
+    underTest.start();
+    try {
+      underTest.stop();
+      fail();
+    }
+    catch (TestError e) {
+      // expected
+    }
+
+    assertState(underTest, State.FAILED);
   }
 }

@@ -21,6 +21,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.sonatype.goodies.common.ComponentSupport;
 import org.sonatype.gossip.Level;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -37,7 +38,8 @@ public class SimpleLifecycleSupport
 {
   private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-  private enum State
+  @VisibleForTesting
+  enum State
   {
     NEW, STARTED, STOPPED, FAILED
   }
@@ -94,7 +96,8 @@ public class SimpleLifecycleSupport
   /**
    * Check if current state is given state.
    */
-  private boolean is(final State state) {
+  @VisibleForTesting
+  boolean is(final State state) {
     Lock lock = readLock();
     try {
       return current == state;
@@ -191,9 +194,10 @@ public class SimpleLifecycleSupport
   // Failed
   //
 
-  protected void doFailed(final Throwable cause) {
+  protected void doFailed(final Throwable cause) throws Exception {
     log.error("Lifecycle operation failed", cause);
     current = State.FAILED;
+    Throwables.propagateIfPossible(cause, Exception.class);
     throw Throwables.propagate(cause);
   }
 
