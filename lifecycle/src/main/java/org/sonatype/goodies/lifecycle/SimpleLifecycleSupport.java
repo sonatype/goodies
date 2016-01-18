@@ -192,7 +192,6 @@ public class SimpleLifecycleSupport
     throw Throwables.propagate(cause);
   }
 
-
   protected boolean isFailed() {
     return is(State.FAILED);
   }
