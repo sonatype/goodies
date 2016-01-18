@@ -49,6 +49,9 @@ public class SimpleLifecycleSupport
     return this;
   }
 
+  /**
+   * Returns the logger level for transition messages.
+   */
   protected Level getLifecycleLogLevel() {
     return Level.DEBUG;
   }
