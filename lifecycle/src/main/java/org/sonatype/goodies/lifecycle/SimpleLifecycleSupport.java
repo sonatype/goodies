@@ -114,14 +114,9 @@ public class SimpleLifecycleSupport
     throw new IllegalStateException("Invalid state: " + current + "; allowed: " + Arrays.toString(allowed));
   }
 
-  /**
-   * Handle transition failures and propagate exception.
-   */
-  private Exception propagate(final Throwable cause) {
-    log.error("Lifecycle operation failed", cause);
-    current = State.FAILED;
-    throw Throwables.propagate(cause);
-  }
+  //
+  // Start
+  //
 
   @Override
   public final void start() throws Exception {
@@ -134,7 +129,7 @@ public class SimpleLifecycleSupport
       log("Started");
     }
     catch (Throwable failure) {
-      throw propagate(failure);
+      doFailed(failure);
     }
     finally {
       lock.unlock();
@@ -153,6 +148,10 @@ public class SimpleLifecycleSupport
     checkState(isStarted(), "Not started");
   }
 
+  //
+  // Stop
+  //
+
   @Override
   public final void stop() throws Exception {
     Lock lock = writeLock();
@@ -164,7 +163,7 @@ public class SimpleLifecycleSupport
       log("Stopped");
     }
     catch (Throwable failure) {
-      throw propagate(failure);
+      doFailed(failure);
     }
     finally {
       lock.unlock();
@@ -182,6 +181,17 @@ public class SimpleLifecycleSupport
   protected void ensureStopped() {
     checkState(isStopped(), "Not stopped");
   }
+
+  //
+  // Failed
+  //
+
+  protected void doFailed(final Throwable cause) {
+    log.error("Lifecycle operation failed", cause);
+    current = State.FAILED;
+    throw Throwables.propagate(cause);
+  }
+
 
   protected boolean isFailed() {
     return is(State.FAILED);
