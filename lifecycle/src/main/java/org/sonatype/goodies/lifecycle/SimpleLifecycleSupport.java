@@ -106,6 +106,8 @@ public class SimpleLifecycleSupport
 
   /**
    * Ensure current state is one of allowed states.
+   *
+   * Must be called within scope of lock.
    */
   private void ensure(final State... allowed) {
     for (State allow : allowed) {
