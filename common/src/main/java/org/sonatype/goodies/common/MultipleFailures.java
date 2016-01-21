@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Helper to collect and throw multiple {@link Throwable}s.
  *
- * @since 3.0
+ * @since 2.1
  */
 public class MultipleFailures
   extends ComponentSupport
