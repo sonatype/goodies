@@ -72,7 +72,7 @@ public class Lifecycles
       start((LifecycleAware) component);
     }
     else {
-      log.warn("Unable to start; not a lifecycle component: {}", component);
+      log.warn("Unable to start component; not a lifecycle: {}", component);
     }
   }
 
@@ -117,7 +117,7 @@ public class Lifecycles
       stop((LifecycleAware) component);
     }
     else {
-      log.warn("Unable to stop; not a lifecycle component: {}", component);
+      log.warn("Unable to stop component; not a lifecycle: {}", component);
     }
   }
 }
