@@ -13,18 +13,17 @@
 package org.sonatype.goodies.lifecycle;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.sonatype.goodies.common.ComponentSupport;
+import org.sonatype.goodies.common.Locks;
 import org.sonatype.gossip.Level;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -68,41 +67,11 @@ public class LifecycleSupport
   }
 
   /**
-   * Attempt to lock.
-   */
-  private static Lock lock(final Lock lock) {
-    checkNotNull(lock);
-    try {
-      if (!lock.tryLock(60, TimeUnit.SECONDS)) {
-        throw new RuntimeException("Failed to obtain lock after 60 seconds");
-      }
-    }
-    catch (InterruptedException e) {
-      throw Throwables.propagate(e);
-    }
-    return lock;
-  }
-
-  /**
-   * Returns locked read lock.
-   */
-  private Lock readLock() {
-    return lock(readWriteLock.readLock());
-  }
-
-  /**
-   * Returns locked write lock.
-   */
-  private Lock writeLock() {
-    return lock(readWriteLock.writeLock());
-  }
-
-  /**
    * Check if current state is given state.
    */
   @VisibleForTesting
   boolean is(final State state) {
-    Lock lock = readLock();
+    Lock lock = Locks.read(readWriteLock);
     try {
       return current == state;
     }
@@ -132,7 +101,7 @@ public class LifecycleSupport
 
   @Override
   public final void start() throws Exception {
-    Lock lock = writeLock();
+    Lock lock = Locks.write(readWriteLock);
     ensure(State.NEW, State.STOPPED);
     try {
       log("Starting");
@@ -166,7 +135,7 @@ public class LifecycleSupport
 
   @Override
   public final void stop() throws Exception {
-    Lock lock = writeLock();
+    Lock lock = Locks.write(readWriteLock);
     ensure(State.STARTED);
     try {
       log("Stopping");
