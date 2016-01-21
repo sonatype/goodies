@@ -73,7 +73,9 @@ public class LifecycleSupport
   private static Lock lock(final Lock lock) {
     checkNotNull(lock);
     try {
-      lock.tryLock(60, TimeUnit.SECONDS);
+      if (!lock.tryLock(60, TimeUnit.SECONDS)) {
+        throw new RuntimeException("Failed to obtain lock after 60 seconds");
+      }
     }
     catch (InterruptedException e) {
       throw Throwables.propagate(e);
