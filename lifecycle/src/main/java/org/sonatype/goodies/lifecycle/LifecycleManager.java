@@ -21,16 +21,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Manages a set of {@link Lifecycle} components.
  *
- * @since 1.0
+ * @since 2.0.1
  */
-public class SimpleLifecycleManager
+public class LifecycleManager
     extends LifecycleSupport
 {
   private final CopyOnWriteArrayList<Lifecycle> components = new CopyOnWriteArrayList<Lifecycle>();
 
   public void add(final Lifecycle component) {
     checkNotNull(component);
-    components.addIfAbsent(component);
+    boolean added = components.addIfAbsent(component);
+    if (added) {
+      log.trace("Added: {}", component);
+    }
   }
 
   public void add(final Lifecycle... components) {
@@ -49,7 +52,10 @@ public class SimpleLifecycleManager
 
   public void remove(final Lifecycle component) {
     checkNotNull(component);
-    components.remove(component);
+    boolean removed = components.remove(component);
+    if (removed) {
+      log.trace("Removed: {}", component);
+    }
   }
 
   public void remove(final Lifecycle... components) {
@@ -68,6 +74,7 @@ public class SimpleLifecycleManager
 
   public void clear() {
     components.clear();
+    log.trace("Cleared");
   }
 
   /**
