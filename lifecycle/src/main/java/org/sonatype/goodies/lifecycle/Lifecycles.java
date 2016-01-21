@@ -23,6 +23,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Lifecycles
 {
+  private Lifecycles() {
+    // empty
+  }
+
   //
   // Starting
   //
