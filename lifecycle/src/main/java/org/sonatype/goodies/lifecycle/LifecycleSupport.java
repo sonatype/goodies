@@ -28,9 +28,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Simple {@link Lifecycle} support.
+ * Support for {@link Lifecycle} implementations.
  *
- * @since 2.0.1
+ * @since 1.0
  */
 public class LifecycleSupport
     extends ComponentSupport
@@ -53,6 +53,8 @@ public class LifecycleSupport
 
   /**
    * Returns the logger level for transition messages.
+   *
+   * @since 1.7
    */
   protected Level getLifecycleLogLevel() {
     return Level.DEBUG;
@@ -201,6 +203,9 @@ public class LifecycleSupport
     throw Throwables.propagate(cause);
   }
 
+  /**
+   * @since 2.1
+   */
   protected boolean isFailed() {
     return is(State.FAILED);
   }
