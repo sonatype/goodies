@@ -45,11 +45,6 @@ public class LifecycleSupport
 
   private State current = State.NEW;
 
-  @Override
-  public Lifecycle getLifecycle() {
-    return this;
-  }
-
   /**
    * Returns the logger level for transition messages.
    *

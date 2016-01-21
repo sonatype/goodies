@@ -30,11 +30,10 @@ public class Lifecycles
   /**
    * Start given lifecycle and propagate exceptions.
    */
-  public static void start(final Lifecycle lifecycle) {
-    checkNotNull(lifecycle);
-
+  public static void start(final Lifecycle component) {
+    checkNotNull(component);
     try {
-      lifecycle.start();
+      component.start();
     }
     catch (Exception e) {
       throw Throwables.propagate(e);
@@ -46,26 +45,23 @@ public class Lifecycles
    *
    * @see #start(Lifecycle)
    */
-  public static void start(final LifecycleAware aware) {
-    checkNotNull(aware);
-
-    start(aware.getLifecycle());
+  public static void start(final LifecycleAware component) {
+    checkNotNull(component);
+    start(component.getLifecycle());
   }
 
   /**
-   * Start given object if it implements {@link Lifecycle} or {@link LifecycleAware}.
+   * Start given component if it implements {@link Lifecycle} or {@link LifecycleAware}.
    *
    * @see #start(Lifecycle)
    * @see #start(LifecycleAware)
    */
-  public static void start(final Object obj) {
-    checkNotNull(obj);
-
-    if (obj instanceof Lifecycle) {
-      start((Lifecycle) obj);
+  public static void start(final Object component) {
+    if (component instanceof Lifecycle) {
+      start((Lifecycle) component);
     }
-    else if (obj instanceof LifecycleAware) {
-      start((LifecycleAware) obj);
+    else if (component instanceof LifecycleAware) {
+      start((LifecycleAware) component);
     }
   }
 
@@ -76,11 +72,10 @@ public class Lifecycles
   /**
    * Stop given lifecycle and propagate exceptions.
    */
-  public static void stop(final Lifecycle lifecycle) {
-    checkNotNull(lifecycle);
-
+  public static void stop(final Lifecycle component) {
+    checkNotNull(component);
     try {
-      lifecycle.stop();
+      component.stop();
     }
     catch (Exception e) {
       throw Throwables.propagate(e);
@@ -92,26 +87,23 @@ public class Lifecycles
    *
    * @see #stop(Lifecycle)
    */
-  public static void stop(final LifecycleAware aware) {
-    checkNotNull(aware);
-
-    stop(aware.getLifecycle());
+  public static void stop(final LifecycleAware component) {
+    checkNotNull(component);
+    stop(component.getLifecycle());
   }
 
   /**
-   * Stop given object if it implements {@link Lifecycle} or {@link LifecycleAware}.
+   * Stop given component if it implements {@link Lifecycle} or {@link LifecycleAware}.
    *
    * @see #stop(Lifecycle)
    * @see #stop(LifecycleAware)
    */
-  public static void stop(final Object obj) {
-    checkNotNull(obj);
-
-    if (obj instanceof Lifecycle) {
-      stop((Lifecycle)obj);
+  public static void stop(final Object component) {
+    if (component instanceof Lifecycle) {
+      stop((Lifecycle)component);
     }
-    else if (obj instanceof LifecycleAware) {
-      stop((LifecycleAware) obj);
+    else if (component instanceof LifecycleAware) {
+      stop((LifecycleAware) component);
     }
   }
 }

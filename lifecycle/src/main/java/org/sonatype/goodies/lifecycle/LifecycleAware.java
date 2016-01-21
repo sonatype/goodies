@@ -12,6 +12,8 @@
  */
 package org.sonatype.goodies.lifecycle;
 
+import javax.annotation.Nonnull;
+
 /**
  * Interface for components that are aware of their {@link Lifecycle}.
  *
@@ -19,5 +21,6 @@ package org.sonatype.goodies.lifecycle;
  */
 public interface LifecycleAware
 {
+  @Nonnull
   Lifecycle getLifecycle();
 }
