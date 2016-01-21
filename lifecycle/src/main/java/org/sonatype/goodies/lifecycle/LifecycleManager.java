@@ -14,6 +14,9 @@ package org.sonatype.goodies.lifecycle;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.sonatype.goodies.common.MultipleFailures;
+import org.sonatype.goodies.common.MultipleFailures.MultipleFailuresException;
+
 import com.google.common.collect.Lists;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class LifecycleManager
     extends LifecycleSupport
 {
-  private final CopyOnWriteArrayList<Lifecycle> components = new CopyOnWriteArrayList<Lifecycle>();
+  private final CopyOnWriteArrayList<Lifecycle> components = new CopyOnWriteArrayList<>();
 
   public void add(final Lifecycle component) {
     checkNotNull(component);
@@ -81,54 +84,53 @@ public class LifecycleManager
     log.trace("Cleared");
   }
 
-  // TODO: sort out if we need to cope with Throwable
-  // TODO: sort out exposing multiple-failures exception, or custom exception for clarity
-
   /**
    * Start all managed components.
    *
    * Components are started in the order added.
+   *
+   * @throws MultipleFailuresException
    */
   @Override
   protected void doStart() throws Exception {
-    log.debug("Starting {} components", components.size());
+    int count = components.size();
+    log.debug("Starting {} components", count);
 
-    int failed = 0;
+    MultipleFailures failures = new MultipleFailures(count);
     for (Lifecycle component : components) {
       try {
         component.start();
       }
-      catch (Exception e) {
-        failed++;
-        log.error("Failed to start component: {}", component, e);
+      catch (Throwable failure) {
+        logTransitionFailure("Failed to start component: " + component, failure);
+        failures.add(failure);
       }
     }
-    if (failed != 0) {
-      throw new Exception("Failed to start " + failed + " components");
-    }
+    failures.maybePropagate("Failed to start " + failures.size() + " components");
   }
 
   /**
    * Stop all managed components.
    *
    * Stop order is reverse of start order.
+   *
+   * @throws MultipleFailuresException
    */
   @Override
   protected void doStop() throws Exception {
-    log.debug("Stopping {} components", components.size());
+    int count = components.size();
+    log.debug("Stopping {} components", count);
 
-    int failed = 0;
+    MultipleFailures failures = new MultipleFailures(count);
     for (Lifecycle component : Lists.reverse(components)) {
       try {
         component.stop();
       }
-      catch (Exception e) {
-        failed++;
-        log.error("Failed to stop component: {}", component, e);
+      catch (Throwable failure) {
+        logTransitionFailure("Failed to stop component: " + component, failure);
+        failures.add(failure);
       }
     }
-    if (failed != 0) {
-      throw new Exception("Failed to stop " + failed + " components");
-    }
+    failures.maybePropagate("Failed to stop " + failures.size() + " components");
   }
 }

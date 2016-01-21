@@ -19,7 +19,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.sonatype.goodies.common.ComponentSupport;
 import org.sonatype.goodies.common.Locks;
-import org.sonatype.gossip.Level;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
@@ -46,19 +45,21 @@ public class LifecycleSupport
   private State current = State.NEW;
 
   /**
-   * Returns the logger level for transition messages.
+   * Log transition messages.
    *
-   * @since 1.7
+   * @since 2.1
    */
-  protected Level getLifecycleLogLevel() {
-    return Level.DEBUG;
+  protected void logTransition(final String message) {
+    log.debug(message);
   }
 
   /**
-   * Log transition messages.
+   * Log transition failure messages.
+   *
+   * @since 2.1
    */
-  private void log(final String message) {
-    getLifecycleLogLevel().log(log, message);
+  protected void logTransitionFailure(final String message, final Throwable cause) {
+    log.error(message, cause);
   }
 
   /**
@@ -99,13 +100,13 @@ public class LifecycleSupport
     Lock lock = Locks.write(readWriteLock);
     ensure(State.NEW, State.STOPPED);
     try {
-      log("Starting");
+      logTransition("Starting");
       doStart();
       current = State.STARTED;
-      log("Started");
+      logTransition("Started");
     }
     catch (Throwable failure) {
-      doFailed(failure);
+      doFailed("start", failure);
     }
     finally {
       lock.unlock();
@@ -133,13 +134,13 @@ public class LifecycleSupport
     Lock lock = Locks.write(readWriteLock);
     ensure(State.STARTED);
     try {
-      log("Stopping");
+      logTransition("Stopping");
       doStop();
       current = State.STOPPED;
-      log("Stopped");
+      logTransition("Stopped");
     }
     catch (Throwable failure) {
-      doFailed(failure);
+      doFailed("stop", failure);
     }
     finally {
       lock.unlock();
@@ -162,8 +163,8 @@ public class LifecycleSupport
   // Failed
   //
 
-  protected void doFailed(final Throwable cause) throws Exception {
-    log.error("Lifecycle operation failed", cause);
+  protected void doFailed(final String operation, final Throwable cause) throws Exception {
+    logTransitionFailure("Lifecycle operation " + operation + " failed", cause);
     current = State.FAILED;
     Throwables.propagateIfPossible(cause, Exception.class);
     throw Throwables.propagate(cause);
