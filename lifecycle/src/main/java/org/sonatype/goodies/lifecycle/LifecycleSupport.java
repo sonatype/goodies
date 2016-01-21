@@ -70,7 +70,7 @@ public class LifecycleSupport
   /**
    * Attempt to lock.
    */
-  private Lock lock(final Lock lock) {
+  private static Lock lock(final Lock lock) {
     checkNotNull(lock);
     try {
       lock.tryLock(60, TimeUnit.SECONDS);
