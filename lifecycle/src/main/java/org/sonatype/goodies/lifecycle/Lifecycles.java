@@ -13,6 +13,8 @@
 package org.sonatype.goodies.lifecycle;
 
 import com.google.common.base.Throwables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -23,6 +25,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Lifecycles
 {
+  private static final Logger log = LoggerFactory.getLogger(Lifecycles.class);
+
   private Lifecycles() {
     // empty
   }
@@ -67,6 +71,9 @@ public class Lifecycles
     else if (component instanceof LifecycleAware) {
       start((LifecycleAware) component);
     }
+    else {
+      log.warn("Unable to start; not a lifecycle component: {}", component);
+    }
   }
 
   //
@@ -108,6 +115,9 @@ public class Lifecycles
     }
     else if (component instanceof LifecycleAware) {
       stop((LifecycleAware) component);
+    }
+    else {
+      log.warn("Unable to stop; not a lifecycle component: {}", component);
     }
   }
 }
