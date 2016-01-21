@@ -12,13 +12,19 @@
  */
 package org.sonatype.goodies.lifecycle;
 
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.sonatype.goodies.common.ComponentSupport;
-import org.sonatype.goodies.common.Mutex;
-import org.sonatype.goodies.lifecycle.LifecycleHandlerContext.MainMap;
 import org.sonatype.gossip.Level;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -30,103 +36,113 @@ public class LifecycleSupport
     extends ComponentSupport
     implements Lifecycle
 {
-  private final Mutex lock = new Mutex();
+  private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+  @VisibleForTesting
+  enum State
+  {
+    NEW, STARTED, STOPPED, FAILED
+  }
+
+  private State current = State.NEW;
+
+  @Override
+  public Lifecycle getLifecycle() {
+    return this;
+  }
 
   /**
+   * Returns the logger level for transition messages.
+   *
    * @since 1.7
    */
   protected Level getLifecycleLogLevel() {
     return Level.DEBUG;
   }
 
-  private final class Handler
-      implements LifecycleHandler
-  {
-    private final LifecycleSupport owner = LifecycleSupport.this;
+  /**
+   * Log transition messages.
+   */
+  private void log(final String message) {
+    getLifecycleLogLevel().log(log, message);
+  }
 
-    private Throwable failure;
-
-    public void log(final String message) {
-      getLifecycleLogLevel().log(log, message);
+  /**
+   * Attempt to lock.
+   */
+  private static Lock lock(final Lock lock) {
+    checkNotNull(lock);
+    try {
+      lock.tryLock(60, TimeUnit.SECONDS);
     }
-
-    public boolean isFailed() {
-      return failure != null;
+    catch (InterruptedException e) {
+      throw Throwables.propagate(e);
     }
+    return lock;
+  }
 
-    public boolean isResettable() {
-      return owner.isResettable();
+  /**
+   * Returns locked read lock.
+   */
+  private Lock readLock() {
+    return lock(readWriteLock.readLock());
+  }
+
+  /**
+   * Returns locked write lock.
+   */
+  private Lock writeLock() {
+    return lock(readWriteLock.writeLock());
+  }
+
+  /**
+   * Check if current state is given state.
+   */
+  @VisibleForTesting
+  boolean is(final State state) {
+    Lock lock = readLock();
+    try {
+      return current == state;
     }
-
-    public void doFailed() {
-      if (failure != null) {
-        owner.doFailed(failure);
-      }
-    }
-
-    public void doStart() {
-      try {
-        owner.doStart();
-      }
-      catch (Throwable e) {
-        failure = e;
-      }
-    }
-
-    public void doStop() {
-      try {
-        owner.doStop();
-      }
-      catch (Throwable e) {
-        failure = e;
-      }
-    }
-
-    public void doReset() {
-      failure = null;
-      try {
-        owner.doReset();
-      }
-      catch (Throwable e) {
-        failure = e;
-      }
+    finally {
+      lock.unlock();
     }
   }
 
-  private final LifecycleHandlerContext state = new LifecycleHandlerContext(new Handler());
-
-  public Lifecycle getLifecycle() {
-    return this;
-  }
-
-  protected void doFailed(final Throwable cause) {
-    log.error("Life-cycle operation failed", cause);
-    throw Throwables.propagate(cause);
-  }
-
-  protected boolean isResettable() {
-    return false;
-  }
-
-  protected void doReset() throws Exception {
-    // empty
-  }
-
-  private void maybeFail() {
-    //  Called from start or stop, in a synchronized block already
-    if (state.getOwner().isFailed()) {
-      state.fail();
+  /**
+   * Ensure current state is one of allowed states.
+   *
+   * Must be called within scope of lock.
+   */
+  private void ensure(final State... allowed) {
+    for (State allow : allowed) {
+      if (current == allow) {
+        return;
+      }
     }
+
+    throw new IllegalStateException("Invalid state: " + current + "; allowed: " + Arrays.toString(allowed));
   }
 
-  // NOTE: We enter a beginning state, then transition to the ending state which is where the callback is
-  // NOTE: invoked (sorta strange, should be sorted out) ... could probably use Entry { doXXX(); } instead?
+  //
+  // Start
+  //
 
+  @Override
   public final void start() throws Exception {
-    synchronized (lock) {
-      state.start();
-      state.started();
-      maybeFail();
+    Lock lock = writeLock();
+    ensure(State.NEW, State.STOPPED);
+    try {
+      log("Starting");
+      doStart();
+      current = State.STARTED;
+      log("Started");
+    }
+    catch (Throwable failure) {
+      doFailed(failure);
+    }
+    finally {
+      lock.unlock();
     }
   }
 
@@ -134,11 +150,33 @@ public class LifecycleSupport
     // empty
   }
 
+  protected boolean isStarted() {
+    return is(State.STARTED);
+  }
+
+  protected void ensureStarted() {
+    checkState(isStarted(), "Not started");
+  }
+
+  //
+  // Stop
+  //
+
+  @Override
   public final void stop() throws Exception {
-    synchronized (lock) {
-      state.stop();
-      state.stopped();
-      maybeFail();
+    Lock lock = writeLock();
+    ensure(State.STARTED);
+    try {
+      log("Stopping");
+      doStop();
+      current = State.STOPPED;
+      log("Stopped");
+    }
+    catch (Throwable failure) {
+      doFailed(failure);
+    }
+    finally {
+      lock.unlock();
     }
   }
 
@@ -146,27 +184,29 @@ public class LifecycleSupport
     // empty
   }
 
-  // FIXME: Need to sort out the synchronization locks here...
-  // FIXME: Some parts of 'state' are sync, some aren't like getState()
-  // FIXME: For now use our lock & pretend that 'state' is not sync'd at all
-
-  protected boolean isStarted() {
-    synchronized (lock) {
-      return state.getState().equals(MainMap.Started);
-    }
-  }
-
-  protected void ensureStarted() {
-    checkState(isStarted(), "Not started");
-  }
-
   protected boolean isStopped() {
-    synchronized (lock) {
-      return state.getState().equals(MainMap.Stopped);
-    }
+    return is(State.STOPPED);
   }
 
   protected void ensureStopped() {
     checkState(isStopped(), "Not stopped");
+  }
+
+  //
+  // Failed
+  //
+
+  protected void doFailed(final Throwable cause) throws Exception {
+    log.error("Lifecycle operation failed", cause);
+    current = State.FAILED;
+    Throwables.propagateIfPossible(cause, Exception.class);
+    throw Throwables.propagate(cause);
+  }
+
+  /**
+   * @since 2.1
+   */
+  protected boolean isFailed() {
+    return is(State.FAILED);
   }
 }
