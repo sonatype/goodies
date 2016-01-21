@@ -12,7 +12,7 @@
  */
 package org.sonatype.goodies.lifecycle;
 
-import org.sonatype.goodies.lifecycle.SimpleLifecycleSupport.State;
+import org.sonatype.goodies.lifecycle.LifecycleSupport.State;
 import org.sonatype.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
@@ -21,9 +21,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * Tests for {@link SimpleLifecycleSupport}.
+ * Tests for {@link LifecycleSupport}.
  */
-public class SimpleLifecycleSupportTest
+public class LifecycleSupportTest
     extends TestSupport
 {
   private static class TestError
@@ -38,13 +38,13 @@ public class SimpleLifecycleSupportTest
     // empty
   }
 
-  private void assertState(final SimpleLifecycleSupport lifecycle, final State state) {
+  private void assertState(final LifecycleSupport lifecycle, final State state) {
     assertTrue(lifecycle.is(state));
   }
 
   @Test
   public void startStopStartStop() throws Exception {
-    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport();
+    LifecycleSupport underTest = new LifecycleSupport();
 
     assertState(underTest, State.NEW);
 
@@ -63,7 +63,7 @@ public class SimpleLifecycleSupportTest
 
   @Test
   public void stopBeforeStartDisallowed() throws Exception {
-    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport();
+    LifecycleSupport underTest = new LifecycleSupport();
 
     assertState(underTest, State.NEW);
 
@@ -79,7 +79,7 @@ public class SimpleLifecycleSupportTest
 
   @Test
   public void startException() throws Exception {
-    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
+    LifecycleSupport underTest = new LifecycleSupport()
     {
       @Override
       protected void doStart() throws Exception {
@@ -100,7 +100,7 @@ public class SimpleLifecycleSupportTest
 
   @Test
   public void startError() throws Exception {
-    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
+    LifecycleSupport underTest = new LifecycleSupport()
     {
       @Override
       protected void doStart() throws Exception {
@@ -121,7 +121,7 @@ public class SimpleLifecycleSupportTest
 
   @Test
   public void stopException() throws Exception {
-    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
+    LifecycleSupport underTest = new LifecycleSupport()
     {
       @Override
       protected void doStop() throws Exception {
@@ -143,7 +143,7 @@ public class SimpleLifecycleSupportTest
 
   @Test
   public void stopError() throws Exception {
-    SimpleLifecycleSupport underTest = new SimpleLifecycleSupport()
+    LifecycleSupport underTest = new LifecycleSupport()
     {
       @Override
       protected void doStop() throws Exception {

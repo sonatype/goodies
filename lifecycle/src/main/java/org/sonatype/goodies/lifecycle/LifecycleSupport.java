@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkState;
  *
  * @since 2.0.1
  */
-public class SimpleLifecycleSupport
+public class LifecycleSupport
     extends ComponentSupport
     implements Lifecycle
 {
