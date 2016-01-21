@@ -72,10 +72,17 @@ public class LifecycleManager
     }
   }
 
+  public int size() {
+    return components.size();
+  }
+
   public void clear() {
     components.clear();
     log.trace("Cleared");
   }
+
+  // TODO: sort out if we need to cope with Throwable
+  // TODO: sort out exposing multiple-failures exception, or custom exception for clarity
 
   /**
    * Start all managed components.
