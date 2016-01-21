@@ -12,7 +12,6 @@
  */
 package org.sonatype.goodies.lifecycle;
 
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.common.collect.Lists;
@@ -20,62 +19,62 @@ import com.google.common.collect.Lists;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Default {@link LifecycleManager} implementation.
+ * Manages a set of {@link Lifecycle} components.
  *
  * @since 1.0
  */
-public class LifecycleManagerImpl
+public class SimpleLifecycleManager
     extends LifecycleSupport
-    implements LifecycleManager
 {
-  private final List<Lifecycle> components = new CopyOnWriteArrayList<Lifecycle>();
+  private final CopyOnWriteArrayList<Lifecycle> components = new CopyOnWriteArrayList<Lifecycle>();
 
-  public <T extends Lifecycle> T add(final T component) {
+  public void add(final Lifecycle component) {
     checkNotNull(component);
-    if (!components.contains(component)) {
-      components.add(component);
-    }
-    return component;
+    components.addIfAbsent(component);
   }
 
-  public <T extends LifecycleAware> T add(final T component) {
-    checkNotNull(component);
-    add(component.getLifecycle());
-    return component;
-  }
-
-  public LifecycleManager add(final LifecycleAware... components) {
+  public void add(final Lifecycle... components) {
     checkNotNull(components);
-    for (LifecycleAware component : components) {
+    for (Lifecycle component : components) {
       add(component);
     }
-    return this;
   }
 
-  public <T extends Lifecycle> T remove(final T component) {
-    checkNotNull(component);
-    components.remove(component);
-    return component;
-  }
-
-  public <T extends LifecycleAware> T remove(final T component) {
-    checkNotNull(component);
-    remove(component.getLifecycle());
-    return component;
-  }
-
-  public LifecycleManager remove(final LifecycleAware... components) {
+  public void add(final LifecycleAware... components) {
     checkNotNull(components);
     for (LifecycleAware component : components) {
+      add(component.getLifecycle());
+    }
+  }
+
+  public void remove(final Lifecycle component) {
+    checkNotNull(component);
+    components.remove(component);
+  }
+
+  public void remove(final Lifecycle... components) {
+    checkNotNull(components);
+    for (Lifecycle component : components) {
       remove(component);
     }
-    return this;
+  }
+
+  public void remove(final LifecycleAware... components) {
+    checkNotNull(components);
+    for (LifecycleAware component : components) {
+      remove(component.getLifecycle());
+    }
   }
 
   public void clear() {
     components.clear();
   }
 
+  /**
+   * Start all managed components.
+   *
+   * Components are started in the order added.
+   */
   @Override
   protected void doStart() throws Exception {
     log.debug("Starting {} components", components.size());
@@ -95,6 +94,11 @@ public class LifecycleManagerImpl
     }
   }
 
+  /**
+   * Stop all managed components.
+   *
+   * Stop order is reverse of start order.
+   */
   @Override
   protected void doStop() throws Exception {
     log.debug("Stopping {} components", components.size());
