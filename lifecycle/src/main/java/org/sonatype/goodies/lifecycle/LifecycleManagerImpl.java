@@ -25,7 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @since 1.0
  */
 public class LifecycleManagerImpl
-    extends LifecycleSupport
+    extends SimpleLifecycleSupport
     implements LifecycleManager
 {
   private final List<Lifecycle> components = new CopyOnWriteArrayList<Lifecycle>();

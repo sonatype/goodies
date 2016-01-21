@@ -382,27 +382,6 @@
   </dependencyManagement>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>smc-maven-plugin</artifactId>
-          <version>1.0-alpha-1</version>
-          <dependencies>
-            <dependency>
-              <groupId>net.sf.smc</groupId>
-              <artifactId>smc</artifactId>
-              <version>6.0.1</version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <outputDirectory>${project.build.directory}/generated-sources/smc</outputDirectory>
-            <verbose>true</verbose>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
