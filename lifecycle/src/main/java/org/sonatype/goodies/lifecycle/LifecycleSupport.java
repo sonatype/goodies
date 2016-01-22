@@ -13,18 +13,16 @@
 package org.sonatype.goodies.lifecycle;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.sonatype.goodies.common.ComponentSupport;
-import org.sonatype.gossip.Level;
+import org.sonatype.goodies.common.Locks;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -46,55 +44,22 @@ public class LifecycleSupport
 
   private State current = State.NEW;
 
-  @Override
-  public Lifecycle getLifecycle() {
-    return this;
-  }
-
-  /**
-   * Returns the logger level for transition messages.
-   *
-   * @since 1.7
-   */
-  protected Level getLifecycleLogLevel() {
-    return Level.DEBUG;
-  }
-
   /**
    * Log transition messages.
+   *
+   * @since 2.1
    */
-  private void log(final String message) {
-    getLifecycleLogLevel().log(log, message);
+  protected void logTransition(final String message) {
+    log.debug(message);
   }
 
   /**
-   * Attempt to lock.
+   * Log transition failure messages.
+   *
+   * @since 2.1
    */
-  private static Lock lock(final Lock lock) {
-    checkNotNull(lock);
-    try {
-      if (!lock.tryLock(60, TimeUnit.SECONDS)) {
-        throw new RuntimeException("Failed to obtain lock after 60 seconds");
-      }
-    }
-    catch (InterruptedException e) {
-      throw Throwables.propagate(e);
-    }
-    return lock;
-  }
-
-  /**
-   * Returns locked read lock.
-   */
-  private Lock readLock() {
-    return lock(readWriteLock.readLock());
-  }
-
-  /**
-   * Returns locked write lock.
-   */
-  private Lock writeLock() {
-    return lock(readWriteLock.writeLock());
+  protected void logTransitionFailure(final String message, final Throwable cause) {
+    log.error(message, cause);
   }
 
   /**
@@ -102,7 +67,7 @@ public class LifecycleSupport
    */
   @VisibleForTesting
   boolean is(final State state) {
-    Lock lock = readLock();
+    Lock lock = Locks.read(readWriteLock);
     try {
       return current == state;
     }
@@ -132,16 +97,16 @@ public class LifecycleSupport
 
   @Override
   public final void start() throws Exception {
-    Lock lock = writeLock();
+    Lock lock = Locks.write(readWriteLock);
     ensure(State.NEW, State.STOPPED);
     try {
-      log("Starting");
+      logTransition("Starting");
       doStart();
       current = State.STARTED;
-      log("Started");
+      logTransition("Started");
     }
     catch (Throwable failure) {
-      doFailed(failure);
+      doFailed("start", failure);
     }
     finally {
       lock.unlock();
@@ -166,16 +131,16 @@ public class LifecycleSupport
 
   @Override
   public final void stop() throws Exception {
-    Lock lock = writeLock();
+    Lock lock = Locks.write(readWriteLock);
     ensure(State.STARTED);
     try {
-      log("Stopping");
+      logTransition("Stopping");
       doStop();
       current = State.STOPPED;
-      log("Stopped");
+      logTransition("Stopped");
     }
     catch (Throwable failure) {
-      doFailed(failure);
+      doFailed("stop", failure);
     }
     finally {
       lock.unlock();
@@ -198,8 +163,8 @@ public class LifecycleSupport
   // Failed
   //
 
-  protected void doFailed(final Throwable cause) throws Exception {
-    log.error("Lifecycle operation failed", cause);
+  protected void doFailed(final String operation, final Throwable cause) throws Exception {
+    logTransitionFailure("Lifecycle operation " + operation + " failed", cause);
     current = State.FAILED;
     Throwables.propagateIfPossible(cause, Exception.class);
     throw Throwables.propagate(cause);

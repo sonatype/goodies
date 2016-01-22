@@ -13,19 +13,10 @@
 package org.sonatype.goodies.lifecycle;
 
 /**
- * Container of {@link Lifecycle} components.
- *
- * @since 1.0
+ * Error for testing.
  */
-public interface LifecycleContainer
+class TestError
+    extends Error
 {
-  <T extends LifecycleAware> T add(T component);
-
-  LifecycleContainer add(LifecycleAware... components);
-
-  <T extends LifecycleAware> T remove(T component);
-
-  LifecycleContainer remove(LifecycleAware... components);
-
-  void clear();
+  // empty
 }

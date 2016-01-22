@@ -12,15 +12,11 @@
  */
 package org.sonatype.goodies.lifecycle;
 
-import javax.annotation.Nonnull;
-
 /**
- * Interface for components that are aware of their {@link Lifecycle}.
- *
- * @since 1.0
+ * Exception for testing.
  */
-public interface LifecycleAware
+public class TestException
+    extends Exception
 {
-  @Nonnull
-  Lifecycle getLifecycle();
+  // empty
 }

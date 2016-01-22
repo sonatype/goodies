@@ -26,19 +26,7 @@ import static org.junit.Assert.fail;
 public class LifecycleSupportTest
     extends TestSupport
 {
-  private static class TestError
-    extends Error
-  {
-    // empty
-  }
-
-  public static class TestException
-    extends Exception
-  {
-    // empty
-  }
-
-  private void assertState(final LifecycleSupport lifecycle, final State state) {
+  private static void assertState(final LifecycleSupport lifecycle, final State state) {
     assertTrue(lifecycle.is(state));
   }
 
