@@ -57,6 +57,11 @@
     <powermock.version>1.6.1</powermock.version>
     <eclipse-sisu.version>0.3.1</eclipse-sisu.version>
     <eclipse-jetty.version>9.3.3.v20150827</eclipse-jetty.version>
+
+    <!--
+    Sonar configuration.
+    -->
+    <sonar.branch>2</sonar.branch>
   </properties>
 
   <modules>
