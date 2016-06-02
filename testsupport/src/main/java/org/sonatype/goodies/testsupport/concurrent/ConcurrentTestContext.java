@@ -12,8 +12,10 @@
  */
 package org.sonatype.goodies.testsupport.concurrent;
 
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -64,7 +66,16 @@ class ConcurrentTestContext
   public void indicateFailure() {
     failureSignal.set(true);
     // Dislodge any peers waiting at the barrier; the test has failed, so don't wait for timeout
-    iterationStartSignal.reset();
+    // interrupting ourselves and attempting to join the barrier will permanently break it, unlike reset() which will
+    // only break the current generation and then start a new generation on which other threads could again wait on
+    // until they timeout if they weren't already waiting at the time reset() gets called
+    Thread.currentThread().interrupt();
+    try {
+      iterationStartSignal.await(0, TimeUnit.SECONDS);
+    }
+    catch (InterruptedException | BrokenBarrierException | TimeoutException ignored) {
+      // NOSONAR we wanted to break the barrier, well we did it
+    }
   }
 
   public void awaitIterationStart() throws Exception {
