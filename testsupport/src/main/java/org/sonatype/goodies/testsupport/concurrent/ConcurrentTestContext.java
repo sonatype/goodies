@@ -73,8 +73,8 @@ class ConcurrentTestContext
     try {
       iterationStartSignal.await(0, TimeUnit.SECONDS);
     }
-    catch (InterruptedException | BrokenBarrierException | TimeoutException ignored) {
-      // NOSONAR we wanted to break the barrier, well we did it
+    catch (InterruptedException | BrokenBarrierException | TimeoutException ignored) { // NOSONAR
+      // we wanted to break the barrier, well we did it
     }
   }
 
