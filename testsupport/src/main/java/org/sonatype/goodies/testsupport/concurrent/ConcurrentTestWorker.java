@@ -12,6 +12,7 @@
  */
 package org.sonatype.goodies.testsupport.concurrent;
 
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,11 +54,17 @@ class ConcurrentTestWorker
   public Void call() throws Exception {
     try {
       for (int i = 0; i < context.getIterations(); i++) {
-        if (context.testFailing()) {
-          log.info("Test worker {} aborting before iteration {}", workerNumber, i);
-          break;
+        try {
+          context.awaitIterationStart();
         }
-        context.awaitIterationStart();
+        catch (BrokenBarrierException e) {
+          if (context.testFailing()) {
+            // some other task failed and reset the barrier, quit happy and don't pretend we failed
+            log.info("Test worker {} aborting before iteration {}", workerNumber, i);
+            break;
+          }
+          throw e;
+        }
         context.recordRunInvocation();
 
         concurrentTask.run();
