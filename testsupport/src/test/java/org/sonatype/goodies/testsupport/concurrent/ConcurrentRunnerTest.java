@@ -52,12 +52,21 @@ public class ConcurrentRunnerTest
 
   @Test(expected = IllegalStateException.class)
   public void taskExceptionPropagatesOut() throws Exception {
-    final ConcurrentRunner runner = new ConcurrentRunner(1, 10);
+    final ConcurrentRunner runner = new ConcurrentRunner(2, 10);
 
     runner.addTask(new ConcurrentTask()
     {
       @Override
       public void run() throws Exception {
+        // a quick and happy task that happens to be first in the internal task list
+      }
+    });
+    runner.addTask(new ConcurrentTask()
+    {
+      @Override
+      public void run() throws Exception {
+        // this task allows the first to complete and to wait on the barrier
+        Thread.sleep(200);
         throw new IllegalStateException();
       }
     });
