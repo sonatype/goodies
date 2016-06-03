@@ -65,7 +65,7 @@ public class ConcurrentRunnerTest
     {
       @Override
       public void run() throws Exception {
-        // allow the first task to complete and proceed to wait on the barrier
+        // this task allows the first to complete and to wait on the barrier
         Thread.sleep(200);
         throw new IllegalStateException();
       }
