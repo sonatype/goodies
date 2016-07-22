@@ -80,6 +80,11 @@ class DummyProvider
     return -1;
   }
 
+  @Override
+  public void setHost(String host) {
+    // empty
+  }
+
   public void setSSL(String keystore, String password) {
     // empty
   }

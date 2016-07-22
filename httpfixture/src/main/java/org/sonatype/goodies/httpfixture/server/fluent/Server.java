@@ -72,6 +72,14 @@ public class Server
     return this;
   }
 
+  public Server withHost(final String host) {
+    if (serverProvider.isStarted()) {
+      throw new IllegalStateException("Server is currently running, cannot change port.");
+    }
+    serverProvider.setHost(host);
+    return this;
+  }
+
   public Server withKeystore(final String keystore, final String password) {
     serverProvider.setSSL(keystore, password);
     return this;
