@@ -74,7 +74,7 @@ public class Server
 
   public Server withHost(final String host) {
     if (serverProvider.isStarted()) {
-      throw new IllegalStateException("Server is currently running, cannot change port.");
+      throw new IllegalStateException("Server is currently running, cannot change host.");
     }
     serverProvider.setHost(host);
     return this;
