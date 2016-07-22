@@ -82,7 +82,7 @@ public class JettyServerProvider
 
   protected boolean ssl;
 
-  private String host = "localhost"; // InetAddress.getLocalHost().getCanonicalHostName();
+  private String host = "localhost";
 
   private HandlerCollection handlerCollection;
 
