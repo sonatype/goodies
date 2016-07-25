@@ -82,7 +82,7 @@ public class JettyServerProvider
 
   protected boolean ssl;
 
-  private final String host = "localhost"; // InetAddress.getLocalHost().getCanonicalHostName();
+  private String host = "localhost";
 
   private HandlerCollection handlerCollection;
 
@@ -115,6 +115,11 @@ public class JettyServerProvider
     this.ssl = true;
     this.sslKeystore = keystore;
     this.sslKeystorePassword = password;
+  }
+
+  @Override
+  public void setHost(String host) {
+    this.host = host;
   }
 
   public void setPort(int port) {
@@ -528,7 +533,7 @@ public class JettyServerProvider
     }
 
     try {
-      return new URL(protocol, host, port, "");
+      return new URL(protocol, host != null ? host : "localhost", port, "");
     }
     catch (MalformedURLException e) {
       // URL ctor throws this for invalid port or protocol.

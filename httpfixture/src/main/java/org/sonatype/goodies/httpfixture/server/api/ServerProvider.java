@@ -54,6 +54,13 @@ public interface ServerProvider
   void serveFiles(String pathSpec, FileContext fileContext);
 
   /**
+   * The network interface to bind to. Defaults to "localhost" if not set.
+   * 
+   * @param host The hostname or IP address to bind to, may be {@code null} to bind to all interfaces.
+   */
+  void setHost(String host);
+
+  /**
    * Set to 0 to auto-choose a free port.
    */
   void setPort(int port);
