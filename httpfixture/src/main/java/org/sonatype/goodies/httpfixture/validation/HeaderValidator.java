@@ -75,10 +75,12 @@ public class HeaderValidator
         Pattern.matches(regex, header));
   }
 
+  @Override
   public int getSuccessCount() {
     return successCount;
   }
 
+  @Override
   public void resetSuccessCount() {
     successCount = 0;
   }

@@ -14,5 +14,18 @@ package org.sonatype.goodies.httpfixture.validation;
 
 public interface Validator
 {
+  /**
+   * Perform the validation on the given object(s).
+   */
   public void validate(Object... validationObjects);
+
+  /**
+   * Get the total number of successful validations performed.
+   */
+  public int getSuccessCount();
+
+  /**
+   * Reset the success counter to zero.
+   */
+  public void resetSuccessCount();
 }
