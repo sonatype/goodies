@@ -12,7 +12,7 @@
  */
 package org.sonatype.goodies.httpfixture.server.fluent;
 
-import org.sonatype.goodies.httpfixture.validation.HeaderValidator;
+
 import org.sonatype.goodies.httpfixture.validation.Validator;
 
 import io.netty.channel.ChannelHandlerContext;
