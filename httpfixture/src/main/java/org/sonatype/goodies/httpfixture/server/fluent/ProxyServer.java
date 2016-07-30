@@ -12,7 +12,6 @@
  */
 package org.sonatype.goodies.httpfixture.server.fluent;
 
-
 import org.sonatype.goodies.httpfixture.validation.Validator;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -22,12 +21,14 @@ import io.netty.handler.codec.http.HttpResponse;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
+import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.HttpProxyServerBootstrap;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 
 /**
- * Provides a real proxy server using the little proxy project. Start the retrieved server bootstrap with method
- * {@link HttpProxyServerBootstrap#start()}, and stop it with {@link HttpProxyServerBootstrap#stop()}
+ * Provides a real proxy server using the little proxy project. Start and retrieve an {@link HttpProxyServer}
+ * by calling method {@link HttpProxyServerBootstrap#start()} on the returned {@link HttpProxyServerBootstrap},
+ * and stop it with {@link HttpProxyServer#stop()}.
  *
  * See: https://github.com/adamfisk/LittleProxy
  *
@@ -37,7 +38,7 @@ public class ProxyServer
 {
 
   /**
-   * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link HeaderValidator}
+   * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link Validator}
    * object.
    */
   public static HttpProxyServerBootstrap createWithValidation(final Validator... validation) {
