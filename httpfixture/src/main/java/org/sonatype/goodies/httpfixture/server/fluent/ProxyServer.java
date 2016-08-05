@@ -12,6 +12,9 @@
  */
 package org.sonatype.goodies.httpfixture.server.fluent;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.sonatype.goodies.httpfixture.validation.Validator;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -25,10 +28,13 @@ import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.HttpProxyServerBootstrap;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+
 /**
- * Provides a real proxy server using the little proxy project. Start and retrieve an {@link HttpProxyServer}
- * by calling method {@link HttpProxyServerBootstrap#start()} on the returned {@link HttpProxyServerBootstrap},
- * and stop it with {@link HttpProxyServer#stop()}.
+ * Provides a real proxy server using the little proxy project, adding support for validation on an http request.
+ * Start with {@link #start()} and stop with {@link #stop()}, usually in the before/after or beforeclass/afterclass
+ * methods of a test.
  *
  * See: https://github.com/adamfisk/LittleProxy
  *
@@ -36,12 +42,52 @@ import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
  */
 public class ProxyServer
 {
+  private HttpProxyServer server;
+
+  private final HttpProxyServerBootstrap bootstrap;
+
+  private final List<Validator> validators;
+
+  public ProxyServer(Validator... validators) {
+    checkState(validators.length > 0, "Must have at least one validator");
+    this.validators = Arrays.asList(validators);
+    bootstrap = createWithValidation(validators);
+  }
+
+  public void start() {
+    checkNotNull(bootstrap);
+    server = bootstrap.start();
+  }
+
+  public void stop() {
+    checkNotNull(server);
+    server.stop();
+  }
+
+  public List<Validator> getValidators() {
+    return validators;
+  }
+
+  /**
+   * Get the host name without port or protocol.
+   */
+  public String getHostName() {
+    checkNotNull(server);
+
+    return server.getListenAddress().getHostName();
+  }
+
+  public int getPort() {
+    checkNotNull(server);
+
+    return server.getListenAddress().getPort();
+  }
 
   /**
    * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link Validator}
    * object.
    */
-  public static HttpProxyServerBootstrap createWithValidation(final Validator... validation) {
+  private HttpProxyServerBootstrap createWithValidation(final Validator... validation) {
     return DefaultHttpProxyServer.bootstrap().withAllowLocalOnly(true).withAuthenticateSslClients(false).withPort(0)
         .withFiltersSource(new HttpFiltersSourceAdapter()
         {
