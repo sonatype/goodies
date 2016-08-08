@@ -15,7 +15,7 @@ package org.sonatype.goodies.httpfixture.server.fluent;
 import java.util.Arrays;
 import java.util.List;
 
-import org.sonatype.goodies.httpfixture.validation.Validator;
+import org.sonatype.goodies.httpfixture.validation.HttpValidator;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
@@ -46,9 +46,9 @@ public class ProxyServer
 
   private final HttpProxyServerBootstrap bootstrap;
 
-  private final List<Validator> validators;
+  private final List<HttpValidator> validators;
 
-  public ProxyServer(Validator... validators) {
+  public ProxyServer(HttpValidator... validators) {
     checkState(validators.length > 0, "Must have at least one validator");
     this.validators = Arrays.asList(validators);
     bootstrap = createWithValidation(validators);
@@ -64,7 +64,7 @@ public class ProxyServer
     server.stop();
   }
 
-  public List<Validator> getValidators() {
+  public List<HttpValidator> getValidators() {
     return validators;
   }
 
@@ -84,10 +84,10 @@ public class ProxyServer
   }
 
   /**
-   * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link Validator}
+   * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link HttpValidator}
    * object.
    */
-  private HttpProxyServerBootstrap createWithValidation(final Validator... validation) {
+  private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validation) {
     return DefaultHttpProxyServer.bootstrap().withAllowLocalOnly(true).withAuthenticateSslClients(false).withPort(0)
         .withFiltersSource(new HttpFiltersSourceAdapter()
         {
@@ -97,7 +97,7 @@ public class ProxyServer
             {
               @Override
               public HttpResponse clientToProxyRequest(HttpObject httpObject) {
-                for (Validator v : validation) {
+                for (HttpValidator v : validation) {
                   v.validate(originalRequest);
                 }
                 return null;

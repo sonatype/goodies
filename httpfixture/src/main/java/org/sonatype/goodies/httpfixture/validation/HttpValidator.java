@@ -12,7 +12,7 @@
  */
 package org.sonatype.goodies.httpfixture.validation;
 
-public interface Validator
+public interface HttpValidator
 {
   /**
    * Perform the validation on the given object(s).
