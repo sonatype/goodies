@@ -14,6 +14,11 @@ package org.sonatype.goodies.httpfixture.validation;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Validator used against an {@link HttpServletRequest} object.
+ * 
+ * @since 2.2.0
+ */
 public interface HttpValidator
 {
   /**
