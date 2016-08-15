@@ -15,14 +15,12 @@ package org.sonatype.goodies.httpfixture.validation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.sonatype.goodies.httpfixture.server.api.Behaviour;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.sonatype.goodies.httpfixture.server.jetty.behaviour.BehaviourSupport;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -34,14 +32,12 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @since 2.2.0
  */
 public class ValidatingBehavior
-    implements Behaviour
+    extends BehaviourSupport
 {
-
-  private static final Logger log = LoggerFactory.getLogger(ValidatingBehavior.class);
 
   private final List<HttpValidator> validators;
 
-  private int successCount = 0;
+  private AtomicInteger successCount = new AtomicInteger();
 
   public ValidatingBehavior(HttpValidator... validators) {
     checkArgument(validators != null && validators.length > 0, "Must have at least one validator set.");
@@ -56,16 +52,16 @@ public class ValidatingBehavior
     for (HttpValidator v : validators) {
       v.validate(request);
     }
-    successCount++;
+    successCount.incrementAndGet();
     return true;
   }
 
   public int getSuccessCount() {
-    return successCount;
+    return successCount.get();
   }
 
   public void resetSuccessCount() {
-    successCount = 0;
+    successCount.set(0);
   }
 
 }

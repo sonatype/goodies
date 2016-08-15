@@ -24,6 +24,6 @@ public interface HttpValidator
   /**
    * Perform the validation on the given object(s).
    */
-  public void validate(HttpServletRequest httpRequest);
+  void validate(HttpServletRequest httpRequest);
 
 }

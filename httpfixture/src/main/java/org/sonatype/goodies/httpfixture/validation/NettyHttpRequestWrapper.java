@@ -52,8 +52,7 @@ public class NettyHttpRequestWrapper
   private final HttpRequest httpRequest;
 
   public NettyHttpRequestWrapper(HttpRequest httpRequest) {
-    checkNotNull(httpRequest);
-    this.httpRequest = httpRequest;
+    this.httpRequest = checkNotNull(httpRequest);
   }
 
   @Override
@@ -227,13 +226,12 @@ public class NettyHttpRequestWrapper
   }
 
   @Override
-  public AsyncContext startAsync() throws IllegalStateException {
+  public AsyncContext startAsync() {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
-      throws IllegalStateException
   {
     throw new UnsupportedOperationException();
   }

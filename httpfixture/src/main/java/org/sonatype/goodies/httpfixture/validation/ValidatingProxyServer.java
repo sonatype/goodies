@@ -12,6 +12,10 @@
  */
 package org.sonatype.goodies.httpfixture.validation;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.servlet.http.HttpServletRequest;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -24,7 +28,7 @@ import org.littleshoot.proxy.HttpProxyServerBootstrap;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Provides a real proxy server using the little proxy project for use in validating an http request.
@@ -41,7 +45,7 @@ public class ValidatingProxyServer
 
   private final HttpProxyServerBootstrap bootstrap;
 
-  private int successCount = 0;
+  private AtomicInteger successCount = new AtomicInteger();
 
   private int port = 0;
 
@@ -51,12 +55,12 @@ public class ValidatingProxyServer
   }
 
   public void start() {
-    checkNotNull(bootstrap);
+    checkState(bootstrap != null, "Bootstrap not initialized.");
     server = bootstrap.start();
   }
 
   public void stop() {
-    checkNotNull(server);
+    checkState(server != null, "Server not started.");
     server.stop();
   }
 
@@ -64,13 +68,13 @@ public class ValidatingProxyServer
    * Get the host name without port or protocol.
    */
   public String getHostName() {
-    checkNotNull(server);
+    checkState(server != null, "Server not started.");
 
     return server.getListenAddress().getHostName();
   }
 
   public int getPort() {
-    checkNotNull(server);
+    checkState(server != null, "Server not started.");
 
     return server.getListenAddress().getPort();
   }
@@ -84,7 +88,7 @@ public class ValidatingProxyServer
 
   /**
    * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link HttpValidator}
-   * object.
+   * object(s).
    */
   private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validation) {
     return DefaultHttpProxyServer.bootstrap().withPort(port).withAllowLocalOnly(true).withAuthenticateSslClients(false)
@@ -96,10 +100,11 @@ public class ValidatingProxyServer
             {
               @Override
               public HttpResponse clientToProxyRequest(HttpObject httpObject) {
+                HttpServletRequest req = new NettyHttpRequestWrapper(originalRequest);
                 for (HttpValidator v : validation) {
-                  v.validate(new NettyHttpRequestWrapper(originalRequest));
+                  v.validate(req);
                 }
-                successCount++;
+                successCount.incrementAndGet();
                 return null;
               }
             };
@@ -111,11 +116,11 @@ public class ValidatingProxyServer
    * Get number of successful validations.
    */
   public int getSuccessCount() {
-    return successCount;
+    return successCount.get();
   }
 
   public void resetSuccessCount() {
-    successCount = 0;
+    successCount.set(0);
   }
 
 }
