@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -51,27 +50,13 @@ public class NettyHttpRequestWrapper
   }
 
   @Override
-  public Enumeration<String> getHeaders(final String name) {
-    return new Enumeration<String>()
-    {
-
-      private final Iterator<String> headers = httpRequest.headers().getAll(name).iterator();
-
-      @Override
-      public boolean hasMoreElements() {
-        return headers.hasNext();
-      }
-
-      @Override
-      public String nextElement() {
-        return headers.next();
-      }
-    };
+  public String getMethod() {
+    return httpRequest.getMethod().name();
   }
 
   @Override
-  public String getMethod() {
-    return httpRequest.getMethod().name();
+  public Enumeration<String> getHeaders(final String name) {
+    throw new UnsupportedOperationException();
   }
 
   @Override
