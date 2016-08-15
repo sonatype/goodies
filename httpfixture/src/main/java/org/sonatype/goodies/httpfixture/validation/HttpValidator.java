@@ -12,20 +12,13 @@
  */
 package org.sonatype.goodies.httpfixture.validation;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface HttpValidator
 {
   /**
    * Perform the validation on the given object(s).
    */
-  public void validate(Object... validationObjects);
+  public void validate(HttpServletRequest httpRequest);
 
-  /**
-   * Get the total number of successful validations performed.
-   */
-  public int getSuccessCount();
-
-  /**
-   * Reset the success counter to zero.
-   */
-  public void resetSuccessCount();
 }

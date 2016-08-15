@@ -10,12 +10,10 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.goodies.httpfixture.server.fluent;
+package org.sonatype.goodies.httpfixture.validation;
 
 import java.util.Arrays;
 import java.util.List;
-
-import org.sonatype.goodies.httpfixture.validation.HttpValidator;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
@@ -28,11 +26,11 @@ import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.HttpProxyServerBootstrap;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Provides a real proxy server using the little proxy project, adding support for validation on an http request.
+ * Provides a real proxy server using the little proxy project for use in validating an http request.
  * Start with {@link #start()} and stop with {@link #stop()}, usually in the before/after or beforeclass/afterclass
  * methods of a test.
  *
@@ -40,7 +38,7 @@ import static com.google.common.base.Preconditions.checkState;
  *
  * @since 2.2.0
  */
-public class ProxyServer
+public class ValidatingProxyServer
 {
   private HttpProxyServer server;
 
@@ -48,8 +46,12 @@ public class ProxyServer
 
   private final List<HttpValidator> validators;
 
-  public ProxyServer(HttpValidator... validators) {
-    checkState(validators.length > 0, "Must have at least one validator");
+  private int successCount = 0;
+
+  private int port = 0;
+
+  public ValidatingProxyServer(HttpValidator... validators) {
+    checkArgument(validators.length > 0, "Must have at least one validator");
     this.validators = Arrays.asList(validators);
     bootstrap = createWithValidation(validators);
   }
@@ -83,12 +85,19 @@ public class ProxyServer
     return server.getListenAddress().getPort();
   }
 
+  public ValidatingProxyServer withPort(int port) {
+    checkArgument(port > 0, "Must have port greater than zero.");
+    this.port = port;
+
+    return this;
+  }
+
   /**
    * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link HttpValidator}
    * object.
    */
   private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validation) {
-    return DefaultHttpProxyServer.bootstrap().withAllowLocalOnly(true).withAuthenticateSslClients(false).withPort(0)
+    return DefaultHttpProxyServer.bootstrap().withPort(port).withAllowLocalOnly(true).withAuthenticateSslClients(false)
         .withFiltersSource(new HttpFiltersSourceAdapter()
         {
           @Override
@@ -98,13 +107,25 @@ public class ProxyServer
               @Override
               public HttpResponse clientToProxyRequest(HttpObject httpObject) {
                 for (HttpValidator v : validation) {
-                  v.validate(originalRequest);
+                  v.validate(new NettyHttpRequestWrapper(originalRequest));
                 }
+                successCount++;
                 return null;
               }
             };
           }
         });
+  }
+
+  /**
+   * Get number of successful validations.
+   */
+  public int getSuccessCount() {
+    return successCount;
+  }
+
+  public void resetSuccessCount() {
+    successCount = 0;
   }
 
 }
