@@ -12,9 +12,6 @@
  */
 package org.sonatype.goodies.httpfixture.validation;
 
-import java.util.Arrays;
-import java.util.List;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -44,15 +41,12 @@ public class ValidatingProxyServer
 
   private final HttpProxyServerBootstrap bootstrap;
 
-  private final List<HttpValidator> validators;
-
   private int successCount = 0;
 
   private int port = 0;
 
   public ValidatingProxyServer(HttpValidator... validators) {
     checkArgument(validators.length > 0, "Must have at least one validator");
-    this.validators = Arrays.asList(validators);
     bootstrap = createWithValidation(validators);
   }
 
@@ -64,10 +58,6 @@ public class ValidatingProxyServer
   public void stop() {
     checkNotNull(server);
     server.stop();
-  }
-
-  public List<HttpValidator> getValidators() {
-    return validators;
   }
 
   /**
