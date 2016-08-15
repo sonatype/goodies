@@ -60,7 +60,8 @@ public class ValidatingProxyServer
   }
 
   public void stop() {
-    checkState(server != null, "Server not started.");
+    verifyServerState();
+
     server.stop();
   }
 
@@ -68,13 +69,13 @@ public class ValidatingProxyServer
    * Get the host name without port or protocol.
    */
   public String getHostName() {
-    checkState(server != null, "Server not started.");
+    verifyServerState();
 
     return server.getListenAddress().getHostName();
   }
 
   public int getPort() {
-    checkState(server != null, "Server not started.");
+    verifyServerState();
 
     return server.getListenAddress().getPort();
   }
@@ -84,6 +85,10 @@ public class ValidatingProxyServer
     this.port = port;
 
     return this;
+  }
+
+  private void verifyServerState() {
+    checkState(server != null, "Server not started.");
   }
 
   /**
