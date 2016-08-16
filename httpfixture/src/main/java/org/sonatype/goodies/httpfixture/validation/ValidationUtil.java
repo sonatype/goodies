@@ -22,6 +22,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ValidationUtil
 {
+
+  private ValidationUtil() {
+
+  }
+
   public static void verifyValidators(HttpValidator... validators) {
     checkArgument(validators != null && validators.length > 0, "Must have at least one validator set.");
     for (HttpValidator v : validators) {
