@@ -12,8 +12,6 @@
  */
 package org.sonatype.goodies.httpfixture.validation;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.BehaviourSupport;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * {@link Behavior} with support for validation. Note, in order for this to work
@@ -35,13 +31,14 @@ public class ValidatingBehavior
     extends BehaviourSupport
 {
 
-  private final List<HttpValidator> validators;
+  private final HttpValidator[] validators;
 
   private AtomicInteger successCount = new AtomicInteger();
 
   public ValidatingBehavior(HttpValidator... validators) {
-    checkArgument(validators != null && validators.length > 0, "Must have at least one validator set.");
-    this.validators = Arrays.asList(validators);
+    ValidationUtil.verifyValidators(validators);
+
+    this.validators = validators;
   }
 
   @Override

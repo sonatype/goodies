@@ -50,7 +50,8 @@ public class ValidatingProxyServer
   private int port = 0;
 
   public ValidatingProxyServer(HttpValidator... validators) {
-    checkArgument(validators.length > 0, "Must have at least one validator");
+    ValidationUtil.verifyValidators(validators);
+
     bootstrap = createWithValidation(validators);
   }
 
