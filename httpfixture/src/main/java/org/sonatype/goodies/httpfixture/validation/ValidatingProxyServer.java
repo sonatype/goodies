@@ -60,12 +60,7 @@ public class ValidatingProxyServer
   }
 
   public boolean isStarted() {
-    if (server != null) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return server != null;
   }
 
   public void stop() {
