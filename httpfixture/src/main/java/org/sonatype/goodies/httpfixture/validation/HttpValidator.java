@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface HttpValidator
 {
   /**
-   * Perform the validation on the given object(s).
+   * Perform the validation on the given object.
    */
   void validate(HttpServletRequest httpRequest);
 
