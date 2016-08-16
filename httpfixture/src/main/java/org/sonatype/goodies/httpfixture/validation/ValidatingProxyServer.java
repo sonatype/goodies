@@ -43,21 +43,29 @@ public class ValidatingProxyServer
 {
   private HttpProxyServer server;
 
-  private final HttpProxyServerBootstrap bootstrap;
-
   private AtomicInteger successCount = new AtomicInteger();
 
   private int port = 0;
 
+  private final HttpValidator[] validators;
+
   public ValidatingProxyServer(HttpValidator... validators) {
     ValidationUtil.verifyValidators(validators);
 
-    bootstrap = createWithValidation(validators);
+    this.validators = validators;
   }
 
   public void start() {
-    checkState(bootstrap != null, "Bootstrap not initialized.");
-    server = bootstrap.start();
+    server = createWithValidation(validators).start();
+  }
+
+  public boolean isStarted() {
+    if (server != null) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   public void stop() {
@@ -96,7 +104,7 @@ public class ValidatingProxyServer
    * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link HttpValidator}
    * object(s).
    */
-  private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validation) {
+  private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validators) {
     return DefaultHttpProxyServer.bootstrap().withPort(port).withAllowLocalOnly(true).withAuthenticateSslClients(false)
         .withFiltersSource(new HttpFiltersSourceAdapter()
         {
@@ -107,7 +115,7 @@ public class ValidatingProxyServer
               @Override
               public HttpResponse clientToProxyRequest(HttpObject httpObject) {
                 HttpServletRequest req = new NettyHttpRequestWrapper(originalRequest);
-                for (HttpValidator v : validation) {
+                for (HttpValidator v : validators) {
                   v.validate(req);
                 }
                 successCount.incrementAndGet();

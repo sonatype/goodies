@@ -18,16 +18,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.sonatype.goodies.httpfixture.server.api.Behaviour;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.BehaviourSupport;
 
 /**
- * {@link Behavior} with support for validation. Note, in order for this to work
+ * {@link Behaviour} with support for validation. Note, in order for this to work
  * with multiple behaviors, this one must be set first within the
- * {@link Server#withBehaviors()} method.
+ * {@link Server#withBehaviours()} method.
  *
  * @since 2.2.0
  */
-public class ValidatingBehavior
+public class ValidatingBehaviour
     extends BehaviourSupport
 {
 
@@ -35,7 +36,7 @@ public class ValidatingBehavior
 
   private AtomicInteger successCount = new AtomicInteger();
 
-  public ValidatingBehavior(HttpValidator... validators) {
+  public ValidatingBehaviour(HttpValidator... validators) {
     ValidationUtil.verifyValidators(validators);
 
     this.validators = validators;
