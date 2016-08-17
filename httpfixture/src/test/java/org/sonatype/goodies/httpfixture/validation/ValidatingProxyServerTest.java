@@ -116,4 +116,24 @@ public class ValidatingProxyServerTest
     assertThat(underTest.getSuccessCount(), equalTo(2));
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void testGetHostNameVerify() {
+    underTest.getHostName();
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testGetPortVerify() {
+    underTest.getPort();
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testStopVerify() {
+    underTest.stop();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testWithPortVerify() {
+    underTest.withPort(0);
+  }
+
 }
