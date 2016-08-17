@@ -86,8 +86,6 @@ public interface ServerProvider
    */
   void addUser(String user, Object password);
 
-  // void addFilter( String pathSpec, Filter filter );
-
   void setSSLTruststore(String truststore, String password);
 
   void setSSLNeedClientAuth(boolean needClientAuth);
