@@ -13,7 +13,6 @@
 package org.sonatype.goodies.httpfixture.server.fluent;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.servlet.Filter;
@@ -112,7 +111,7 @@ public class Server
     return serverProvider.getPort();
   }
 
-  public URL getUrl() throws MalformedURLException {
+  public URL getUrl() {
     return serverProvider.getUrl();
   }
 
