@@ -26,8 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Iso8601Date
 {
-  public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; //NON-NLS
-  //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ";
+  public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"; //NON-NLS
   //public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
 
   /**

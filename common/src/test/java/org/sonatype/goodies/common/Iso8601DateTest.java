@@ -13,6 +13,7 @@
 package org.sonatype.goodies.common;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.sonatype.goodies.testsupport.TestSupport;
 
@@ -38,5 +39,29 @@ public class Iso8601DateTest
     assertNotNull(date2);
 
     assertEquals(date1.getTime(), date2.getTime());
+  }
+
+  @Test
+  public void testFormatParseExpected() throws Exception {
+    String formatted1 = "2016-10-01T20:00:00.123Z";
+
+    Date date = Iso8601Date.parse(formatted1);
+    assertNotNull(date);
+
+    TimeZone savedTimeZone = TimeZone.getDefault();
+    TimeZone zuluTimeZone = TimeZone.getTimeZone("Etc/UTC");
+
+    String formatted2 = null;
+
+    try {
+      TimeZone.setDefault(zuluTimeZone);
+      formatted2 = Iso8601Date.format(date);
+    } finally {
+      TimeZone.setDefault(savedTimeZone);
+    }
+
+    assertNotNull(formatted2);
+
+    assertEquals(formatted1, formatted2);
   }
 }
