@@ -13,16 +13,18 @@
 package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sonatype.goodies.httpfixture.server.api.Behaviour;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 
 /**
  * {@link Behaviour} implementation that records request path(s) (URIs) for processed HTTP verb.
@@ -35,19 +37,29 @@ import com.google.common.collect.Multimap;
 public class PathRecorderBehaviour
     extends BehaviourSupport
 {
-  private final Multimap<String, String> pathsMap = ArrayListMultimap.create();
+  // NOTE: Not using a synchronized Multimap to avoid artificially serializing concurrent clients 
+  private final ConcurrentMap<String, Collection<String>> pathsMap = new ConcurrentHashMap<>();
 
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
       throws Exception
   {
     final String path = request.getRequestURI();
     final String verb = request.getMethod();
-    pathsMap.put(verb, path);
+    Collection<String> paths = pathsMap.get(verb);
+    if (paths == null) {
+      paths = new ConcurrentLinkedQueue<>();
+      Collection<String> existing = pathsMap.putIfAbsent(verb, paths);
+      if (existing != null) {
+        paths = existing;
+      }
+    }
+    paths.add(path);
     return true;
   }
 
   public List<String> getPathsForVerb(final String verb) {
-    return new ArrayList<String>(pathsMap.get(verb));
+    Collection<String> paths = pathsMap.get(verb);
+    return new ArrayList<String>(paths != null ? paths : Collections.<String> emptyList());
   }
 
   public void clear() {
