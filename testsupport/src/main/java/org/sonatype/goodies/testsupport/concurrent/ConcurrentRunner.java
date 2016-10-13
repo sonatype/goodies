@@ -14,6 +14,7 @@ package org.sonatype.goodies.testsupport.concurrent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -143,12 +144,24 @@ public class ConcurrentRunner
   }
 
   private void failIfTasksCaughtExceptions(final List<ConcurrentTestWorker> testWorkers) throws Exception {
+    Throwable skipped = null;
     for (ConcurrentTestWorker testWorker : testWorkers) {
-      if (testWorker.experiencedFailure()) {
-        // Throws any old exception, but also JUnit assertion errors
-        log.info("Attempting to throw", testWorker.getException());
-        Throwables.propagateIfPossible(testWorker.getException(), Exception.class, AssertionError.class);
+      Throwable failure = testWorker.getException();
+      if (failure instanceof BrokenBarrierException) {
+        // CyclicBarrier.await() throws this if another thread encountered an issue, we want to report that other issue
+        // and only report the broken barrier if there's no more specific exception recorded by the workers
+        if (skipped == null) {
+          skipped = failure;
+        }
       }
+      else if (failure != null) {
+        // Throws any old exception, but also JUnit assertion errors
+        log.info("Attempting to throw", failure);
+        Throwables.propagateIfPossible(failure, Exception.class);
+      }
+    }
+    if (skipped != null) {
+      Throwables.propagateIfPossible(skipped, Exception.class);
     }
   }
 

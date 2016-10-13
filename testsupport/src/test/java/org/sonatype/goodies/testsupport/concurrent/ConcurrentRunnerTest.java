@@ -12,6 +12,8 @@
  */
 package org.sonatype.goodies.testsupport.concurrent;
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.sonatype.goodies.testsupport.TestSupport;
@@ -84,6 +86,28 @@ public class ConcurrentRunnerTest
       public void run() throws Exception {
         // Sleep for 50 seconds, way past the timeout
         Thread.sleep(50 * 1000);
+      }
+    });
+
+    runner.go();
+  }
+
+  @Test(expected = TimeoutException.class)
+  public void testBrokenBarrierExceptionIgnoredInFavorOfMoreSpecificCause() throws Exception {
+    final ConcurrentRunner runner = new ConcurrentRunner(1, 10);
+
+    runner.addTask(new ConcurrentTask()
+    {
+      @Override
+      public void run() throws Exception {
+        throw new BrokenBarrierException("unwanted");
+      }
+    });
+    runner.addTask(new ConcurrentTask()
+    {
+      @Override
+      public void run() throws Exception {
+        throw new TimeoutException("wanted");
       }
     });
 
