@@ -113,4 +113,18 @@ public class ConcurrentRunnerTest
 
     runner.go();
   }
+
+  @Test(expected = Error.class)
+  public void testPropagateTaskErrors() throws Exception {
+    final ConcurrentRunner runner = new ConcurrentRunner(1, 10);
+    runner.addTask(1, new ConcurrentTask()
+    {
+      @Override
+      public void run() {
+        throw new Error("Something went terribly wrong");
+      }
+    });
+
+    runner.go();
+  }
 }
