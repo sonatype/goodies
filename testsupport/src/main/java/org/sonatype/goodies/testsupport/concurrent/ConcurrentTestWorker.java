@@ -71,7 +71,7 @@ class ConcurrentTestWorker
         log.info("Test worker {} completing iteration {}", workerNumber, i);
       }
     }
-    catch (Exception | AssertionError e) {
+    catch (Throwable e) {
       log.info("Test worker {}'s task threw exception", workerNumber, e);
       context.indicateFailure();
       this.exception.set(e);
