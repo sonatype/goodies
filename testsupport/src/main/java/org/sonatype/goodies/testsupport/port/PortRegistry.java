@@ -111,7 +111,7 @@ public class PortRegistry
    * Returns {@code true} if port is blocked, should not be reserved.
    */
   private boolean isBlocked(int port) {
-    for (Range r : this.blockedPortRanges) {
+    for (Range<Integer> r : this.blockedPortRanges) {
       if (r.contains(port)) {
         return true;
       }
