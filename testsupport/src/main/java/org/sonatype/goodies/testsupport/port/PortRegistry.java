@@ -13,17 +13,18 @@
 package org.sonatype.goodies.testsupport.port;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -40,8 +41,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class PortRegistry
 {
-  private static final int MAX_ATTEMPTS = 10;
-
   /**
    * Contiguous ranges of reservedPorts blocked.
    */
@@ -57,10 +56,39 @@ public class PortRegistry
    */
   private final Set<Integer> reservedPorts;
 
+  private final int reservedPortMin;
+
+  private final int reservedPortMax;
+
+  private final int reservationTimeout;
+
+  private int nextPort;
+
   public PortRegistry() {
+    // The port range below is chosen to not overlap with the range typically used for ephemeral ports. This helps to
+    // avoid situations where a previously reserved port ends being unavailable for its intended purpose because the OS
+    // has reused the port to satisfy some other ephemeral port request in the meantime.
+    this(10000, 30000, 60 * 1000);
+  }
+
+  /**
+   * Creates a port registry that reserves ports within the specified range, failing after the given reservation timeout
+   * if no free port has been found.
+   * 
+   * @since 2.2.3
+   */
+  public PortRegistry(final int reservedPortMin, final int reservedPortMax, final int reservationTimeout) {
+    checkArgument(reservedPortMin >= 0 && reservedPortMin <= 65535);
+    checkArgument(reservedPortMax >= 0 && reservedPortMax <= 65535);
+    checkArgument(reservedPortMin <= reservedPortMax);
+    checkArgument(reservationTimeout > 0);
     this.blockedPortRanges = Lists.newArrayList();
     this.blockedPorts = Sets.newHashSet();
     this.reservedPorts = Sets.newHashSet();
+    this.reservedPortMin = reservedPortMin;
+    this.reservedPortMax = reservedPortMax;
+    this.reservationTimeout = reservationTimeout;
+    nextPort = reservedPortMin;
   }
 
   /**
@@ -69,17 +97,21 @@ public class PortRegistry
    * @throws RuntimeException if a port could not be reserved
    */
   public synchronized int reservePort() {
-    int port = 0;
-    int attempts = 0;
-    boolean searchingForPort = true;
-    while (searchingForPort && ++attempts < MAX_ATTEMPTS) {
-      port = findFreePort();
-      searchingForPort = isBlocked(port) || !reservedPorts.add(port);
+    Exception error = null;
+    for (long start = System.currentTimeMillis();;) {
+      try {
+        int port = findFreePort();
+        if (!isBlocked(port) && reservedPorts.add(port)) {
+          return port;
+        }
+      }
+      catch (IOException e) {
+        error = e;
+      }
+      if (System.currentTimeMillis() - start > reservationTimeout) {
+        throw new IllegalStateException("Timed out trying to reserve port", error);
+      }
     }
-    if (searchingForPort) {
-      throw new RuntimeException("Could not allocate a free port after " + MAX_ATTEMPTS + " attempts.");
-    }
-    return port;
   }
 
   /**
@@ -125,22 +157,34 @@ public class PortRegistry
    * @return a free system port at the time this method was called.
    */
   @VisibleForTesting
-  protected int findFreePort() {
-    ServerSocket server;
-    try {
-      server = new ServerSocket(0);
+  int findFreePort() throws IOException {
+    if (reservedPortMin == 0) {
+      return findFreePortAutomatic();
     }
-    catch (IOException e) {
-      throw Throwables.propagate(e);
-    }
+    return findFreePortManual();
+  }
 
-    Integer portNumber = server.getLocalPort();
-    try {
-      server.close();
+  private int findFreePortAutomatic() throws IOException {
+    try (ServerSocket socket = new ServerSocket(0)) {
+      return socket.getLocalPort();
     }
-    catch (IOException e) {
-      throw new RuntimeException("Unable to release port " + portNumber, e);
+  }
+
+  private int findFreePortManual() throws IOException {
+    for (int i = 0; i <= reservedPortMax - reservedPortMin; i++) {
+      try (ServerSocket socket = new ServerSocket(nextPort)) {
+        return socket.getLocalPort();
+      }
+      catch (BindException e) { // NOSONAR
+        // port blocked, try the next one
+      }
+      finally {
+        nextPort++;
+        if (nextPort > reservedPortMax) {
+          nextPort = reservedPortMin;
+        }
+      }
     }
-    return portNumber;
+    throw new BindException("No free port within range " + reservedPortMin + " to " + reservedPortMax);
   }
 }
