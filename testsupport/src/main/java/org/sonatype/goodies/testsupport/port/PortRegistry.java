@@ -66,8 +66,8 @@ public class PortRegistry
 
   public PortRegistry() {
     // The port range below is chosen to not overlap with the range typically used for ephemeral ports. This helps to
-    // avoid situations where a previously reserved port ends being unavailable for its intended purpose because the OS
-    // has reused the port to satisfy some other ephemeral port request in the meantime.
+    // avoid situations where a previously reserved port ends up being unavailable for its intended purpose because the
+    // OS has reused the port to satisfy some other ephemeral port request in the meantime.
     this(10000, 30000, 60 * 1000);
   }
 
