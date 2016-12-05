@@ -53,7 +53,7 @@ public class PortRegistryTest
 
   @Test
   public void blockedSetOfPortsShouldNeverBeReservable() throws Exception {
-    PortRegistry spied = new PortRegistry();
+    PortRegistry spied = new PortRegistry(0, 0, 100);
     spied.blockPorts(Sets.newSet(1));
     portRegistry = spy(spied);
     doReturn(1).when(portRegistry).findFreePort();
@@ -67,7 +67,7 @@ public class PortRegistryTest
 
   @Test
   public void blockedRangeOfPortsShouldNeverBeReservable() throws Exception {
-    PortRegistry spied = new PortRegistry();
+    PortRegistry spied = new PortRegistry(0, 0, 100);
     spied.blockPorts(Range.closed(1,1));
     portRegistry = spy(spied);
     doReturn(1).when(portRegistry).findFreePort();
@@ -81,7 +81,7 @@ public class PortRegistryTest
 
   @Test
   public void addedBlockedRangeForPreviouslyUnsetRangeIsBlocked() throws Exception {
-    portRegistry = spy(new PortRegistry());
+    portRegistry = spy(new PortRegistry(0, 0, 100));
     doReturn(1).when(portRegistry).findFreePort();
     portRegistry.blockPorts(Range.closed(1, 1));
     assertCannotReservePort();
@@ -89,7 +89,7 @@ public class PortRegistryTest
 
   @Test
   public void addedBlockedRangeIntersectingPreviouslyAddedRangeBlocksReservation() throws Exception {
-    portRegistry = spy(new PortRegistry());
+    portRegistry = spy(new PortRegistry(0, 0, 100));
     portRegistry.blockPorts(Range.closed(2, 5));
     portRegistry.blockPorts(Range.closed(3, 7));
 
@@ -101,7 +101,7 @@ public class PortRegistryTest
 
   @Test
   public void addedBlockedRangeDisparateFromPreviouslyAddedRangeBlocksReservation() throws Exception {
-    portRegistry = spy(new PortRegistry());
+    portRegistry = spy(new PortRegistry(0, 0, 100));
     portRegistry.blockPorts(Range.closed(2, 5));
     portRegistry.blockPorts(Range.closed(7, 10));
 
@@ -118,7 +118,7 @@ public class PortRegistryTest
 
   @Test
   public void multipleRangesCanBlocked() throws Exception {
-    portRegistry = spy(new PortRegistry());
+    portRegistry = spy(new PortRegistry(0, 0, 100));
     portRegistry.blockPorts(Range.closed(2, 5));
     portRegistry.blockPorts(Range.closed(7, 10));
 
@@ -139,6 +139,13 @@ public class PortRegistryTest
     doReturn(13).when(portRegistry).findFreePort();
     assertReservePort(portRegistry, 13);
 
+  }
+
+  @Test
+  public void largeBlockedRangeCanBeSkippedOver() throws Exception {
+    portRegistry = new PortRegistry(15000, 30000, 30 * 1000);
+    portRegistry.blockPorts(Range.closed(15000, 16000));
+    assertTrue(portRegistry.reservePort() > 16000);
   }
 
   private void assertCannotReservePort() {
