@@ -53,7 +53,7 @@ public class FileReplacer
     // and delay creation of file until needed in the case of backup file
     // counter here just to ensure that sub-mills usage will not conflict
 
-    this.filePrefix = file.getName() + "-" + UUID.randomUUID().toString() + "-" + counter.getAndIncrement();
+    this.filePrefix = file.getName() + "-" + UUID.randomUUID() + "-" + counter.getAndIncrement();
     this.tempFile = new File(file.getParentFile(), filePrefix + ".tmp");
     this.backupFile = new File(file.getParentFile(), filePrefix + ".bak");
 
