@@ -33,7 +33,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
     "value"
 })
 @XmlRootElement(name = "testInfo")
-@Generated(value = "XJC 2.2.5-b10", date = "2014-03-10T19:09:54")
+@Generated(value = "XJC 2.2.5-b10", date = "2018-04-06T11:52:19")
 @XStreamAlias("testInfo")
 public class TestInfoXO
 {
