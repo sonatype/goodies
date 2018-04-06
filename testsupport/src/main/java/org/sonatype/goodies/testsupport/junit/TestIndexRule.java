@@ -28,6 +28,7 @@ import javax.xml.bind.Unmarshaller;
 import org.sonatype.goodies.testsupport.TestIndex;
 import org.sonatype.goodies.testsupport.junit.index.IndexXO;
 import org.sonatype.goodies.testsupport.junit.index.TestInfoXO;
+import org.sonatype.goodies.testsupport.junit.index.TestResultXO;
 import org.sonatype.goodies.testsupport.junit.index.TestXO;
 
 import com.google.common.base.Preconditions;
@@ -157,6 +158,11 @@ public class TestIndexRule
   private TestXO test;
 
   /**
+   * Test result data.
+   */
+  private TestResultXO result;
+
+  /**
    * Constructor.
    *
    * @param indexDir root directory that contains the index and test specific directories (cannot be null)
@@ -186,24 +192,24 @@ public class TestIndexRule
   @Override
   protected void succeeded(final Description description) {
     initialize();
-    test.setSuccess(true);
+    result.setSuccess(true);
   }
 
   @Override
   protected void failed(final Throwable e, final Description description) {
     initialize();
-    test.setSuccess(false);
+    result.setSuccess(false);
     final StringWriter sw = new StringWriter();
     final PrintWriter pw = new PrintWriter(sw);
     e.printStackTrace(pw);
-    test.setThrowableMessage(e.getMessage());
-    test.setThrowableStacktrace(sw.toString());
+    result.setThrowableMessage(e.getMessage());
+    result.setThrowableStacktrace(sw.toString());
   }
 
   @Override
   protected void finished(final Description description) {
     initialize();
-    test.setDuration(stopwatch.stop().elapsed(TimeUnit.SECONDS));
+    result.setDuration(stopwatch.stop().elapsed(TimeUnit.SECONDS));
     save();
   }
 
@@ -341,10 +347,12 @@ public class TestIndexRule
 
       index.setCounter(index.getCounter() + 1);
 
+      result = new TestResultXO().withMethodName(description.getMethodName());
+
       test = new TestXO()
           .withIndex(index.getCounter())
           .withClassName(description.getClassName())
-          .withMethodName(description.getMethodName());
+          .withTestResults(result);
 
       index.withTests(test);
 
@@ -361,6 +369,15 @@ public class TestIndexRule
       );
 
       initialized = true;
+    }
+    else if (!result.getMethodName().equals(description.getMethodName())) {
+
+      // new method being tested, add placeholder result and persist the index
+      result = new TestResultXO().withMethodName(description.getMethodName());
+
+      test.withTestResults(result);
+
+      save();
     }
   }
 

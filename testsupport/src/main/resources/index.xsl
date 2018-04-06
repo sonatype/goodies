@@ -15,7 +15,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:index="http://sonatype.com/xsd/litmus-testsupport/index/1.0">
+                xmlns:index="http://sonatype.com/xsd/litmus-testsupport/index/1.1">
 
   <xsl:template match="/">
     <html>
@@ -43,20 +43,39 @@
               </td>
               <td>
                 <xsl:attribute name="class">
-                  pane success-<xsl:value-of select="success"/>
+                  pane success-<xsl:value-of select="not(index:testResult[success='false'])"/>
                 </xsl:attribute>
-                <xsl:if test="throwableMessage">
-                  <xsl:attribute name="title">
-                    <xsl:value-of select="throwableMessage"/>
-                  </xsl:attribute>
-                </xsl:if>
                 <xsl:value-of select="className"/>
               </td>
               <td class="pane">
-                <xsl:value-of select="methodName"/>
+                <table>
+                  <xsl:for-each select="index:testResult">
+                    <tr>
+                      <td>
+                        <xsl:attribute name="class">
+                          success-<xsl:value-of select="success"/>
+                        </xsl:attribute>
+                        <xsl:if test="throwableMessage">
+                          <xsl:attribute name="title">
+                            <xsl:value-of select="throwableMessage"/>
+                          </xsl:attribute>
+                        </xsl:if>
+                        <xsl:value-of select="methodName"/>
+                      </td>
+                    </tr>
+                  </xsl:for-each>
+                </table>
               </td>
               <td class="pane">
-                <xsl:value-of select="duration"/> sec
+                <table>
+                  <xsl:for-each select="index:testResult">
+                    <tr>
+                      <td>
+                        <xsl:value-of select="duration"/> sec
+                      </td>
+                    </tr>
+                  </xsl:for-each>
+                </table>
               </td>
               <td class="pane">
                 <table>

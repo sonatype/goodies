@@ -36,14 +36,14 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
     "tests"
 })
 @XmlRootElement(name = "index")
-@Generated(value = "XJC 2.2.5-b10", date = "2014-03-10T19:09:54")
+@Generated(value = "XJC 2.2.5-b10", date = "2018-04-06T11:52:19")
 @XStreamAlias("index")
 public class IndexXO
 {
 
   protected int counter;
 
-  @XmlElement(name = "test", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.0")
+  @XmlElement(name = "test", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.1")
   protected List<TestXO> tests;
 
   public int getCounter() {
