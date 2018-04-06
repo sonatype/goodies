@@ -34,15 +34,11 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XmlType(name = "Test", propOrder = {
     "index",
     "className",
-    "methodName",
-    "duration",
-    "success",
-    "throwableMessage",
-    "throwableStacktrace",
+    "testResults",
     "testInfos"
 })
 @XmlRootElement(name = "test")
-@Generated(value = "XJC 2.2.5-b10", date = "2014-03-10T19:09:54")
+@Generated(value = "XJC 2.2.5-b10", date = "2018-04-06T11:52:19")
 @XStreamAlias("test")
 public class TestXO
 {
@@ -52,18 +48,10 @@ public class TestXO
   @XmlElement(required = true)
   protected String className;
 
-  @XmlElement(required = true)
-  protected String methodName;
+  @XmlElement(name = "testResult", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.1")
+  protected List<TestResultXO> testResults;
 
-  protected long duration;
-
-  protected boolean success;
-
-  protected String throwableMessage;
-
-  protected String throwableStacktrace;
-
-  @XmlElement(name = "testInfo", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.0")
+  @XmlElement(name = "testInfo", namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.1")
   protected List<TestInfoXO> testInfos;
 
   public int getIndex() {
@@ -82,44 +70,17 @@ public class TestXO
     this.className = value;
   }
 
-  public String getMethodName() {
-    return methodName;
+  public List<TestResultXO> getTestResults() {
+    if (testResults == null) {
+      testResults = new ArrayList<TestResultXO>();
+    }
+    return this.testResults;
   }
 
-  public void setMethodName(String value) {
-    this.methodName = value;
-  }
-
-  public long getDuration() {
-    return duration;
-  }
-
-  public void setDuration(long value) {
-    this.duration = value;
-  }
-
-  public boolean isSuccess() {
-    return success;
-  }
-
-  public void setSuccess(boolean value) {
-    this.success = value;
-  }
-
-  public String getThrowableMessage() {
-    return throwableMessage;
-  }
-
-  public void setThrowableMessage(String value) {
-    this.throwableMessage = value;
-  }
-
-  public String getThrowableStacktrace() {
-    return throwableStacktrace;
-  }
-
-  public void setThrowableStacktrace(String value) {
-    this.throwableStacktrace = value;
+  public void setTestResults(List<TestResultXO> value) {
+    this.testResults = null;
+    List<TestResultXO> draftl = this.getTestResults();
+    draftl.addAll(value);
   }
 
   public List<TestInfoXO> getTestInfos() {
@@ -145,28 +106,24 @@ public class TestXO
     return this;
   }
 
-  public TestXO withMethodName(String value) {
-    setMethodName(value);
+  public TestXO withTestResults(TestResultXO... values) {
+    if (values != null) {
+      for (TestResultXO value : values) {
+        getTestResults().add(value);
+      }
+    }
     return this;
   }
 
-  public TestXO withDuration(long value) {
-    setDuration(value);
+  public TestXO withTestResults(Collection<TestResultXO> values) {
+    if (values != null) {
+      getTestResults().addAll(values);
+    }
     return this;
   }
 
-  public TestXO withSuccess(boolean value) {
-    setSuccess(value);
-    return this;
-  }
-
-  public TestXO withThrowableMessage(String value) {
-    setThrowableMessage(value);
-    return this;
-  }
-
-  public TestXO withThrowableStacktrace(String value) {
-    setThrowableStacktrace(value);
+  public TestXO withTestResults(List<TestResultXO> value) {
+    setTestResults(value);
     return this;
   }
 

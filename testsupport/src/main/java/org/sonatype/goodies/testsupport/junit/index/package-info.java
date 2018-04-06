@@ -11,7 +11,7 @@
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
 // additional schema declarations needed in Java7+ to match original behaviour
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.0", xmlns = { //
-@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://sonatype.com/xsd/litmus-testsupport/index/1.0", prefix = "index") })
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://sonatype.com/xsd/litmus-testsupport/index/1.1", xmlns = { //
+@javax.xml.bind.annotation.XmlNs(namespaceURI = "http://sonatype.com/xsd/litmus-testsupport/index/1.1", prefix = "index") })
 package org.sonatype.goodies.testsupport.junit.index;
 
