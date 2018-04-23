@@ -17,7 +17,7 @@ import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateParsingException;
+import java.security.cert.CertificateException;
 import java.util.Collection;
 import java.util.List;
 
@@ -282,7 +282,7 @@ public class KeyStoreManagerImpl
   @Override
   public void importTrustCertificate(String certificateInPEM, String alias)
       throws KeystoreException,
-             CertificateParsingException
+             CertificateException
   {
     // parse the cert
     Certificate certificate = CertificateUtil.decodePEMFormattedCertificate(certificateInPEM);
