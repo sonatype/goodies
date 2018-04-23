@@ -24,6 +24,7 @@ import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -33,8 +34,10 @@ import java.util.Vector;
 import org.sonatype.sisu.goodies.ssl.keystore.internal.DigesterUtils;
 
 import org.bouncycastle.asn1.DERObjectIdentifier;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.jce.X509Principal;
-import org.bouncycastle.openssl.PEMReader;
+import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.PEMWriter;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.jetbrains.annotations.NonNls;
@@ -157,22 +160,23 @@ public final class CertificateUtil
    *          thrown if the PEM formatted string cannot be parsed into a Certificate.
    */
   public static Certificate decodePEMFormattedCertificate(String pemFormattedCertificate)
-      throws CertificateParsingException
+      throws CertificateException
   {
     LOG.trace("Parsing PEM formatted certificate string:\n{}", pemFormattedCertificate);
 
     // make sure we have something to parse
     if (pemFormattedCertificate != null) {
       StringReader stringReader = new StringReader(pemFormattedCertificate);
-      PEMReader pemReader = new PEMReader(stringReader);
+      PEMParser pemReader = new PEMParser(stringReader);
       try {
         Object object = pemReader.readObject();
         LOG.trace("Object found while paring PEM formatted string: {}", object);
 
         // verify the object is a cert
-        if (Certificate.class.isInstance(object)) {
-          return (Certificate) object;
-        }
+        if (object instanceof X509CertificateHolder) {
+          X509CertificateHolder holder = (X509CertificateHolder)object;
+          JcaX509CertificateConverter converter = new JcaX509CertificateConverter();
+          return converter.getCertificate(holder);        }
       }
       catch (IOException e) {
         throw new CertificateParsingException(
