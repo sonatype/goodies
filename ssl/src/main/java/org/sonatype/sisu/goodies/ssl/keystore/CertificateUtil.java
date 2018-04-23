@@ -176,7 +176,8 @@ public final class CertificateUtil
         if (object instanceof X509CertificateHolder) {
           X509CertificateHolder holder = (X509CertificateHolder)object;
           JcaX509CertificateConverter converter = new JcaX509CertificateConverter();
-          return converter.getCertificate(holder);        }
+          return converter.getCertificate(holder);
+        }
       }
       catch (IOException e) {
         throw new CertificateParsingException(
