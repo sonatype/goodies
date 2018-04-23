@@ -15,7 +15,7 @@ package org.sonatype.sisu.goodies.ssl.keystore;
 
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
+import java.security.cert.CertificateParsingException;
 import java.util.Collection;
 
 import javax.net.ssl.KeyManager;
@@ -65,11 +65,11 @@ public interface KeyStoreManager
    * @param certificateInPEM the public certificate to be added encoded in the PEM format.
    * @param alias            the alias of the public key
    * @throws KeystoreException thrown if the certificate cannot be imported.
-   * @throws java.security.cert.CertificateException
+   * @throws java.security.cert.CertificateParsingException
    *                           thrown if the PEM formatted string cannot be parsed into a certificate.
    */
   void importTrustCertificate(@NonNls String certificateInPEM, @NonNls String alias)
-      throws KeystoreException, CertificateException;
+      throws KeystoreException, CertificateParsingException;
 
   /**
    * Returns a Certificate by an alias, that was previously stored in the keystore.

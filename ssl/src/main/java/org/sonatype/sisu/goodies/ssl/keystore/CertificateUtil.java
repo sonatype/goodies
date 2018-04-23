@@ -160,7 +160,7 @@ public final class CertificateUtil
    *          thrown if the PEM formatted string cannot be parsed into a Certificate.
    */
   public static Certificate decodePEMFormattedCertificate(String pemFormattedCertificate)
-      throws CertificateException
+      throws CertificateParsingException
   {
     LOG.trace("Parsing PEM formatted certificate string:\n{}", pemFormattedCertificate);
 
@@ -180,6 +180,11 @@ public final class CertificateUtil
         }
       }
       catch (IOException e) {
+        throw new CertificateParsingException(
+            "Failed to parse valid certificate from expected PEM formatted certificate:\n"
+                + pemFormattedCertificate, e);
+      }
+      catch (CertificateException e) {
         throw new CertificateParsingException(
             "Failed to parse valid certificate from expected PEM formatted certificate:\n"
                 + pemFormattedCertificate, e);
