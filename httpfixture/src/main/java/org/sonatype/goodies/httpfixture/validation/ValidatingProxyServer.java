@@ -53,7 +53,7 @@ public class ValidatingProxyServer
 
   private AtomicInteger successCount = new AtomicInteger();
 
-  private int port = 0;
+  private int serverPort = 0;
 
   private final HttpValidator[] validators;
 
@@ -94,7 +94,7 @@ public class ValidatingProxyServer
 
   public ValidatingProxyServer withPort(int port) {
     checkArgument(port > 0, "Must have port greater than zero.");
-    this.port = port;
+    this.serverPort = port;
 
     return this;
   }
@@ -108,7 +108,10 @@ public class ValidatingProxyServer
    * object(s).
    */
   private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validators) {
-    return DefaultHttpProxyServer.bootstrap().withPort(port).withAllowLocalOnly(true).withAuthenticateSslClients(false)
+    return DefaultHttpProxyServer.bootstrap()
+        .withPort(serverPort)
+        .withAllowLocalOnly(true)
+        .withAuthenticateSslClients(false)
         .withFiltersSource(new HttpFiltersSourceAdapter()
         {
           @Override
