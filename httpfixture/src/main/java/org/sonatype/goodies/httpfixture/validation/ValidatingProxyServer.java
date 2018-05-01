@@ -107,7 +107,7 @@ public class ValidatingProxyServer
    * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link HttpValidator}
    * object(s).
    */
-  private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validators) {
+  private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validators) { // NOSONAR
     return DefaultHttpProxyServer.bootstrap()
         .withPort(serverPort)
         .withAllowLocalOnly(true)
@@ -115,7 +115,7 @@ public class ValidatingProxyServer
         .withFiltersSource(new HttpFiltersSourceAdapter()
         {
           @Override
-          public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) { // NOSONAR
+          public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
             return new HttpFiltersAdapter(originalRequest)
             {
               private final HostResolver hostResolver = new DefaultHostResolver();
