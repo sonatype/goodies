@@ -137,19 +137,22 @@ public class ValidatingProxyServer
               public InetSocketAddress proxyToServerResolutionStarted(final String resolvingServerHostAndPort) {
                 try {
                   HostAndPort hostAndPort = HostAndPort.fromString(resolvingServerHostAndPort);
-                  String host;
-                  try {
-                    host = hostAndPort.getHost();
-                  }
-                  catch (LinkageError e) {
-                    host = hostAndPort.getHostText(); // fall back to deprecated method on old versions of Guava
-                  }
+                  String host = getHost(hostAndPort);
                   int port = hostAndPort.getPortOrDefault(80);
                   return hostResolver.resolve(host, port);
                 }
                 catch (Exception e) {
                   log.warn("Problem resolving {}", resolvingServerHostAndPort, e);
                   return null; // we can't resolve this host, return null to fall back to normal DNS resolution
+                }
+              }
+
+              private String getHost(final HostAndPort hostAndPort) {
+                try {
+                  return hostAndPort.getHost();
+                }
+                catch (LinkageError e) {
+                  return hostAndPort.getHostText(); // fall back to deprecated method on old versions of Guava
                 }
               }
             };
