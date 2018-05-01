@@ -115,7 +115,7 @@ public class ValidatingProxyServer
         .withFiltersSource(new HttpFiltersSourceAdapter()
         {
           @Override
-          public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
+          public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) { // NOSONAR
             return new HttpFiltersAdapter(originalRequest)
             {
               private final HostResolver hostResolver = new DefaultHostResolver();
