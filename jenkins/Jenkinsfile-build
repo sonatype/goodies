@@ -1,3 +1,4 @@
+library('ci-pipeline-library')
 library('jenkins-shared')
 
 mavenSnapshotPipeline()
