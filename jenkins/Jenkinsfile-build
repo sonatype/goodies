@@ -3,17 +3,17 @@ library('jenkins-shared')
 
 mavenSnapshotPipeline(
         onSuccess: {
-            currentBuild, env ->
+            build, env ->
                 hipchatSend color: 'GREEN', notify: false, room: 'nexus',
-                        message: "SUCCESS: ${currentBuild.fullDisplayName}, " +
+                        message: "SUCCESS: ${build.fullDisplayName}, " +
                                 "on branch ${env.BRANCH_NAME}, " +
-                                "duration: ${round(currentBuild.duration/60000l)} min"
+                                "duration: ${((build.duration/60000l) as double).round()} min"
         },
         onFailure: {
-            currentBuild, env ->
+            build, env ->
                 hipchatSend color: 'RED', notify: false, room: 'nexus',
-                        message: "FAILURE: ${currentBuild.fullDisplayName}, " +
+                        message: "FAILURE: ${build.fullDisplayName}, " +
                                 "on branch ${env.BRANCH_NAME}, " +
-                                "duration: ${round(currentBuild.duration/60000l)} min"
+                                "duration: ${((build.duration/60000l) as double).round()} min"
         }
 )
