@@ -1,4 +1,4 @@
-library('ci-pipeline-library')
+library('private-pipeline-library')
 library('jenkins-shared')
 
 mavenSnapshotPipeline()
