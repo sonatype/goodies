@@ -7,13 +7,13 @@ mavenSnapshotPipeline(
                 hipchatSend color: 'GREEN', notify: true, room: 'nexus',
                         message: "SUCCESS: ${currentBuild.fullDisplayName}, " +
                                 "on branch ${env.BRANCH_NAME}, " +
-                                "duration: ${(currentBuild.duration/60000l)} min"
+                                "duration: ${(currentBuild.duration/60000l).round()} min"
         },
         onFailure: {
             currentBuild, env ->
                 hipchatSend color: 'RED', notify: true, room: 'nexus',
                         message: "FAILURE: ${currentBuild.fullDisplayName}, " +
                                 "on branch ${env.BRANCH_NAME}, " +
-                                "duration: ${(currentBuild.duration/60000l)} min"
+                                "duration: ${(currentBuild.duration/60000l).round()} min"
         }
 )
