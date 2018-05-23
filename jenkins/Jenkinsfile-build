@@ -1,7 +1,7 @@
 library('private-pipeline-library')
 library('jenkins-shared@post-failure-failure')
 
-mavenSnapshotPipeline(
+mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
         onSuccess: {
             build, env ->
                 hipchatSend color: 'GREEN', notify: false, room: 'nexus',
