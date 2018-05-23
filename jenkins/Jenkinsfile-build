@@ -12,7 +12,7 @@ mavenSnapshotPipeline(
         onFailure: {
             build, env ->
                 hipchatSend color: 'RED', notify: false, room: 'nexus',
-                        message: """FAILURE: ${build.fullDisplayName}, on branch ${env.BRANCH_NAME}, duration: ${
-                          (build.duration / 60000l) as int } min <a href="${env.BUILD_URL})">${env.BUILD_URL}</a>"""
+                        message: """FAILURE: <a href="${env.BUILD_URL})">${build.fullDisplayName}</a>, on branch 
+${env.BRANCH_NAME}, duration: ${(build.duration / 60000l) as int } min"""
         }
 )
