@@ -5,13 +5,13 @@ mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
         onSuccess: {
             build, env ->
                 hipchatSend color: 'GREEN', notify: false, room: 'nexus',
-                        message: """SUCCESS: ${build.fullDisplayName}, on branch ${env.BRANCH_NAME}, duration: ${
-                            (build.duration / 60000l) as int } min <a href="${env.BUILD_URL}">${env.BUILD_URL}</a>"""
+                        message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
+                        }</a> passed, duration: ${(build.duration / 60000l) as int} min"""
         },
         onFailure: {
             build, env ->
                 hipchatSend color: 'RED', notify: false, room: 'nexus',
-                        message: """FAILURE: ${build.fullDisplayName}, on branch ${env.BRANCH_NAME}, duration: ${
-                            (build.duration / 60000l) as int } min <a href="${env.BUILD_URL}">${env.BUILD_URL}</a>"""
+                        message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
+                        }</a> failed, duration: ${(build.duration / 60000l) as int} min"""
         }
 )
