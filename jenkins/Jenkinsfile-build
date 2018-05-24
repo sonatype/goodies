@@ -7,7 +7,7 @@ mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
                 wrap([$class: 'BuildUser']) {
                     hipchatSend color: 'GREEN', notify: false, room: 'nexus',
                         message: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> passed, "+
-                            "run by ${BUILD_USER}, duration: ${BUILD_DURATION} min"
+                            "run by ${BUILD_USER}, duration: ${(build.duration / 60000) as int} min"
                 }
         },
         onFailure: {
@@ -15,7 +15,7 @@ mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
                 wrap([$class: 'BuildUser']) {
                     hipchatSend color: 'RED', notify: false, room: 'nexus',
                         message: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> failed, "+
-                            "run by ${BUILD_USER}, duration: ${BUILD_DURATION} min"
+                            "run by ${BUILD_USER}, duration: ${(build.duration / 60000) as int} min"
                 }
         }
 )
