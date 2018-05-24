@@ -6,18 +6,16 @@ mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
             build, env ->
                 wrap([$class: 'BuildUser']) {
                     hipchatSend color: 'GREEN', notify: false, room: 'nexus',
-                            message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
-                            }</a> passed, run by ${BUILD_USER
-                            }, duration: ${(build.duration / 60000l) as int} min"""
+                        message: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> passed\n"+
+                            "run by ${BUILD_USER}, duration: ${(build.duration / 60000) as int} min"
                 }
         },
         onFailure: {
             build, env ->
                 wrap([$class: 'BuildUser']) {
                     hipchatSend color: 'RED', notify: false, room: 'nexus',
-                            message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
-                            }</a> failed, run by ${BUILD_USER
-                            }, duration: ${(build.duration / 60000l) as int} min"""
+                        message: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> failed\n"+
+                            "run by ${BUILD_USER}, duration: ${(build.duration / 60000) as int} min"
                 }
         }
 )
