@@ -36,7 +36,6 @@ import static org.sonatype.goodies.common.ByteSize.ByteUnit.TERABYTES;
  */
 public final class ByteSize
 {
-
   public static enum ByteUnit
   {
     BYTES,
