@@ -355,4 +355,4 @@ public final class ByteSize
     // else can not extract
     return null;
   }
-}
+
