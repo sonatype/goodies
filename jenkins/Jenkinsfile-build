@@ -4,14 +4,20 @@ library('jenkins-shared')
 mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
         onSuccess: {
             build, env ->
-                hipchatSend color: 'GREEN', notify: false, room: 'nexus',
-                        message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
-                        }</a> passed, duration: ${(build.duration / 60000l) as int} min"""
+                wrap([$class: 'BuildUser']) {
+                    hipchatSend color: 'GREEN', notify: false, room: 'nexus',
+                            message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
+                            }</a> passed, run by ${BUILD_USER
+                            }, duration: ${(build.duration / 60000l) as int} min"""
+                }
         },
         onFailure: {
             build, env ->
-                hipchatSend color: 'RED', notify: false, room: 'nexus',
-                        message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
-                        }</a> failed, duration: ${(build.duration / 60000l) as int} min"""
+                wrap([$class: 'BuildUser']) {
+                    hipchatSend color: 'RED', notify: false, room: 'nexus',
+                            message: """<a href="${env.BUILD_URL}">${build.fullDisplayName
+                            }</a> failed, run by ${BUILD_USER
+                            }, duration: ${(build.duration / 60000l) as int} min"""
+                }
         }
 )
