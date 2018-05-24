@@ -37,8 +37,6 @@ import static org.sonatype.goodies.common.ByteSize.ByteUnit.TERABYTES;
 public final class ByteSize
 {
 
-  bad code that should result in a build failure
-
   public static enum ByteUnit
   {
     BYTES,
