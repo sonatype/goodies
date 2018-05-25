@@ -3,7 +3,7 @@ library('jenkins-shared@feature/build-notifications')
 
 def notify = { build, env ->
     wrap([$class: 'BuildUser']) {
-        hipchatNotifications(
+        hipchatNotifications( currentBuild: build, env: env,
                 successMessage: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> passed, " +
                         "run by ${BUILD_USER}, duration: ${(build.duration / 60000) as int} min",
                 failureMessage: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> failed, " +
