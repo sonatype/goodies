@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for {@link ByteSize}.
@@ -28,6 +29,7 @@ public class ByteSizeTest
 {
   @Test
   public void parse_nM() throws Exception {
+    fail("temporary to test failed build in jenkins");
     ByteSize size = ByteSize.parse("100m");
     log(size);
     assertThat(size, equalTo(ByteSize.megaBytes(100)));
