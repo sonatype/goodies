@@ -1,11 +1,6 @@
 library('private-pipeline-library')
 library('jenkins-shared@feature/build-notifications')
 
-mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
-        onSuccess: notify,
-        onFailure: notify
-)
-
 def notify = { build, env ->
     wrap([$class: 'BuildUser']) {
         hipchatNotifications(
@@ -17,3 +12,8 @@ def notify = { build, env ->
         )
     }
 }
+
+mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
+        onSuccess: notify,
+        onFailure: notify
+)
