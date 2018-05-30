@@ -1,19 +1,11 @@
 library('private-pipeline-library')
-library('jenkins-shared')
-
-def notify = { build, env ->
-    wrap([$class: 'BuildUser']) {
-        hipchatNotifications( currentBuild: build, env: env,
-                successMessage: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> passed, " +
-                        "run by ${BUILD_USER}, duration: ${(build.duration / 60000) as int} min",
-                failureMessage: "<a href='${env.BUILD_URL}'>${build.fullDisplayName}</a> failed, " +
-                        "run by ${BUILD_USER}, duration: ${(build.duration / 60000) as int} min",
-                hipchatRoom: 'nexus'
-        )
-    }
-}
+library('jenkins-shared@abstract-chat-notify')
 
 mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
-        onSuccess: notify,
-        onFailure: notify
+        onSuccess: { build, env ->
+            notifyChat(env: env, currentBuild: build, room: 'nexus')
+        },
+        onFailure: { build, env ->
+            notifyChat(env: env, currentBuild: build, room: 'nexus')
+        }
 )
