@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -102,6 +103,7 @@ public class TestIndexRule
     extends TestWatcher
     implements TestIndex
 {
+  private static final Pattern POSITIVE_INTEGER = Pattern.compile("[1-9][0-9]*");
 
   /**
    * The root directory that contains the the index and eventual linked & copied files.
@@ -346,7 +348,14 @@ public class TestIndexRule
     if (!initialized) {
       load();
 
-      index.setCounter(index.getCounter() + 1);
+      // support using a custom numeric test directory to seed the counter,
+      // useful for situations where something else generates the sequence
+      if (testDir != null && POSITIVE_INTEGER.matcher(testDir.getName()).matches()) {
+        index.setCounter(Integer.parseInt(testDir.getName()));
+      }
+      else {
+        index.setCounter(index.getCounter() + 1);
+      }
 
       result = new TestResultXO().withMethodName(description.getMethodName());
 
