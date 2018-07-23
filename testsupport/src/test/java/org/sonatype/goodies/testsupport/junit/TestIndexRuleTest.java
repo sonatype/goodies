@@ -55,6 +55,10 @@ public class TestIndexRuleTest
 
   private File dataRoot = util.resolveFile("target/test-index-rule-data");
 
+  private File customDir = util.resolveFile("target/custom-test-directory");
+
+  private File customNumericDir = util.resolveFile("target/3");
+
   @Rule
   public TestInfoRule testInfo = new TestInfoRule();
 
@@ -80,6 +84,32 @@ public class TestIndexRuleTest
     assertThat(fooDir, exists());
     assertThat(fooDir, isDirectory());
     assertThat(fooDir.getParentFile(), is(equalTo(underTest.getDirectory())));
+  }
+
+  /**
+   * Verifies that the test directory can be customized.
+   */
+  @Test
+  public void customDirIsCreated() {
+    underTest.setDirectory(customDir);
+    final File testDir = underTest.getDirectory();
+    assertThat(testDir, exists());
+    assertThat(testDir, isDirectory());
+    assertThat(testDir, is(customDir));
+  }
+
+  /**
+   * Verifies that a custom numeric directory seeds the index counter.
+   */
+  @Test
+  public void customNumericDirSeedsIndexCounter() {
+    underTest.setDirectory(customNumericDir);
+    final File testDir = underTest.getDirectory();
+    assertThat(testDir, exists());
+    assertThat(testDir, isDirectory());
+    assertThat(testDir, is(customNumericDir));
+
+    assertThat(new File(indexRoot, "index.xml"), contains("<counter>3</counter>"));
   }
 
   /**
