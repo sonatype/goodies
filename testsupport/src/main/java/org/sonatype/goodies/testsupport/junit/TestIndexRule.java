@@ -19,6 +19,7 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -380,7 +381,7 @@ public class TestIndexRule
 
       initialized = true;
     }
-    else if (!result.getMethodName().equals(description.getMethodName())) {
+    else if (!Objects.equals(result.getMethodName(), description.getMethodName())) {
 
       // new method being tested, add placeholder result and persist the index
       result = new TestResultXO().withMethodName(description.getMethodName());
