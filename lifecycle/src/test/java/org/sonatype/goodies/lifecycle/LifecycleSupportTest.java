@@ -28,6 +28,22 @@ public class LifecycleSupportTest
 {
   private static void assertState(final LifecycleSupport lifecycle, final State state) {
     assertTrue(lifecycle.is(state));
+    final boolean[] resultHolder = new boolean[1];
+    Thread asyncAssert = new Thread(new Runnable()
+    {
+      @Override
+      public void run() {
+        resultHolder[0] = lifecycle.is(state);
+      }
+    });
+    try {
+      asyncAssert.start();
+      asyncAssert.join(2_000);
+      assertTrue(resultHolder[0]);
+    }
+    catch (Exception e) {
+      fail("Unable to check state asynchronously" + e);
+    }
   }
 
   @Test
@@ -63,6 +79,110 @@ public class LifecycleSupportTest
     }
 
     assertState(underTest, State.NEW);
+  }
+
+  @Test
+  public void startAfterStartDisallowed() throws Exception {
+    LifecycleSupport underTest = new LifecycleSupport();
+
+    assertState(underTest, State.NEW);
+
+    underTest.start();
+
+    assertState(underTest, State.STARTED);
+
+    try {
+      underTest.start();
+    }
+    catch (IllegalStateException e) {
+      // expected
+    }
+
+    assertState(underTest, State.STARTED);
+  }
+
+  @Test
+  public void stopAfterStopDisallowed() throws Exception {
+    LifecycleSupport underTest = new LifecycleSupport();
+
+    assertState(underTest, State.NEW);
+
+    underTest.start();
+
+    assertState(underTest, State.STARTED);
+
+    underTest.stop();
+
+    assertState(underTest, State.STOPPED);
+
+    try {
+      underTest.stop();
+    }
+    catch (IllegalStateException e) {
+      // expected
+    }
+
+    assertState(underTest, State.STOPPED);
+  }
+
+  @Test
+  public void startAfterFailureDisallowed() throws Exception {
+    LifecycleSupport underTest = new LifecycleSupport()    {
+      @Override
+      protected void doStart() throws Exception {
+        throw new TestException();
+      }
+    };
+
+    assertState(underTest, State.NEW);
+
+    try {
+      underTest.start();
+    }
+    catch (TestException e) {
+      // expected
+    }
+
+    assertState(underTest, State.FAILED);
+
+    try {
+      underTest.start();
+    }
+    catch (IllegalStateException e) {
+      // expected
+    }
+
+    assertState(underTest, State.FAILED);
+  }
+
+  @Test
+  public void stopAfterFailureDisallowed() throws Exception {
+    LifecycleSupport underTest = new LifecycleSupport()    {
+      @Override
+      protected void doStart() throws Exception {
+        throw new TestException();
+      }
+    };
+
+    assertState(underTest, State.NEW);
+
+    try {
+      underTest.start();
+    }
+    catch (TestException e) {
+      // expected
+    }
+
+    assertState(underTest, State.FAILED);
+
+    try {
+      underTest.stop();
+    }
+    catch (IllegalStateException e) {
+      // expected
+    }
+
+    assertState(underTest, State.FAILED);
   }
 
   @Test
