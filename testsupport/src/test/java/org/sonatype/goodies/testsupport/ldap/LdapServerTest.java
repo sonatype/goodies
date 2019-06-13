@@ -24,6 +24,7 @@ import javax.naming.directory.InitialDirContext;
 import org.apache.directory.api.ldap.model.constants.SupportedSaslMechanisms;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -114,6 +115,7 @@ public class LdapServerTest
     new InitialDirContext(env).close();
   }
 
+  @Ignore("NEXUS-20162 - temporarily ignored while test server certificate is updated")
   @Test
   public void testLdaps() throws Exception {
     server.enableLdaps(new File("src/test/resources/keystore/test.ks"), "secret");
