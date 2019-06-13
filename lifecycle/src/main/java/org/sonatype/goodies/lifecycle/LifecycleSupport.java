@@ -14,8 +14,7 @@ package org.sonatype.goodies.lifecycle;
 
 import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.sonatype.goodies.common.ComponentSupport;
 import org.sonatype.goodies.common.Locks;
@@ -34,7 +33,7 @@ public class LifecycleSupport
     extends ComponentSupport
     implements Lifecycle
 {
-  private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+  private final Lock lock = new ReentrantLock();
 
   @VisibleForTesting
   enum State
@@ -42,7 +41,7 @@ public class LifecycleSupport
     NEW, STARTED, STOPPED, FAILED
   }
 
-  private State current = State.NEW;
+  private volatile State current = State.NEW;
 
   /**
    * Log transition messages.
@@ -67,13 +66,7 @@ public class LifecycleSupport
    */
   @VisibleForTesting
   boolean is(final State state) {
-    Lock lock = Locks.read(readWriteLock);
-    try {
-      return current == state;
-    }
-    finally {
-      lock.unlock();
-    }
+    return current == state;
   }
 
   /**
@@ -97,9 +90,10 @@ public class LifecycleSupport
 
   @Override
   public final void start() throws Exception {
-    Lock lock = Locks.write(readWriteLock);
+    ensure(State.NEW, State.STOPPED); // check state before taking lock
+    Locks.lock(lock);
     try {
-      ensure(State.NEW, State.STOPPED);
+      ensure(State.NEW, State.STOPPED); // check again now we have lock
       try {
         logTransition("Starting");
         doStart();
@@ -133,9 +127,10 @@ public class LifecycleSupport
 
   @Override
   public final void stop() throws Exception {
-    Lock lock = Locks.write(readWriteLock);
+    ensure(State.STARTED); // check state before taking lock
+    Locks.lock(lock);
     try {
-      ensure(State.STARTED);
+      ensure(State.STARTED); // check again now we have lock
       try {
         logTransition("Stopping");
         doStop();
