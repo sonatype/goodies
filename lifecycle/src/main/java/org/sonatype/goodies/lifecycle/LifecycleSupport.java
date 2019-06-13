@@ -98,15 +98,17 @@ public class LifecycleSupport
   @Override
   public final void start() throws Exception {
     Lock lock = Locks.write(readWriteLock);
-    ensure(State.NEW, State.STOPPED);
     try {
-      logTransition("Starting");
-      doStart();
-      current = State.STARTED;
-      logTransition("Started");
-    }
-    catch (Throwable failure) {
-      doFailed("start", failure);
+      ensure(State.NEW, State.STOPPED);
+      try {
+        logTransition("Starting");
+        doStart();
+        current = State.STARTED;
+        logTransition("Started");
+      }
+      catch (Throwable failure) {
+        doFailed("start", failure);
+      }
     }
     finally {
       lock.unlock();
@@ -132,15 +134,17 @@ public class LifecycleSupport
   @Override
   public final void stop() throws Exception {
     Lock lock = Locks.write(readWriteLock);
-    ensure(State.STARTED);
     try {
-      logTransition("Stopping");
-      doStop();
-      current = State.STOPPED;
-      logTransition("Stopped");
-    }
-    catch (Throwable failure) {
-      doFailed("stop", failure);
+      ensure(State.STARTED);
+      try {
+        logTransition("Stopping");
+        doStop();
+        current = State.STOPPED;
+        logTransition("Stopped");
+      }
+      catch (Throwable failure) {
+        doFailed("stop", failure);
+      }
     }
     finally {
       lock.unlock();
