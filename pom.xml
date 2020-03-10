@@ -49,13 +49,13 @@
   </prerequisites>
 
   <properties>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
 
-    <slf4j.version>1.7.10</slf4j.version>
+    <slf4j.version>1.7.30</slf4j.version>
     <sisu-guice.version>3.2.5</sisu-guice.version>
-    <powermock.version>1.6.1</powermock.version>
-    <eclipse-sisu.version>0.3.1</eclipse-sisu.version>
+    <powermock.version>2.0.5</powermock.version>
+    <eclipse-sisu.version>0.3.4</eclipse-sisu.version>
     <eclipse-jetty.version>9.3.3.v20150827</eclipse-jetty.version>
 
     <!--
@@ -221,7 +221,7 @@
 
       <dependency>
         <groupId>org.powermock</groupId>
-        <artifactId>powermock-api-mockito</artifactId>
+        <artifactId>powermock-api-mockito2</artifactId>
         <version>${powermock.version}</version>
         <exclusions>
           <exclusion>
@@ -410,7 +410,7 @@
                   <version>[3.0.4,)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>[1.7,)</version>
+                  <version>[1.8,)</version>
                 </requireJavaVersion>
                 <bannedDependencies>
                   <searchTransitive>true</searchTransitive>
@@ -433,6 +433,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <version>1.18</version>
         <executions>
           <execution>
             <goals>
@@ -441,7 +442,7 @@
             <configuration>
               <signature>
                 <groupId>org.codehaus.mojo.signature</groupId>
-                <artifactId>java17</artifactId>
+                <artifactId>java18</artifactId>
                 <version>1.0</version>
               </signature>
             </configuration>
