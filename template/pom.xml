@@ -46,6 +46,12 @@
     </dependency>
 
     <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
       <groupId>org.sonatype.sisu.litmus</groupId>
       <artifactId>litmus-testsupport</artifactId>
       <scope>test</scope>

@@ -16,6 +16,7 @@ package org.sonatype.sisu.goodies.template;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NonNls;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -44,24 +45,24 @@ public class TemplateThrowableAdapter
 
   @TemplateAccessible
   public String getType() {
-    return cause.getClass().getName();
+    return StringEscapeUtils.escapeHtml(cause.getClass().getName());
   }
 
   @TemplateAccessible
   public String getSimpleType() {
-    return cause.getClass().getSimpleName();
+    return StringEscapeUtils.escapeHtml(cause.getClass().getSimpleName());
   }
 
   @TemplateAccessible
   public String getMessage() {
-    return cause.getMessage();
+    return StringEscapeUtils.escapeHtml(cause.getMessage());
   }
 
   @TemplateAccessible
   public String getTrace() {
     StringWriter buff = new StringWriter();
     cause.printStackTrace(new PrintWriter(buff));
-    String tmp = buff.toString();
+    String tmp = StringEscapeUtils.escapeHtml(buff.toString());
     return tmp.replace(NL, "<br/>"); //NON-NLS
   }
 

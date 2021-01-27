@@ -223,6 +223,12 @@
         <artifactId>goodies-validation</artifactId>
         <version>1.9.2-SNAPSHOT</version>
       </dependency>
+
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.6</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
