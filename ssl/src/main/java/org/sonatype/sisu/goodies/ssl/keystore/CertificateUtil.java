@@ -32,8 +32,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import org.sonatype.sisu.goodies.ssl.keystore.internal.DigesterUtils;
-
-import org.bouncycastle.asn1.DERObjectIdentifier;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.jce.X509Principal;
@@ -82,8 +81,8 @@ public final class CertificateUtil
       throws SignatureException, InvalidKeyException, NoSuchAlgorithmException, CertificateEncodingException
   {
     X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
-    Vector<DERObjectIdentifier> order = new Vector<DERObjectIdentifier>();
-    Hashtable<DERObjectIdentifier, String> attributeMap = new Hashtable<DERObjectIdentifier, String>();
+    Vector<ASN1ObjectIdentifier> order = new Vector<ASN1ObjectIdentifier>();
+    Hashtable<ASN1ObjectIdentifier, String> attributeMap = new Hashtable<ASN1ObjectIdentifier, String>();
 
     if (commonName != null) {
       attributeMap.put(X509Principal.CN, commonName);
