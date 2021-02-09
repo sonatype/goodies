@@ -148,12 +148,7 @@ public class ValidatingProxyServer
               }
 
               private String getHost(final HostAndPort hostAndPort) {
-                try {
-                  return hostAndPort.getHost();
-                }
-                catch (LinkageError e) { // NOSONAR
-                  return hostAndPort.getHostText(); // fall back to deprecated method on old versions of Guava
-                }
+                return hostAndPort.getHost();
               }
             };
           }
