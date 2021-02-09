@@ -24,6 +24,7 @@ import java.security.Principal;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.EnumSet;
 
 import javax.net.ssl.KeyManager;
@@ -49,6 +50,7 @@ import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.security.ConstraintMapping;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
+import org.eclipse.jetty.security.UserStore;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
@@ -63,7 +65,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.util.ArrayUtil;
-import org.eclipse.jetty.util.B64Code;
 import org.eclipse.jetty.util.security.Constraint;
 import org.eclipse.jetty.util.security.Password;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -88,7 +89,7 @@ public class JettyServerProvider
 
   private ServletContextHandler webappContext;
 
-  private SslContextFactory sslContextFactory;
+  private SslContextFactory.Server sslContextFactory;
 
   private String sslKeystorePassword;
 
@@ -103,6 +104,8 @@ public class JettyServerProvider
   private ConstraintSecurityHandler securityHandler = new ConstraintSecurityHandler();
 
   private HashLoginService loginService;
+
+  private UserStore userStore;
 
   private String authType;
 
@@ -209,6 +212,8 @@ public class JettyServerProvider
 
     securityHandler.setConstraintMappings(new ConstraintMapping[]{cm});
     loginService = new HashLoginService("Test Server");
+    userStore = new UserStore();
+    loginService.setUserStore(userStore);
     securityHandler.setLoginService(loginService);
 
     webappContext.setSecurityHandler(securityHandler);
@@ -238,7 +243,7 @@ public class JettyServerProvider
       }
     }
     else {
-      loginService.putUser(user, new Password(password.toString()), new String[]{"users"});
+      userStore.addUser(user, new Password(password.toString()), new String[]{"users"});
     }
   }
 
@@ -291,7 +296,7 @@ public class JettyServerProvider
           principal = x509cert.getIssuerDN();
         }
         final String username = principal == null ? "clientcert" : principal.getName();
-        final char[] credential = B64Code.encode(x509cert.getSignature());
+        final char[] credential = Base64.getEncoder().encodeToString(x509cert.getSignature()).toCharArray();
         addUser(username, String.valueOf(credential));
       }
       else {
@@ -442,7 +447,7 @@ public class JettyServerProvider
   }
 
   protected ServerConnector sslConnector(final Server server) {
-    sslContextFactory = new SslContextFactory();
+    sslContextFactory = new SslContextFactory.Server();
     String keystore;
     try {
       keystore = resourceFile(sslKeystore);
