@@ -486,6 +486,19 @@
           <additionalparam>-Xdoclint:none</additionalparam>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <excludes combine.children="append">
+            <!--
+            Exclude markdown documentation files
+            -->
+            <exclude>**/*.md</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
