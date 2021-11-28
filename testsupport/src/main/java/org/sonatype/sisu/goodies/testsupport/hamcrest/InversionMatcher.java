@@ -12,12 +12,11 @@
  */
 package org.sonatype.sisu.goodies.testsupport.hamcrest;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Logical negation of a matcher (inversion).
@@ -77,7 +76,6 @@ public class InversionMatcher<T>
    *
    * @param matcher to be negated. Cannot be null.
    */
-  @Factory
   public static <T> InversionMatcher<T> not(final NegativeMatcher<T> matcher) {
     return new InversionMatcher<T>(matcher);
   }

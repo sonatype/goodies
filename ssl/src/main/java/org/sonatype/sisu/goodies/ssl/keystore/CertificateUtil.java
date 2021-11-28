@@ -31,9 +31,9 @@ import java.util.Vector;
 
 import org.sonatype.sisu.goodies.ssl.keystore.internal.DigesterUtils;
 
-import org.bouncycastle.asn1.DERObjectIdentifier;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.jce.X509Principal;
-import org.bouncycastle.openssl.PEMReader;
+import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.PEMWriter;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.slf4j.Logger;
@@ -76,8 +76,8 @@ public final class CertificateUtil
       throws SignatureException, InvalidKeyException, NoSuchAlgorithmException, CertificateEncodingException
   {
     X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
-    Vector<DERObjectIdentifier> order = new Vector<DERObjectIdentifier>();
-    Hashtable<DERObjectIdentifier, String> attributeMap = new Hashtable<DERObjectIdentifier, String>();
+    Vector<ASN1ObjectIdentifier> order = new Vector<>();
+    Hashtable<ASN1ObjectIdentifier, String> attributeMap = new Hashtable<>();
 
     if (commonName != null) {
       attributeMap.put(X509Principal.CN, commonName);
@@ -161,7 +161,7 @@ public final class CertificateUtil
     // make sure we have something to parse
     if (pemFormattedCertificate != null) {
       StringReader stringReader = new StringReader(pemFormattedCertificate);
-      PEMReader pemReader = new PEMReader(stringReader);
+      PEMParser pemReader = new PEMParser(stringReader);
       try {
         Object object = pemReader.readObject();
         LOG.trace("Object found while paring PEM formatted string: {}", object);

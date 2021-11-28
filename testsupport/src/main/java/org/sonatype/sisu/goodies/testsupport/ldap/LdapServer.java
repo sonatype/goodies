@@ -14,7 +14,10 @@ package org.sonatype.sisu.goodies.testsupport.ldap;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -197,7 +200,9 @@ public class LdapServer
 
   public void loadData(String ldifResourceName) throws IOException {
     File ldif = new File(workingDirectory, "data" + ldifResourceName);
-    FileUtils.copyURLToFile(LdapServer.class.getResource(ldifResourceName), ldif);
+    try (InputStream in = LdapServer.class.getResourceAsStream(ldifResourceName)) {
+      Files.copy(in, ldif.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
     loadData(ldif);
   }
 

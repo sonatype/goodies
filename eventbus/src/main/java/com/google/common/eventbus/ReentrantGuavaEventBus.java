@@ -12,9 +12,6 @@
  */
 package com.google.common.eventbus;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -29,37 +26,12 @@ import javax.inject.Singleton;
 public class ReentrantGuavaEventBus
     extends DefaultGuavaEventBus
 {
-
-  /**
-   * Queues of events for the current thread to dispatch.
-   */
-  private final ThreadLocal<Queue<EventWithSubscriber>> eventsToDispatch =
-      new ThreadLocal<Queue<EventWithSubscriber>>()
-      {
-        @Override
-        protected Queue<EventWithSubscriber> initialValue() {
-          return new LinkedList<EventWithSubscriber>();
-        }
-      };
-
-  @Override
-  void enqueueEvent(Object event, EventSubscriber subscriber) {
-    eventsToDispatch.get().offer(new EventWithSubscriber(event, subscriber));
-  }
-
-  @Override
-  void dispatchQueuedEvents() {
-    Queue<EventWithSubscriber> events = eventsToDispatch.get();
-    eventsToDispatch.remove();
-    EventWithSubscriber eventWithSubscriber;
-    while ((eventWithSubscriber = events.poll()) != null) {
-      dispatch(eventWithSubscriber.event, eventWithSubscriber.subscriber);
-    }
+  public ReentrantGuavaEventBus() {
+    super(Dispatcher.immediate());
   }
 
   @Override
   public String toString() {
     return "Reentrant Guava EventBus";
   }
-
 }

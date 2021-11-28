@@ -12,26 +12,31 @@
  */
 package org.sonatype.sisu.goodies.testsupport.hamcrest;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.either;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.zip.ZipFile;
 
 import org.sonatype.sisu.goodies.testsupport.TestSupport;
 import org.sonatype.sisu.goodies.testsupport.hamcrest.FileMatchers;
 import org.sonatype.sisu.goodies.testsupport.mock.MockitoRule;
 
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.startsWith;
-import static org.mockito.Mockito.when;
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.litmus.testsupport.mock.MockitoRule;
 
 /**
  * @author plynch
@@ -39,6 +44,8 @@ import static org.mockito.Mockito.when;
 public class FileMatchersTest
     extends TestSupport
 {
+  private static final String NEW_LINE = System.lineSeparator();
+
   public MockitoRule MockitoRule = new MockitoRule(this);
 
   private static File REAL_FILE;
@@ -126,10 +133,10 @@ public class FileMatchersTest
   }
 
   @Test
-  public void sizedStandalone() {
+  public void sizedStandalone() throws IOException {
     File sizedFile = new File(REAL_DIR, "src/test/resources/sized_file.txt");
     assertThat(sizedFile, FileMatchers.exists());
-    assertThat(sizedFile, FileMatchers.sized(21L));
+    assertThat(sizedFile, FileMatchers.sized(Files.size(sizedFile.toPath())));
   }
 
   @Test
@@ -147,7 +154,7 @@ public class FileMatchersTest
   @Test
   public void containsOnly() {
     File file = new File(REAL_DIR, "src/test/resources/sized_file.txt");
-    assertThat(file, FileMatchers.containsOnly("A File of fixed size\n"));
+    assertThat(file, FileMatchers.containsOnly("A File of fixed size" + NEW_LINE));
   }
 
   @Test
@@ -185,7 +192,8 @@ public class FileMatchersTest
       assertThat(REAL_FILE, FileMatchers.isEmptyDirectory());
     }
     catch (AssertionError ae) {
-      assertThat(ae.getMessage(), startsWith("\nExpected: a directory\n     but: found a non directory at"));
+      assertThat(ae.getMessage(), startsWith(NEW_LINE +"Expected: a directory" + NEW_LINE +
+          "     but: found a non directory at"));
     }
   }
 
@@ -202,10 +210,8 @@ public class FileMatchersTest
       assertThat(mockFile, FileMatchers.isEmptyDirectory());
     }
     catch (AssertionError ae) {
-      assertThat(ae.getMessage(), startsWith("\nExpected: an empty directory"
-          + "\n     but: directory \"/mydir\" contained "
-          + "\n\"foo.txt\""
-          + "\n\"bar\""));
+      assertThat(ae.getMessage(), startsWith(NEW_LINE + "Expected: an empty directory"
+          + NEW_LINE + "     but: directory \"/mydir\" contained \n\"foo.txt\"\n\"bar\""));
     }
   }
 
@@ -225,7 +231,8 @@ public class FileMatchersTest
     }
     catch (AssertionError ae) {
       assertThat(ae.getMessage(), startsWith(
-          "\nExpected: an empty directory\n     but: there was an IO problem reading the contents of \"/mydir\""));
+          NEW_LINE + "Expected: an empty directory" + 
+          NEW_LINE + "     but: there was an IO problem reading the contents of \"/mydir\""));
     }
   }
 
@@ -235,7 +242,9 @@ public class FileMatchersTest
       throws IOException
   {
     File sizedFile = new File(REAL_DIR, "src/test/resources/sized_file.txt");
-    assertThat(sizedFile, FileMatchers.matchSha1("5ac7a73e644f48918b98531f9cd08a3e063b91a1"));
+    Matcher<File> unixMatcher = (Matcher<File>) FileMatchers.matchSha1("5ac7a73e644f48918b98531f9cd08a3e063b91a1");
+    Matcher<File> winMatcher = (Matcher<File>) FileMatchers.matchSha1("25d9abdcfb894b2eb5184b4e7d55cafb12b8f57e");
+    assertThat(sizedFile, either(unixMatcher).or(winMatcher));
     assertThat(sizedFile, not(FileMatchers.matchSha1("123")));
   }
 

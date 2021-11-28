@@ -12,11 +12,14 @@
  */
 package com.google.common.eventbus;
 
+import java.util.Iterator;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.sonatype.sisu.goodies.eventbus.internal.DefaultEventBus;
 
+import com.google.common.util.concurrent.MoreExecutors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,20 +33,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DefaultGuavaEventBus
     extends EventBus
 {
-
   public DefaultGuavaEventBus() {
-    super(new LoggingSubscriberExceptionHandler("default"));
+    this(Dispatcher.perThreadDispatchQueue());
   }
 
-  @Override
-  public void dispatch(final Object event, final EventSubscriber wrapper) {
-    DefaultEventBus.LOG.trace(DefaultEventBus.DISPATCHING, "Dispatching '{}' to {}", event, wrapper);
-    super.dispatch(event, wrapper);
+  protected DefaultGuavaEventBus(Dispatcher dispatcher) {
+    super("default", MoreExecutors.directExecutor(), dispatcher(dispatcher),
+        new LoggingSubscriberExceptionHandler("default"));
   }
 
   @Override
   public String toString() {
     return "Default Guava EventBus";
+  }
+
+  private static Dispatcher dispatcher(Dispatcher delegate) {
+    return new Dispatcher() {
+      @Override
+      void dispatch(Object event, Iterator<Subscriber> subscribers) {
+        DefaultEventBus.LOG.trace(DefaultEventBus.DISPATCHING, "Dispatching '{}' to {}", event, subscribers);
+        delegate.dispatch(event, subscribers);
+      }
+    };
   }
 
   private static final class LoggingSubscriberExceptionHandler

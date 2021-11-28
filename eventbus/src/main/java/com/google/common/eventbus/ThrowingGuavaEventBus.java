@@ -12,12 +12,11 @@
  */
 package com.google.common.eventbus;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.sonatype.sisu.goodies.common.Loggers;
 
-import com.google.common.base.Throwables;
 import org.slf4j.Logger;
+
+import static com.google.common.base.Throwables.throwIfUnchecked;
 
 /**
  * Adds support to capture/report handler exception failures and re-throw them.
@@ -38,22 +37,14 @@ public class ThrowingGuavaEventBus
     super(identifier);
     this.log = Loggers.getLogger(getClass() + "." + identifier);
   }
-
-  @Override
-  void dispatch(final Object event, final EventSubscriber wrapper) {
-    try {
-      wrapper.handleEvent(event);
-    }
-    catch (InvocationTargetException e) {
-      handleDispatchFailure(event, wrapper, e);
-    }
-  }
-
-  protected void handleDispatchFailure(final Object event, final EventSubscriber wrapper,
-                                       final InvocationTargetException cause)
-  {
-    log.warn("Dispatch of event={} to handler={} failed", event, wrapper, cause);
-    throw Throwables.propagate(cause.getTargetException());
+  
+  void handleSubscriberException(Throwable cause, SubscriberExceptionContext context) {
+    super.handleSubscriberException(cause, context);
+    
+    log.warn("Dispatch of event={} to handler={} failed", context.getEvent(), context.getSubscriber(), cause);
+    
+    throwIfUnchecked(cause);
+    throw new RuntimeException(cause);
   }
 
   @Override

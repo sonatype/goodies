@@ -14,7 +14,6 @@ package org.sonatype.sisu.goodies.testsupport.hamcrest;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
 /**
@@ -94,7 +93,6 @@ public class DiffMatchers
    *
    * @since litmus 1.0
    */
-  @Factory
   public static Matcher<String> equalTo(final String string) {
     return new StringDiffMatcher(string);
   }
@@ -104,9 +102,7 @@ public class DiffMatchers
    *
    * @since litmus 1.0
    */
-  @Factory
   public static Matcher<String> equalToOnlyDiffs(final String string) {
     return new StringDiffMatcher(string, true);
   }
-
 }

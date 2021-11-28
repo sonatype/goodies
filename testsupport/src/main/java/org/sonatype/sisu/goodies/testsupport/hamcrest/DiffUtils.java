@@ -14,9 +14,10 @@ package org.sonatype.sisu.goodies.testsupport.hamcrest;
 
 import java.util.List;
 
+import org.incava.diff.Diff;
+import org.incava.diff.Difference;
+
 import com.google.common.base.Strings;
-import org.incava.util.diff.Diff;
-import org.incava.util.diff.Difference;
 
 /**
  * Some ideas to represent test assertions in more usable way
