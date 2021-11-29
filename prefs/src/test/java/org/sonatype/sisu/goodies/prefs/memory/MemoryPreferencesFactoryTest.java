@@ -14,7 +14,7 @@ package org.sonatype.sisu.goodies.prefs.memory;
 
 import java.util.prefs.Preferences;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import org.junit.Before;
 import org.junit.Test;

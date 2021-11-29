@@ -14,7 +14,7 @@ package org.sonatype.sisu.jacksbee.runtime;
 
 import java.util.List;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;

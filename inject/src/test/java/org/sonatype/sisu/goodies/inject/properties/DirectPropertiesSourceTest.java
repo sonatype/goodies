@@ -14,7 +14,7 @@ package org.sonatype.sisu.goodies.inject.properties;
 
 import java.util.Properties;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 

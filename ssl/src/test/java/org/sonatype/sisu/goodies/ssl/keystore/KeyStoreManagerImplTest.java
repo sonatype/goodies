@@ -47,8 +47,8 @@ import javax.net.ssl.X509TrustManager;
 import org.sonatype.sisu.goodies.common.Time;
 import org.sonatype.sisu.goodies.crypto.CryptoHelper;
 import org.sonatype.sisu.goodies.crypto.internal.CryptoHelperImpl;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
-import org.sonatype.sisu.litmus.testsupport.hamcrest.FileMatchers;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.hamcrest.FileMatchers;
 
 import org.junit.Before;
 import org.junit.Test;

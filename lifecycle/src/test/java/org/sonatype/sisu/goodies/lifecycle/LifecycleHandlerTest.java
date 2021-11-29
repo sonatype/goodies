@@ -12,7 +12,7 @@
  */
 package org.sonatype.sisu.goodies.lifecycle;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 import statemap.TransitionUndefinedException;

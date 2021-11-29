@@ -14,7 +14,7 @@ package org.sonatype.sisu.goodies.jmx;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 import org.softee.management.annotation.Description;

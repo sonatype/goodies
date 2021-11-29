@@ -14,7 +14,7 @@ package org.sonatype.sisu.goodies.template;
 
 import java.util.Map;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import com.google.common.collect.Maps;
 import org.junit.Test;

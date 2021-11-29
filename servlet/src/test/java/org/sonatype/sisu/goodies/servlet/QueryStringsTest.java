@@ -15,7 +15,7 @@ package org.sonatype.sisu.goodies.servlet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import com.google.common.collect.Multimap;
 import org.junit.Test;

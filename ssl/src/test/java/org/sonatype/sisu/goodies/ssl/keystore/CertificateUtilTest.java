@@ -15,7 +15,7 @@ package org.sonatype.sisu.goodies.ssl.keystore;
 import java.security.Security;
 import java.security.cert.Certificate;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Before;

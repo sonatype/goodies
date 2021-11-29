@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.sonatype.sisu.goodies.common.io.FileReplacer.ContentWriter;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import com.google.common.io.Files;
 import org.junit.Before;
@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.sonatype.sisu.litmus.testsupport.hamcrest.FileMatchers.exists;
+import static org.sonatype.sisu.goodies.testsupport.hamcrest.FileMatchers.exists;
 
 /**
  * Tests for {@link FileReplacer}.

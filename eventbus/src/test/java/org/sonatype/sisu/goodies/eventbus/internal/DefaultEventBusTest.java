@@ -13,7 +13,7 @@
 package org.sonatype.sisu.goodies.eventbus.internal;
 
 import org.sonatype.sisu.goodies.eventbus.EventBus;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import com.google.common.eventbus.ReentrantGuavaEventBus;
 import com.google.common.eventbus.Subscribe;

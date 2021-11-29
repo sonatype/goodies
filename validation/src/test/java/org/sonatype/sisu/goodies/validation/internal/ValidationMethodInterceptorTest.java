@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-import org.sonatype.sisu.litmus.testsupport.inject.InjectedTestSupport;
+import org.sonatype.sisu.goodies.testsupport.inject.InjectedTestSupport;
 
 import org.junit.Test;
 

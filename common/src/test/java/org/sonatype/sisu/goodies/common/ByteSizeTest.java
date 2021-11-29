@@ -13,7 +13,7 @@
 package org.sonatype.sisu.goodies.common;
 
 import org.sonatype.sisu.goodies.common.ByteSize.ByteUnit;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 

@@ -15,7 +15,7 @@ package org.sonatype.sisu.goodies.thread;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.sonatype.sisu.goodies.common.Mutex;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import org.junit.Test;
 

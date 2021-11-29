@@ -15,7 +15,7 @@ package org.sonatype.sisu.goodies.crypto.maven;
 import java.security.Security;
 
 import org.sonatype.sisu.goodies.crypto.maven.MavenCipher;
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
+import org.sonatype.sisu.goodies.testsupport.TestSupport;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
