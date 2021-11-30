@@ -436,7 +436,11 @@ public class TestIndexRule
    * using the system property {@code litmus.build.name}
    */
   protected String indexFilename() {
-    return System.getProperty("litmus.build.name", "index.xml");
+    String filename = System.getProperty("goodies.build.name", "index.xml");
+    if (!filename.endsWith(".xml")) {
+      filename += ".xml";
+    }
+    return filename;
   }
 
   /**
