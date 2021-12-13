@@ -372,6 +372,10 @@ public class TestIndexRule
 
       if (testDir == null) {
         testDir = new File(dataDir, test.getClassName());
+
+        if (testDir.exists()) {
+          testDir = new File(dataDir, test.getClassName() + "-" + index.getCounter());
+        }
       }
       checkState(
           (testDir.mkdirs() || testDir.exists()) && testDir.isDirectory(),
