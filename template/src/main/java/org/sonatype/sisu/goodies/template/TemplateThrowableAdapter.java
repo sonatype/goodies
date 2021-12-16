@@ -12,8 +12,8 @@
  */
 package org.sonatype.sisu.goodies.template;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.google.common.base.Throwables;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -22,47 +22,36 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @since 1.4
  */
+@TemplateAccessible
 public class TemplateThrowableAdapter
 {
-
-  public static final String NL = System.getProperty("line.separator");
-
   private final Throwable cause;
 
   public TemplateThrowableAdapter(final Throwable cause) {
     this.cause = checkNotNull(cause);
   }
 
-  @TemplateAccessible
   public Throwable getCause() {
     return cause;
   }
 
-  @TemplateAccessible
   public String getType() {
     return cause.getClass().getName();
   }
 
-  @TemplateAccessible
   public String getSimpleType() {
     return cause.getClass().getSimpleName();
   }
 
-  @TemplateAccessible
   public String getMessage() {
-    return cause.getMessage();
+    return StringEscapeUtils.escapeHtml(cause.getMessage());
   }
 
-  @TemplateAccessible
   public String getTrace() {
-    StringWriter buff = new StringWriter();
-    cause.printStackTrace(new PrintWriter(buff));
-    String tmp = buff.toString();
-    return tmp.replace(NL, "<br/>"); //NON-NLS
+    return StringEscapeUtils.escapeHtml(Throwables.getStackTraceAsString(cause));
   }
 
   public String toString() {
     return cause.toString();
   }
-
 }
