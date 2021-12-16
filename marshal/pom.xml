@@ -29,7 +29,7 @@
 
   <properties>
     <jackson.version>1.9.13</jackson.version>
-    <jackson2.version>2.3.5</jackson2.version>
+    <jackson2.version>2.11.3</jackson2.version>
   </properties>
 
   <dependencies>
@@ -61,7 +61,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>${jackson2.version}</version>
       <optional>true</optional>
     </dependency>
 
@@ -92,6 +91,11 @@
       <artifactId>jackson-xc</artifactId>
       <version>${jackson.version}</version>
       <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
     </dependency>
 
     <dependency>
