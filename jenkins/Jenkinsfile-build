@@ -2,7 +2,6 @@ library('private-pipeline-library')
 library('jenkins-shared')
 
 mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
-        javaVersion: 'Java 7',
         deployCondition: { return env.BRANCH_NAME == 'master' || env.BRANCH_NAME.startsWith('release-') },
         onSuccess: { build, env ->
             notifyChat(env: env, currentBuild: build, room: 'nxrm-notifications')
