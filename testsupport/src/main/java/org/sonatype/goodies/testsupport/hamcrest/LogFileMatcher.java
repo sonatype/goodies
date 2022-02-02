@@ -18,7 +18,6 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.TypeSafeMatcher;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -151,7 +150,6 @@ public abstract class LogFileMatcher
    * @param exception to be found in log file. Cannot be null.
    * @return matcher. Never null.
    */
-  @Factory
   public static LogFileMatcher hasExceptionOfType(final Class<? extends Exception> exception) {
     checkNotNull(exception);
     return new LogFileMatcher()
@@ -180,7 +178,6 @@ public abstract class LogFileMatcher
    * @param text to be found in log file. Cannot be null.
    * @return matcher
    */
-  @Factory
   public static LogFileMatcher hasText(final String text) {
     checkNotNull(text);
     return new LogFileMatcher()
@@ -209,7 +206,6 @@ public abstract class LogFileMatcher
    * @param pattern to be found in log file. Cannot be null.
    * @return matcher
    */
-  @Factory
   public static LogFileMatcher hasText(final Pattern pattern) {
     return new LogFileMatcher()
     {

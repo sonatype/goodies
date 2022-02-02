@@ -12,13 +12,13 @@
  */
 package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.util.B64Code;
 
 public class BasicAuth
     extends BehaviourSupport
@@ -37,7 +37,7 @@ public class BasicAuth
   public boolean execute(HttpServletRequest request, HttpServletResponse response, Map<Object, Object> ctx)
       throws Exception
   {
-    String userPass = new String(B64Code.encode((user + ":" + password).getBytes("UTF-8")));
+    String userPass = new String(Base64.getEncoder().encode((user + ":" + password).getBytes("UTF-8")), StandardCharsets.UTF_8);
     if (("Basic " + userPass).equals(request.getHeader("Authorization"))) {
       return true;
     }

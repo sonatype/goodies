@@ -44,7 +44,7 @@ public class Locks
       }
     }
     catch (InterruptedException e) {
-      throw Throwables.propagate(e);
+      throw propagate(e);
     }
     return lock;
   }
@@ -63,5 +63,10 @@ public class Locks
   public static Lock write(final ReadWriteLock readWriteLock) {
     checkNotNull(readWriteLock);
     return lock(readWriteLock.writeLock());
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 }

@@ -29,7 +29,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
 import static org.hamcrest.Matchers.arrayContaining;
@@ -58,7 +57,6 @@ public class BeanMatchers
    * @param <T>      expected type
    * @return true if beans are similar
    */
-  @Factory
   public static <T> Matcher<T> similarTo(final T expected) {
     return new SimilarMatcher<T>(expected);
   }
@@ -93,7 +91,7 @@ public class BeanMatchers
     /**
      * Matcher that did not match. Used to report the failure. Null in case that actual/expected matches.
      */
-    private Matcher failingMatcher;
+    private Matcher<?> failingMatcher;
 
     /**
      * Value that actually failed.
@@ -198,7 +196,7 @@ public class BeanMatchers
         }
       }
       catch (Exception e) {
-        Throwables.propagate(e);
+        propagate(e);
       }
 
       return true;
@@ -453,8 +451,10 @@ public class BeanMatchers
     public String toString() {
       return path;
     }
-
-
   }
 
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
+  }
 }

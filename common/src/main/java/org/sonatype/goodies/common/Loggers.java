@@ -29,14 +29,14 @@ public final class Loggers
    */
   private static final String GUICE_ENHANCED = "$$EnhancerByGuice$$";
 
-  private static boolean isEnhancedSubclass(final Class type) {
+  private static boolean isEnhancedSubclass(final Class<?> type) {
     return type.getName().contains(GUICE_ENHANCED);
   }
 
   /**
    * Helper to create a logger and deal with class-names created by AOP platforms.
    */
-  public static Logger getLogger(final Class type) {
+  public static Logger getLogger(final Class<?> type) {
     checkNotNull(type);
     if (isEnhancedSubclass(type)) {
       return LoggerFactory.getLogger(type.getSuperclass());

@@ -166,7 +166,7 @@ public class LifecycleSupport
     logTransitionFailure("Lifecycle operation " + operation + " failed", cause);
     current = State.FAILED;
     Throwables.propagateIfPossible(cause, Exception.class);
-    throw Throwables.propagate(cause);
+    throw propagate(cause);
   }
 
   /**
@@ -174,5 +174,10 @@ public class LifecycleSupport
    */
   protected boolean isFailed() {
     return is(State.FAILED);
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 }

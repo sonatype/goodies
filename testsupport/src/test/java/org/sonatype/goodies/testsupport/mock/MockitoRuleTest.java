@@ -43,7 +43,7 @@ public class MockitoRuleTest
 
 
   @Mock
-  private HashMap mockedMap;
+  private HashMap<String, String> mockedMap;
 
   @Spy
   private LinkedHashMap<String, String> spyMap;

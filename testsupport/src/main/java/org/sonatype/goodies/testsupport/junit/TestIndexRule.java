@@ -260,7 +260,7 @@ public class TestIndexRule
         recordLink(key, calculateRelativePath(indexDir, parent) + '/' + file.getName());
       }
       catch (IOException e) {
-        throw Throwables.propagate(e);
+        throw propagate(e);
       }
     }
   }
@@ -302,7 +302,7 @@ public class TestIndexRule
         recordLink(key, calculateRelativePath(indexDir, copied));
       }
       catch (IOException e) {
-        throw Throwables.propagate(e);
+        throw propagate(e);
       }
     }
   }
@@ -431,7 +431,7 @@ public class TestIndexRule
       }
       catch (Exception e) {
         // TODO Should we fail the test if we cannot write the index?
-        throw Throwables.propagate(e);
+        throw propagate(e);
       }
     }
   }
@@ -459,13 +459,13 @@ public class TestIndexRule
     }
     catch (Exception e) {
       // TODO Should we fail the test if we cannot write the index?
-      throw Throwables.propagate(e);
+      throw propagate(e);
     }
   }
 
   /**
    * Retrieve the filename to use for the index. The default is {@code index.xml} but can be overridden
-   * using the system property {@code litmus.build.name}
+   * using the system property {@code goodies.build.name}
    */
   protected String indexFilename() {
     String filename = System.getProperty("goodies.build.name", "index.xml");
@@ -503,4 +503,8 @@ public class TestIndexRule
     return (".." + (relativePath.trim().isEmpty() ? "" : "/" + relativePath));
   }
 
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
+  }
 }

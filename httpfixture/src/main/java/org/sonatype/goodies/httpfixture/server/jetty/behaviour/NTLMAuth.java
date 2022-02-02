@@ -14,9 +14,11 @@ package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Map;
 
 import javax.crypto.Cipher;
@@ -24,8 +26,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.util.B64Code;
 
 // FIXME: Incomplete, last step is not validated
 
@@ -91,7 +91,8 @@ public class NTLMAuth
     byte[] ba = out.toByteArray();
     System.err.println(Arrays.toString(ba));
     System.err.println(ba.length);
-    String answer = new String(B64Code.encode(ba));
+    
+    String answer = new String(Base64.getEncoder().encode(ba), StandardCharsets.UTF_8);
 
     log.debug("Sending type 2 message: NTLM {}", answer);
 

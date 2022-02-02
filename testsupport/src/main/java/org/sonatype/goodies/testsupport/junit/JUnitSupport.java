@@ -14,7 +14,7 @@ package org.sonatype.goodies.testsupport.junit;
 
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -37,20 +37,20 @@ public class JUnitSupport
    * Run one or more JUnit test classes in the order given, optionally asserting the results.
    * <p/>
    * If {@code assertResults} is true and the result is not successful, failures are logged as per {@link
-   * #logFailures(java.util.List)} and {@link junit.framework.AssertionFailedError} is thrown.
+   * #logFailures(java.util.List)} and {@link org.junit.AssertionFailedError} is thrown.
    *
    * @param assertResults true will assert that the result of running all of the classes was successful, false ignores
    *                      the result
    * @param testClasses   the test classes to run
    * @throws NullPointerException     if testClasses is null
    * @throws IllegalArgumentException if testClasses are not provided
-   * @throws junit.framework.AssertionFailedError
+   * @throws org.junit.AssertionFailedError
    *                                  if one or more test classes fail
    * @see #logFailures(java.util.List)
    * @see {@link JUnitCore#runClasses(Class[])}}
    * @since litmus 1.3
    */
-  public void runUnitTests(final boolean assertResults, final Class... testClasses) {
+  public void runUnitTests(final boolean assertResults, final Class<?>... testClasses) {
     if (checkNotNull(testClasses).length == 0) {
       throw new IllegalArgumentException("Please specify one or more JUnit test class.");
     }
@@ -69,7 +69,7 @@ public class JUnitSupport
    * @see {@link #runUnitTests(boolean, Class[])} }
    * @see {@link JUnitCore#runClasses(Class[])}}
    */
-  public void runUnitTests(final Class... testClasses) {
+  public void runUnitTests(final Class<?>... testClasses) {
     runUnitTests(true, testClasses);
   }
 

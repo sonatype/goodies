@@ -28,11 +28,11 @@ public class PropertiesLoader
 {
   private final Properties props = new Properties();
 
-  private final Class owner;
+  private final Class<?> owner;
 
   private final String resourceName;
 
-  public PropertiesLoader(final Class owner, final String resourceName) {
+  public PropertiesLoader(final Class<?> owner, final String resourceName) {
     this.owner = checkNotNull(owner);
     this.resourceName = checkNotNull(resourceName);
   }

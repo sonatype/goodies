@@ -15,8 +15,8 @@ package org.sonatype.goodies.testsupport.hamcrest;
 import java.util.List;
 
 import com.google.common.base.Strings;
-import org.incava.util.diff.Diff;
-import org.incava.util.diff.Difference;
+import org.incava.diff.Diff;
+import org.incava.diff.Difference;
 
 /**
  * Some ideas to represent test assertions in more usable way
@@ -47,7 +47,7 @@ public class DiffUtils
     String lnf = "%0" + widthOfLineNum + "d: ";
     String emptyLineNumber = Strings.padStart("", lineNumber(lnf, 0).length(), ' ');
 
-    List<Difference> diffs = new Diff<String>(fromLines, toLines).diff();
+    List<Difference> diffs = new Diff<String>(fromLines, toLines).execute();
 
     int padding = 3;
     int maxStrWidth = Math.max(maxLength(fromLines), maxLength(toLines)) + padding;

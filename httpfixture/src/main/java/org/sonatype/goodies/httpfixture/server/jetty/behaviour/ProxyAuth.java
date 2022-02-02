@@ -12,13 +12,13 @@
  */
 package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.util.B64Code;
 
 public class ProxyAuth
     extends BehaviourSupport
@@ -41,7 +41,6 @@ public class ProxyAuth
   {
     String headers = "";
 
-    @SuppressWarnings("unchecked")
     Enumeration<String> names = request.getHeaderNames();
     while (names.hasMoreElements()) {
       String name = names.nextElement();
@@ -58,7 +57,8 @@ public class ProxyAuth
       return false;
     }
     else {
-      String expected = new String(B64Code.encode((user + ":" + password).getBytes("UTF-8")));
+      String expected =
+          new String(Base64.getEncoder().encode((user + ":" + password).getBytes("UTF-8")), StandardCharsets.UTF_8);
       this.authorized = expected.equals(authHeader.split(" ", 2)[1]);
     }
     return this.authorized;

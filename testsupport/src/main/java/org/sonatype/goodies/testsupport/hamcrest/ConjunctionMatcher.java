@@ -18,7 +18,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -123,7 +122,6 @@ public class ConjunctionMatcher<T>
    *
    * @param matchers to be AND-ed. Cannot be null.
    */
-  @Factory
   public static <T> Matcher<T> allOf(final Iterable<Matcher<? super T>> matchers) {
     return new ConjunctionMatcher<T>(matchers);
   }
@@ -136,7 +134,6 @@ public class ConjunctionMatcher<T>
    *
    * @param matchers to be AND-ed. Cannot be null.
    */
-  @Factory
   public static <T> Matcher<T> allOf(final Matcher<? super T>... matchers) {
     return allOf(Arrays.asList(checkNotNull(matchers, "matchers")));
   }
@@ -150,7 +147,6 @@ public class ConjunctionMatcher<T>
    * @param alternativeDescription description to be used instead of iterating over AND-ed matchers. Cannot be null.
    * @param matchers               to be AND-ed. Cannot be null.
    */
-  @Factory
   public static <T> Matcher<T> allOf(final String alternativeDescription,
                                      final Iterable<Matcher<? super T>> matchers)
   {
@@ -166,7 +162,6 @@ public class ConjunctionMatcher<T>
    * @param alternativeDescription description to be used instead of iterating over AND-ed matchers. Cannot be null.
    * @param matchers               to be AND-ed. Cannot be null.
    */
-  @Factory
   public static <T> Matcher<T> allOf(final String alternativeDescription,
                                      final Matcher<? super T>... matchers)
   {
