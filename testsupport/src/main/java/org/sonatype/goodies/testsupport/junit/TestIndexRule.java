@@ -49,8 +49,8 @@ import static javax.xml.bind.Marshaller.JAXB_FRAGMENT;
 
 /**
  * JUnit rule for creating/accessing directories/files unique to a test method/run. The rule will create a mapping file
- * (an index) to easy link the tests to its directories. The index file (index.xml) is created in the directory
- * configured as root (see constructor}.
+ * (an index) to easy link the tests to its directories. The index file (default {@code index.xml}) is created in the 
+ * directory configured as root (see constructor}.
  * <p/>
  * How it works:
  * <p/>
@@ -371,7 +371,11 @@ public class TestIndexRule
       copyStyleSheets();
 
       if (testDir == null) {
-        testDir = new File(dataDir, String.valueOf(index.getCounter()));
+        testDir = new File(dataDir, test.getClassName());
+
+        if (testDir.exists()) {
+          testDir = new File(dataDir, test.getClassName() + "-" + index.getCounter());
+        }
       }
       checkState(
           (testDir.mkdirs() || testDir.exists()) && testDir.isDirectory(),
@@ -418,7 +422,7 @@ public class TestIndexRule
    * Loads index data from ${indexDir}/index.xml.
    */
   private void load() {
-    indexXml = new File(indexDir, "index.xml");
+    indexXml = new File(indexDir, indexFilename());
     index = new IndexXO().withCounter(0);
     if (indexXml.exists()) {
       try {
@@ -457,6 +461,18 @@ public class TestIndexRule
       // TODO Should we fail the test if we cannot write the index?
       throw Throwables.propagate(e);
     }
+  }
+
+  /**
+   * Retrieve the filename to use for the index. The default is {@code index.xml} but can be overridden
+   * using the system property {@code litmus.build.name}
+   */
+  protected String indexFilename() {
+    String filename = System.getProperty("goodies.build.name", "index.xml");
+    if (!filename.endsWith(".xml")) {
+      filename += ".xml";
+    }
+    return filename;
   }
 
   /**
