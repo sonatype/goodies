@@ -50,9 +50,8 @@ public class MockitoRule
     {
       @Override
       public void evaluate() throws Throwable {
-        MockitoAnnotations.initMocks(testClass);
         Throwable throwable = null;
-        try {
+        try (AutoCloseable mocks = MockitoAnnotations.openMocks(testClass)) {
           base.evaluate();
         }
         catch (final Throwable t) {

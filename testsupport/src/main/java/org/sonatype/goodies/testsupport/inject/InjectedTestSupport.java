@@ -24,6 +24,7 @@ import org.sonatype.gossip.Level;
 
 import com.google.common.base.Preconditions;
 import org.eclipse.sisu.launch.InjectedTest;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
@@ -59,9 +60,18 @@ public class InjectedTestSupport
   @Rule
   public final TestName testName = new TestName();
 
+  private AutoCloseable mocks;
+
   @Before
   public void initMocks() {
-    MockitoAnnotations.initMocks(this);
+    mocks = MockitoAnnotations.openMocks(this);
+  }
+
+  @After
+  public void closeMocks() throws Exception {
+    if (mocks != null) {
+      mocks.close();
+    }
   }
 
   public Level getLogLevel() {

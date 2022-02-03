@@ -215,11 +215,11 @@
 
       <dependency>
         <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
+        <artifactId>mockito-inline</artifactId>
         <version>4.3.1</version>
       </dependency>
 
-      <!-- mockito-core and powermock-reflect depend on different versions of objenesis, force newest -->
+      <!-- mockito-inline and powermock-reflect depend on different versions of objenesis, force newest -->
       <dependency>
         <groupId>org.objenesis</groupId>
         <artifactId>objenesis</artifactId>
