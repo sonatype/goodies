@@ -476,18 +476,6 @@ public class TestIndexRule
   }
 
   /**
-   * Retrieve the filename to use for the index. The default is {@code index.xml} but can be overridden
-   * using the system property {@code litmus.build.name}
-   */
-  protected String indexFilename() {
-    String filename = System.getProperty("goodies.build.name", "index.xml");
-    if (!filename.endsWith(".xml")) {
-      filename += ".xml";
-    }
-    return filename;
-  }
-
-  /**
    * Calculates the relative path to a given file from a specified file.
    *
    * @param from File from which the relative path should be calculated
