@@ -44,7 +44,7 @@ public class Lifecycles
       component.start();
     }
     catch (Exception e) {
-      throw Throwables.propagate(e);
+      throw propagate(e);
     }
   }
 
@@ -89,7 +89,7 @@ public class Lifecycles
       component.stop();
     }
     catch (Exception e) {
-      throw Throwables.propagate(e);
+      throw propagate(e);
     }
   }
 
@@ -119,5 +119,10 @@ public class Lifecycles
     else {
       log.warn("Unable to stop component; not a lifecycle: {}", component);
     }
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 }

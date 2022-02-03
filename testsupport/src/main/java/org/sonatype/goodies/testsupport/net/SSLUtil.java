@@ -35,9 +35,14 @@ public class SSLUtil
     catch (Exception e) {
       // don't let checked exceptions through - very unlikely that they happen
       // with above code anyway, and tests using this probably don't want to catch them.
-      Throwables.propagate(e);
+      propagate(e);
     }
 
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 
 }

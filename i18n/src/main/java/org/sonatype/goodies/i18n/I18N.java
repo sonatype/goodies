@@ -52,7 +52,7 @@ public class I18N
    * @param types One or more classes
    * @return {@link MessageSource} instance; never null
    */
-  public static MessageSource of(final Class... types) {
+  public static MessageSource of(final Class<?>... types) {
     checkNotNull(types);
     checkArgument(types.length > 0);
     return new ResourceBundleMessageSource().add(/* bundle is not required */ false, types);

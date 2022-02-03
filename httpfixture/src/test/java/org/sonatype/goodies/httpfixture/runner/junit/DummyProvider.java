@@ -37,7 +37,7 @@ class DummyProvider
       return URI.create("dummy://url").toURL();
     }
     catch (MalformedURLException e) {
-      throw Throwables.propagate(e);
+      throw propagate(e);
     }
   }
 
@@ -107,5 +107,10 @@ class DummyProvider
 
   public void setSSLNeedClientAuth(final boolean needClientAuth) {
     // empty
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 }

@@ -14,7 +14,6 @@ package org.sonatype.goodies.testsupport.hamcrest;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
 /**
@@ -60,7 +59,6 @@ public class IsNot<T>
    *
    * @deprecated Use {@link InversionMatcher} instead (which can better describe the negation)
    */
-  @Factory
   @Deprecated
   public static <T> Matcher<T> not(Matcher<T> matcher) {
     return new IsNot(matcher);
@@ -74,7 +72,6 @@ public class IsNot<T>
    *
    * @deprecated Use {@link InversionMatcher} instead (which can better describe the negation)
    */
-  @Factory
   @Deprecated
   public static <T> Matcher<T> not(T value) {
     return not(org.hamcrest.Matchers.equalTo(value));

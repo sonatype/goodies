@@ -37,7 +37,7 @@ public final class TestUtil
 
   public static final String TMP = "test-tmp"; //NON-NLS
 
-  final Class owner;
+  final Class<?> owner;
 
   protected final File baseDir;
 
@@ -45,7 +45,7 @@ public final class TestUtil
 
   private File tmpDir;
 
-  public TestUtil(final Class owner) {
+  public TestUtil(final Class<?> owner) {
     this.owner = checkNotNull(owner);
     this.baseDir = initBaseDir();
     this.log = LoggerFactory.getLogger(owner);
@@ -154,7 +154,7 @@ public final class TestUtil
     }
     catch (IOException e) {
       // No need to expose this as checked for test code to deal with, just barf it up
-      throw Throwables.propagate(e);
+      throw propagate(e);
     }
     file.deleteOnExit();
     return file;
@@ -187,5 +187,10 @@ public final class TestUtil
    */
   public File createTempDir() {
     return createTempDir(UUID.randomUUID().toString());
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 }

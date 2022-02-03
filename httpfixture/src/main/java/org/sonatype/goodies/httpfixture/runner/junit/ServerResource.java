@@ -60,7 +60,12 @@ public class ServerResource
       serverProvider = null;
     }
     catch (Exception e) {
-      Throwables.propagate(e);
+      propagate(e);
     }
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 }

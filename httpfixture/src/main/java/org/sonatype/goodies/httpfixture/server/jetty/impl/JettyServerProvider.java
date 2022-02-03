@@ -239,7 +239,7 @@ public class JettyServerProvider
         addCertificate(user, (CertificateHolder) password);
       }
       catch (Exception e) {
-        throw Throwables.propagate(e);
+        throw propagate(e);
       }
     }
     else {
@@ -543,7 +543,7 @@ public class JettyServerProvider
     catch (MalformedURLException e) {
       // URL ctor throws this for invalid port or protocol.
       // Might happen if URL asked before server with unset port started
-      throw Throwables.propagate(e);
+      throw propagate(e);
     }
   }
 
@@ -605,5 +605,10 @@ public class JettyServerProvider
     public X509Certificate[] getAcceptedIssuers() {
       return new X509Certificate[0];
     }
+  }
+
+  private static RuntimeException propagate(Throwable throwable) {
+    Throwables.throwIfUnchecked(throwable);
+    throw new RuntimeException(throwable);
   }
 }

@@ -89,7 +89,7 @@ public class Properties2
     return getSystemProperty(type, name, null);
   }
 
-  @SuppressWarnings({"unchecked"})
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public static Collection<String> sortKeys(final Properties source) {
     checkNotNull(source);
     List keys = Lists.newArrayList(source.keySet());

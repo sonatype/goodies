@@ -42,7 +42,7 @@ public class ResourceBundleMessageSource
     this.locale = checkNotNull(locale);
   }
 
-  public ResourceBundleMessageSource(final Class... types) {
+  public ResourceBundleMessageSource(final Class<?>... types) {
     this(Locale.getDefault());
     add(types);
   }
@@ -51,10 +51,10 @@ public class ResourceBundleMessageSource
     return locale;
   }
 
-  public ResourceBundleMessageSource add(final boolean required, final Class... types) {
+  public ResourceBundleMessageSource add(final boolean required, final Class<?>... types) {
     checkNotNull(types);
 
-    for (Class type : types) {
+    for (Class<?> type : types) {
       try {
         ResourceBundle bundle = ResourceBundle.getBundle(type.getName(), locale, type.getClassLoader());
         bundles.add(bundle);
@@ -69,7 +69,7 @@ public class ResourceBundleMessageSource
     return this;
   }
 
-  public ResourceBundleMessageSource add(final Class... types) {
+  public ResourceBundleMessageSource add(final Class<?>... types) {
     return add(true, types);
   }
 

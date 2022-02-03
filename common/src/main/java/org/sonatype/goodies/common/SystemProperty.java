@@ -42,7 +42,7 @@ public class SystemProperty
     this.name = checkNotNull(name);
   }
 
-  public SystemProperty(final Class type, final String suffix) {
+  public SystemProperty(final Class<?> type, final String suffix) {
     this(checkNotNull(type, "type").getName() + "." + checkNotNull(suffix, "suffix"));
   }
 
