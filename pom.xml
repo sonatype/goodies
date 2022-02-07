@@ -238,18 +238,6 @@
       </dependency>
 
       <dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-junit</artifactId>
-        <version>1.2.6</version>
-      </dependency>
-
-      <dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-guice</artifactId>
-        <version>1.2.6</version>
-      </dependency>
-
-      <dependency>
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>1.38</version> <!-- Later versions depend on Jackson 2.4, so we'd need to update too -->
