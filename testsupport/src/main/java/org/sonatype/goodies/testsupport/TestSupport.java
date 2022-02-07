@@ -14,7 +14,6 @@ package org.sonatype.goodies.testsupport;
 
 import org.sonatype.gossip.Level;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.MockitoAnnotations;
@@ -39,18 +38,9 @@ public class TestSupport
   @Rule
   public final TestTracer tracer = new TestTracer(this);
 
-  private AutoCloseable mocks;
-
   @Before
   public void initMocks() {
-    mocks = MockitoAnnotations.openMocks(this);
-  }
-
-  @After
-  public void closeMocks() throws Exception {
-    if (mocks != null) {
-      mocks.close();
-    }
+    MockitoAnnotations.initMocks(this);
   }
 
   public Level getLogLevel() {
