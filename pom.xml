@@ -45,7 +45,7 @@
   </issueManagement>
 
   <prerequisites>
-    <maven>3.0.4</maven>
+    <maven>3.5</maven>
   </prerequisites>
 
   <properties>
@@ -53,9 +53,8 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <slf4j.version>1.7.35</slf4j.version>
-    <sisu-guice.version>4.2.0</sisu-guice.version>
-    <powermock.version>1.6.1</powermock.version>
-    <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
+    <sisu-guice.version>3.2.5</sisu-guice.version>
+    <eclipse-sisu.version>0.3.1</eclipse-sisu.version>
     <eclipse-jetty.version>9.4.44.v20210927</eclipse-jetty.version>
 
     <!--
@@ -126,7 +125,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>31.0.1-jre</version>
+        <version>30.1.1-jre</version>
       </dependency>
 
       <dependency>
@@ -253,7 +252,7 @@
       <dependency>
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
-        <version>2.27.2</version> <!-- Later versions depend on Jackson 2.4, so we'd need to update too -->
+        <version>1.38</version> <!-- Later versions depend on Jackson 2.4, so we'd need to update too -->
         <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>
