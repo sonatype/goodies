@@ -38,7 +38,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * </ul>
  *
  * @since 1.0
+ * @deprecated Use java.time.Duration
  */
+@Deprecated
 public final class Time
 {
   private final long value;
