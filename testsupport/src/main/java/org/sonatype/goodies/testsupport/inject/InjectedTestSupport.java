@@ -60,9 +60,18 @@ public class InjectedTestSupport
   @Rule
   public final TestName testName = new TestName();
 
+  private AutoCloseable mocks;
+
   @Before
   public void initMocks() {
-    MockitoAnnotations.initMocks(this);
+    mocks = MockitoAnnotations.openMocks(this);
+  }
+
+  @After
+  public void closeMocks() throws Exception {
+    if (mocks != null) {
+      mocks.close();
+    }
   }
 
   public Level getLogLevel() {
