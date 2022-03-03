@@ -10,7 +10,6 @@ mavenReleasePipeline(usePublicSettingsXmlFile: true,
             notifyChat(env: env, currentBuild: build, room: 'nxrm-notifications')
         },
         iqPolicyEvaluation: { stage ->
-            nexusPolicyEvaluation iqStage: stage, iqApplication: 'goodies',
-              iqScanPatterns: [[scanPattern: '**/target/*.jar']]
+            nexusPolicyEvaluation iqStage: stage, iqApplication: 'goodies'
         }
 )
