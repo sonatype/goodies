@@ -11,6 +11,6 @@ mavenReleasePipeline(usePublicSettingsXmlFile: true,
         },
         iqPolicyEvaluation: { stage ->
             nexusPolicyEvaluation iqStage: stage, iqApplication: 'goodies',
-              iqScanPatterns: [[scanPattern: '**/target/*.jar']]
+              iqScanPatterns: [[scanPattern: '**/target/module.xml']]
         }
 )
