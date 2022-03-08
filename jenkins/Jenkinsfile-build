@@ -2,6 +2,7 @@ library('private-pipeline-library')
 library('jenkins-shared')
 
 mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
+        mavenVersion: 'Maven 3.5.x',
         javaVersion: 'JDK8u45',
         deployCondition: { return env.BRANCH_NAME == 'master' || env.BRANCH_NAME.startsWith('release-') },
         onSuccess: { build, env ->
