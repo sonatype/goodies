@@ -209,14 +209,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-inline</artifactId>
-        <version>4.3.1</version>
-      </dependency>
-
-      <!-- mockito-inline and powermock-reflect depend on different versions of objenesis, force newest -->
-      <dependency>
-        <groupId>org.objenesis</groupId>
-        <artifactId>objenesis</artifactId>
-        <version>3.2</version>
+        <version>4.4.0</version>
       </dependency>
 
       <dependency>
