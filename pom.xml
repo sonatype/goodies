@@ -312,6 +312,12 @@
         <groupId>org.littleshoot</groupId>
         <artifactId>littleproxy</artifactId>
         <version>1.1.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.barchart.udt</groupId>
+            <artifactId>barchart-udt-bundle</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       
       <!-- INTERNAL (DO NOT USE ${project.version}) -->
