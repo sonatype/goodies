@@ -14,6 +14,9 @@ package org.sonatype.goodies.testsupport;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.UUID;
 
 import com.google.common.base.Throwables;
@@ -192,5 +195,46 @@ public final class TestUtil
   private static RuntimeException propagate(Throwable throwable) {
     Throwables.throwIfUnchecked(throwable);
     throw new RuntimeException(throwable);
+  }
+
+  private static String containerHost;
+
+  /**
+   * Determine the host name that a container can use to connect back to the host system.
+   *
+   * @since 2.3.6
+   */
+  public static String getContainerHost() {
+    if (containerHost == null) {
+      try {
+        // Note host.docker.internal was added in Docker v18.03
+        String osName = System.getProperty("os.name", "");
+        if (osName.contains("Mac") || osName.contains("Windows")) {
+          containerHost = "host.docker.internal";
+        }
+        else {
+          // first look for a local address which isn't the loopback interface or P2P/VPN
+          Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+          while (containerHost == null && interfaces.hasMoreElements()) {
+            NetworkInterface intf = interfaces.nextElement();
+            if (intf.isUp() && !intf.isLoopback() && !intf.isPointToPoint() && !intf.isVirtual()) {
+              Enumeration<InetAddress> addresses = intf.getInetAddresses();
+              while (containerHost == null && addresses.hasMoreElements()) {
+                InetAddress addr = addresses.nextElement();
+                if (addr.isSiteLocalAddress() && !addr.isLoopbackAddress()) {
+                  containerHost = addr.getHostAddress();
+                }
+              }
+            }
+          }
+          // otherwise fall back to the JDKs 'guesstimate'
+          containerHost = containerHost != null ? containerHost : InetAddress.getLocalHost().getHostAddress();
+        }
+      }
+      catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return containerHost;
   }
 }
