@@ -55,7 +55,7 @@
     <slf4j.version>1.7.36</slf4j.version>
     <sisu-guice.version>3.2.5</sisu-guice.version>
     <eclipse-sisu.version>0.3.1</eclipse-sisu.version>
-    <eclipse-jetty.version>9.4.51.v20230217</eclipse-jetty.version>
+    <eclipse-jetty.version>9.4.52.v20230823</eclipse-jetty.version>
 
     <!--
     Sonar configuration.
