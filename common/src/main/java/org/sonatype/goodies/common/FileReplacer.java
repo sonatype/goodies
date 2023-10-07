@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 import org.slf4j.Logger;
 
@@ -46,7 +47,7 @@ public class FileReplacer
 
   private boolean deleteBackupFile;
 
-  public FileReplacer(final File file) throws IOException {
+  public FileReplacer(final File file) {
     this.file = checkNotNull(file);
 
     // not using File.createTempFile() here so tmp + backup can share same timestamp-id
@@ -56,15 +57,6 @@ public class FileReplacer
     this.filePrefix = file.getName() + "-" + UUID.randomUUID() + "-" + counter.getAndIncrement();
     this.tempFile = new File(file.getParentFile(), filePrefix + ".tmp");
     this.backupFile = new File(file.getParentFile(), filePrefix + ".bak");
-
-    file.getParentFile().mkdirs();
-
-    if (tempFile.exists()) {
-      log.warn("Temporary file already exists; removing: {}", tempFile);
-      delete(tempFile);
-    }
-
-    tempFile.createNewFile();
   }
 
   public FileReplacer(final String fileName) throws IOException {
@@ -75,6 +67,13 @@ public class FileReplacer
     boolean deleted = file.delete();
     if (!deleted) {
       throw new IOException("Failed to delete file: " + file);
+    }
+  }
+
+  private void create(final File file) throws IOException {
+    boolean created = file.createNewFile();
+    if (!created) {
+      throw new IOException("Failed to create file: " + file);
     }
   }
 
@@ -98,7 +97,7 @@ public class FileReplacer
     this.deleteBackupFile = deleteBackupFile;
   }
 
-  public static interface ContentWriter
+  public interface ContentWriter
   {
     void write(final BufferedOutputStream output) throws IOException;
   }
@@ -106,27 +105,36 @@ public class FileReplacer
   public void replace(final ContentWriter writer) throws IOException {
     checkNotNull(writer);
 
-    // setup buffering, as almost certainly anywhere using this class is going to want this
-    BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(tempFile));
+    // prepare directory structure
+    file.getParentFile().mkdirs();
 
-    // delegate to do the write operation
+    // prepare temporary file
+    if (tempFile.exists()) {
+      log.warn("Temporary file already exists; removing: {}", tempFile);
+      delete(tempFile);
+    }
+    create(tempFile);
+
     try {
-      try {
+      // delegate to do the write operation
+      try (BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(tempFile))) {
         writer.write(output);
       }
-      finally {
-        // always close after success or failure
-        output.close();
+      catch (Exception e) {
+        // complain with details about temp file and propagate exception
+        log.warn("Failed to write temporary file: {}", tempFile, e);
+        Throwables.propagateIfPossible(e, IOException.class);
+        throw Throwables.propagate(e);
+      }
+
+      // replace the file only if operation succeeded
+      replaceFile();
+    }
+    finally {
+      if (tempFile.exists()) {
+        delete(tempFile);
       }
     }
-    catch (IOException e) {
-      // complain with details about temp file and propagate exception
-      log.warn("Failed to write temporary file: {}", tempFile, e);
-      throw e;
-    }
-
-    // replace the file only if operation succeeded
-    replaceFile();
   }
 
   private void replaceFile() throws IOException {
