@@ -54,8 +54,8 @@
 
     <slf4j.version>1.7.36</slf4j.version>
     <sisu-guice.version>3.2.5</sisu-guice.version>
-    <eclipse-sisu.version>0.3.1</eclipse-sisu.version>
-    <eclipse-jetty.version>9.4.52.v20230823</eclipse-jetty.version>
+    <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
+    <eclipse-jetty.version>9.4.53.v20231009</eclipse-jetty.version>
 
     <!--
     Sonar configuration.
@@ -101,13 +101,13 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.2.11</version>
+        <version>1.2.12</version>
       </dependency>
 
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.2.11</version>
+        <version>1.2.12</version>
       </dependency>
 
       <dependency>
@@ -125,7 +125,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>32.1.1-jre</version>
+        <version>32.1.3-jre</version>
       </dependency>
 
       <dependency>
