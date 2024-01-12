@@ -15,15 +15,19 @@ package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.io.Files;
+import org.eclipse.jetty.http.HttpHeader;
 
 public class Content
     extends BehaviourSupport
 {
+  private final String etag = UUID.randomUUID().toString();
+
   private String content;
 
   private String type;
@@ -110,13 +114,13 @@ public class Content
   private void deliverFile(final HttpServletRequest request, final HttpServletResponse response)
       throws IOException
   {
-
     deliverBytes(response, Files.toByteArray(file));
   }
 
   private void deliverBytes(final HttpServletResponse response, final byte[] b)
       throws IOException
   {
+    response.setHeader(HttpHeader.ETAG.asString(), etag);
     response.setContentType(type);
     response.setContentLength(b.length);
     response.getOutputStream().write(b);
@@ -128,6 +132,7 @@ public class Content
   {
     String content = this.content;
     response.setContentType(type);
+    response.setHeader(HttpHeader.ETAG.asString(), etag);
 
     if (content == null) {
       String pathInfo = request.getPathInfo();
