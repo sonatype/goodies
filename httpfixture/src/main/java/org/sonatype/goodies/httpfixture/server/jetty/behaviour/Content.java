@@ -15,6 +15,7 @@ package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ import org.eclipse.jetty.http.HttpHeader;
 public class Content
     extends BehaviourSupport
 {
-  private final String etag = UUID.randomUUID().toString();
+  private Optional<String> etag = Optional.empty();
 
   private String content;
 
@@ -52,6 +53,22 @@ public class Content
   public Content(final File content, final String type) {
     this.file = content;
     this.type = type;
+  }
+
+  /**
+   * Generate a random (consistent) etag for use with this content
+   */
+  public Content withRandomEtag() {
+    etag = Optional.of(UUID.randomUUID().toString());
+    return this;
+  }
+
+  /**
+   * Set the etag to be used with this Content, must be non-null.
+   */
+  public Content withEtag(String etag) {
+    this.etag = Optional.of(etag);
+    return this;
   }
 
   public static Content content(File content) {
@@ -120,7 +137,7 @@ public class Content
   private void deliverBytes(final HttpServletResponse response, final byte[] b)
       throws IOException
   {
-    response.setHeader(HttpHeader.ETAG.asString(), etag);
+    etag.ifPresent(value -> response.setHeader(HttpHeader.ETAG.asString(), value));
     response.setContentType(type);
     response.setContentLength(b.length);
     response.getOutputStream().write(b);
@@ -132,7 +149,7 @@ public class Content
   {
     String content = this.content;
     response.setContentType(type);
-    response.setHeader(HttpHeader.ETAG.asString(), etag);
+    etag.ifPresent(value -> response.setHeader(HttpHeader.ETAG.asString(), value));
 
     if (content == null) {
       String pathInfo = request.getPathInfo();
