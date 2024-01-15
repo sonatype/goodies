@@ -17,7 +17,6 @@ import org.sonatype.gossip.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 
@@ -49,9 +48,6 @@ public class TestSupport
 
   @After
   public void closeMocks() throws Exception {
-    // fix memory leak in mockito-inline calling method on mock with at least a mock as parameter
-    Mockito.framework().clearInlineMocks();
-
     if (mocks != null) {
       mocks.close();
     }
