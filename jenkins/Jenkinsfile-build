@@ -4,12 +4,6 @@ library('jenkins-shared')
 mavenSnapshotPipeline(usePublicSettingsXmlFile: true,
         deployBranch: 'main',
         mavenVersion: 'Maven 3.5.x',
-        onSuccess: { build, env ->
-            notifyChat(env: env, currentBuild: build, room: 'nxrm-notifications')
-        },
-        onFailure: { build, env ->
-            notifyChat(env: env, currentBuild: build, room: 'nxrm-notifications')
-        },
         iqPolicyEvaluation: { stage ->
             nexusPolicyEvaluation iqStage: stage, iqApplication: 'goodies',
               iqScanPatterns: [[scanPattern: '**/target/module.xml']]
