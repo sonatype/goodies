@@ -15,6 +15,7 @@ package org.sonatype.goodies.testsupport;
 import org.sonatype.gossip.Level;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.MockitoAnnotations;
@@ -51,6 +52,12 @@ public class TestSupport
     if (mocks != null) {
       mocks.close();
     }
+  }
+
+  @AfterClass
+  public static void clearInlineMocks() {
+    // fix memory leak in mockito-inline calling method on mock with at least a mock as parameter
+    Mockito.framework().clearInlineMocks();
   }
 
   public Level getLogLevel() {
