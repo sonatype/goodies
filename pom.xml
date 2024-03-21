@@ -57,7 +57,6 @@
     <sisu-guice.version>3.2.5</sisu-guice.version>
     <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
     <eclipse-jetty.version>9.4.53.v20231009</eclipse-jetty.version>
-    <mockito.version>4.11.0</mockito.version>
 
     <!--
     Sonar configuration.
@@ -211,13 +210,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-inline</artifactId>
-        <version>${mockito.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>${mockito.version}</version>
+        <version>4.11.0</version>
       </dependency>
 
       <dependency>
