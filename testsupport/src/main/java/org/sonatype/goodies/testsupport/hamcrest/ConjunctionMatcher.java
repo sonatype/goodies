@@ -13,7 +13,7 @@
 package org.sonatype.goodies.testsupport.hamcrest;
 
 import java.util.Arrays;
-
+import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
@@ -135,7 +135,7 @@ public class ConjunctionMatcher<T>
    * @param matchers to be AND-ed. Cannot be null.
    */
   public static <T> Matcher<T> allOf(final Matcher<? super T>... matchers) {
-    return allOf(Arrays.asList(checkNotNull(matchers, "matchers")));
+    return allOf((List<Matcher<? super T>>)Arrays.asList(checkNotNull(matchers, "matchers")));
   }
 
   /**
@@ -165,7 +165,7 @@ public class ConjunctionMatcher<T>
   public static <T> Matcher<T> allOf(final String alternativeDescription,
                                      final Matcher<? super T>... matchers)
   {
-    return allOf(alternativeDescription, Arrays.asList(checkNotNull(matchers, "matchers")));
+    return allOf(alternativeDescription, (List<Matcher<? super T>>)Arrays.asList(checkNotNull(matchers, "matchers")));
   }
 
 }

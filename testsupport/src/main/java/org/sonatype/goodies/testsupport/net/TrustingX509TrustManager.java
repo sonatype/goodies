@@ -12,10 +12,12 @@
  */
 package org.sonatype.goodies.testsupport.net;
 
+import java.net.Socket;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.X509ExtendedTrustManager;
 
-import com.sun.net.ssl.internal.ssl.X509ExtendedTrustManager;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
@@ -28,31 +30,42 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 public class TrustingX509TrustManager
     extends X509ExtendedTrustManager
 {
-
   @Override
-  public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final String s1,
-                                 final String s2)
+  public void checkClientTrusted(final X509Certificate[] chain, final String authType, final Socket socket)
       throws CertificateException
   {
+
   }
 
   @Override
-  public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final String s1,
-                                 final String s2)
+  public void checkServerTrusted(final X509Certificate[] chain, final String authType, final Socket socket)
       throws CertificateException
   {
+
   }
 
   @Override
-  public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s)
+  public void checkClientTrusted(final X509Certificate[] chain, final String authType, final SSLEngine engine)
       throws CertificateException
   {
+
   }
 
   @Override
-  public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s)
+  public void checkServerTrusted(final X509Certificate[] chain, final String authType, final SSLEngine engine)
       throws CertificateException
   {
+
+  }
+
+  @Override
+  public void checkClientTrusted(final X509Certificate[] chain, final String authType) throws CertificateException {
+
+  }
+
+  @Override
+  public void checkServerTrusted(final X509Certificate[] chain, final String authType) throws CertificateException {
+
   }
 
   @Override
