@@ -12,30 +12,31 @@
  */
 package org.sonatype.goodies.httpfixture.server.jetty.impl;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.Authenticator;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.Proxy.Type;
-import java.net.SocketAddress;
-import java.net.URL;
+import java.net.ProxySelector;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandler;
+import java.net.http.HttpResponse.BodyHandlers;
+
+import javax.annotation.Nullable;
 
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Consumer;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Content;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Debug;
 import org.sonatype.goodies.testsupport.TestSupport;
 
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link JettyProxyProvider}.
@@ -43,13 +44,7 @@ import static org.junit.Assert.assertTrue;
 public class JettyProxyProviderTest
     extends TestSupport
 {
-  @Before
-  @IgnoreJRERequirement
-  public void clearJvmHttpAuthCaches() {
-    // FIXME: this is circumvention got from here: http://stackoverflow.com/questions/480895/reset-the-authenticator-credentials
-    // Actual Java bug is this: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6626700
-    sun.net.www.protocol.http.AuthCacheValue.setAuthCache(new sun.net.www.protocol.http.AuthCacheImpl());
-  }
+  private static final URI FOO = URI.create("http://speutel.invalid/foo");
 
   @Test
   public void testProxyGet() throws Exception {
@@ -57,36 +52,12 @@ public class JettyProxyProviderTest
     proxy.addBehaviour("/*", new Debug(), new Content());
     proxy.start();
 
-    URL url = new URL("http://speutel.invalid/foo");
-    SocketAddress sa = new InetSocketAddress("localhost", proxy.getPort());
-    Proxy p = new Proxy(Type.HTTP, sa);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection(p);
+    HttpClient client = client(proxy);
 
-    conn.setDoInput(true);
-    conn.connect();
-    assertEquals(200, conn.getResponseCode());
-    assertEquals("foo", read(conn.getContent()).trim());
-    conn.disconnect();
-  }
+    HttpResponse<String> response = client.send(get(FOO), BodyHandlers.ofString());
 
-  private String read(Object o) throws IOException {
-    if (o instanceof InputStream) {
-      return read((InputStream) o);
-    }
-    else {
-      return o.toString();
-    }
-  }
-
-  private String read(InputStream in) throws IOException {
-    BufferedReader r = new BufferedReader(new InputStreamReader(in));
-    StringBuilder builder = new StringBuilder();
-    String line;
-    while ((line = r.readLine()) != null) {
-      builder.append(line).append("\n");
-    }
-
-    return builder.toString();
+    assertEquals(200, response.statusCode());
+    assertEquals("foo", response.body().trim());
   }
 
   @Test
@@ -95,15 +66,11 @@ public class JettyProxyProviderTest
     proxy.addBehaviour("/*", new Debug(), new Content());
     proxy.start();
 
-    URL url = new URL("http://speutel.invalid/foo");
-    SocketAddress sa = new InetSocketAddress("localhost", proxy.getPort());
-    Proxy p = new Proxy(Type.HTTP, sa);
 
-    Authenticator.setDefault(new Authenticator()
+    HttpClient client = client(proxy, new Authenticator()
     {
       @Override
-      protected PasswordAuthentication getPasswordAuthentication()
-      {
+      protected PasswordAuthentication getPasswordAuthentication() {
         if (getRequestingHost().equals("localhost")) {
           String password = "p";
           return new PasswordAuthentication("u", password.toCharArray());
@@ -112,13 +79,10 @@ public class JettyProxyProviderTest
       }
     });
 
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection(p);
+    HttpResponse<String> response = client.send(get(FOO), BodyHandlers.ofString());
 
-    conn.setDoInput(true);
-    conn.connect();
-    assertEquals(200, conn.getResponseCode());
-    assertEquals("foo", read(conn.getContent()).trim());
-    conn.disconnect();
+    assertEquals(200, response.statusCode());
+    assertEquals("foo", response.body().trim());
   }
 
   @Test
@@ -127,22 +91,10 @@ public class JettyProxyProviderTest
     proxy.addBehaviour("/*", new Debug(), new Content());
     proxy.start();
 
-    URL url = new URL("http://speutel.invalid/foo");
-    SocketAddress sa = new InetSocketAddress("localhost", proxy.getPort());
-    Proxy p = new Proxy(Type.HTTP, sa);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection(p);
+    HttpClient client = client(proxy);
 
-    try {
-      conn.setDoInput(true);
-      conn.connect();
-      conn.getResponseCode();
-    }
-    catch (IOException e) {
-      assertTrue("expected status code 407", e.getMessage().contains("407"));
-    }
-    finally {
-      conn.disconnect();
-    }
+    HttpResponse<String> response = client.send(get(FOO), BodyHandlers.ofString());
+    assertEquals(407, response.statusCode());
   }
 
   @Test
@@ -152,7 +104,8 @@ public class JettyProxyProviderTest
     proxy.addAuthentication("/*", "BASIC");
     proxy.addUser("user", "password");
     proxy.start();
-    Authenticator.setDefault(new Authenticator()
+
+    HttpClient client = client(proxy, new Authenticator()
     {
       @Override
       protected PasswordAuthentication getPasswordAuthentication()
@@ -165,19 +118,10 @@ public class JettyProxyProviderTest
       }
     });
 
-    URL url = new URL("http://speutel.invalid/foo");
-    SocketAddress sa = new InetSocketAddress("localhost", proxy.getPort());
-    Proxy p = new Proxy(Type.HTTP, sa);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection(p);
+    HttpRequest request = get(FOO);
+    BodyHandler<Void> discarding = BodyHandlers.discarding();
 
-    try {
-      conn.setDoInput(true);
-      conn.connect();
-      assertEquals(401, conn.getResponseCode());
-    }
-    finally {
-      conn.disconnect();
-    }
+    assertThrows(IOException.class, () -> client.send(request, discarding), "No credentials provided");
   }
 
   @Test
@@ -187,7 +131,8 @@ public class JettyProxyProviderTest
     proxy.addAuthentication("/*", "BASIC");
     proxy.addUser("user", "password");
     proxy.start();
-    Authenticator.setDefault(new Authenticator()
+
+    HttpClient client = client(proxy, new Authenticator()
     {
       @Override
       protected PasswordAuthentication getPasswordAuthentication()
@@ -204,19 +149,9 @@ public class JettyProxyProviderTest
       }
     });
 
-    URL url = new URL("http://speutel.invalid/foo");
-    SocketAddress sa = new InetSocketAddress("localhost", proxy.getPort());
-    Proxy p = new Proxy(Type.HTTP, sa);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection(p);
+    HttpResponse<String> response = client.send(get(FOO), BodyHandlers.ofString());
 
-    try {
-      conn.setDoInput(true);
-      conn.connect();
-      assertEquals(200, conn.getResponseCode());
-    }
-    finally {
-      conn.disconnect();
-    }
+    assertEquals(200, response.statusCode());
   }
 
   @Test
@@ -226,19 +161,37 @@ public class JettyProxyProviderTest
     proxy.addBehaviour("/*", new Debug(), consumer);
     proxy.start();
 
-    URL url = new URL("http://speutel.invalid/foo");
-    SocketAddress sa = new InetSocketAddress("localhost", proxy.getPort());
-    Proxy p = new Proxy(Type.HTTP, sa);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection(p);
-
-    conn.setDoOutput(true);
-    conn.setRequestMethod("PUT");
-    conn.connect();
     byte[] bytes = "TestPut".getBytes("US-ASCII");
-    conn.getOutputStream().write(bytes);
-    conn.getOutputStream().close();
-    assertEquals(200, conn.getResponseCode());
+    HttpClient client = client(proxy);
+
+    HttpResponse<String> response = client.send(HttpRequest.newBuilder()
+        .uri(FOO)
+        .PUT(BodyPublishers.ofByteArray(bytes))
+        .build(),
+        BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
     assertEquals(bytes.length, consumer.getTotal());
-    conn.disconnect();
+  }
+
+  private static HttpClient client(JettyProxyProvider proxy, @Nullable Authenticator authenticator) {
+    InetSocketAddress sa = new InetSocketAddress("localhost", proxy.getPort());
+    HttpClient.Builder builder=  HttpClient
+        .newBuilder()
+        .proxy(ProxySelector.of(sa));
+
+    if (authenticator != null) {
+      builder.authenticator(authenticator);
+    }
+
+    return builder.build();
+  }
+
+  private static HttpRequest get(URI uri) throws URISyntaxException {
+    return HttpRequest.newBuilder().uri(uri).GET().build();
+  }
+
+  private static HttpClient client(JettyProxyProvider proxy) {
+    return client(proxy, null);
   }
 }
