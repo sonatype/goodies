@@ -187,9 +187,13 @@
 
       <dependency>
         <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${jupiter.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
         <version>${jupiter.version}</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.junit.vintage</groupId>
@@ -199,14 +203,13 @@
 
       <dependency>
         <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-core</artifactId>
-        <version>1.3</version>
+        <artifactId>hamcrest</artifactId>
+        <version>3.0</version>
       </dependency>
-
       <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-library</artifactId>
-        <version>1.3</version>
+        <version>3.0</version>
       </dependency>
 
       <dependency>
