@@ -36,7 +36,7 @@ import org.sonatype.goodies.testsupport.TestSupport;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertThrows;
 
 /**
  * Tests for {@link JettyProxyProvider}.
@@ -121,7 +121,7 @@ public class JettyProxyProviderTest
     HttpRequest request = get(FOO);
     BodyHandler<Void> discarding = BodyHandlers.discarding();
 
-    assertThrows(IOException.class, () -> client.send(request, discarding), "No credentials provided");
+    assertThrows("No credentials provided", IOException.class, () -> client.send(request, discarding));
   }
 
   @Test
