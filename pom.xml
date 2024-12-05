@@ -246,9 +246,9 @@
       </dependency>
 
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
+        <groupId>org.wiremock</groupId>
         <artifactId>wiremock</artifactId>
-        <version>1.38</version> <!-- Later versions depend on Jackson 2.4, so we'd need to update too -->
+        <version>3.10.0</version> <!-- Later versions depend on Jackson 2.4, so we'd need to update too -->
         <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>
