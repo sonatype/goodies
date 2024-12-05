@@ -12,16 +12,16 @@
  */
 package org.sonatype.goodies.httpfixture.server.jetty.behaviour;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -38,14 +38,17 @@ public abstract class BehaviourSuiteConfiguration<T extends Behaviour>
   public static final class CustomTrustManager
       implements X509TrustManager
   {
+    @Override
     public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
       // empty
     }
 
+    @Override
     public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
       // empty
     }
 
+    @Override
     public X509Certificate[] getAcceptedIssuers() {
       return new X509Certificate[0];
     }
@@ -56,7 +59,6 @@ public abstract class BehaviourSuiteConfiguration<T extends Behaviour>
   @Override
   @Before
   public void before() throws Exception {
-    trustAllHttpsCertificates();
     super.before();
   }
 
@@ -69,19 +71,15 @@ public abstract class BehaviourSuiteConfiguration<T extends Behaviour>
 
   protected abstract T behaviour();
 
-  protected byte[] fetch(String url) throws IOException {
-    InputStream in = new URL(url).openStream();
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    byte[] b = new byte[16 * 1024];
-    int count = -1;
-    while ((count = in.read(b)) != -1) {
-      out.write(b, 0, count);
-    }
-    out.close();
-    return out.toByteArray();
+  protected byte[] fetch(String url) throws IOException, InterruptedException {
+    HttpClient client = HttpClient.newBuilder().sslContext(trustAllHttpsCertificates()).build();
+    return client.send(HttpRequest.newBuilder(URI.create(url))
+        .GET()
+        .build(), BodyHandlers.ofByteArray())
+        .body();
   }
 
-  private static void trustAllHttpsCertificates() {
+  private static SSLContext trustAllHttpsCertificates() {
     SSLContext context;
 
     TrustManager[] _trustManagers = new TrustManager[]{new CustomTrustManager()};
@@ -92,6 +90,6 @@ public abstract class BehaviourSuiteConfiguration<T extends Behaviour>
     catch (GeneralSecurityException gse) {
       throw new IllegalStateException(gse.getMessage());
     }
-    HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+    return context;
   }
 }
