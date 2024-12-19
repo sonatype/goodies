@@ -57,7 +57,7 @@
     <guice.version>6.0.0</guice.version>
     <sisu-guice.version>3.2.5</sisu-guice.version>
     <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
-    <eclipse-jetty.version>9.4.53.v20231009</eclipse-jetty.version>
+    <eclipse-jetty.version>9.4.56.v20240826</eclipse-jetty.version>
     <jupiter.version>5.11.3</jupiter.version>
 
     <!--
