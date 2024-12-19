@@ -44,27 +44,27 @@ public class Test5Tracer
   /**
    * @since litmus 1.3
    */
-  protected void log(ExtensionContext context, String message, Object... args) {
+  protected void log(final ExtensionContext context, final String message, final Object... args) {
     level.log(LoggerFactory.getLogger(context.getRequiredTestClass()), message, args);
   }
 
   @Override
-  public void testDisabled(ExtensionContext context, Optional<String> reason) {
+  public void testDisabled(final ExtensionContext context, final Optional<String> reason) {
     log(context, "{} DISABLED {}", prefix(context), reason.orElse(""));
   }
 
   @Override
-  public void testSuccessful(ExtensionContext context) {
+  public void testSuccessful(final ExtensionContext context) {
     log(context, "{} SUCCEEDED", prefix(context));
   }
 
   @Override
-  public void testAborted(ExtensionContext context, Throwable cause) {
+  public void testAborted(final ExtensionContext context, final Throwable cause) {
     log(context, "{} ABORTED", prefix(context), cause);
   }
 
   @Override
-  public void testFailed(ExtensionContext context, Throwable e) {
+  public void testFailed(final ExtensionContext context, final Throwable e) {
     if (e instanceof MultipleFailureException mfe) {
       log(context, "{} FAILED {} {}", prefix(context), e, mfe.getFailures());
     }
