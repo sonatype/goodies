@@ -55,5 +55,4 @@ public abstract class Test5Support
   protected void log(final String message, final Throwable cause) {
     logLevel.log(logger, message, cause);
   }
-
 }
