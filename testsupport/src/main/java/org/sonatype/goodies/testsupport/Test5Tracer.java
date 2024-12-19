@@ -65,8 +65,7 @@ public class Test5Tracer
 
   @Override
   public void testFailed(ExtensionContext context, Throwable e) {
-    if (e instanceof MultipleFailureException) {
-      MultipleFailureException mfe = (MultipleFailureException) e;
+    if (e instanceof MultipleFailureException mfe) {
       log(context, "{} FAILED {} {}", prefix(context), e, mfe.getFailures());
     }
     else {
