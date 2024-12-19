@@ -38,6 +38,10 @@ import static org.mockito.Mockito.when;
 public class FileMatchersTest
     extends TestSupport
 {
+  private static final String NEW_LINE = System.lineSeparator();
+
+  private static final String SIZED_STRING = "A File of fixed size" + NEW_LINE;
+
   public MockitoRule MockitoRule = new MockitoRule(this);
 
   private static File REAL_FILE;
@@ -128,7 +132,7 @@ public class FileMatchersTest
   public void sizedStandalone() {
     File sizedFile = new File(REAL_DIR, "src/test/resources/sized_file.txt");
     assertThat(sizedFile, FileMatchers.exists());
-    assertThat(sizedFile, FileMatchers.sized(21L));
+    assertThat(sizedFile, FileMatchers.sized((long) SIZED_STRING.length()));
   }
 
   @Test
@@ -146,7 +150,7 @@ public class FileMatchersTest
   @Test
   public void containsOnly() {
     File file = new File(REAL_DIR, "src/test/resources/sized_file.txt");
-    assertThat(file, FileMatchers.containsOnly("A File of fixed size\n"));
+    assertThat(file, FileMatchers.containsOnly(SIZED_STRING));
   }
 
   @Test
@@ -233,9 +237,14 @@ public class FileMatchersTest
   public void matchSha1()
       throws IOException
   {
+    String checksum =
+        isUnixLines() ? "5ac7a73e644f48918b98531f9cd08a3e063b91a1" : "25d9abdcfb894b2eb5184b4e7d55cafb12b8f57e";
     File sizedFile = new File(REAL_DIR, "src/test/resources/sized_file.txt");
-    assertThat(sizedFile, FileMatchers.matchSha1("5ac7a73e644f48918b98531f9cd08a3e063b91a1"));
+    assertThat(sizedFile, FileMatchers.matchSha1(checksum));
     assertThat(sizedFile, not(FileMatchers.matchSha1("123")));
   }
 
+  private boolean isUnixLines() {
+    return NEW_LINE.equals("\n");
+  }
 }

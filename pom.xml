@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.sonatype.buildsupport</groupId>
     <artifactId>public-parent</artifactId>
-    <version>44</version>
+    <version>51</version>
     <relativePath/>
   </parent>
 
@@ -49,15 +49,16 @@
   </prerequisites>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
 
     <slf4j.version>1.7.36</slf4j.version>
     <guice.version>6.0.0</guice.version>
     <sisu-guice.version>3.2.5</sisu-guice.version>
     <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
-    <eclipse-jetty.version>9.4.53.v20231009</eclipse-jetty.version>
-    <jupiter.version>5.10.2</jupiter.version>
+    <eclipse-jetty.version>9.4.56.v20240826</eclipse-jetty.version>
+    <jupiter.version>5.11.3</jupiter.version>
 
     <!--
     Sonar configuration.
@@ -233,31 +234,15 @@
       </dependency>
 
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock</artifactId>
-        <version>1.38</version> <!-- Later versions depend on Jackson 2.4, so we'd need to update too -->
-        <exclusions>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>net.sf.jopt-simple</groupId>
-            <artifactId>jopt-simple</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-          </exclusion>
-        </exclusions>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.3.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>2.3.9</version>
       </dependency>
 
       <dependency>
@@ -401,25 +386,6 @@
                   </excludes>
                 </bannedDependencies>
               </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <signature>
-                <groupId>org.codehaus.mojo.signature</groupId>
-                <artifactId>java18</artifactId>
-                <version>1.0</version>
-              </signature>
             </configuration>
           </execution>
         </executions>
