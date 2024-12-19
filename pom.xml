@@ -59,6 +59,7 @@
     <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
     <eclipse-jetty.version>9.4.56.v20240826</eclipse-jetty.version>
     <jupiter.version>5.11.3</jupiter.version>
+    <mockito.version>4.11.0</mockito.version>
 
     <!--
     Sonar configuration.
@@ -221,7 +222,13 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-inline</artifactId>
-        <version>4.11.0</version>
+        <version>${mockito.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>${mockito.version}</version>
       </dependency>
 
       <dependency>

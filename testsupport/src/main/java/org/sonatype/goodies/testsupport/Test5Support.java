@@ -14,10 +14,8 @@ package org.sonatype.goodies.testsupport;
 
 import org.sonatype.gossip.Level;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -27,7 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @since litmus 1.0
  */
-@ExtendWith(Test5Tracer.class)
+@ExtendWith({Test5Tracer.class, MockitoExtension.class})
 public abstract class Test5Support
 {
   protected final TestUtil util = new TestUtil(this);
@@ -35,20 +33,6 @@ public abstract class Test5Support
   protected final Logger logger = util.getLog();
 
   private Level logLevel = Level.INFO;
-
-  private AutoCloseable mocks;
-
-  @BeforeEach
-  public void initMocks() {
-    mocks = MockitoAnnotations.openMocks(this);
-  }
-
-  @AfterEach
-  public void closeMocks() throws Exception {
-    if (mocks != null) {
-      mocks.close();
-    }
-  }
 
   public Level getLogLevel() {
     return logLevel;

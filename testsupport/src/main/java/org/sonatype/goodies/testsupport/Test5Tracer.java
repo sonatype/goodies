@@ -18,12 +18,10 @@ import org.sonatype.gossip.Level;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
-import org.junit.runner.Description;
 import org.junit.runners.model.MultipleFailureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
 /**
@@ -36,22 +34,7 @@ public class Test5Tracer
 {
   private static final String UNKNOWN_METHOD_NAME = "UNKNOWN METHOD NAME";
 
-  private final Logger logger;
-
-  private Level level = Level.INFO;
-
-  public Test5Tracer(final Logger logger) {
-    this.logger = checkNotNull(logger);
-  }
-
-  public Test5Tracer(final Object owner) {
-    this(LoggerFactory.getLogger(owner.getClass()));
-  }
-
-  public Test5Tracer withLevel(final Level level) {
-    this.level = checkNotNull(level);
-    return this;
-  }
+  private final Level level = Level.INFO;
 
   /**
    * @since litmus 1.3
@@ -63,33 +46,33 @@ public class Test5Tracer
   /**
    * @since litmus 1.3
    */
-  protected void log(String message, Object... args) {
-    level.log(logger, message, args);
+  protected void log(ExtensionContext context, String message, Object... args) {
+    level.log(LoggerFactory.getLogger(context.getRequiredTestClass()), message, args);
   }
-  
+
   @Override
   public void testDisabled(ExtensionContext context, Optional<String> reason) {
-    log("{} DISABLED {}", prefix(context), reason.orElse(""));
+    log(context, "{} DISABLED {}", prefix(context), reason.orElse(""));
   }
-  
+
   @Override
   public void testSuccessful(ExtensionContext context) {
-    log("{} SUCCEEDED", prefix(context));
+    log(context, "{} SUCCEEDED", prefix(context));
   }
-  
+
   @Override
   public void testAborted(ExtensionContext context, Throwable cause) {
-    log("{} ABORTED", prefix(context), cause);
+    log(context, "{} ABORTED", prefix(context), cause);
   }
-  
+
   @Override
-  public void testFailed(ExtensionContext context, Throwable e) { 
+  public void testFailed(ExtensionContext context, Throwable e) {
     if (e instanceof MultipleFailureException) {
       MultipleFailureException mfe = (MultipleFailureException) e;
-      log("{} FAILED {} {}", prefix(context), e, mfe.getFailures());
+      log(context, "{} FAILED {} {}", prefix(context), e, mfe.getFailures());
     }
     else {
-      log("{} FAILED", prefix(context), e);
+      log(context, "{} FAILED", prefix(context), e);
     }
   }
 }
