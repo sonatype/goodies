@@ -188,7 +188,8 @@ public class FileMatchersTest
       assertThat(REAL_FILE, FileMatchers.isEmptyDirectory());
     }
     catch (AssertionError ae) {
-      assertThat(ae.getMessage(), startsWith("\nExpected: a directory\n     but: found a non directory at"));
+      assertThat(ae.getMessage(),
+          startsWith(NEW_LINE + "Expected: a directory" + NEW_LINE + "     but: found a non directory at"));
     }
   }
 
@@ -205,10 +206,8 @@ public class FileMatchersTest
       assertThat(mockFile, FileMatchers.isEmptyDirectory());
     }
     catch (AssertionError ae) {
-      assertThat(ae.getMessage(), startsWith("\nExpected: an empty directory"
-          + "\n     but: directory \"/mydir\" contained "
-          + "\n\"foo.txt\""
-          + "\n\"bar\""));
+      assertThat(ae.getMessage(), startsWith(NEW_LINE + "Expected: an empty directory" + NEW_LINE
+          + "     but: directory \"/mydir\" contained \n\"foo.txt\"\n\"bar\""));
     }
   }
 
@@ -228,7 +227,8 @@ public class FileMatchersTest
     }
     catch (AssertionError ae) {
       assertThat(ae.getMessage(), startsWith(
-          "\nExpected: an empty directory\n     but: there was an IO problem reading the contents of \"/mydir\""));
+          NEW_LINE + "Expected: an empty directory" + NEW_LINE
+          + "     but: there was an IO problem reading the contents of \"/mydir\""));
     }
   }
 
