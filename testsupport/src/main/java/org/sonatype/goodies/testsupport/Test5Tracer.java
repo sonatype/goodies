@@ -26,8 +26,6 @@ import static java.lang.String.format;
 
 /**
  * Traces test execution to a {@link Logger}.
- *
- * @since litmus 1.0
  */
 public class Test5Tracer
     implements TestWatcher

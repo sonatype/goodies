@@ -21,9 +21,7 @@ import org.slf4j.Logger;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Support for tests.
- *
- * @since litmus 1.0
+ * Support for tests using JUnit 5 as the runner
  */
 @ExtendWith({Test5Tracer.class, MockitoExtension.class})
 public abstract class Test5Support
