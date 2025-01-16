@@ -59,7 +59,7 @@
     <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
     <eclipse-jetty.version>9.4.57.v20241219</eclipse-jetty.version>
     <jupiter.version>5.11.3</jupiter.version>
-    <mockito.version>5.14.2</mockito.version>
+    <mockito.version>5.15.2</mockito.version>
 
     <!--
     Sonar configuration.
