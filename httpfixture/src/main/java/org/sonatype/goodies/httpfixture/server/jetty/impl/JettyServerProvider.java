@@ -46,9 +46,17 @@ import org.sonatype.goodies.httpfixture.server.jetty.behaviour.Truncate;
 import org.sonatype.goodies.httpfixture.server.jetty.util.FileUtil;
 
 import com.google.common.base.Throwables;
+import org.eclipse.jetty.ee8.nested.ServletConstraint;
+import org.eclipse.jetty.ee8.security.ConstraintMapping;
+import org.eclipse.jetty.ee8.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.ee8.security.authentication.BasicAuthenticator;
+import org.eclipse.jetty.ee8.security.authentication.SslClientCertAuthenticator;
+import org.eclipse.jetty.ee8.servlet.DefaultServlet;
+import org.eclipse.jetty.ee8.servlet.FilterHolder;
+import org.eclipse.jetty.ee8.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee8.servlet.ServletHolder;
+import org.eclipse.jetty.ee8.servlet.ServletMapping;
 import org.eclipse.jetty.http.HttpVersion;
-import org.eclipse.jetty.security.ConstraintMapping;
-import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.UserStore;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -57,15 +65,9 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.util.ArrayUtil;
-import org.eclipse.jetty.util.security.Constraint;
 import org.eclipse.jetty.util.security.Password;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
@@ -85,7 +87,7 @@ public class JettyServerProvider
 
   private String host = "localhost";
 
-  private HandlerCollection handlerCollection;
+  private ContextHandlerCollection handlerCollection;
 
   private ServletContextHandler webappContext;
 
@@ -166,7 +168,7 @@ public class JettyServerProvider
     }
 
     s.setConnectors(new ServerConnector[]{connector});
-    handlerCollection = new HandlerCollection();
+    handlerCollection = new ContextHandlerCollection();
     s.setHandler(handlerCollection);
 
     initWebappContext(s);
@@ -194,9 +196,18 @@ public class JettyServerProvider
 
   private void initAuthentication(String pathSpec, String authName) {
     authType = authName;
-    Constraint constraint = new Constraint();
+    ServletConstraint constraint = ConstraintSecurityHandler.createConstraint();
     if (authName == null) {
-      authName = Constraint.__BASIC_AUTH;
+      authName = BasicAuthenticator.BASIC_AUTH;
+      securityHandler.setAuthenticator(new BasicAuthenticator());
+    } else if (authName.endsWith("CERT")) {
+      final SslClientCertAuthenticator authenticator = new SslClientCertAuthenticator(sslContextFactory);
+      authenticator.setValidateCerts(false);
+      securityHandler.setAuthenticator(authenticator);
+    }
+    else {
+      authName = BasicAuthenticator.BASIC_AUTH;
+      securityHandler.setAuthenticator(new BasicAuthenticator());
     }
     constraint.setName(authName);
 

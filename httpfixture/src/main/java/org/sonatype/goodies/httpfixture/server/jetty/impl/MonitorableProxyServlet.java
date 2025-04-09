@@ -13,6 +13,7 @@
 package org.sonatype.goodies.httpfixture.server.jetty.impl;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +26,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.eclipse.jetty.ee8.proxy.ProxyServlet;
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.util.StringUtil;
 
 /**
  * A real HTTP proxy servlet with ability to gather accessed URIs accessed via this proxy.
  */
 public class MonitorableProxyServlet
-    extends org.eclipse.jetty.proxy.ProxyServlet
+    extends ProxyServlet
 {
   private final List<String> accessedUris;
 
@@ -66,7 +67,7 @@ public class MonitorableProxyServlet
       String proxyAuthorization = request.getHeader("Proxy-Authorization");
       if (proxyAuthorization != null && proxyAuthorization.startsWith("Basic ")) {
         String proxyAuth = proxyAuthorization.substring(6);
-        String authorization = new String(Base64.getDecoder().decode(proxyAuth), StringUtil.__ISO_8859_1);
+        String authorization = new String(Base64.getDecoder().decode(proxyAuth), StandardCharsets.ISO_8859_1);
         String[] authTokens = authorization.split(":");
         String user = authTokens[0];
         String password = authTokens[1];

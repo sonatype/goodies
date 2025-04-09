@@ -14,7 +14,7 @@ package org.sonatype.goodies.httpfixture.server.jetty.configurations;
 
 import org.sonatype.goodies.httpfixture.server.api.ServerProvider;
 
-import org.eclipse.jetty.util.security.Constraint;
+import org.eclipse.jetty.ee8.security.Authenticator;
 
 public class CertAuthSuiteConfigurator
     extends SslSuiteConfigurator
@@ -22,7 +22,7 @@ public class CertAuthSuiteConfigurator
   @Override
   public ServerProvider provider() {
     ServerProvider p = super.provider();
-    p.addAuthentication("/*", Constraint.__CERT_AUTH2);
+    p.addAuthentication("/*", Authenticator.CERT_AUTH2);
     return p;
   }
 

@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.sonatype.goodies.httpfixture.server.fluent.Proxy;
 import org.sonatype.goodies.httpfixture.server.jetty.behaviour.ProxyAuth;
 
-import org.eclipse.jetty.security.ConstraintSecurityHandler;
-import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.ee8.nested.Request;
+import org.eclipse.jetty.ee8.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.server.Server;
 
 /**
