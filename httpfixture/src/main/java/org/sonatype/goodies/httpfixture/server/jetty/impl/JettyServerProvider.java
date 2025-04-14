@@ -197,10 +197,7 @@ public class JettyServerProvider
   private void initAuthentication(String pathSpec, String authName) {
     authType = authName;
     ServletConstraint constraint = ConstraintSecurityHandler.createConstraint();
-    if (authName == null) {
-      authName = BasicAuthenticator.BASIC_AUTH;
-      securityHandler.setAuthenticator(new BasicAuthenticator());
-    } else if (authName.endsWith("CERT")) {
+    if (authName != null && authName.endsWith("CERT")) {
       final SslClientCertAuthenticator authenticator = new SslClientCertAuthenticator(sslContextFactory);
       authenticator.setValidateCerts(false);
       securityHandler.setAuthenticator(authenticator);
