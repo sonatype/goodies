@@ -57,7 +57,7 @@
     <guice.version>6.0.0</guice.version>
     <sisu-guice.version>3.2.5</sisu-guice.version>
     <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
-    <eclipse-jetty.version>9.4.57.v20241219</eclipse-jetty.version>
+    <eclipse-jetty.version>12.0.17</eclipse-jetty.version>
     <jupiter.version>5.11.4</jupiter.version>
     <mockito.version>5.15.2</mockito.version>
 
@@ -282,38 +282,38 @@
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
+        <groupId>org.eclipse.jetty.ee8</groupId>
+        <artifactId>jetty-ee8-server</artifactId>
         <version>${eclipse-jetty.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-servlet</artifactId>
+        <groupId>org.eclipse.jetty.ee8</groupId>
+        <artifactId>jetty-ee8-servlet</artifactId>
         <version>${eclipse-jetty.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-servlets</artifactId>
+        <groupId>org.eclipse.jetty.ee8</groupId>
+        <artifactId>jetty-ee8-servlets</artifactId>
         <version>${eclipse-jetty.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-security</artifactId>
+        <groupId>org.eclipse.jetty.ee8</groupId>
+        <artifactId>jetty-ee8-security</artifactId>
         <version>${eclipse-jetty.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-webapp</artifactId>
+        <groupId>org.eclipse.jetty.ee8</groupId>
+        <artifactId>jetty-ee8-webapp</artifactId>
         <version>${eclipse-jetty.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-proxy</artifactId>
+        <groupId>org.eclipse.jetty.ee8</groupId>
+        <artifactId>jetty-ee8-proxy</artifactId>
         <version>${eclipse-jetty.version}</version>
       </dependency>
       

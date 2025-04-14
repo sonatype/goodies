@@ -42,7 +42,7 @@ import org.sonatype.goodies.httpfixture.server.jetty.impl.JettyServerProvider.Ce
 import org.sonatype.goodies.testsupport.TestSupport;
 
 import com.google.common.io.ByteStreams;
-import org.eclipse.jetty.util.security.Constraint;
+import org.eclipse.jetty.ee8.security.Authenticator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,7 +66,7 @@ public class ClientSideCertTest
   public void testClientSideCertFail() throws Exception {
     ServerProvider p = new JettyServerProvider();
     p.setSSL("keystore", "password");
-    p.addAuthentication("/*", Constraint.__CERT_AUTH2);
+    p.addAuthentication("/*", Authenticator.CERT_AUTH2);
 
     p.start();
 
@@ -119,7 +119,7 @@ public class ClientSideCertTest
   public void testClientSideCert() throws Exception {
     ServerProvider p = new JettyServerProvider();
     p.setSSL("keystore", "password");
-    p.addAuthentication("/*", Constraint.__CERT_AUTH2);
+    p.addAuthentication("/*", Authenticator.CERT_AUTH2);
 
     CertificateHolder cert = getCertificate("client", clientKeystore.getAbsolutePath(), "password");
     p.addUser("client", cert);
