@@ -55,7 +55,7 @@
 
     <slf4j.version>2.0.17</slf4j.version>
     <eclipse-jetty.version>12.0.17</eclipse-jetty.version>
-    <jupiter.version>5.11.4</jupiter.version>
+    <jupiter.version>5.13.4</jupiter.version>
     <mockito.version>5.20.0</mockito.version>
 
     <!--
