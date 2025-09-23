@@ -53,10 +53,10 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
 
-    <slf4j.version>1.7.36</slf4j.version>
+    <slf4j.version>2.0.17</slf4j.version>
     <eclipse-jetty.version>12.0.17</eclipse-jetty.version>
     <jupiter.version>5.11.4</jupiter.version>
-    <mockito.version>5.15.2</mockito.version>
+    <mockito.version>5.20.0</mockito.version>
 
     <!--
     Sonar configuration.
@@ -102,13 +102,13 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.2.13</version>
+        <version>1.5.18</version>
       </dependency>
 
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.2.13</version>
+        <version>1.5.18</version>
       </dependency>
 
       <dependency>
@@ -126,7 +126,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>32.1.3-jre</version>
+        <version>33.5.0-jre</version>
       </dependency>
 
       <dependency>
