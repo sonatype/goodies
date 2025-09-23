@@ -102,18 +102,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.eclipse.sisu</groupId>
-      <artifactId>org.eclipse.sisu.inject</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-test-framework</artifactId>
       <optional>true</optional>

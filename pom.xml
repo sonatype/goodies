@@ -54,9 +54,6 @@
     <maven.compiler.target>17</maven.compiler.target>
 
     <slf4j.version>1.7.36</slf4j.version>
-    <guice.version>6.0.0</guice.version>
-    <sisu-guice.version>3.2.5</sisu-guice.version>
-    <eclipse-sisu.version>0.3.5</eclipse-sisu.version>
     <eclipse-jetty.version>12.0.17</eclipse-jetty.version>
     <jupiter.version>5.11.4</jupiter.version>
     <mockito.version>5.15.2</mockito.version>
@@ -136,36 +133,6 @@
         <groupId>javax.inject</groupId>
         <artifactId>javax.inject</artifactId>
         <version>1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.sisu</groupId>
-        <artifactId>org.eclipse.sisu.inject</artifactId>
-        <version>${eclipse-sisu.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.inject</groupId>
-        <artifactId>guice</artifactId>
-        <version>${guice.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.inject.extensions</groupId>
-        <artifactId>guice-assistedinject</artifactId>
-        <version>${guice.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.inject.extensions</groupId>
-        <artifactId>guice-multibindings</artifactId>
-        <version>${guice.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.inject.extensions</groupId>
-        <artifactId>guice-servlet</artifactId>
-        <version>${guice.version}</version>
       </dependency>
 
       <dependency>
@@ -397,19 +364,6 @@
                 </bannedDependencies>
               </rules>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.eclipse.sisu</groupId>
-        <artifactId>sisu-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>main-index</goal>
-              <goal>test-index</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
