@@ -3,7 +3,7 @@ library('jenkins-shared')
 
 mavenReleasePipeline(
         deployBranch: 'main',
-        javaVersion: 'OpenJDK 17',
+        javaVersion: 'OpenJDK 21',
         mavenVersion: 'Maven 3.9.x',
         mavenSettingsFile: 'rsc-private-settings', // internal publishing to rsc
         additionalReleaseProfiles: ['publish-central'], // public publishing to central
