@@ -28,10 +28,11 @@ import com.google.common.base.Throwables;
  * Dummy {@link ServerProvider}.
  */
 class DummyProvider
-    implements ServerProvider
+implements ServerProvider
 {
   private boolean started;
 
+  @Override
   public URL getUrl() {
     try {
       return URI.create("dummy://url").toURL();
@@ -41,11 +42,13 @@ class DummyProvider
     }
   }
 
+  @Override
   public void stop() throws Exception {
     started = false;
   }
 
-  public void addBehaviour(String pathspec, Behaviour... behaviour) {
+  @Override
+  public void addBehaviour(final String pathspec, final Behaviour... behaviour) {
     // empty
   }
 
@@ -64,6 +67,7 @@ class DummyProvider
     // empty
   }
 
+  @Override
   public void start() throws Exception {
     started = true;
   }
@@ -72,44 +76,57 @@ class DummyProvider
     // empty
   }
 
-  public void setPort(int port) {
+  @Override
+  public void setPort(final int port) {
     // empty
   }
 
+  @Override
   public int getPort() {
     return -1;
   }
 
   @Override
-  public void setHost(String host) {
+  public String getHost() {
+    return null;
+  }
+
+  @Override
+  public void setHost(final String host) {
     // empty
   }
 
-  public void setSSL(String keystore, String password) {
+  @Override
+  public void setSSL(final String keystore, final String password) {
     // empty
   }
 
-  public void addAuthentication(String pathSpec, String authName) {
+  @Override
+  public void addAuthentication(final String pathSpec, final String authName) {
     // empty
   }
 
-  public void addUser(String user, Object password) {
+  @Override
+  public void addUser(final String user, final Object password) {
     // empty
   }
 
+  @Override
   public boolean isStarted() {
     return started;
   }
 
+  @Override
   public void setSSLTruststore(final String truststore, final String password) {
     // empty
   }
 
+  @Override
   public void setSSLNeedClientAuth(final boolean needClientAuth) {
     // empty
   }
 
-  private static RuntimeException propagate(Throwable throwable) {
+  private static RuntimeException propagate(final Throwable throwable) {
     Throwables.throwIfUnchecked(throwable);
     throw new RuntimeException(throwable);
   }

@@ -77,7 +77,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * Jetty {@link ServerProvider}.
  */
 public class JettyServerProvider
-    implements ServerProvider
+implements ServerProvider
 {
   protected Server server;
 
@@ -116,18 +116,20 @@ public class JettyServerProvider
     super();
   }
 
-  public void setSSL(String keystore, String password) {
+  @Override
+  public void setSSL(final String keystore, final String password) {
     this.ssl = true;
     this.sslKeystore = keystore;
     this.sslKeystorePassword = password;
   }
 
   @Override
-  public void setHost(String host) {
+  public void setHost(final String host) {
     this.host = host;
   }
 
-  public void setPort(int port) {
+  @Override
+  public void setPort(final int port) {
     this.port = port;
   }
 
@@ -136,15 +138,18 @@ public class JettyServerProvider
     server = createServer();
   }
 
+  @Override
   public boolean isStarted() {
     return server != null && server.isStarted();
   }
 
+  @Override
   public void setSSLTruststore(final String truststore, final String password) {
     this.sslTruststore = truststore;
     this.sslTruststorePassword = password;
   }
 
+  @Override
   public void setSSLNeedClientAuth(final boolean needClientAuth) {
     this.sslNeedClientAuth = needClientAuth;
   }
@@ -176,7 +181,8 @@ public class JettyServerProvider
     return s;
   }
 
-  public void addAuthentication(String pathSpec, String authName) {
+  @Override
+  public void addAuthentication(final String pathSpec, final String authName) {
     final boolean needClientAuth = authName.endsWith("CERT");
     if (server == null) {
       try {
@@ -194,7 +200,7 @@ public class JettyServerProvider
     initAuthentication(pathSpec, authName);
   }
 
-  private void initAuthentication(String pathSpec, String authName) {
+  private void initAuthentication(final String pathSpec, String authName) {
     authType = authName;
     ServletConstraint constraint = ConstraintSecurityHandler.createConstraint();
     if (authName != null && authName.endsWith("CERT")) {
@@ -235,7 +241,8 @@ public class JettyServerProvider
    * @param user     the username, may not be {@code null}.
    * @param password The password to use, may not be {@code null}.
    */
-  public void addUser(String user, Object password) {
+  @Override
+  public void addUser(final String user, final Object password) {
     if (authType == null) {
       throw new IllegalStateException("no authentication method set.");
     }
@@ -261,7 +268,7 @@ public class JettyServerProvider
    * @param alias      The alias to use for the key in the keystore.
    * @param certHolder The key and certificate to use.
    */
-  public void addCertificate(String alias, CertificateHolder certHolder) throws Exception {
+  public void addCertificate(final String alias, final CertificateHolder certHolder) throws Exception {
     checkArgument(sslContextFactory != null, "Cannot add user CERT w/o SSL configured!");
 
     KeyManagerFactory keyManagerFactory =
@@ -330,11 +337,11 @@ public class JettyServerProvider
   }
 
   @Override
-  public void addServlet(String pathSpec, Servlet servlet) {
+  public void addServlet(final String pathSpec, final Servlet servlet) {
     addServlet(pathSpec, new ServletHolder(servlet));
   }
 
-  public void addServlet(String pathSpec, ServletHolder servletHolder) {
+  public void addServlet(final String pathSpec, final ServletHolder servletHolder) {
     if (webappContext == null) {
       try {
         initServer();
@@ -361,7 +368,7 @@ public class JettyServerProvider
   }
 
   @Override
-  public void addFilter(String pathSpec, Filter filter) {
+  public void addFilter(final String pathSpec, final Filter filter) {
     if (webappContext == null) {
       try {
         initServer();
@@ -393,7 +400,7 @@ public class JettyServerProvider
     webappContext.getServletHandler().addServletWithMapping(servletHolder, pathSpec);
   }
 
-  protected void initWebappContext(Server s) {
+  protected void initWebappContext(final Server s) {
     this.webappContext = new ServletContextHandler();
     // webappContext.setConfigurations( new Configuration[] { new WebXmlConfiguration(). } );
     // webappContext.setContextPath( "/" );
@@ -404,7 +411,7 @@ public class JettyServerProvider
     handlerCollection.addHandler(new DefaultHandler());
   }
 
-  private String resourceFile(String resource) throws Exception {
+  private String resourceFile(final String resource) throws Exception {
     URL r = getClass().getResource("/" + resource);
     if (r == null) {
       throw new IllegalStateException("cannot find resource: " + resource);
@@ -493,6 +500,7 @@ public class JettyServerProvider
     return serverConnector;
   }
 
+  @Override
   public void start() throws Exception {
     if (server == null) {
       initServer();
@@ -517,10 +525,12 @@ public class JettyServerProvider
     port = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
   }
 
-  public void addBehaviour(String pathspec, Behaviour... behaviour) {
+  @Override
+  public void addBehaviour(final String pathspec, final Behaviour... behaviour) {
     addServlet(pathspec, new BehaviourServlet(behaviour));
   }
 
+  @Override
   public void stop() throws Exception {
     server.stop();
 
@@ -536,6 +546,7 @@ public class JettyServerProvider
 
   }
 
+  @Override
   public URL getUrl() {
     String protocol;
     if (ssl) {
@@ -559,10 +570,16 @@ public class JettyServerProvider
     return webappContext;
   }
 
-  public void setWebappContext(ServletContextHandler webappContext) {
+  public void setWebappContext(final ServletContextHandler webappContext) {
     this.webappContext = webappContext;
   }
 
+  @Override
+  public String getHost() {
+    return host;
+  }
+
+  @Override
   public int getPort() {
     return port;
   }
@@ -571,7 +588,7 @@ public class JettyServerProvider
     return securityHandler;
   }
 
-  public void setSecurityHandler(ConstraintSecurityHandler securityHandler) {
+  public void setSecurityHandler(final ConstraintSecurityHandler securityHandler) {
     this.securityHandler = securityHandler;
   }
 
@@ -587,23 +604,23 @@ public class JettyServerProvider
       return chain;
     }
 
-    public CertificateHolder(Certificate[] chain) {
+    public CertificateHolder(final Certificate[] chain) {
       this.chain = chain;
     }
   }
 
   public static final class CustomTrustManager
-      implements X509TrustManager
+  implements X509TrustManager
   {
     @Override
-    public void checkClientTrusted(X509Certificate[] arg0, String arg1)
+    public void checkClientTrusted(final X509Certificate[] arg0, final String arg1)
         throws CertificateException
     {
       // empty
     }
 
     @Override
-    public void checkServerTrusted(X509Certificate[] arg0, String arg1)
+    public void checkServerTrusted(final X509Certificate[] arg0, final String arg1)
         throws CertificateException
     {
       // empty
@@ -615,7 +632,7 @@ public class JettyServerProvider
     }
   }
 
-  private static RuntimeException propagate(Throwable throwable) {
+  private static RuntimeException propagate(final Throwable throwable) {
     Throwables.throwIfUnchecked(throwable);
     throw new RuntimeException(throwable);
   }

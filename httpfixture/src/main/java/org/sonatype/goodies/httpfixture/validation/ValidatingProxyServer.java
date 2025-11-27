@@ -12,26 +12,18 @@
  */
 package org.sonatype.goodies.httpfixture.validation;
 
-import java.net.InetSocketAddress;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import com.google.common.net.HostAndPort;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpObject;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
-import org.littleshoot.proxy.DefaultHostResolver;
-import org.littleshoot.proxy.HostResolver;
-import org.littleshoot.proxy.HttpFilters;
-import org.littleshoot.proxy.HttpFiltersAdapter;
-import org.littleshoot.proxy.HttpFiltersSourceAdapter;
-import org.littleshoot.proxy.HttpProxyServer;
-import org.littleshoot.proxy.HttpProxyServerBootstrap;
-import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.sonatype.goodies.httpfixture.server.fluent.Server;
+
+import org.eclipse.jetty.ee8.proxy.ProxyServlet;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -47,9 +39,7 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class ValidatingProxyServer
 {
-  private static final Logger log = LoggerFactory.getLogger(ValidatingProxyServer.class);
-
-  private HttpProxyServer server;
+  private Server server;
 
   private AtomicInteger successCount = new AtomicInteger();
 
@@ -57,14 +47,19 @@ public class ValidatingProxyServer
 
   private final HttpValidator[] validators;
 
-  public ValidatingProxyServer(HttpValidator... validators) {
+  public ValidatingProxyServer(final HttpValidator... validators) {
     ValidationUtil.verifyValidators(validators);
 
     this.validators = validators;
   }
 
   public void start() {
-    server = createWithValidation(validators).start();
+    try {
+      server = createWithValidation(validators).start();
+    }
+    catch (Exception e) {
+      propagate(e);
+    }
   }
 
   public boolean isStarted() {
@@ -74,7 +69,19 @@ public class ValidatingProxyServer
   public void stop() {
     verifyServerState();
 
-    server.stop();
+    try {
+      server.stop();
+    }
+    catch (Exception e) {
+      propagate(e);
+    }
+  }
+
+  private void propagate(final Exception e) {
+    if (e instanceof RuntimeException re) {
+      throw re;
+    }
+    throw new RuntimeException(e);
   }
 
   /**
@@ -83,16 +90,16 @@ public class ValidatingProxyServer
   public String getHostName() {
     verifyServerState();
 
-    return server.getListenAddress().getHostName();
+    return server.getHost();
   }
 
   public int getPort() {
     verifyServerState();
 
-    return server.getListenAddress().getPort();
+    return server.getPort();
   }
 
-  public ValidatingProxyServer withPort(int port) {
+  public ValidatingProxyServer withPort(final int port) {
     checkArgument(port > 0, "Must have port greater than zero.");
     this.serverPort = port;
 
@@ -107,52 +114,26 @@ public class ValidatingProxyServer
    * Generate an {@link HttpProxyServerBootstrap} which validates requests using the given {@link HttpValidator}
    * object(s).
    */
-  private HttpProxyServerBootstrap createWithValidation(final HttpValidator... validators) { // NOSONAR
-    return DefaultHttpProxyServer.bootstrap()
-        .withPort(serverPort)
-        .withAllowLocalOnly(true)
-        .withAuthenticateSslClients(false)
-        .withFiltersSource(new HttpFiltersSourceAdapter()
+  private Server createWithValidation(final HttpValidator... validators) { // NOSONAR
+    return Server.withPort(serverPort)
+        .serve("/*")
+        .withFilter(new HttpFilter()
         {
           @Override
-          public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) { // NOSONAR
-            return new HttpFiltersAdapter(originalRequest)
-            {
-              private final HostResolver hostResolver = new DefaultHostResolver();
-
-              @Override
-              public HttpResponse clientToProxyRequest(HttpObject httpObject) {
-                HttpServletRequest req = new NettyHttpRequestWrapper(originalRequest);
-                for (HttpValidator v : validators) {
-                  v.validate(req);
-                }
-                successCount.incrementAndGet();
-                return null;
-              }
-
-              /**
-               * Workaround https://github.com/adamfisk/LittleProxy/issues/398 by overriding default parsing.
-               */
-              @Override
-              public InetSocketAddress proxyToServerResolutionStarted(final String resolvingServerHostAndPort) {
-                try {
-                  HostAndPort hostAndPort = HostAndPort.fromString(resolvingServerHostAndPort);
-                  String host = getHost(hostAndPort);
-                  int port = hostAndPort.getPortOrDefault(80);
-                  return hostResolver.resolve(host, port);
-                }
-                catch (Exception e) {
-                  log.warn("Problem resolving {}", resolvingServerHostAndPort, e);
-                  return null; // we can't resolve this host, return null to fall back to normal DNS resolution
-                }
-              }
-
-              private String getHost(final HostAndPort hostAndPort) {
-                return hostAndPort.getHost();
-              }
-            };
+          protected void doFilter(
+              final HttpServletRequest req,
+              final HttpServletResponse res,
+              final FilterChain chain) throws IOException, ServletException
+          {
+            for (HttpValidator v : validators) {
+              v.validate(req);
+            }
+            successCount.incrementAndGet();
+            chain.doFilter(req, res);
           }
-        });
+        })
+        .serve("/*")
+        .withServlet(new ProxyServlet());
   }
 
   /**
