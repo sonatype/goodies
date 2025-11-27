@@ -3,7 +3,7 @@ library('jenkins-shared')
 
 mavenSnapshotPipeline(
         deployBranch: 'main',
-        javaVersion: 'OpenJDK 17',
+        javaVersion: 'OpenJDK 21',
         mavenVersion: 'Maven 3.9.x',
         onSuccess: { build, env ->
             notifyChat(env: env, currentBuild: build, room: 'nxrm-notifications')
