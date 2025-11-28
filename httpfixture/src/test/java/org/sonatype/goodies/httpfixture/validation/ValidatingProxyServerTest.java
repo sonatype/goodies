@@ -24,6 +24,7 @@ import org.sonatype.goodies.httpfixture.server.fluent.Behaviours;
 import org.sonatype.goodies.httpfixture.server.fluent.Server;
 import org.sonatype.goodies.testsupport.port.PortRegistry;
 
+import org.eclipse.jetty.ee8.nested.Request;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -89,7 +90,7 @@ public class ValidatingProxyServerTest
     testRequestHappyPath(null);
   }
 
-  private void testRequestHappyPath(Integer port) throws IOException {
+  private void testRequestHappyPath(final Integer port) throws IOException {
     // Setup
     if (port != null) {
       underTest.withPort(port);
@@ -110,10 +111,10 @@ public class ValidatingProxyServerTest
     // Verify
     assertThat(conn.getResponseCode(), equalTo(200));
 
-    verify(validator, times(2)).validate(validatorCaptor.capture());
-    assertThat(validatorCaptor.getValue(), instanceOf(NettyHttpRequestWrapper.class));
+    verify(validator, times(1)).validate(validatorCaptor.capture());
+    assertThat(validatorCaptor.getValue(), instanceOf(Request.class));
 
-    assertThat(underTest.getSuccessCount(), equalTo(2));
+    assertThat(underTest.getSuccessCount(), equalTo(1));
   }
 
   @Test(expected = IllegalStateException.class)

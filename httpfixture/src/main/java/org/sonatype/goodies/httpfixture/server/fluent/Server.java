@@ -51,7 +51,7 @@ public class Server
   /**
    * Start a server on the given port (0 for random).
    */
-  public static Server withPort(int port) {
+  public static Server withPort(final int port) {
     JettyServerProvider jettyServerProvider = new JettyServerProvider();
     jettyServerProvider.setPort(port);
     return new Server(jettyServerProvider);
@@ -62,7 +62,7 @@ public class Server
    *
    * @throws IllegalStateException if the server is already started.
    */
-  public Server port(int port) throws IllegalStateException {
+  public Server port(final int port) throws IllegalStateException {
     if (serverProvider.isStarted()) {
       throw new IllegalStateException("Server is currently running, cannot change port.");
     }
@@ -94,7 +94,7 @@ public class Server
     return this;
   }
 
-  public ServeContext serve(String pattern) {
+  public ServeContext serve(final String pattern) {
     return new ServeContext(this, pattern);
   }
 
@@ -105,6 +105,10 @@ public class Server
 
   public void stop() throws Exception {
     serverProvider.stop();
+  }
+
+  public String getHost() {
+    return serverProvider.getHost();
   }
 
   public int getPort() {
@@ -128,25 +132,25 @@ public class Server
       this.server = checkNotNull(server);
     }
 
-    public Server withBehaviours(Behaviour... behaviours) {
+    public Server withBehaviours(final Behaviour... behaviours) {
       checkNotNull(behaviours);
       server.getServerProvider().addBehaviour(pattern, behaviours);
       return server;
     }
 
-    public Server withServlet(Servlet servlet) {
+    public Server withServlet(final Servlet servlet) {
       checkNotNull(servlet);
       server.getServerProvider().addServlet(pattern, servlet);
       return server;
     }
 
-    public Server withFilter(Filter filter) {
+    public Server withFilter(final Filter filter) {
       checkNotNull(filter);
       server.getServerProvider().addFilter(pattern, filter);
       return server;
     }
 
-    public Server fromDirectory(File directory) {
+    public Server fromDirectory(final File directory) {
       checkNotNull(directory);
       server.getServerProvider().serveFiles(pattern, new FileContext(directory));
       return server;

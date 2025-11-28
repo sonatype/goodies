@@ -54,12 +54,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.littleshoot</groupId>
-      <artifactId>littleproxy</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
     </dependency>
