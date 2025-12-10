@@ -55,6 +55,7 @@
 
     <slf4j.version>2.0.17</slf4j.version>
     <eclipse-jetty.version>12.0.17</eclipse-jetty.version>
+    <jupiter.version>5.14.1</jupiter.version>
     <mockito.version>5.20.0</mockito.version>
 
     <!--
@@ -149,7 +150,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.14.1</version>
+        <version>${jupiter.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -157,6 +158,7 @@
       <dependency>
         <groupId>org.junit.vintage</groupId>
         <artifactId>junit-vintage-engine</artifactId>
+        <version>${jupiter.version}</version>
         <exclusions>
           <exclusion>
             <groupId>org.hamcrest</groupId>
